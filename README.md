@@ -1,6 +1,4 @@
-# npo-frontend-template
-
-This template will be used to create all NPO frontend repos
+# The Literacy Project Frontend
 
 ## Available Scripts
 
