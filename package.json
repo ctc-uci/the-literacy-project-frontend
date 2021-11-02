@@ -6,6 +6,7 @@
     "@angular/common": "^6.0.0",
     "@angular/core": "^6.0.0",
     "@babel/core": "^7.0.0",
+    "babel-loader": "8.1.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -15,10 +16,9 @@
     "react-scripts": "4.0.3",
     "testing-library": "0.0.2",
     "web-vitals": "^1.0.1",
-    "webpack": ">=2"
+    "webpack": "4.44.2"
   },
   "optionalDependencies": {
-    "babel-loader": "8.2.3"
   },
   "scripts": {
     "start": "react-scripts start",
