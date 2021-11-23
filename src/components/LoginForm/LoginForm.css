@@ -1,0 +1,9 @@
+.LoginForm label{
+  display: block;
+}
+
+.passwordWrapper {
+  position: relative;
+  display: flex;
+  margin-bottom: 14px;
+}
