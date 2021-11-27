@@ -128,6 +128,11 @@ function AssessmentScoreCard() {
           skillTest="cork, fir, car, term, fur"
           passingScore="4/5"
         />
+        <label htmlFor="notes">
+          Notes:
+          <input type="text" id="notes" />
+        </label>
+        <button type="button">Save</button>
       </table>
     </>
   );
