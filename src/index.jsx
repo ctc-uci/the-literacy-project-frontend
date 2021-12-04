@@ -5,7 +5,14 @@ import './index.css';
 import App from './App';
 
 // page imports
+import SchoolView from './pages/schools/schools';
+import SchoolsCreateView from './pages/schools-create/schools-create';
+import SchoolsExportDataView from './pages/schools-export-data/schools-export-data';
+import AssignStudentsView from './pages/assign-students/assign-students';
 import StudentView from './pages/students/students';
+import StudentsCreateView from './pages/students-create/students-create';
+import StudentsEditView from './pages/students-edit/students-edit';
+import StudentsExportDataView from './pages/students-export-data/students-export-data';
 import LoginView from './pages/login/login';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
 import LoginTeacherStartView from './pages/login-teacher-start/login-teacher-start';
@@ -24,7 +31,14 @@ ReactDOM.render(
     <Router>
       <Routes>
         <Route path="/" exact element={<App />} />
+        <Route path="/schools" exact element={<SchoolView />} />
+        <Route path="/schools/create" exact element={<SchoolsCreateView />} />
+        <Route path="/schools/assign-students" exact element={<AssignStudentsView />} />
+        <Route path="/schools/export-data" exact element={<SchoolsExportDataView />} />
         <Route path="/students" exact element={<StudentView />} />
+        <Route path="/students/create" exact element={<StudentsCreateView />} />
+        <Route path="/students/edit" exact element={<StudentsEditView />} />
+        <Route path="/students/export-data" exact element={<StudentsExportDataView />} />
         <Route path="/login" exact element={<LoginView />} />
         <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
         <Route path="/login/teacher-start/:id" exact element={<LoginTeacherStartView />} />
