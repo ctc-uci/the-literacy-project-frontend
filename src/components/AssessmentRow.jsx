@@ -13,7 +13,7 @@ function AssessmentRow({ testNumber, gameName, skillTest, passingScore, numQuest
     setPostScore(event.target.value);
   };
 
-  const change = (postScore - preScore) / preScore;
+  const change = (postScore - preScore) / numQuestions;
   if (numQuestions !== 0) {
     return (
       <tr>
