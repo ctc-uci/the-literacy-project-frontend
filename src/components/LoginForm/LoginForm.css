@@ -1,9 +1,60 @@
-.LoginForm label{
-  display: block;
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@700&display=swap');
+
+h1 {
+  color: white;
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 34px;
+  line-height: 41px;
+  text-align: center;
+  letter-spacing: -0.02em;
+  margin-bottom: 30px;
 }
 
-.passwordWrapper {
-  position: relative;
+#email, #password {
+  background: #FFFFFF;
+  border: 1px solid #CED4DA;
+  box-sizing: border-box;
+  border-radius: 4.8px;
+  margin-bottom: 20px;
+  width: 255px;
+  height: 46px;
+}
+
+.loginFormWrapper {
+  position: absolute;
+  left: 0%;
+  right: 0%;
+  top: 9.25%;
+  bottom: 0%;
+  width: 417px;
+  height: 412px;
+  background-color: #444444;
+  border-radius: 20px;
+  margin: auto;
   display: flex;
-  margin-bottom: 14px;
+}
+
+.loginForm {
+  margin: auto;
+}
+
+form #eyeIcon {
+  position: absolute;
+  margin-left: -20px;
+  cursor: pointer;
+}
+
+#forgotPassword {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12.8px;
+  color: #A5A5A5;
+}
+
+#submitButton {
+  width: 173px;
+  height: 47px;
 }

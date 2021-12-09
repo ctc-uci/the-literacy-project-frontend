@@ -9,23 +9,26 @@ function LoginForm() {
   };
 
   return (
-    <div className="LoginForm">
-      <form>
-        <label htmlFor="email">
-          Email:
-          <input type="text" id="email" />
-        </label>
-        <div className="passwordWrapper">
-          <label htmlFor="password">
-            Password:
-            <input type={passwordShown ? 'text' : 'password'} id="password" />
-          </label>
-          <FaEye onClick={togglePasswordVisibility} />
-        </div>
-        <a href="/">Forgot password </a>
-        <br />
-        <input type="submit" value="Submit" />
-      </form>
+    <div className="loginFormWrapper">
+      <div className="loginForm">
+        <h1> Log In </h1>
+        <form>
+          <input type="text" id="email" placeholder="Email Address" />
+          <div className="passwordWrapper">
+            <input
+              type={passwordShown ? 'text' : 'password'}
+              id="password"
+              placeholder="Password"
+            />
+            <FaEye id="eyeIcon" color="black" onClick={togglePasswordVisibility} />
+          </div>
+          <input id="submitButton" type="submit" value="Login" />
+          <br />
+          <a id="forgotPassword" href="/">
+            Forgot password
+          </a>
+        </form>
+      </div>
     </div>
   );
 }
