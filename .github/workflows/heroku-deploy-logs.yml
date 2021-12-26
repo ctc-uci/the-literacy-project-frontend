@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Heroku Build Logs
-        uses: mheap/github-action-heroku-logs@master
+        uses: ctc-uci/github-action-heroku-logs@testing
         env:
           GITHUB_TOKEN: ${{ secrets.CTC_DEVOPS_BOT_PAT }}
           HEROKU_AUTH_TOKEN: ${{ secrets.CTC_HEROKU_API_KEY }}
