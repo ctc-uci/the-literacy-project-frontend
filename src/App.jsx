@@ -17,7 +17,7 @@ function App() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn more about react-bootstrap here!
+            Learn more about react-bootstrap here!!
           </Button>{' '}
         </div>
         <p>This is a React App!</p>
