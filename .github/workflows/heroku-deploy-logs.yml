@@ -9,6 +9,5 @@ jobs:
       - name: Heroku Build Logs
         uses: ctc-uci/github-action-heroku-logs@testing
         env:
-          AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEVOPS_PAT_TOKEN: ${{ secrets.CTC_DEVOPS_BOT_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HEROKU_AUTH_TOKEN: ${{ secrets.CTC_HEROKU_API_KEY }}
