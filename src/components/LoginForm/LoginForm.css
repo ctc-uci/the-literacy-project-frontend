@@ -12,9 +12,10 @@ h1 {
   margin-bottom: 30px;
 }
 
-#email, #password {
-  background: #FFFFFF;
-  border: 1px solid #CED4DA;
+#email,
+#password {
+  background: #ffffff;
+  border: 1px solid #ced4da;
   box-sizing: border-box;
   border-radius: 4.8px;
   margin-bottom: 20px;
@@ -51,7 +52,7 @@ form #eyeIcon {
   font-style: normal;
   font-weight: normal;
   font-size: 12.8px;
-  color: #A5A5A5;
+  color: #a5a5a5;
 }
 
 #submitButton {
