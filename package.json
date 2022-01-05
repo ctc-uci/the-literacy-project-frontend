@@ -31,7 +31,6 @@
     "web-vitals": "^1.0.1",
     "webpack": "4.44.2"
   },
-  "optionalDependencies": {},
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
