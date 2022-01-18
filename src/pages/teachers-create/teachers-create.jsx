@@ -1,11 +1,24 @@
 import './teachers-create.css';
-import React from 'react';
+import { React, useState } from 'react';
+import CreateTeacherModal from './CreateTeacherModal';
 
 const TeachersCreateView = () => {
+  const [modalIsOpen, setModalOpen] = useState(false);
+  // console.log('modalIsOpen is');
+  // console.log(modalIsOpen);
+  // console.log('SetModalOpen is');
+  // console.log(setModalOpen);
+
   return (
-    <div>
-      <h1 className="teachers-create-view">Teachers Create View</h1>
-    </div>
+    <>
+      <div>
+        {/* <button className="teachers-create-view" type="button" onClick={setModalOpen(true)}>
+          Add Teacher
+        </button> */}
+        This is the teacher create view
+      </div>
+      <CreateTeacherModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
+    </>
   );
 };
 
