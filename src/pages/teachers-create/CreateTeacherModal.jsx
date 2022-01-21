@@ -1,5 +1,5 @@
-import { React, useState, propTypes } from 'react';
-// import { React, useState } from 'react';
+// import { React, useState, propTypes } from 'react';
+import { React, useState } from 'react';
 import './CreateTeacherModal.css';
 
 // const DropdownMenu = (choices, setFn) => {
@@ -10,7 +10,8 @@ import './CreateTeacherModal.css';
 //   </>
 // };
 
-const CreateTeacherModal = ({ isOpen, setIsOpen }) => {
+// const CreateTeacherModal = ({ isOpen, setIsOpen }) => {
+const CreateTeacherModal = () => {
   // console.log('isOpen is');
   // console.log(isOpen);
   // console.log('setIsOpen is');
@@ -33,8 +34,10 @@ const CreateTeacherModal = ({ isOpen, setIsOpen }) => {
           (clicking the x button should set something to false so that the modal doesn't show) */}
           <div className="create-teacher-modal-top-bar-title">Create Teacher Account</div>
           <div className="create-teacher-modal-exit-button">
-            <button type="button" className="create-teacher-exit-button" onClick={setIsOpen(false)}>
-              {isOpen} X
+            <button type="button" className="create-teacher-exit-button">
+              {' '}
+              {/* onClick={setIsOpen(false)}> */}
+              {/* {isOpen} */} X
             </button>
           </div>
         </div>
@@ -42,7 +45,7 @@ const CreateTeacherModal = ({ isOpen, setIsOpen }) => {
           {/* create the form */}
           {/* <input type="text" defaultValue={district} onChange={e => setDistrict(e.target.value)} /> */}
           {/* {district} <DropdownMenu choices={districts} setFn={setDistrict} /> */}
-          <div>Email</div>
+          <div className="create-teacher-modal-input-label">Email</div>
           <input
             className="modal-text-input"
             type="text"
@@ -54,10 +57,13 @@ const CreateTeacherModal = ({ isOpen, setIsOpen }) => {
         <div className="create-teacher-modal-bottom-bar">
           {/* create the save + add another / save buttons */}
           {/* change save function later */}
-          <button type="button" className="create-send-button" onClick={setIsOpen(false)}>
+          <button type="button" className="create-send-button">
+            {' '}
+            {/* onClick={setIsOpen(false)}> */}
             Send and Create Another
           </button>
-          <button type="button" className="create-save-button" onClick={setIsOpen(false)}>
+          <button type="button" className="create-save-button">
+            {/* onClick={setIsOpen(false)}> */}
             Create
           </button>
         </div>
@@ -66,9 +72,9 @@ const CreateTeacherModal = ({ isOpen, setIsOpen }) => {
   );
 };
 
-CreateTeacherModal.propTypes = {
-  isOpen: propTypes.bool.isRequired,
-  setIsOpen: propTypes.func.isRequired,
-};
+// CreateTeacherModal.propTypes = {
+//  isOpen: propTypes.bool.isRequired,
+//  setIsOpen: propTypes.func.isRequired,
+// };
 
 export default CreateTeacherModal;
