@@ -1,51 +1,57 @@
 .create-teacher-modal {
   background-color: #fdfdfd;
+  color: #000;
   font-family: 'SF Compact', Helvetica, Arial, sans-serif;
+  font-size: 1.2em;
   width: 50%;
   height: 600px;
-  border: 3px solid #ced4da;
+  border: 1.5px solid #ced4da;
   border-radius: 10px;
   position: absolute;
   top: 25%;
   left: 25%;
 }
 
-.create-teacher-modal-body {
-  margin: auto;
-  width: 40%;
-  padding: 50px;
-  text-align: left;
-}
-
-.create-teacher-modal-input-label {
-  text-align: left;
-  padding: 5px;
-}
-
 .create-teacher-modal-top-bar {
-  padding: 10px 10px 10px 10px;
+  padding: 15px 10px 15px 10px;
   display: flex;
   justify-content: center;
-  border-bottom: 3px solid #ced4da;
+  border-bottom: 1.5px solid #ced4da;
 }
 
 .create-teacher-modal-top-bar-title {
   font-size: 20px;
 }
 
+.create-teacher-modal-body {
+  padding: 10px 15%;
+}
+
+.create-teacher-modal-field-desc {
+  padding: 30px 10px 15px 10px;
+}
+
 .modal-text-input {
-  width: 40%;
   border: 1px solid #ced4da;
-  border-radius: 5px;
-  padding: 5px;
+  color: #767676;
+  border-radius: 10px;
+  text-align: center;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  line-height: 32px;
+  font-family: 'SF Compact', Helvetica, Arial, sans-serif;
+  font-size: 1em;
 }
 
 .create-teacher-exit-button {
   position: absolute;
-  top: 12px;
+  top: 15px;
   right: 10px;
   background-color: #fdfdfd;
-  border: 1px dotted black;
+  /* border: 1px dotted black; */
+  border: 0px;
+  font-weight: 800;
 }
 
 .create-send-button {
@@ -55,18 +61,12 @@
   height: 36px;
   border-radius: 4px;
   padding: 6px, 12px, 6px, 12px;
-  position: absolute;
   bottom: 20px;
-  right: 100px;
 }
 
 .create-save-button {
   background-color: #3288c4;
   color: #fdfdfd;
-  width: 70px;
-  height: 36px;
-  border-radius: 4px;
-  padding: 6px, 12px, 6px, 12px;
   position: absolute;
   bottom: 20px;
   right: 20px;

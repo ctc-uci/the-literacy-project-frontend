@@ -11,13 +11,21 @@ const TeachersCreateView = () => {
 
   return (
     <>
-      <div>
-        {/* <button className="teachers-create-view" type="button" onClick={setModalOpen(true)}>
-          Add Teacher
-        </button> */}
-        This is the teacher create view
+      <div className="teachers-create-view">
+        <div className="create-teacher-button-container">
+          <button
+            className="create-teacher-button"
+            type="button"
+            onClick={() => {
+              setModalOpen(true);
+            }}
+          >
+            Add Teacher
+          </button>
+        </div>
+        <CreateTeacherModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
+        {/* <div>This is the teacher create view</div> */}
       </div>
-      <CreateTeacherModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
     </>
   );
 };
