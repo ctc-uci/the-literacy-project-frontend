@@ -1,0 +1,24 @@
+.dropdown-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  line-height: 32px;
+  cursor: pointer;
+}
+
+.dropdown-button {
+  color: #767676;
+  width: 80%;
+  text-align: center;
+}
+
+.dropdown-arrow-up {
+  width: 15px;
+  transform: rotate(180deg);
+}
+
+.dropdown-arrow-down {
+  width: 15px;
+}
