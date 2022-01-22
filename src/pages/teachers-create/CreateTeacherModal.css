@@ -31,6 +31,8 @@
 
 .create-teacher-modal-top-bar-title {
   font-size: 20px;
+  font: Calibri;
+  text-align: center;
 }
 
 .modal-text-input {
@@ -57,17 +59,17 @@
   padding: 6px, 12px, 6px, 12px;
   position: absolute;
   bottom: 20px;
-  right: 100px;
+  right: 120px;
 }
 
 .create-save-button {
   background-color: #3288c4;
   color: #fdfdfd;
-  width: 70px;
+  width: 96px;
   height: 36px;
   border-radius: 4px;
   padding: 6px, 12px, 6px, 12px;
   position: absolute;
   bottom: 20px;
-  right: 20px;
+  right: 10px;
 }

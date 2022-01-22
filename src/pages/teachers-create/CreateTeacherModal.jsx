@@ -64,7 +64,7 @@ const CreateTeacherModal = () => {
           </button>
           <button type="button" className="create-save-button">
             {/* onClick={setIsOpen(false)}> */}
-            Create
+            Send Email
           </button>
         </div>
       </div>
