@@ -53,9 +53,13 @@
 .create-send-button {
   background-color: #17a2b8;
   color: #fdfdfd;
-  width: 169px;
+  width: 188px;
   height: 36px;
   border-radius: 4px;
+  size: 16px;
+  text-align: center;
+  border-width: 1px;
+  border-color: #fdfdfd;
   padding: 6px, 12px, 6px, 12px;
   position: absolute;
   bottom: 20px;
@@ -72,4 +76,6 @@
   position: absolute;
   bottom: 20px;
   right: 10px;
+  border-width: 1px;
+  border-color: #fdfdfd;
 }
