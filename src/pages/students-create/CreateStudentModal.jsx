@@ -83,12 +83,12 @@ const CreateStudentModal = ({ isOpen, setIsOpen }) => {
           {/* change save function later */}
           <button
             type="button"
-            className="create-send-button"
+            className="create-add-button"
             onClick={() => {
               setIsOpen(false);
             }}
           >
-            Send and Create Another
+            Create and Add Another
           </button>
           <button
             type="button"
