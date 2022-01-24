@@ -19,6 +19,8 @@ const CreateStudentModal = ({ isOpen, setIsOpen }) => {
   const schools = ['School 1', 'School 2', 'School 3', 'School 4'];
   const [school, setSchool] = useState('No School');
   const [email, setEmail] = useState('default@email.com');
+  const [firstName, setFirstName] = useState('Default First Name');
+  const [lastName, setLastName] = useState('Default Last Name');
 
   return isOpen ? (
     <>
@@ -26,7 +28,7 @@ const CreateStudentModal = ({ isOpen, setIsOpen }) => {
         <div className="create-student-modal-top-bar">
           {/* create the title and the x button
           (clicking the x button should set something to false so that the modal doesn't show) */}
-          <div className="create-student-modal-top-bar-title">Create Student Account</div>
+          <div className="create-student-modal-top-bar-title">Create Student</div>
           <div className="create-student-modal-exit-button">
             <button
               type="button"
@@ -41,8 +43,22 @@ const CreateStudentModal = ({ isOpen, setIsOpen }) => {
         </div>
         <div className="create-student-modal-body">
           {/* create the form */}
-          <div className="create-student-modal-field-desc">Area</div>
+          <div className="create-student-modal-field-desc">District</div>
           <DropdownMenu choices={districts} current={district} setFn={setDistrict} />
+          <div className="create-student-modal-field-desc">First Name</div>
+          <input
+            className="modal-text-input"
+            type="text"
+            default_value={firstName}
+            onChange={e => setFirstName(e.target.value)}
+          />
+          <div className="create-student-modal-field-desc">Last Name</div>
+          <input
+            className="modal-text-input"
+            type="text"
+            default_value={lastName}
+            onChange={e => setLastName(e.target.value)}
+          />
           <div className="create-student-modal-field-desc">Email</div>
           <input
             className="modal-text-input"
@@ -50,7 +66,7 @@ const CreateStudentModal = ({ isOpen, setIsOpen }) => {
             defaultValue={email}
             onChange={e => setEmail(e.target.value)}
           />
-          <div className="create-student-modal-field-desc">Site</div>
+          <div className="create-student-modal-field-desc">Assign Site</div>
           <DropdownMenu choices={schools} current={school} setFn={setSchool} />
         </div>
         <div className="create-student-modal-bottom-bar">
