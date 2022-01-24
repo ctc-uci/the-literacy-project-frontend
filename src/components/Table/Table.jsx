@@ -18,15 +18,6 @@ const Table = ({ theadData, tbodyData }) => {
         {tbodyData.map(item => {
           return <TableRow key={item.id} data={item.items} />;
         })}
-        {tbodyData.map(item => {
-          return <TableRow key={item.id} data={item.items} />;
-        })}
-        {tbodyData.map(item => {
-          return <TableRow key={item.id} data={item.items} />;
-        })}
-        {tbodyData.map(item => {
-          return <TableRow key={item.id} data={item.items} />;
-        })}
       </tbody>
     </table>
   );

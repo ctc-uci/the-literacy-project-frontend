@@ -1,11 +1,12 @@
 import './CreationPageTabs.css';
 import React from 'react';
 import { Nav } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-const CreationPageTabs = () => {
+const CreationPageTabs = ({ currentActiveTab }) => {
   return (
     <div>
-      <Nav variant="tabs" defaultActiveKey="/sites">
+      <Nav variant="tabs" defaultActiveKey={currentActiveTab}>
         <Nav.Item>
           <Nav.Link href="/sites">Sites</Nav.Link>
         </Nav.Item>
@@ -21,6 +22,14 @@ const CreationPageTabs = () => {
       </Nav>
     </div>
   );
+};
+
+CreationPageTabs.defaultProps = {
+  currentActiveTab: '/sites',
+};
+
+CreationPageTabs.propTypes = {
+  currentActiveTab: PropTypes.string,
 };
 
 export default CreationPageTabs;

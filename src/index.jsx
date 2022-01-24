@@ -25,6 +25,7 @@ import TeachersRemoveTeacherView from './pages/teachers-remove-teacher/teachers-
 import SettingsView from './pages/settings/settings';
 import SettingsChangePasswordView from './pages/settings-change-password/settings-change-password';
 import SettingsEditView from './pages/settings-edit/settings-edit';
+import AdminView from './pages/admin/admin';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -51,6 +52,7 @@ ReactDOM.render(
         <Route path="/settings" element={<SettingsView />} />
         <Route path="/settings/change-password" element={<SettingsChangePasswordView />} />
         <Route path="/settings/edit" element={<SettingsEditView />} />
+        <Route path="/admin" element={<AdminView />} />
       </Routes>
     </Router>
   </React.StrictMode>,
