@@ -2,18 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TableRow from '../TableRow/TableRow';
 import TableHead from '../TableHead/TableHead';
+import './Table.css';
 
 const Table = ({ theadData, tbodyData }) => {
   return (
-    <table>
-      <thead>
-        <tr>
+    <table className="table">
+      <thead className="table-head">
+        <tr className="table-head">
           {theadData.map(h => {
             return <TableHead key={h} item={h} />;
           })}
         </tr>
       </thead>
-      <tbody>
+      <tbody className="table-body">
+        {tbodyData.map(item => {
+          return <TableRow key={item.id} data={item.items} />;
+        })}
+        {tbodyData.map(item => {
+          return <TableRow key={item.id} data={item.items} />;
+        })}
+        {tbodyData.map(item => {
+          return <TableRow key={item.id} data={item.items} />;
+        })}
         {tbodyData.map(item => {
           return <TableRow key={item.id} data={item.items} />;
         })}

@@ -7,9 +7,8 @@ const SiteView = () => {
   const theadData = ['Name', 'Schools', 'Status'];
   const tbodyData = [
     {
-      name: 'Test Name',
-      school: 'Test School',
-      status: 'Active',
+      id: 1,
+      items: ['Test Name', 'Test School', 'Active'],
     },
   ];
   return (
