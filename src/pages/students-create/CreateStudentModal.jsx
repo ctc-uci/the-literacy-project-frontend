@@ -18,9 +18,11 @@ const CreateStudentModal = ({ isOpen, setIsOpen }) => {
   // const [schools, setSchools] = useState([]);
   const schools = ['School 1', 'School 2', 'School 3', 'School 4'];
   const [school, setSchool] = useState('No School');
-  const [email, setEmail] = useState('default@email.com');
+  // const [email, setEmail] = useState('default@email.com');
   const [firstName, setFirstName] = useState('Default First Name');
   const [lastName, setLastName] = useState('Default Last Name');
+  const ethnicities = ['Ethnicity 1', 'Ethnicity 2', 'Ethnicity 3', 'Ethnicity 4'];
+  const [ethnicity, setEthnicity] = useState('Ethnicity');
 
   return isOpen ? (
     <>
@@ -59,13 +61,14 @@ const CreateStudentModal = ({ isOpen, setIsOpen }) => {
             default_value={lastName}
             onChange={e => setLastName(e.target.value)}
           />
-          <div className="create-student-modal-field-desc">Email</div>
-          <input
-            className="modal-text-input"
-            type="text"
-            defaultValue={email}
-            onChange={e => setEmail(e.target.value)}
-          />
+          <div className="create-student-modal-field-desc">Ethnicity</div>
+          <DropdownMenu choices={ethnicities} current={ethnicity} setFn={setEthnicity} />
+          <div className="create-student-modal-field-desc">Assign Site</div>
+          <DropdownMenu choices={schools} current={school} setFn={setSchool} />
+          <div className="create-student-modal-field-desc">Assign Site</div>
+          <DropdownMenu choices={schools} current={school} setFn={setSchool} />
+          <div className="create-student-modal-field-desc">Assign Site</div>
+          <DropdownMenu choices={schools} current={school} setFn={setSchool} />
           <div className="create-student-modal-field-desc">Assign Site</div>
           <DropdownMenu choices={schools} current={school} setFn={setSchool} />
         </div>
