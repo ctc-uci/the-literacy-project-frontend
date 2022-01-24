@@ -22,7 +22,13 @@ const CreateStudentModal = ({ isOpen, setIsOpen }) => {
   const [firstName, setFirstName] = useState('Default First Name');
   const [lastName, setLastName] = useState('Default Last Name');
   const ethnicities = ['Ethnicity 1', 'Ethnicity 2', 'Ethnicity 3', 'Ethnicity 4'];
-  const [ethnicity, setEthnicity] = useState('Ethnicity');
+  const [ethnicity, setEthnicity] = useState('Default Ethnicity');
+  const studentGroups = ['Group 1', 'Group 2', 'Group 3', 'Group 4'];
+  const [studentGroup, setStudentGroup] = useState('Default Student Group');
+  const schoolYears = ['2021-22', '2020-21', '2019-20', '2018-19'];
+  const [schoolYear, setSchoolYear] = useState('Default School Year');
+  const cycles = ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
+  const [cycle, setCycle] = useState('Default Cycle');
 
   return isOpen ? (
     <>
@@ -65,12 +71,12 @@ const CreateStudentModal = ({ isOpen, setIsOpen }) => {
           <DropdownMenu choices={ethnicities} current={ethnicity} setFn={setEthnicity} />
           <div className="create-student-modal-field-desc">Assign Site</div>
           <DropdownMenu choices={schools} current={school} setFn={setSchool} />
-          <div className="create-student-modal-field-desc">Assign Site</div>
-          <DropdownMenu choices={schools} current={school} setFn={setSchool} />
-          <div className="create-student-modal-field-desc">Assign Site</div>
-          <DropdownMenu choices={schools} current={school} setFn={setSchool} />
-          <div className="create-student-modal-field-desc">Assign Site</div>
-          <DropdownMenu choices={schools} current={school} setFn={setSchool} />
+          <div className="create-student-modal-field-desc">Student Group</div>
+          <DropdownMenu choices={studentGroups} current={studentGroup} setFn={setStudentGroup} />
+          <div className="create-student-modal-field-desc">School Year</div>
+          <DropdownMenu choices={schoolYears} current={schoolYear} setFn={setSchoolYear} />
+          <div className="create-student-modal-field-desc">Cycle</div>
+          <DropdownMenu choices={cycles} current={cycle} setFn={setCycle} />
         </div>
         <div className="create-student-modal-bottom-bar">
           {/* create the save + add another / save buttons */}
