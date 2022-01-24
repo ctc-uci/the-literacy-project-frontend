@@ -83,6 +83,15 @@ const CreateStudentModal = ({ isOpen, setIsOpen }) => {
           {/* change save function later */}
           <button
             type="button"
+            className="create-delete-button"
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
+            Delete
+          </button>
+          <button
+            type="button"
             className="create-add-button"
             onClick={() => {
               setIsOpen(false);
