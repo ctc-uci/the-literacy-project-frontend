@@ -1,0 +1,87 @@
+.edit-student-modal {
+  background-color: #fdfdfd;
+  color: #000;
+  font-family: 'SF Compact', Helvetica, Arial, sans-serif;
+  font-size: 1.2em;
+  width: 50%;
+  height: 1000px;
+  border: 1.5px solid #ced4da;
+  border-radius: 10px;
+  position: absolute;
+  top: 10%;
+  left: 25%;
+}
+
+.edit-student-modal-top-bar {
+  padding: 15px 10px 15px 10px;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1.5px solid #ced4da;
+}
+
+.edit-student-modal-top-bar-title {
+  font-size: 20px;
+  font: Calibri;
+  text-align: center;
+}
+
+.edit-student-modal-body {
+  padding: 10px 15%;
+}
+
+.edit-student-modal-field-desc {
+  padding: 30px 10px 15px 10px;
+}
+
+.modal-text-input {
+  border: 1px solid #ced4da;
+  color: #767676;
+  border-radius: 10px;
+  text-align: center;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  line-height: 32px;
+  font-family: 'SF Compact', Helvetica, Arial, sans-serif;
+  font-size: 1em;
+}
+
+.edit-student-exit-button {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  background-color: #fdfdfd;
+  /* border: 1px dotted black; */
+  border: 0px;
+  font-weight: 800;
+}
+
+.edit-delete-button {
+  background-color: #E53E3E;
+  color: #fdfdfd;
+  width: 80px;
+  height: 36px;
+  border-radius: 4px;
+  size: 16px;
+  text-align: center;
+  border-width: 1px;
+  border-color: #fdfdfd;
+  padding: 6px, 12px, 6px, 12px;
+  position: absolute;
+  bottom: 20px;
+  right: 150px;
+}
+
+.edit-save-changes-button {
+  background-color: #3288c4;
+  color: #fdfdfd;
+  width: 96px;
+  height: 36px;
+  border-radius: 4px;
+  padding: 6px, 12px, 6px, 12px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border-width: 1px;
+  border-color: #fdfdfd;
+}
