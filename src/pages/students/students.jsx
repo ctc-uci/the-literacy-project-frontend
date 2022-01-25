@@ -1,6 +1,5 @@
 import './students.css';
 import React from 'react';
-import CreationPageTabs from '../../components/CreationPageTabs/CreationPageTabs';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 
 const StudentView = () => {
@@ -20,7 +19,6 @@ const StudentView = () => {
   ];
   return (
     <div>
-      <CreationPageTabs currentActiveTab="/students" />
       <ManagementDataSection sectionTitle="Students" theadData={theadData} tbodyData={tbodyData} />
     </div>
   );

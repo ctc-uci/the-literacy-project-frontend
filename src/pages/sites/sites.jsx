@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Dropdown, Button, DropdownButton } from 'react-bootstrap';
 import './sites.css';
-import CreationPageTabs from '../../components/CreationPageTabs/CreationPageTabs';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 
 const SiteView = () => {
@@ -25,7 +24,6 @@ const SiteView = () => {
 
   return (
     <div>
-      <CreationPageTabs />
       <div>
         <h1>School Year</h1>
         <DropdownButton drop="down" title={schoolYearDropdownTitle} variant="primary">

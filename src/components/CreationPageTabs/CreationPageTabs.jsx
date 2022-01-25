@@ -1,35 +1,30 @@
 import './CreationPageTabs.css';
 import React from 'react';
-import { Nav } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import { Tabs, Tab } from 'react-bootstrap';
+import SiteView from '../../pages/sites/sites';
+import AdminView from '../../pages/admin/admin';
+import TeacherView from '../../pages/teachers/teachers';
+import StudentView from '../../pages/students/students';
 
-const CreationPageTabs = ({ currentActiveTab }) => {
+const CreationPageTabs = () => {
   return (
     <div>
-      <Nav variant="tabs" defaultActiveKey={currentActiveTab}>
-        <Nav.Item>
-          <Nav.Link href="/sites">Sites</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link href="/admin">Admin</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link href="/teachers">Teachers</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link href="/students">Students</Nav.Link>
-        </Nav.Item>
-      </Nav>
+      <Tabs defaultActiveKey="sites">
+        <Tab eventKey="sites" title="Sites">
+          <SiteView />
+        </Tab>
+        <Tab eventKey="admin" title="Admin">
+          <AdminView />
+        </Tab>
+        <Tab eventKey="teachers" title="Teachers">
+          <TeacherView />
+        </Tab>
+        <Tab eventKey="students" title="Students">
+          <StudentView />
+        </Tab>
+      </Tabs>
     </div>
   );
-};
-
-CreationPageTabs.defaultProps = {
-  currentActiveTab: '/sites',
-};
-
-CreationPageTabs.propTypes = {
-  currentActiveTab: PropTypes.string,
 };
 
 export default CreationPageTabs;

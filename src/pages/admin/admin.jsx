@@ -1,6 +1,5 @@
 import React from 'react';
 import './admin.css';
-import CreationPageTabs from '../../components/CreationPageTabs/CreationPageTabs';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 
 const AdminView = () => {
@@ -21,7 +20,6 @@ const AdminView = () => {
   ];
   return (
     <div>
-      <CreationPageTabs currentActiveTab="/admin" />
       <ManagementDataSection sectionTitle="Admin" theadData={theadData} tbodyData={tbodyData} />
     </div>
   );
