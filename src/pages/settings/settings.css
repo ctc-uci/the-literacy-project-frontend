@@ -1,6 +1,47 @@
-h1.settings-view {
-  color: white;
-  background-color: #555555;
-  height: 500px;
-  width: 200px;
+.setting-view {
+  font-family: Calibri, sans-serif;
+  color: #003459;
+}
+
+.title {
+  font-size: 40px;
+  text-align: center;
+  margin: 20px;
+}
+
+.subtitle {
+  font-size: 32px;
+}
+
+.profile-pic {
+  text-align: center;
+  width: 140px;
+  height: 140px;
+  background: lightgray;
+  border-radius: 10px;
+}
+
+.label-heading {
+  font-size: 24px;
+}
+
+.transparent-input {
+  background-color: rgba(0, 0, 0, 0) !important;
+  border: none !important;
+  font-size: 18px;
+  margin-left: 20px;
+}
+
+.transparent-input:focus {
+  outline: none !important;
+}
+
+.logout {
+  font-family: SF Pro Display, Sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 34px;
+  text-align: center;
+  text-decoration-line: underline;
+  color: #E53E3E;
 }
