@@ -1,3 +1,114 @@
+.loginFormWrapper {
+  position: absolute;
+  left: 0%;
+  right: 0%;
+  top: 9.25%;
+  bottom: 0%;
+
+  width: 445px;
+  height: 461px;
+  margin: auto;
+
+  background: #1a4767;
+  border-radius: 20px;
+}
+
+h1 {
+  color: white;
+  font-family: 'Calibri';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 56px;
+  line-height: 67.2px;
+  text-align: center;
+  letter-spacing: -0.02em;
+
+  margin: 53px 0px 20px 0px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 0px 90px 0px 90px;
+}
+
+.emailInput,
+.passwordInput {
+  align-self: flex-start;
+}
+
+label {
+  color: white;
+  font-family: 'Calibri';
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+#email,
+#password {
+  background: #ffffff;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  border-radius: 4.8px;
+
+  margin-bottom: 5px;
+  width: 255px;
+  height: 36px;
+  left: 0px;
+  top: 32px;
+
+  font-family: 'Calibri';
+}
+
+form #eyeIcon {
+  position: absolute;
+  cursor: pointer;
+  color: #868e96 !important;
+
+  margin: 10px 0px 0px -25px;
+}
+
+.rememberMeBox {
+  align-self: flex-start;
+}
+
+#submitButton {
+  margin-top: 26px;
+  position: static;
+  width: 170.74px;
+  height: 46px;
+
+  border-radius: 4.8px;
+  border: none;
+
+  font-family: Calibri;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 30px;
+  color: #ffffff;
+
+  background: #3288c4;
+  border-radius: 4.8px;
+}
+
+a {
+  color: white !important;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 10px 0px 10px 0px;
+}
+
+/* ORIGINAL STYLING BEFORE WIREFRAME
+
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@700&display=swap');
 
 h1 {
@@ -58,4 +169,4 @@ form #eyeIcon {
 #submitButton {
   width: 173px;
   height: 47px;
-}
+} */

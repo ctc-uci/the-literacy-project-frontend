@@ -1,12 +1,9 @@
 import './login.css';
 import React from 'react';
+import LoginForm from '../../components/LoginForm/LoginForm';
 
 const LoginView = () => {
-  return (
-    <div>
-      <h1 className="login-view">Login View</h1>
-    </div>
-  );
+  return <LoginForm />;
 };
 
 export default LoginView;
