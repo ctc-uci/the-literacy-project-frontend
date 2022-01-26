@@ -17,12 +17,15 @@
   text-align: center;
   width: 140px;
   height: 140px;
+  margin-bottom: 40px;
   background: lightgray;
   border-radius: 10px;
 }
 
 .label-heading {
-  font-size: 24px;
+  font-size: 22px;
+  margin-top: 10px;
+  /* margin: 20px; */
 }
 
 .transparent-input {
@@ -36,6 +39,11 @@
   outline: none !important;
 }
 
+.status-btn {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
 .logout {
   font-family: SF Pro Display, Sans-serif;
   font-weight: bold;
@@ -43,5 +51,6 @@
   line-height: 34px;
   text-align: center;
   text-decoration-line: underline;
-  color: #E53E3E;
+  color: #e53e3e;
+  margin-top: 100px;
 }
