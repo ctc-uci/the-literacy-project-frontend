@@ -4,12 +4,18 @@ import './login-reset-password.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
 
+import RecoverPassword from '../../components/RecoverPassword/RecoverPassword';
+import RecoveryConfirmed from '../../components/RecoveryConfirmed/RecoveryConfirmed';
+
+// TEMPORARILY JUST SHOWS THE RECOVER PASSWORD EMAIL SUBMIT COMPONENT
+// AND UNDER IT IS THE RECOVERY CONFIRMED COMPONENT
+
+// TO BE ADDED: reset-password component with inputs, then connect the pieces to appear in order one at a time
 const LoginResetPasswordView = () => {
   return (
     <div>
-      {/* fluid container fills entire width and height */}
       <Container fluid className="vh-100">
-        {/* row contains 12 columns, fills entire height */}
+        {/* THIS ROW DISPLAYS RECOVER PASSWORD COMPONENT */}
         <Row
           className="h-100"
           style={{
@@ -18,29 +24,25 @@ const LoginResetPasswordView = () => {
             alignItems: 'center',
           }}
         >
-          {/* 4 Columns for right side with logo and images */}
           <Col sm={4}>
             <div>
-              {/* body of LoginForm */}
-              <div className="formWrapper">
-                <h1 className="title">
-                  {' '}
-                  Recover <br /> Password{' '}
-                </h1>
+              <RecoverPassword />
+            </div>
+          </Col>
+        </Row>
 
-                {/* email input and label */}
-                <form>
-                  <div className="emailInput">
-                    <label htmlFor="email">
-                      Enter your email and instructions will be sent to recover your password.
-                      <br />
-                      <input type="text" id="email" placeholder="Email Address" />
-                    </label>
-                  </div>
-                  {/* submit button */}
-                  <input id="submitButton" type="submit" value="Send Email" />
-                </form>
-              </div>
+        {/* THIS ROW DISPLAYS RECOVERY CONFIRMED COMPONENT */}
+        <Row
+          className="h-100"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Col sm={5}>
+            <div>
+              <RecoveryConfirmed />
             </div>
           </Col>
         </Row>

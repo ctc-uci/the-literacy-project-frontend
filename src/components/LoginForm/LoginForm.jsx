@@ -15,21 +15,18 @@ function LoginForm() {
     setRememberMe(!rememberMe);
   };
 
-  // tabs above form, sets user to admin/teacher and adjusts background
+  // tabs above login form, sets user to admin/teacher and adjusts background color
   const [loginColor, setLoginColor] = useState('#1A4767');
-  // const [userType, setUserType] = useState('Admin');
   const setUserAdmin = () => {
-    // setUserType('Admin');
     setLoginColor('#1A4767');
   };
   const setUserTeacher = () => {
-    // setUserType('Teacher');
     setLoginColor('#6A91BC');
   };
 
   return (
     <div>
-      {/* Admin/Teacher tabs above form */}
+      {/* Admin/Teacher tabs, above form */}
       <div className="userTabs">
         <button id="adminButton" type="button" onClick={setUserAdmin}>
           Admin
@@ -81,7 +78,7 @@ function LoginForm() {
         </form>
 
         <div className="links">
-          <a id="forgotPassword" href="/">
+          <a id="forgotPassword" href="login/reset-password">
             Forgot password?
           </a>
           <a id="noAccount" href="/">

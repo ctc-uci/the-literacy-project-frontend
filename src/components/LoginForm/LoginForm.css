@@ -1,3 +1,4 @@
+/* UNIVERSAL FONT SETTINGS */
 button,
 .title,
 label,
@@ -7,11 +8,11 @@ a {
   font-style: normal;
 }
 
+/* ADMIN/TEACHER USER TABS */
 .userTabs {
   display: flex;
   justify-content: center;
 }
-
 button {
   font-weight: normal;
   font-size: 20px;
@@ -19,23 +20,16 @@ button {
   border: none;
   padding: 8px 16px 8px 16px;
 }
-
 #adminButton {
   background: #1a4767;
   border-radius: 4px 0px 0px 4px;
 }
-.adminColor {
-  background: #1a4767;
-}
-
 #teacherButton {
   background: #6a91bc;
   border-radius: 0px 4px 4px 0px;
 }
-.teacherColor {
-  background: #6a91bc;
-}
 
+/* BODY */
 .formWrapper {
   border-radius: 20px;
 }
@@ -50,6 +44,7 @@ button {
   padding: 45px 0px 15px 0px;
 }
 
+/* CONTAINS INPUTS, LABELS, AND SUBMIT BUTTON */
 form {
   display: flex;
   flex-direction: column;
@@ -58,20 +53,18 @@ form {
   margin: auto;
 }
 
+/* LABELS AND INPUTS */
 .emailInput,
 .passwordInput,
 .rememberMeBox {
-  /* align-self: flex-start; */
   width: 60%;
 }
-
 label {
   font-weight: normal;
   font-size: 16px;
   line-height: 24px;
   width: 100%;
 }
-
 #email,
 #password {
   background: #ffffff;
@@ -84,7 +77,6 @@ label {
 
   font-family: 'Calibri';
 }
-
 form #eyeIcon {
   position: absolute;
   cursor: pointer;
@@ -93,14 +85,15 @@ form #eyeIcon {
   margin: 8px 0px 0px -25px;
 }
 
+/* CHECKBOX */
 .rememberMeBox {
   padding-bottom: 26px;
 }
-
 #rememberBox {
   margin: 0px 4px 0px 0px;
 }
 
+/* LOGIN BUTTON */
 #submitButton {
   padding: 8px 16px;
   margin-bottom: 7px;
@@ -120,12 +113,12 @@ form #eyeIcon {
   border-radius: 4.8px;
 }
 
+/* FORGOT PASSWORD AND NO ACCOUNT LINKS */
 a {
   font-weight: normal;
   font-size: 16px;
   line-height: 24px;
 }
-
 .links {
   display: flex;
   flex-direction: column;
