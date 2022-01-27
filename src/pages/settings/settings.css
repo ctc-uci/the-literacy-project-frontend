@@ -10,7 +10,8 @@
 }
 
 .subtitle {
-  font-size: 32px;
+  font-size: 28px;
+  margin-top: 30px;
 }
 
 .profile-pic {
@@ -24,7 +25,7 @@
 
 .label-heading {
   font-size: 22px;
-  margin-top: 10px;
+  margin-top: 15px;
   /* margin: 20px; */
 }
 
@@ -38,10 +39,18 @@
 .transparent-input:focus {
   outline: none !important;
 }
+.change-button{
+  margin-top: 25px;
+}
+
+.user-input {
+  margin-left: 30px;
+  margin-right: 20px;
+}
 
 .status-btn {
   margin-left: 20px;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .logout {

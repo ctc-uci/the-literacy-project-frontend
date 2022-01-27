@@ -1,6 +1,7 @@
 import './settings.css';
 import React from 'react';
 import { PropTypes } from 'prop-types';
+// import { Navigate } from 'react-router-dom';
 
 const TeacherView = ({ name, email, district, active }) => {
   let statusBtn = (
@@ -13,10 +14,9 @@ const TeacherView = ({ name, email, district, active }) => {
   }
 
   return (
-    // <p>{name}{email}{district}{active} </p>
-    <form className="container">
+    <form>
       <div className="row">
-        <label htmlFor="name" className="form-label col-md-4 offset-md-2 label-heading my-3">
+        <label htmlFor="name" className="form-label col-md-4 offset-md-2 label-heading">
           Name
           <input
             type="text"
@@ -26,7 +26,7 @@ const TeacherView = ({ name, email, district, active }) => {
             readOnly
           />
         </label>
-        <label htmlFor="district" className="form-label col-md-4 offset-md-1 label-heading my-3">
+        <label htmlFor="district" className="form-label col-md-4 offset-md-1 label-heading">
           District
           <input
             type="text"
@@ -38,7 +38,7 @@ const TeacherView = ({ name, email, district, active }) => {
         </label>
       </div>
       <div className="row ">
-        <label htmlFor="email" className="col-md-4 offset-md-2 label-heading my-3">
+        <label htmlFor="email" className="col-md-4 offset-md-2 label-heading">
           Email
           <div className="row">
             <input
@@ -48,12 +48,17 @@ const TeacherView = ({ name, email, district, active }) => {
               className="transparent-input col"
               readOnly
             />
-            <input type="button" value="Change Email" className="btn btn-warning btn-sm col-sm-3" />
+            <input
+              type="button"
+              value="Change Email"
+              className="btn btn-warning btn-sm col-sm-3"
+              // onClick={onSubmit}
+            />
           </div>
         </label>
-        <label htmlFor="status" className="col-md-4 offset-md-1 label-heading my-3">
+        <label htmlFor="status" className="col-md-4 offset-md-1 label-heading">
           Status
-          <div> {statusBtn} </div>
+          <div className="status-btn"> {statusBtn} </div>
         </label>
       </div>
     </form>

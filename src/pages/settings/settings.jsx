@@ -12,26 +12,26 @@ const SettingsView = () => {
   const password = '********';
   const district = 'Irvine';
   const active = true;
-  const isTeacher = false;
-
+  const isTeacher = true;
+  // TODO: buttons don't redirect
+  //       accessibility toggle
   return (
-    <div className="setting-view">
+    <div className="setting-view container">
       <h1 className="title">Settings</h1>
       <center>
         <div className="profile-pic">{/* Insert image of profile picture */}</div>
       </center>
-      <h3 className="offset-md-2 sub-title">Account Information</h3>
-      {/* {view}
-      {isTeacher && <h2> You have unread messages. </h2>} */}
+      <h3 className="offset-md-1 sub-title">Account Information</h3>
+
       {isTeacher ? (
         <TeacherView name={name} email={email} active={active} district={district} />
       ) : (
         <AdminView name={name} email={email} status={active} />
       )}
 
-      <h3 className="offset-md-2 mt-2 sub-title">Password</h3>
+      <h3 className="offset-md-1 subtitle">Password</h3>
       <form className="container">
-        <label htmlFor="password" className="offset-md-2 label-heading my-3">
+        <label htmlFor="password" className="offset-md-2">
           Current Password
           <input
             type="text"
@@ -44,6 +44,9 @@ const SettingsView = () => {
           <input type="button" value="Change Password" className="btn btn-warning btn-sm" />
         </label>
       </form>
+
+      {/* ACCESSIBILITY option */}
+
       <div className="logout">
         <p>log out</p>
       </div>
