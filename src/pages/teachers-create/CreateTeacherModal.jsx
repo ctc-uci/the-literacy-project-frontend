@@ -1,7 +1,6 @@
 import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import './CreateTeacherModal.css';
-
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 
 const CreateTeacherModal = ({ isOpen, setIsOpen }) => {

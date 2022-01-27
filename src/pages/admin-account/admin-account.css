@@ -1,25 +1,18 @@
-/* h1.teachers-edit-view {
+.admin-account-view {
   color: green;
   background-color: #555555;
   height: 500px;
-  width: 200px;
-} */
-
-.teachers-edit-view {
-  color: green;
-  background-color: #eeeeee;
-  height: 500px;
-  width: 200px;
+  width: 500px;
 }
 
-.create-teacher-button-container {
+.admin-account-button-container {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
 }
 
-.create-teacher-button {
+.admin-account-button {
   background-color: #3288c4;
   color: #fdfdfd;
   width: 90%;
@@ -33,7 +26,7 @@
   cursor: pointer;
 }
 
-.create-teacher-button:hover {
+.admin-account-button:hover {
   transition: 0.25s;
   background-color: #17a2b8;
 }

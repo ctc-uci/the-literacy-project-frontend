@@ -8,6 +8,7 @@ import App from './App';
 import SchoolView from './pages/schools/schools';
 import SchoolsCreateView from './pages/schools-create/schools-create';
 import SchoolsExportDataView from './pages/schools-export-data/schools-export-data';
+import AdminAccountView from './pages/admin-account/admin-account';
 import AssignStudentsView from './pages/assign-students/assign-students';
 import StudentView from './pages/students/students';
 import StudentsCreateView from './pages/students-create/students-create';
@@ -18,6 +19,7 @@ import LoginResetPasswordView from './pages/login-reset-password/login-reset-pas
 import LoginTeacherStartView from './pages/login-teacher-start/login-teacher-start';
 import DashboardView from './pages/dashboard/dashboard';
 import TeacherView from './pages/teachers/teachers';
+import TeachersConfirmation from './pages/teachers-confirm/teachers-confirm';
 import TeachersCreateView from './pages/teachers-create/teachers-create';
 import TeachersEditView from './pages/teachers-edit/teachers-edit';
 import TeachersExportDataView from './pages/teachers-export-data/teachers-export-data';
@@ -33,6 +35,7 @@ ReactDOM.render(
         <Route path="/" exact element={<App />} />
         <Route path="/schools" exact element={<SchoolView />} />
         <Route path="/schools/create" exact element={<SchoolsCreateView />} />
+        <Route path="/admin/account" exact element={<AdminAccountView />} />
         <Route path="/schools/assign-students" exact element={<AssignStudentsView />} />
         <Route path="/schools/export-data" exact element={<SchoolsExportDataView />} />
         <Route path="/students" exact element={<StudentView />} />
@@ -44,6 +47,7 @@ ReactDOM.render(
         <Route path="/login/teacher-start/:id" exact element={<LoginTeacherStartView />} />
         <Route path="/dashboard" exact element={<DashboardView />} />
         <Route path="/teachers" exact element={<TeacherView />} />
+        <Route path="/teachers/confirm" exact element={<TeachersConfirmation />} />
         <Route path="/teachers/create" exact element={<TeachersCreateView />} />
         <Route path="/teachers/edit" exact element={<TeachersEditView />} />
         <Route path="/teachers/export-data" exact element={<TeachersExportDataView />} />
