@@ -3,8 +3,9 @@
   color: #000;
   font-family: 'SF Compact', Helvetica, Arial, sans-serif;
   font-size: 1.2em;
-  width: 50%;
-  height: 1000px;
+  text-align: center;
+  width: 40%;
+  height: 230px;
   border: 1.5px solid #ced4da;
   border-radius: 10px;
   position: absolute;
@@ -40,7 +41,7 @@
 }
 
 .create-admin-confirmation-close-button {
-  background-color: #E53E3E;
+  background-color: #5F758D;
   color: #fdfdfd;
   width: 80px;
   height: 36px;
