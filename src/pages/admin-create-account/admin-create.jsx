@@ -1,6 +1,6 @@
 import './admin-create.css';
 import { React, useState } from 'react';
-import CreateAdminConfirmationModal from './CreateAdminConfirmationModal';
+import CreateAdminConfirmationModal from '../../components/CreateAdminConfirmationModal/CreateAdminConfirmationModal';
 
 const AdminCreateView = () => {
   const [modalIsOpen, setModalOpen] = useState(false);

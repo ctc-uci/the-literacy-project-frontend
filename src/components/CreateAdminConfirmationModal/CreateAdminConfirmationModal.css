@@ -38,6 +38,7 @@
   /* border: 1px dotted black; */
   border: 0px;
   font-weight: 800;
+  cursor: pointer;
 }
 
 .create-admin-confirmation-close-button {
@@ -54,6 +55,7 @@
   position: absolute;
   bottom: 20px;
   right: 150px;
+  cursor: pointer;
 }
 
 .create-admin-confirmation-send-another-button {
@@ -68,4 +70,5 @@
   right: 20px;
   border-width: 1px;
   border-color: #fdfdfd;
+  cursor: pointer;
 }

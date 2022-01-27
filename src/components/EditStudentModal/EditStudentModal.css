@@ -54,6 +54,7 @@
   /* border: 1px dotted black; */
   border: 0px;
   font-weight: 800;
+  cursor: pointer;
 }
 
 .edit-delete-button {
@@ -70,6 +71,7 @@
   position: absolute;
   bottom: 20px;
   right: 150px;
+  cursor: pointer;
 }
 
 .edit-save-changes-button {
@@ -84,4 +86,5 @@
   right: 20px;
   border-width: 1px;
   border-color: #fdfdfd;
+  cursor: pointer;
 }

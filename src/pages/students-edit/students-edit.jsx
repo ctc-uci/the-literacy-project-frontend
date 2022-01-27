@@ -1,6 +1,6 @@
 import './students-edit.css';
 import { React, useState } from 'react';
-import EditStudentModal from './EditStudentModal';
+import EditStudentModal from '../../components/EditStudentModal/EditStudentModal';
 
 const StudentsEditView = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
