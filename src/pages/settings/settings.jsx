@@ -1,7 +1,9 @@
 import './settings.css';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import TeacherView from './teacherView';
 import AdminView from './adminView';
+
 // import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 const SettingsView = () => {
@@ -30,20 +32,17 @@ const SettingsView = () => {
       )}
 
       <h3 className="offset-md-1 subtitle">Password</h3>
-      <form className="container">
-        <label htmlFor="password" className="offset-md-2">
-          Current Password
-          <input
-            type="text"
-            htmlFor="password"
-            id="password"
-            value={password}
-            className="transparent-input"
-            disabled
-          />
-          <input type="button" value="Change Password" className="btn btn-warning btn-sm" />
-        </label>
-      </form>
+      <div className="col-md-4 offset-md-2">
+        <div className="row">
+          <p className="col">Current Password</p>
+          <p className="user-data col-3">{password}</p>
+          <div className="col">
+            <Link to="/settings/edit">
+              <input type="button" value="Change Password" className="btn btn-warning btn-sm " />
+            </Link>
+          </div>
+        </div>
+      </div>
 
       {/* ACCESSIBILITY option */}
 

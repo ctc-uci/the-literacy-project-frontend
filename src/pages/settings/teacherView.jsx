@@ -1,67 +1,60 @@
 import './settings.css';
 import React from 'react';
 import { PropTypes } from 'prop-types';
-// import { Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const TeacherView = ({ name, email, district, active }) => {
   let statusBtn = (
-    <input type="button" value="Active" id="status" className="btn btn-success btn-sm" disabled />
+    <input
+      type="button"
+      value="Active"
+      id="status"
+      className="btn btn-success btn-sm status-btn"
+      disabled
+    />
   );
   if (!active) {
     statusBtn = (
-      <input type="button" value="Inactive" className="btn btn-secondary btn-sm" disabled />
+      <input
+        type="button"
+        value="Inactive"
+        className="btn btn-secondary btn-sm status-btn"
+        disabled
+      />
     );
   }
 
   return (
-    <form>
+    <div>
       <div className="row">
-        <label htmlFor="name" className="form-label col-md-4 offset-md-2 label-heading">
-          Name
-          <input
-            type="text"
-            id="name"
-            value={name}
-            className="form-control-plaintext transparent-input"
-            readOnly
-          />
-        </label>
-        <label htmlFor="district" className="form-label col-md-4 offset-md-1 label-heading">
-          District
-          <input
-            type="text"
-            value={district}
-            id="district"
-            className="form-control-plaintext transparent-input"
-            readOnly
-          />
-        </label>
+        <div className="col-md-4 offset-md-2">
+          <h5 className="label-heading">Name</h5>
+          <p className="user-data">{name}</p>
+        </div>
+        <div className="col-md-4 offset-md-1">
+          <h5 className="label-heading">District</h5>
+          <p className="user-data">{district}</p>
+        </div>
       </div>
+
       <div className="row ">
-        <label htmlFor="email" className="col-md-4 offset-md-2 label-heading">
-          Email
+        <div className="col-md-4 offset-md-2">
+          <h5 className="label-heading">Email</h5>
           <div className="row">
-            <input
-              type="text"
-              id="email"
-              value={email}
-              className="transparent-input col"
-              readOnly
-            />
-            <input
-              type="button"
-              value="Change Email"
-              className="btn btn-warning btn-sm col-sm-3"
-              // onClick={onSubmit}
-            />
+            <p className="user-data col">{email}</p>
+            <div className="col-sm-3">
+              <Link to="/settings/edit">
+                <input type="button" value="Change Email" className="btn btn-warning btn-sm" />
+              </Link>
+            </div>
           </div>
-        </label>
-        <label htmlFor="status" className="col-md-4 offset-md-1 label-heading">
-          Status
-          <div className="status-btn"> {statusBtn} </div>
-        </label>
+        </div>
+        <div className="col-md-4 offset-md-1">
+          <h5 className="label-heading">Status</h5>
+          {statusBtn}
+        </div>
       </div>
-    </form>
+    </div>
   );
 };
 

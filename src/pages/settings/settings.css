@@ -3,6 +3,11 @@
   color: #003459;
 }
 
+.row {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .title {
   font-size: 40px;
   text-align: center;
@@ -11,7 +16,7 @@
 
 .subtitle {
   font-size: 28px;
-  margin-top: 30px;
+  /* margin-top: 30px; */
 }
 
 .profile-pic {
@@ -26,31 +31,17 @@
 .label-heading {
   font-size: 22px;
   margin-top: 15px;
-  /* margin: 20px; */
 }
 
-.transparent-input {
-  background-color: rgba(0, 0, 0, 0) !important;
-  border: none !important;
+.user-data {
   font-size: 18px;
-  margin-left: 20px;
+  margin-left: 25px;
+  color: #212529;
 }
 
-.transparent-input:focus {
-  outline: none !important;
-}
-.change-button{
-  margin-top: 25px;
-}
-
-.user-input {
-  margin-left: 30px;
-  margin-right: 20px;
-}
 
 .status-btn {
   margin-left: 20px;
-  /* margin-top: 10px; */
 }
 
 .logout {
