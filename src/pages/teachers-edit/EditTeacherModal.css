@@ -1,52 +1,68 @@
-.create-teacher-modal {
+.edit-teacher-modal {
   background-color: #fdfdfd;
   color: #000;
   font-family: 'SF Compact', Helvetica, Arial, sans-serif;
-  font-size: 1.2em;
-  width: 50%;
-  height: 600px;
+  font-size: 20px;
+  line-height: 24px;
+  width: 500px;
+  height: 750px;
   border: 1.5px solid #ced4da;
-  border-radius: 10px;
   position: absolute;
-  top: 25%;
-  left: 25%;
+  top: 0%;
+  left: 40%;
 }
 
-.create-teacher-modal-top-bar {
+.edit-teacher-modal-top-bar {
   padding: 15px 10px 15px 10px;
   display: flex;
   justify-content: center;
   border-bottom: 1.5px solid #ced4da;
 }
 
-.create-teacher-modal-top-bar-title {
+.edit-teacher-modal-top-bar-title {
   font-size: 20px;
   font: Calibri;
   text-align: center;
+  line-height: normal;
 }
 
-.create-teacher-modal-body {
+.edit-teacher-modal-body {
   padding: 10px 15%;
+  font-size: 16px;
+  line-height: 24px;
 }
 
-.create-teacher-modal-field-desc {
+.edit-teacher-modal-field-desc {
   padding: 30px 10px 15px 10px;
+  margin-left: 15%;
 }
 
-.modal-text-input {
+.modal-input {
   border: 1px solid #ced4da;
   color: #767676;
   border-radius: 10px;
-  text-align: center;
-  width: 100%;
-  border-radius: 10px;
-  border: 1px solid #ced4da;
-  line-height: 32px;
+  text-align: left;
+  align-items: center;
+  justify-content: center;
+  width: 255px;
+  height: 29px;
+  top: 32px;
+  border-radius: 4px;
   font-family: 'SF Compact', Helvetica, Arial, sans-serif;
   font-size: 1em;
+  margin-left: 15%;
 }
 
-.create-teacher-exit-button {
+.drop-text {
+  width: 255px;
+  height: 29px;
+  top: 32px;
+  background: #ffff;
+  margin-left: 15%;
+  align-items: center;
+}
+
+.edit-teacher-exit-button {
   position: absolute;
   top: 15px;
   right: 10px;
@@ -56,32 +72,32 @@
   font-weight: 800;
 }
 
-.create-send-button {
-  background-color: #17a2b8;
+.edit-send-button {
+  background-color: #e53e3e;
   color: #fdfdfd;
-  width: 188px;
+  width: 67px;
   height: 36px;
   border-radius: 4px;
-  size: 16px;
+  line-height: 24px;
   text-align: center;
   border-width: 1px;
   border-color: #fdfdfd;
-  padding: 6px, 12px, 6px, 12px;
+  padding: 6px, 12px;
   position: absolute;
-  bottom: 20px;
+  bottom: 10px;
   right: 130px;
 }
 
-.create-save-button {
+.edit-save-button {
   background-color: #3288c4;
   color: #fdfdfd;
-  width: 96px;
+  width: 113px;
   height: 36px;
   border-radius: 4px;
   padding: 6px, 12px, 6px, 12px;
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: 10px;
+  right: 10px;
   border-width: 1px;
   border-color: #fdfdfd;
 }

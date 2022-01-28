@@ -1,0 +1,61 @@
+.admin-system {
+  background-color: #fdfdfd;
+  color: #000;
+  font-family: 'SF Compact', Helvetica, Arial, sans-serif;
+  font-size: 1.2em;
+  width: 500px;
+  height: 227px;
+  border: 1.5px solid #ced4da;
+  position: absolute;
+  top: 25%;
+  left: 25%;
+}
+
+.admin-title {
+  text-align: center;
+  padding: 20px 20px 20px 30px;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1.5px solid #ced4da;
+}
+
+.admin-email {
+  width: 255px;
+  margin-left: 120px;
+  margin-top: 30px;
+}
+
+.email-input {
+  width: 255px;
+  height: 29px;
+  border: 1px solid #ced4da;
+  margin-left: 120px;
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+.admin-save-button {
+  background: #17a2b8;
+  width: 186px;
+  height: 36px;
+  border-radius: 4px;
+  color: #fdfdfd;
+  padding: 6px 12px;
+  border-color: #fdfdfd;
+  margin-left: 40%;
+  margin-top: 3%;
+  text-align: center;
+}
+
+.admin-send-email {
+  background: #3288c4;
+  color: #fdfdfd;
+  text-align: center;
+  border-radius: 4px;
+  border-color: #fdfdfd;
+  left: 20px;
+  bottom: 20px;
+  padding: 6px 12px;
+  height: 36px;
+  width: 114px;
+}
