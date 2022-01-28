@@ -6,6 +6,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 import LoginForm from '../../components/LoginForm/LoginForm';
 
+import Logo from './tlp.png';
+
 const LoginView = () => {
   return (
     <div>
@@ -28,7 +30,15 @@ const LoginView = () => {
 
           {/* 4 Columns for logo and images on right */}
           <Col sm={4} className="logoSide">
-            LOGO AND IMAGES GO HERE
+            <img
+              id="logo1"
+              src={Logo}
+              width="454px"
+              height="342px"
+              className="d-inline-block img-fluid shadow-4"
+              alt=""
+              top="100px"
+            />
           </Col>
         </Row>
       </Container>

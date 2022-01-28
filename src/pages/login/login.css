@@ -1,4 +1,12 @@
 .logoSide {
+  position: relative;
   height: 100%;
-  background-color: grey;
+  background-color: #E9ECEF;
+}
+#logo1 {
+  position:absolute;
+  left: 0%;
+  right: 0%;
+  top: 25%;
+  bottom: 0%;
 }
