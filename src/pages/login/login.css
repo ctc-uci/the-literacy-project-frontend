@@ -1,12 +1,16 @@
 .logoSide {
   position: relative;
   height: 100%;
-  background-color: #e9ecef;
+  /* background-color: #e9ecef; */
+  background-image: url(./right-background.png) !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 #logo1 {
-  position: absolute;
-  left: 0%;
-  right: 0%;
-  top: 25%;
-  bottom: 0%;
+  width: 70%;
 }
