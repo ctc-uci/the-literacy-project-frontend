@@ -1,18 +1,18 @@
-.students-edit-view {
+.admin-create-view {
   color: green;
   background-color: #eeeeee;
   height: 500px;
   width: 500px;
 }
 
-.edit-student-button-container {
+.create-admin-button-container {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
 }
 
-.edit-student-button {
+.create-admin-button {
   background-color: #3288c4;
   color: #fdfdfd;
   width: 90%;
@@ -26,7 +26,7 @@
   cursor: pointer;
 }
 
-.edit-student-button:hover {
+.create-admin-button:hover {
   transition: 0.25s;
   background-color: #17a2b8;
 }

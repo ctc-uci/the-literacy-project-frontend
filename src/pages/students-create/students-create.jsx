@@ -1,11 +1,34 @@
 import './students-create.css';
-import React from 'react';
+import { React, useState } from 'react';
+import CreateStudentModal from '../../components/CreateStudentModal/CreateStudentModal';
 
 const StudentsCreateView = () => {
+  const [modalIsOpen, setModalOpen] = useState(false);
+  // console.log('modalIsOpen is');
+  // console.log(modalIsOpen);
+  // console.log('SetModalOpen is');
+  // console.log(setModalOpen);
+
   return (
-    <div>
-      <h1 className="students-create-view">Students Create View</h1>
-    </div>
+    <>
+      <div className="students-create-view">
+        <div className="create-student-button-container">
+          <button
+            className="create-student-button"
+            type="button"
+            onClick={() => {
+              setModalOpen(true);
+            }}
+          >
+            Add Student
+          </button>
+        </div>
+        <div>
+          <CreateStudentModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
+          {/* <div>This is the student create view</div> */}
+        </div>
+      </div>
+    </>
   );
 };
 

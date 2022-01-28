@@ -1,0 +1,74 @@
+.create-admin-confirmation-modal {
+  background-color: #fdfdfd;
+  color: #000;
+  font-family: 'SF Compact', Helvetica, Arial, sans-serif;
+  font-size: 1.2em;
+  text-align: center;
+  width: 40%;
+  height: 230px;
+  border: 1.5px solid #ced4da;
+  border-radius: 10px;
+  position: absolute;
+  top: 10%;
+  left: 25%;
+}
+
+.create-admin-confirmation-modal-top-bar {
+  padding: 15px 10px 15px 10px;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1.5px solid #ced4da;
+}
+
+.create-admin-confirmation-modal-top-bar-title {
+  font-size: 20px;
+  font: Calibri;
+  text-align: center;
+}
+
+.create-admin-confirmation-modal-body {
+  padding: 10px 15%;
+}
+
+.create-admin-confirmation-exit-button {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  background-color: #fdfdfd;
+  /* border: 1px dotted black; */
+  border: 0px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.create-admin-confirmation-close-button {
+  background-color: #5f758d;
+  color: #fdfdfd;
+  width: 80px;
+  height: 36px;
+  border-radius: 4px;
+  size: 16px;
+  text-align: center;
+  border-width: 1px;
+  border-color: #fdfdfd;
+  padding: 6px, 12px, 6px, 12px;
+  position: absolute;
+  bottom: 20px;
+  right: 150px;
+  cursor: pointer;
+}
+
+.create-admin-confirmation-send-another-button {
+  background-color: #3288c4;
+  color: #fdfdfd;
+  width: 96px;
+  height: 36px;
+  border-radius: 4px;
+  padding: 6px, 12px, 6px, 12px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border-width: 1px;
+  border-color: #fdfdfd;
+  cursor: pointer;
+}
