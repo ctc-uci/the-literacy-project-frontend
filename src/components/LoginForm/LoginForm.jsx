@@ -31,7 +31,7 @@ function LoginForm() {
   };
 
   return (
-    <div>
+    <div className="loginFormWrapper">
       {/* Admin/Teacher tabs, above form */}
       <div className="userTabs">
         <button id="adminButton" type="button" onClick={setUserAdmin}>
