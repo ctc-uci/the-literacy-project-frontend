@@ -1,6 +1,6 @@
 import './teachers-confirm.css';
 import { React, useState } from 'react';
-import ConfirmTeacherModal from './ConfirmTeacherModal';
+import ConfirmTeacherModal from '../../components/ConfirmTeacherModal/ConfirmTeacherModal';
 
 const TeachersConfirmation = () => {
   const [modalIsOpen, setModelOpen] = useState(false);

@@ -1,6 +1,6 @@
 import './admin-account.css';
 import { React, useState } from 'react';
-import AdminAccountMode from './AdminAccountModal';
+import AdminAccountModal from '../../components/CreateAdminModal/AdminAccountModal';
 
 const AdminAccountView = () => {
   const [modalIsOpen, setModelOpen] = useState(false);
@@ -17,7 +17,7 @@ const AdminAccountView = () => {
           confirm
         </button>
       </div>
-      <AdminAccountMode isOpen={modalIsOpen} setIsOpen={setModelOpen} />
+      <AdminAccountModal isOpen={modalIsOpen} setIsOpen={setModelOpen} />
     </div>
   );
 };

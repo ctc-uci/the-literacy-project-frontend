@@ -1,6 +1,6 @@
 import './teachers-edit.css';
 import { React, useState } from 'react';
-import EditTeacherModal from './EditTeacherModal';
+import EditTeacherModal from '../../components/EditTeacherModal/EditTeacherModal';
 
 const TeachersEditView = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
