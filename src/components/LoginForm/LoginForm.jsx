@@ -17,11 +17,17 @@ function LoginForm() {
 
   // tabs above login form, sets user to admin/teacher and adjusts background color
   const [loginColor, setLoginColor] = useState('#1A4767');
+  const [loginButtonColor, setLoginButtonColor] = useState('#BBCBE2');
+  const [loginButtonFontColor, setLoginButtonFontColor] = useState('#212529');
   const setUserAdmin = () => {
     setLoginColor('#1A4767');
+    setLoginButtonColor('#BBCBE2');
+    setLoginButtonFontColor('#212529');
   };
   const setUserTeacher = () => {
     setLoginColor('#6A91BC');
+    setLoginButtonColor('#003459');
+    setLoginButtonFontColor('#FFFFFF');
   };
 
   return (
@@ -74,7 +80,12 @@ function LoginForm() {
             </label>
           </div>
 
-          <input id="submitButton" type="submit" value="Login" />
+          <input
+            id="submitButton"
+            type="submit"
+            value="Login"
+            style={{ backgroundColor: loginButtonColor, color: loginButtonFontColor }}
+          />
         </form>
 
         <div className="links">
