@@ -3,7 +3,21 @@ import './admin.css';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 
 const AdminView = () => {
-  const theadData = ['Name', 'Email', 'Status'];
+  const theadData = [
+    {
+      headerTitle: 'Name',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'Email',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'Status',
+      headerPopover:
+        "<p><strong style='color:#28a745'>Active:</strong> This user is active in the current cycle. They have full access and can log in.</p> <p><strong style='color:#5f758d'>Inactive:</strong> This user is inactive in the current cycle. They cannot log in until an admin user reactivates their account.</p> <p><strong style='color:#17a2b8'>Email Sent:</strong> An email sign up link was sent. They have not set up their account yet.",
+    },
+  ];
   const tbodyData = [
     {
       id: 1,

@@ -1,16 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import InformationPopover from '../Popover/InformationPopover';
 
 const TableHead = ({ item }) => {
-  return <td title={item}>{item}</td>;
+  const renderPopover = headerPopover => {
+    if (headerPopover) return <InformationPopover bodyText={headerPopover} />;
+    return null;
+  };
+
+  return (
+    <td title={item.headerTitle} style={{ height: '20px' }}>
+      {item.headerTitle} {renderPopover(item.headerPopover)}
+    </td>
+  );
 };
 
 TableHead.defaultProps = {
-  item: [],
+  item: {},
 };
 
 TableHead.propTypes = {
-  item: PropTypes.arrayOf(),
+  item: PropTypes.shape({
+    headerTitle: PropTypes.string,
+    headerPopover: PropTypes.string,
+  }),
 };
 
 export default TableHead;

@@ -29,8 +29,13 @@ Table.defaultProps = {
 };
 
 Table.propTypes = {
-  theadData: PropTypes.arrayOf(PropTypes.string),
-  tbodyData: PropTypes.arrayOf(PropTypes.string),
+  theadData: PropTypes.arrayOf(
+    PropTypes.shape({
+      headerTitle: PropTypes.string,
+      headerPopover: PropTypes.string,
+    }),
+  ),
+  tbodyData: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default Table;

@@ -7,7 +7,21 @@ const SiteView = () => {
   const [areaDropdownTitle, setAreaDropdownTitle] = useState('Bellevue SD');
   const [schoolYearDropdownTitle, setSchoolYearDropdownTitle] = useState('Cycle 1');
 
-  const theadData = ['Name', 'Schools', 'Status'];
+  const theadData = [
+    {
+      headerTitle: 'Name',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'Schools',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'Status',
+      headerPopover:
+        "<p><strong style='color:#28a745'>Active:</strong> This user is active in the current cycle. They have full access and can log in.</p> <p><strong style='color:#5f758d'>Inactive:</strong> This user is inactive in the current cycle. They cannot log in until an admin user reactivates their account.</p> <p><strong style='color:#17a2b8'>Email Sent:</strong> An email sign up link was sent. They have not set up their account yet.",
+    },
+  ];
   const tbodyData = [
     {
       id: 1,
@@ -76,6 +90,8 @@ const SiteView = () => {
             sectionTitle="Master Teacher"
             theadData={theadData}
             tbodyData={tbodyData}
+            hasHeader
+            headerText="<strong>How do I create a teacher account?</strong> To create a teacher account, please go to the Teachers tab above."
           />
           <ManagementDataSection sectionTitle="Sites" theadData={theadData} tbodyData={tbodyData} />
         </div>

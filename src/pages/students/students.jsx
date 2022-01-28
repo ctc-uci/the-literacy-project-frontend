@@ -3,7 +3,32 @@ import React from 'react';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 
 const StudentView = () => {
-  const theadData = ['Name', 'Teacher', 'School', 'District', 'Cycle', 'Scores'];
+  const theadData = [
+    {
+      headerTitle: 'Name',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'Teacher',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'School',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'District',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'Cycle',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'Scores',
+      headerPopover: '',
+    },
+  ];
   const tbodyData = [
     {
       id: 1,
