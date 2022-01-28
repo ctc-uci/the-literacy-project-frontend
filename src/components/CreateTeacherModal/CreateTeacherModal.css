@@ -3,13 +3,13 @@
   color: #000;
   font-family: 'SF Compact', Helvetica, Arial, sans-serif;
   font-size: 1.2em;
-  width: 50%;
-  height: 600px;
+  width: 40%;
+  height: 500px;
   border: 1.5px solid #ced4da;
   border-radius: 10px;
   position: absolute;
   top: 25%;
-  left: 25%;
+  left: 30%;
 }
 
 .create-teacher-modal-top-bar {
@@ -65,8 +65,7 @@
   border-radius: 4px;
   size: 16px;
   text-align: center;
-  border-width: 1px;
-  border-color: #fdfdfd;
+  border: 0px;
   padding: 6px, 12px, 6px, 12px;
   position: absolute;
   bottom: 20px;
@@ -84,7 +83,6 @@
   position: absolute;
   bottom: 20px;
   right: 20px;
-  border-width: 1px;
-  border-color: #fdfdfd;
+  border: 0px;
   cursor: pointer;
 }
