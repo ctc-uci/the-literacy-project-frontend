@@ -23,11 +23,11 @@ const SiteView = () => {
   };
 
   return (
-    <div className="site-view">
+    <div className="site-container">
       <div>
         <div className="school-year-info">
           <h1>School Year</h1>
-          <input list="school-year" />
+          <input type="text" list="school-year" className="school-year-input" />
           <datalist id="school-year">
             <option value="2021-2022" aria-label="2021-2022" />
             <option value="2020-2021" aria-label="2020-2021" />
@@ -36,16 +36,16 @@ const SiteView = () => {
           <h2>Cycle</h2>
           <DropdownButton drop="down" title={schoolYearDropdownTitle} variant="primary">
             <Dropdown.Item eventKey="1" onClick={e => changeSchoolYearTitle(e)}>
-              Cycle 2
+              Cycle 1
             </Dropdown.Item>
             <Dropdown.Item eventKey="2" onClick={e => changeSchoolYearTitle(e)}>
-              Cycle 3
+              Cycle 2
             </Dropdown.Item>
             <Dropdown.Item eventKey="3" onClick={e => changeSchoolYearTitle(e)}>
-              Cycle 4
+              Cycle 3
             </Dropdown.Item>
             <Dropdown.Item eventKey="4" onClick={e => changeSchoolYearTitle(e)}>
-              Cycle 5
+              Cycle 4
             </Dropdown.Item>
           </DropdownButton>
           <div className="search-school">

@@ -19,7 +19,7 @@ const AdminView = () => {
     },
   ];
   return (
-    <div>
+    <div className="admin-container">
       <ManagementDataSection sectionTitle="Admin" theadData={theadData} tbodyData={tbodyData} />
     </div>
   );

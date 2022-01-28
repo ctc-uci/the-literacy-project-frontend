@@ -18,7 +18,7 @@ const StudentView = () => {
     },
   ];
   return (
-    <div>
+    <div className="student-container">
       <ManagementDataSection sectionTitle="Students" theadData={theadData} tbodyData={tbodyData} />
     </div>
   );

@@ -11,7 +11,7 @@ const TeacherView = () => {
     },
   ];
   return (
-    <div>
+    <div className="teacher-container">
       <ManagementDataSection sectionTitle="Teachers" theadData={theadData} tbodyData={tbodyData} />
     </div>
   );
