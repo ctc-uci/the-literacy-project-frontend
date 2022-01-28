@@ -1,6 +1,6 @@
 import './teachers-create.css';
 import { React, useState } from 'react';
-import CreateTeacherModal from './CreateTeacherModal';
+import CreateTeacherModal from '../../components/CreateTeacherModal/CreateTeacherModal';
 
 const TeachersCreateView = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
