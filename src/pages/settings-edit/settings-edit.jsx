@@ -1,6 +1,6 @@
 import './settings-edit.css';
-import React from 'react';
-// import { BsEyeSlashFill } from 'react-icons/bs';
+import React, { useState } from 'react';
+import { FaEye } from 'react-icons/fa';
 
 const SettingsEditView = () => {
   const name = 'LastName FirstName';
@@ -27,6 +27,39 @@ const SettingsEditView = () => {
       />
     );
   }
+
+  // eye icon in password input, toggles hiding password
+  const [oldPasswordShown, setOldPasswordShown] = useState(false);
+  const showOldPasswod = () => {
+    setOldPasswordShown(!oldPasswordShown);
+  };
+  const [newPasswordShown, setNewPasswordShown] = useState(false);
+  const showNewPasswod = () => {
+    setNewPasswordShown(!newPasswordShown);
+  };
+  const [renewPasswordShown, setRenewPasswordShown] = useState(false);
+  const showRenewPasswod = () => {
+    setRenewPasswordShown(!renewPasswordShown);
+  };
+
+  // can't commit, there is ESLINT error b/c of the ... on line 54
+  // checks if new passwords match
+  // const [passwordValues, setPasswordValues] = useState({
+  //   newPassword: '',
+  //   renewPassword: '',
+  //   passwordsMatch: true,
+  // });
+  // const handlePasswordChange = event => {
+  //   const { id, value } = event.target;
+  //   setPasswordValues({ ...passwordValues, [id]: value });
+
+  //   if (passwordValues.newPassword !== passwordValues.renewPassword) {
+  //     passwordValues.passwordsMatch = false;
+  //   } else {
+  //     passwordValues.passwordsMatch = true;
+  //   }
+  // };
+
   // still need to implement an admin vs teacher view
   // const isTeacher = false;
 
@@ -79,12 +112,25 @@ const SettingsEditView = () => {
         <div className="row">
           <label htmlFor="oldPassword" className="col-md-3 offset-md-2 pwdLabel">
             Current Password
-            <input type="text" htmlFor="oldPassword" id="oldPassword" className="form-control" />
+            <input
+              type={oldPasswordShown ? 'text' : 'password'}
+              htmlFor="oldPassword"
+              id="oldPassword"
+              className="form-control"
+            />
+            <FaEye className="eyeIcon" color="black" onClick={showOldPasswod} />
             <small className="form-text text-muted"> Forgot Password? </small>
           </label>
           <label htmlFor="newPassword" className="col-md-3 pwdLabel">
             New Pasword
-            <input type="text" htmlFor="newPassword" id="newPassword" className="form-control" />
+            <input
+              type={newPasswordShown ? 'text' : 'password'}
+              htmlFor="newPassword"
+              id="newPassword"
+              className="form-control"
+              // onChange={handlePasswordChange}
+            />
+            <FaEye className="eyeIcon" color="black" onClick={showNewPasswod} />
             <small className="form-text text-danger"> Please enter valid password </small>
           </label>
           <div className="col">
@@ -99,12 +145,17 @@ const SettingsEditView = () => {
           <label htmlFor="renewPassword" className="col-md-3 offset-md-5 pwdLabel">
             Re-Enter New Password
             <input
-              type="text"
+              type={renewPasswordShown ? 'text' : 'password'}
               htmlFor="renewPassword"
               id="renewPassword"
               className="form-control"
+              // onChange={handlePasswordChange}
             />
-            <small className="form-text text-danger"> Both passwords must match </small>
+            <FaEye className="eyeIcon" color="black" onClick={showRenewPasswod} />
+            <small className="form-text text-danger">
+              Both passwords must match
+              {/* {!passwordValues.passwordsMatch ? 'Both passwords must match' : ''} */}
+            </small>
           </label>
         </div>
       </form>

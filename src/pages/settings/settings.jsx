@@ -15,8 +15,7 @@ const SettingsView = () => {
   const district = 'Irvine';
   const active = true;
   const isTeacher = true;
-  // TODO: buttons don't redirect
-  //       accessibility toggle
+  // TODO: accessibility toggle
   return (
     <div className="setting-view container">
       <h1 className="title">Settings</h1>
