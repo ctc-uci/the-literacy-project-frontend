@@ -17,7 +17,7 @@ function NavigationBar() {
               Home
             </Nav.Link>
             <Nav.Link href="/dashboard" style={{ color: '#6A91BC' }}>
-              Link
+              Area Management
             </Nav.Link>
             <Nav.Link href="/settings" style={{ color: '#6A91BC' }}>
               Settings
