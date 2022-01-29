@@ -1,35 +1,33 @@
-.edit-teacher-modal {
+.create-admin-modal {
   background-color: #fdfdfd;
   color: #000;
   font-family: 'SF Compact', Helvetica, Arial, sans-serif;
   font-size: 1.2em;
-  width: 40%;
-  height: 800px;
+  width: 30%;
+  height: 250px;
   border: 1.5px solid #ced4da;
   border-radius: 10px;
   position: absolute;
-  top: 15%;
-  left: 30%;
+  top: 25%;
+  left: 35%;
 }
 
-.edit-teacher-modal-top-bar {
+.create-admin-modal-top-bar {
   padding: 15px 10px 15px 10px;
   display: flex;
   justify-content: center;
   border-bottom: 1.5px solid #ced4da;
 }
 
-.edit-teacher-modal-top-bar-title {
-  font-size: 20px;
-  font: Calibri;
+.create-admin-modal-top-bar-title {
   text-align: center;
 }
 
-.edit-teacher-modal-body {
+.create-admin-modal-body {
   padding: 10px 15%;
 }
 
-.edit-teacher-modal-field-desc {
+.create-admin-modal-field-desc {
   padding: 20px 10px 15px 10px;
 }
 
@@ -37,10 +35,8 @@
   border: 1px solid #ced4da;
   color: #767676;
   border-radius: 10px;
-  margin-bottom: 10px;
-  text-align: left;
-  padding-left: 2%;
-  width: 98%;
+  text-align: center;
+  width: 100%;
   border-radius: 10px;
   border: 1px solid #ced4da;
   line-height: 32px;
@@ -48,10 +44,10 @@
   font-size: 1em;
 }
 
-.edit-teacher-modal-exit-button {
+.create-admin-modal-exit-button {
   position: absolute;
   top: 8px;
-  right: 8px;
+  right: 5px;
   background-color: #fdfdfd;
   /* border: 1px dotted black; */
   border: 0px;
@@ -59,10 +55,10 @@
   cursor: pointer;
 }
 
-.edit-teacher-modal-delete-button {
-  background-color: #e53e3e;
+.create-admin-modal-send-another-button {
+  background-color: #17a2b8;
   color: #fdfdfd;
-  width: 96px;
+  width: 188px;
   height: 36px;
   border-radius: 4px;
   size: 16px;
@@ -71,14 +67,14 @@
   padding: 6px, 12px, 6px, 12px;
   position: absolute;
   bottom: 20px;
-  right: 156px;
+  right: 130px;
   cursor: pointer;
 }
 
-.edit-teacher-modal-save-button {
+.create-admin-modal-save-button {
   background-color: #3288c4;
   color: #fdfdfd;
-  width: 120px;
+  width: 96px;
   height: 36px;
   border-radius: 4px;
   padding: 6px, 12px, 6px, 12px;

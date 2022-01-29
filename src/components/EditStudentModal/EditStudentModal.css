@@ -57,7 +57,7 @@
   cursor: pointer;
 }
 
-.edit-delete-button {
+.edit-student-modal-delete-button {
   background-color: #e53e3e;
   color: #fdfdfd;
   width: 80px;
@@ -65,26 +65,24 @@
   border-radius: 4px;
   size: 16px;
   text-align: center;
-  border-width: 1px;
-  border-color: #fdfdfd;
+  border: 0px;
   padding: 6px, 12px, 6px, 12px;
   position: absolute;
   bottom: 20px;
-  right: 150px;
+  right: 180px;
   cursor: pointer;
 }
 
-.edit-save-changes-button {
+.edit-student-modal-save-changes-button {
   background-color: #3288c4;
   color: #fdfdfd;
-  width: 96px;
+  width: 144px;
   height: 36px;
   border-radius: 4px;
   padding: 6px, 12px, 6px, 12px;
   position: absolute;
   bottom: 20px;
   right: 20px;
-  border-width: 1px;
-  border-color: #fdfdfd;
+  border: 0px;
   cursor: pointer;
 }

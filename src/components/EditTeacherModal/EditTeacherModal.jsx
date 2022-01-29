@@ -5,15 +5,28 @@ import './EditTeacherModal.css';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 
 const EditTeacherModal = ({ isOpen, setIsOpen }) => {
-  const areas = ['District 1', 'District 2', 'District 3', 'District 4'];
-  const [area, setArea] = useState('Default District');
-  const sites = ['Site 1', 'Site 2', 'Site 3', 'Site 4'];
-  const [site, setSite] = useState('No Site Selected');
-  const [FirstName, setFirstName] = useState('Sam');
-  const [LastName, setLastName] = useState('Smith');
-  const [Email, setEmail] = useState('firstname@gmail.com');
-  const status = ['Status 1', 'Status 2', 'Status 3', 'Status 4'];
-  const [Status, setStatus] = useState('Active');
+  // const CreateTeacherModal = () => {
+  // console.log('isOpen is');
+  // console.log(isOpen);
+  // console.log('setIsOpen is');
+  // console.log(setIsOpen);
+
+  // Placeholders, replace later with backend call
+  // const [districts, setDistricts] = useState([]);
+  const districts = ['District 1', 'District 2', 'District 3', 'District 4'];
+  const [district, setDistrict] = useState('Default District');
+  // Placeholders, replace later with backend call
+  // const [schools, setSchools] = useState([]);
+  const schools = ['School 1', 'School 2', 'School 3', 'School 4'];
+  const [school, setSchool] = useState('No School');
+  // Placeholders, replace later with backend call
+  // const [status, setStatus] = useState("Active");
+  const statuses = ['Active', 'Inactive'];
+  const [status, setStatus] = useState('Active');
+
+  const [firstName, setFirstName] = useState('Sam');
+  const [lastName, setLastName] = useState('Smith');
+  const [email, setEmail] = useState('default@email.com');
 
   return isOpen ? (
     <>
@@ -23,7 +36,7 @@ const EditTeacherModal = ({ isOpen, setIsOpen }) => {
           <div className="edit-teacher-modal-exit-button">
             <button
               type="button"
-              className="edit-teacher-exit-button"
+              className="edit-teacher-modal-exit-button"
               onClick={() => {
                 setIsOpen(false);
               }}
@@ -33,44 +46,41 @@ const EditTeacherModal = ({ isOpen, setIsOpen }) => {
           </div>
         </div>
         <div className="edit-teacher-modal-body">
+          {/* create the form */}
           <div className="edit-teacher-modal-field-desc">Area</div>
-          <div className="drop-text">
-            <DropdownMenu choices={areas} current={area} setFn={setArea} />
-          </div>
+          <DropdownMenu choices={districts} current={district} setFn={setDistrict} />
           <div className="edit-teacher-modal-field-desc">First Name</div>
           <input
-            className="modal-input"
+            className="modal-text-input"
             type="text"
-            defaultValue={FirstName}
+            defaultValue={firstName}
             onChange={e => setFirstName(e.target.value)}
           />
           <div className="edit-teacher-modal-field-desc">Last Name</div>
           <input
-            className="modal-input"
+            className="modal-text-input"
             type="text"
-            defaultValue={LastName}
+            defaultValue={lastName}
             onChange={e => setLastName(e.target.value)}
           />
           <div className="edit-teacher-modal-field-desc">Email</div>
           <input
-            className="modal-input"
+            className="modal-text-input"
             type="text"
-            defaultValue={Email}
+            defaultValue={email}
             onChange={e => setEmail(e.target.value)}
           />
           <div className="edit-teacher-modal-field-desc">Status</div>
-          <div className="drop-text">
-            <DropdownMenu choices={status} current={Status} setFn={setStatus} />
-          </div>
-          <div className="edit-teacher-modal-field-desc">Assign Sites</div>
-          <div className="drop-text">
-            <DropdownMenu choices={sites} current={site} setFn={setSite} />
-          </div>
+          <DropdownMenu choices={statuses} current={status} setFn={setStatus} />
+          <div className="edit-teacher-modal-field-desc">Assign Site</div>
+          <DropdownMenu choices={schools} current={school} setFn={setSchool} />
         </div>
         <div className="edit-teacher-modal-bottom-bar">
+          {/* create the save + add another / save buttons */}
+          {/* change save function later */}
           <button
             type="button"
-            className="edit-send-button"
+            className="edit-teacher-modal-delete-button"
             onClick={() => {
               setIsOpen(false);
             }}
@@ -79,7 +89,7 @@ const EditTeacherModal = ({ isOpen, setIsOpen }) => {
           </button>
           <button
             type="button"
-            className="edit-save-button"
+            className="edit-teacher-modal-save-button"
             onClick={() => {
               setIsOpen(false);
             }}

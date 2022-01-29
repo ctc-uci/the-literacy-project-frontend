@@ -83,7 +83,7 @@ const EditStudentModal = ({ isOpen, setIsOpen }) => {
           {/* change save function later */}
           <button
             type="button"
-            className="edit-delete-button"
+            className="edit-student-modal-delete-button"
             onClick={() => {
               setIsOpen(false);
             }}
@@ -92,7 +92,7 @@ const EditStudentModal = ({ isOpen, setIsOpen }) => {
           </button>
           <button
             type="button"
-            className="edit-save-changes-button"
+            className="edit-student-modal-save-changes-button"
             onClick={() => {
               setIsOpen(false);
             }}
