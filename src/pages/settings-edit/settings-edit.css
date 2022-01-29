@@ -12,6 +12,12 @@
   margin-right: 20px;
 }
 
+.eyeIcon {
+  position: absolute;
+  cursor: pointer;
+  /* color: #868e96 !important; */
+  margin-top: -25px;
+}
 
 input {
   height: 36px;
