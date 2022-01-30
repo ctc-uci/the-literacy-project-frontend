@@ -5,10 +5,9 @@ import './index.css';
 import App from './App';
 
 // page imports
-import SchoolView from './pages/schools/schools';
-import SchoolsCreateView from './pages/schools-create/schools-create';
-import SchoolsExportDataView from './pages/schools-export-data/schools-export-data';
-import AdminAccountView from './pages/admin-account/admin-account';
+import SiteView from './pages/sites/sites';
+import SitesCreateView from './pages/sites-create/sites-create';
+import SitesExportDataView from './pages/sites-export-data/sites-export-data';
 import AssignStudentsView from './pages/assign-students/assign-students';
 import StudentView from './pages/students/students';
 import StudentsCreateView from './pages/students-create/students-create';
@@ -27,18 +26,18 @@ import TeachersRemoveTeacherView from './pages/teachers-remove-teacher/teachers-
 import SettingsView from './pages/settings/settings';
 import SettingsChangePasswordView from './pages/settings-change-password/settings-change-password';
 import SettingsEditView from './pages/settings-edit/settings-edit';
-import AdminCreateView from './pages/admin-create-account/admin-create';
+import AdminView from './pages/admin/admin';
+import AreaManagement from './pages/area-management/area-management';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Routes>
         <Route path="/" exact element={<App />} />
-        <Route path="/schools" exact element={<SchoolView />} />
-        <Route path="/schools/create" exact element={<SchoolsCreateView />} />
-        <Route path="/admin/account" exact element={<AdminAccountView />} />
-        <Route path="/schools/assign-students" exact element={<AssignStudentsView />} />
-        <Route path="/schools/export-data" exact element={<SchoolsExportDataView />} />
+        <Route path="/sites" exact element={<SiteView />} />
+        <Route path="/sites/create" exact element={<SitesCreateView />} />
+        <Route path="/sites/assign-students" exact element={<AssignStudentsView />} />
+        <Route path="/sites/export-data" exact element={<SitesExportDataView />} />
         <Route path="/students" exact element={<StudentView />} />
         <Route path="/students/create" exact element={<StudentsCreateView />} />
         <Route path="/students/edit" exact element={<StudentsEditView />} />
@@ -56,7 +55,8 @@ ReactDOM.render(
         <Route path="/settings" element={<SettingsView />} />
         <Route path="/settings/change-password" element={<SettingsChangePasswordView />} />
         <Route path="/settings/edit" element={<SettingsEditView />} />
-        <Route path="/admin/create-account/confirmation" element={<AdminCreateView />} />
+        <Route path="/admin" element={<AdminView />} />
+        <Route path="/area-management" element={<AreaManagement />} />
       </Routes>
     </Router>
   </React.StrictMode>,
