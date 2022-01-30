@@ -1,6 +1,24 @@
-h1.settings-edit {
-  color: white;
-  background-color: #555555;
-  height: 500px;
-  width: 200px;
+.pwdLabel {
+  color: #212529;
+  font-size: 16px;
+}
+
+.change-button {
+  margin-top: 23px;
+}
+
+.user-input {
+  margin-left: 30px;
+  margin-right: 20px;
+}
+
+.eyeIcon {
+  position: absolute;
+  cursor: pointer;
+  /* color: #868e96 !important; */
+  margin-top: -25px;
+}
+
+input {
+  height: 36px;
 }
