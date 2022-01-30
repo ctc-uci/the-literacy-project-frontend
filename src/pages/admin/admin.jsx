@@ -1,8 +1,8 @@
 import React from 'react';
-import './teachers.css';
+import './admin.css';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 
-const TeacherView = () => {
+const AdminView = () => {
   const theadData = [
     {
       headerTitle: 'Name',
@@ -10,14 +10,6 @@ const TeacherView = () => {
     },
     {
       headerTitle: 'Email',
-      headerPopover: '',
-    },
-    {
-      headerTitle: 'School',
-      headerPopover: '',
-    },
-    {
-      headerTitle: 'District',
       headerPopover: '',
     },
     {
@@ -29,14 +21,22 @@ const TeacherView = () => {
   const tbodyData = [
     {
       id: 1,
-      items: ['Test Name', 'test@email.com', 'Test School', 'Test District', 'Active'],
+      items: ['Test Name1', 'admin@admin.edu', 'Active'],
+    },
+    {
+      id: 2,
+      items: ['Test Name2', 'admin@admin.edu', 'Active'],
+    },
+    {
+      id: 3,
+      items: ['Test Name3', 'admin@admin.edu', 'Active'],
     },
   ];
   return (
-    <div className="teacher-container">
-      <ManagementDataSection sectionTitle="Teachers" theadData={theadData} tbodyData={tbodyData} />
+    <div className="admin-container">
+      <ManagementDataSection sectionTitle="Admin" theadData={theadData} tbodyData={tbodyData} />
     </div>
   );
 };
 
-export default TeacherView;
+export default AdminView;
