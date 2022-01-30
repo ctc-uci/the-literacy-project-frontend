@@ -1,18 +1,18 @@
-.students-edit-view {
+.teachers-confirm-view {
   color: green;
-  background-color: #eeeeee;
+  background-color: #555555;
   height: 500px;
   width: 500px;
 }
 
-.edit-student-button-container {
+.confirm-teacher-button-container {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
 }
 
-.edit-student-button {
+.confirm-teacher-button {
   background-color: #3288c4;
   color: #fdfdfd;
   width: 90%;
@@ -26,7 +26,7 @@
   cursor: pointer;
 }
 
-.edit-student-button:hover {
+.confirm-teacher-button:hover {
   transition: 0.25s;
   background-color: #17a2b8;
 }
