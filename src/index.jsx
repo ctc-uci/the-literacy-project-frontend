@@ -44,14 +44,18 @@ ReactDOM.render(
         <Route path="/students/export-data" exact element={<StudentsExportDataView />} />
         <Route path="/login" exact element={<LoginView />} />
         <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
-        <Route path="/login/teacher-start/:id" exact element={<LoginTeacherStartView />} />
+        <Route path="/login/master-teacher-start/:id" exact element={<LoginTeacherStartView />} />
         <Route path="/dashboard" exact element={<DashboardView />} />
-        <Route path="/teachers" exact element={<TeacherView />} />
-        <Route path="/teachers/confirm" exact element={<TeachersConfirmation />} />
-        <Route path="/teachers/create" exact element={<TeachersCreateView />} />
-        <Route path="/teachers/edit" exact element={<TeachersEditView />} />
-        <Route path="/teachers/export-data" exact element={<TeachersExportDataView />} />
-        <Route path="/teachers/remove-teacher" exact element={<TeachersRemoveTeacherView />} />
+        <Route path="/master-teachers" exact element={<TeacherView />} />
+        <Route path="/master-teachers/confirm" exact element={<TeachersConfirmation />} />
+        <Route path="/master-teachers/create" exact element={<TeachersCreateView />} />
+        <Route path="/master-teachers/edit" exact element={<TeachersEditView />} />
+        <Route path="/master-teachers/export-data" exact element={<TeachersExportDataView />} />
+        <Route
+          path="/master-teacher/remove-teacher"
+          exact
+          element={<TeachersRemoveTeacherView />}
+        />
         <Route path="/settings" element={<SettingsView />} />
         <Route path="/settings/change-password" element={<SettingsChangePasswordView />} />
         <Route path="/settings/edit" element={<SettingsEditView />} />
