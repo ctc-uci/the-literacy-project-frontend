@@ -1,0 +1,49 @@
+.card {
+  text-align: left;
+  width: 350px;
+}
+
+.card-section {
+  margin-bottom: 10px;
+}
+
+.card-header {
+  width: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #00000008;
+}
+
+#group-name {
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+}
+
+#more-icon {
+  margin-left: 150px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.row {
+  padding-left: 0 !important;
+}
+
+.students-section {
+  width: 308px;
+  display: flex;
+}
+
+#students-header {
+  margin-right: 0;
+}
+
+#num-students {
+  margin-left: 220px;
+}
