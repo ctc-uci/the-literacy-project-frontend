@@ -6,9 +6,11 @@ import AttitudeScoreTable from './AttitudeScoreTable';
 function AttitudeForm() {
   return (
     <div>
-      <h2>Elementary Reading Attitude Survey Scoring Sheet</h2>
+      <h2 style={{ textAlign: 'left', fontSize: '32px', margin: '5px' }}>
+        Reading Attitude Survey
+      </h2>
 
-      <form>
+      {/* <form>
         <label htmlFor="studentName">
           Student Name:
           <input type="text" id="studentName" />
@@ -21,7 +23,7 @@ function AttitudeForm() {
           Grade:
           <input type="text" id="grade" />
         </label>
-      </form>
+      </form> */}
 
       <AttitudeScoreTable tableName="Pre-Test Date:" />
       <AttitudeScoreTable tableName="Post-Test Date:" />

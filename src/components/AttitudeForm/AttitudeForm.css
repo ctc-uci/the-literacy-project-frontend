@@ -1,8 +1,91 @@
-/* BASIC READABLE TABLE FORMAT, TO BE FIXED LATER */
-table,
-th,
-td {
-  border: 1px solid black;
-  margin: 20px;
-  padding: 10px;
+input {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.dateInput {
+  height: 23px;
+  font-size: 12.8px;
+}
+.testDateForm {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  font-size: 18px;
+  margin: 5px;
+}
+
+.attTable {
+  width: 100%;
+  border-radius: 5px;
+  table-layout: fixed;
+}
+.attTh {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid #b9b9b9;
+  height: 40px;
+
+  font-family: Calibri;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 12.8px;
+  line-height: 19px;
+
+  text-align: center;
+}
+
+.attRowForm {
+  display: flex;
+  flex-direction: row;
+  padding: 4px 8px;
+
+  font-family: Calibri;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12.8px;
+  line-height: 19px;
+
+  text-align: center;
+}
+.attInput {
+  width: 50%;
+  height: 23px;
+
+  font-size: 12.8px;
+  line-height: 19px;
+}
+
+.totTh {
+  background: rgba(0, 0, 0, 0.05);
+  height: 40px;
+  border: 1px solid #b9b9b9;
+  padding: 4px 8px;
+
+  text-align: left !important;
+
+  font-weight: 800;
+  font-family: Calibri;
+  font-style: normal;
+  font-size: 12.8px;
+  line-height: 19px;
+}
+
+.totals {
+  text-align: left !important;
+  font-family: Calibri;
+  font-weight: 400px;
+  font-style: normal;
+  font-size: 12.8px;
+  line-height: 19px;
+  padding: 4px 8px;
+
+  height: 40px;
+
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.attLabel {
+  text-align: center;
 }
