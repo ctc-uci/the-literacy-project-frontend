@@ -1,4 +1,4 @@
-import './teachers-edit.css';
+import './master-teachers-edit.css';
 import { React, useState } from 'react';
 import EditTeacherModal from '../../components/EditTeacherModal/EditTeacherModal';
 

@@ -1,4 +1,4 @@
-import './teachers-remove-teacher.css';
+import './master-teachers-remove-teacher.css';
 import React from 'react';
 
 const TeachersRemoveTeacherView = () => {

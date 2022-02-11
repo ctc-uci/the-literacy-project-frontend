@@ -3,7 +3,7 @@ import React from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import SiteView from '../../pages/sites/sites';
 import AdminView from '../../pages/admin/admin';
-import TeacherView from '../../pages/teachers/teachers';
+import TeacherView from '../../pages/master-teachers/master-teachers';
 import StudentView from '../../pages/students/students';
 
 const CreationPageTabs = () => {

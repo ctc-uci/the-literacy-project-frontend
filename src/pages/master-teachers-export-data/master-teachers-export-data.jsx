@@ -1,4 +1,4 @@
-import './teachers-export-data.css';
+import './master-teachers-export-data.css';
 import React from 'react';
 
 const TeachersExportDataView = () => {

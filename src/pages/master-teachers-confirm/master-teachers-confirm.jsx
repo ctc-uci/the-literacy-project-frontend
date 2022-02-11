@@ -1,4 +1,4 @@
-import './teachers-confirm.css';
+import './master-teachers-confirm.css';
 import { React, useState } from 'react';
 import ConfirmTeacherModal from '../../components/ConfirmTeacherModal/ConfirmTeacherModal';
 

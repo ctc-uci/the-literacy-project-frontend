@@ -1,5 +1,5 @@
 import React from 'react';
-import './teachers.css';
+import './master-teachers.css';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 
 const TeacherView = () => {

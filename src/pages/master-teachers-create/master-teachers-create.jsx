@@ -1,4 +1,4 @@
-import './teachers-create.css';
+import './master-teachers-create.css';
 import { React, useState } from 'react';
 import CreateTeacherModal from '../../components/CreateTeacherModal/CreateTeacherModal';
 
