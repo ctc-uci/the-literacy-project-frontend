@@ -10,19 +10,18 @@
 .card-header {
   width: 350px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: #00000008;
 }
 
 #group-name {
+  align-items: left;
   margin-left: 0;
   margin-right: 0;
   margin-bottom: 0;
 }
 
 #more-icon {
-  margin-left: 150px;
+  margin-left: 230px;
   vertical-align: middle;
   cursor: pointer;
 }

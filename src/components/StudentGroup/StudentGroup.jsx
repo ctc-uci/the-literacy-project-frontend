@@ -23,13 +23,13 @@ const StudentGroup = ({
     <>
       <Card className="card">
         <div className="card-header">
-          <h3 id="group-name">Group Name</h3>
+          <h3 id="group-name">Area </h3>
           <BsThreeDots id="more-icon" />
         </div>
         <Card.Body className="card-body">
           <Card.Text>
             <div className="card-section">
-              <Card.Title>School Name</Card.Title>
+              <Card.Title>Site Name</Card.Title>
               {addressStreet}, {addressCity} {addressState}
               <br />
               {addressZip}
@@ -56,12 +56,12 @@ const StudentGroup = ({
 };
 
 StudentGroup.defaultProps = {
-  addressStreet: '',
-  addressCity: '',
-  addressState: '',
-  addressZip: '',
-  studentList: [],
-  meetingTime: '',
+  addressStreet: '123 Westview Way',
+  addressCity: 'Irvine',
+  addressState: 'CA',
+  addressZip: '92617',
+  studentList: ['Abby', 'Alyssa', 'Cal', 'Danny', 'Erica', 'Jared'],
+  meetingTime: 'December 17, 1995 03:24:00',
 };
 
 StudentGroup.propTypes = {
