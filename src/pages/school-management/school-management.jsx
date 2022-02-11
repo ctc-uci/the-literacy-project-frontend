@@ -13,7 +13,7 @@ const SchoolManagement = () => {
           <Nav.Link eventKey="admin">Admin</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="teachers">Teachers</Nav.Link>
+          <Nav.Link eventKey="teachers">Master Teachers</Nav.Link>
         </Nav.Item>
         <Nav.Item>
           <Nav.Link eventKey="students">Students</Nav.Link>
