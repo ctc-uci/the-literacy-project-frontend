@@ -1,4 +1,4 @@
-import './school-management.css';
+import './sites-management.css';
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 
