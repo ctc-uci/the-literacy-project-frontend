@@ -17,17 +17,20 @@ import LoginView from './pages/login/login';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
 import LoginTeacherStartView from './pages/login-teacher-start/login-teacher-start';
 import DashboardView from './pages/dashboard/dashboard';
-import TeacherView from './pages/teachers/teachers';
-import TeachersConfirmation from './pages/teachers-confirm/teachers-confirm';
-import TeachersCreateView from './pages/teachers-create/teachers-create';
-import TeachersEditView from './pages/teachers-edit/teachers-edit';
-import TeachersExportDataView from './pages/teachers-export-data/teachers-export-data';
-import TeachersRemoveTeacherView from './pages/teachers-remove-teacher/teachers-remove-teacher';
+import TeacherView from './pages/master-teachers/master-teachers';
+import TeachersConfirmation from './pages/master-teachers-confirm/master-teachers-confirm';
+import TeachersCreateView from './pages/master-teachers-create/master-teachers-create';
+import TeachersEditView from './pages/master-teachers-edit/master-teachers-edit';
+import TeachersExportDataView from './pages/master-teachers-export-data/master-teachers-export-data';
+import TeachersRemoveTeacherView from './pages/master-teachers-remove-master-teacher/master-teachers-remove-teacher';
 import SettingsView from './pages/settings/settings';
 import SettingsChangePasswordView from './pages/settings-change-password/settings-change-password';
 import SettingsEditView from './pages/settings-edit/settings-edit';
 import AdminView from './pages/admin/admin';
 import AreaManagement from './pages/area-management/area-management';
+import SchoolManagement from './pages/sites-management/sites-management';
+import AdminAccountView from './pages/admin-account/admin-account';
+import AdminCreateView from './pages/admin-create-account/admin-create';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -44,19 +47,26 @@ ReactDOM.render(
         <Route path="/students/export-data" exact element={<StudentsExportDataView />} />
         <Route path="/login" exact element={<LoginView />} />
         <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
-        <Route path="/login/teacher-start/:id" exact element={<LoginTeacherStartView />} />
+        <Route path="/login/master-teacher-start/:id" exact element={<LoginTeacherStartView />} />
         <Route path="/dashboard" exact element={<DashboardView />} />
-        <Route path="/teachers" exact element={<TeacherView />} />
-        <Route path="/teachers/confirm" exact element={<TeachersConfirmation />} />
-        <Route path="/teachers/create" exact element={<TeachersCreateView />} />
-        <Route path="/teachers/edit" exact element={<TeachersEditView />} />
-        <Route path="/teachers/export-data" exact element={<TeachersExportDataView />} />
-        <Route path="/teachers/remove-teacher" exact element={<TeachersRemoveTeacherView />} />
+        <Route path="/master-teachers" exact element={<TeacherView />} />
+        <Route path="/master-teachers/confirm" exact element={<TeachersConfirmation />} />
+        <Route path="/master-teachers/create" exact element={<TeachersCreateView />} />
+        <Route path="/master-teachers/edit" exact element={<TeachersEditView />} />
+        <Route path="/master-teachers/export-data" exact element={<TeachersExportDataView />} />
+        <Route
+          path="/master-teacher/remove-teacher"
+          exact
+          element={<TeachersRemoveTeacherView />}
+        />
         <Route path="/settings" element={<SettingsView />} />
         <Route path="/settings/change-password" element={<SettingsChangePasswordView />} />
         <Route path="/settings/edit" element={<SettingsEditView />} />
         <Route path="/admin" element={<AdminView />} />
         <Route path="/area-management" element={<AreaManagement />} />
+        <Route path="/sites/management" exact element={<SchoolManagement />} />
+        <Route path="/admin/account" element={<AdminAccountView />} />
+        <Route path="/admin/create" element={<AdminCreateView />} />
       </Routes>
     </Router>
   </React.StrictMode>,
