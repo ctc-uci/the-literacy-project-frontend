@@ -36,17 +36,21 @@ function AttitudeScoreTable({ tableName }) {
 
   return (
     <>
-      <table>
+      <form className="testDateForm">
+        <p style={{ textAlign: 'left', fontSize: '18px', margin: '0px 8px 0px 0px' }}>
+          {' '}
+          {tableName}{' '}
+        </p>
+        <input className="dateInput" type="date" min="0" max="4" name="testDate" />
+      </form>
+
+      <table className="attTable">
         <tr>
-          <h4> {tableName} </h4>
+          <th className="attTh">Recreational Reading</th>
+          <th className="attTh">Academic Reading</th>
         </tr>
 
-        <tr>
-          <th>Recreational Reading</th>
-          <th>Academic Reading</th>
-        </tr>
-
-        {/* RILEY AUTOMATE ROW CREATION */}
+        {/* AUTOMATE ROW CREATION */}
         {scoreTableRow.map((_, i) => (
           <AttitudeScoreTableRow
             setScoreTable={handleScoreTableRow}
@@ -54,13 +58,15 @@ function AttitudeScoreTable({ tableName }) {
             rowNumber={i + 1}
           />
         ))}
+      </table>
 
+      <table className="attTable" style={{ marginTop: '13px' }}>
         <tr>
-          <td>Recreational Total: {recTotal}</td>
-          <td>Academic Total: {academicTotal}</td>
+          <th className="totTh"> Total: {recTotal}</th>
+          <th className="totTh"> Total: {academicTotal}</th>
         </tr>
 
-        <tr> Total Both Scores: {recTotal + academicTotal} </tr>
+        <tr className="totals"> Total of Both: {recTotal + academicTotal} </tr>
       </table>
     </>
   );

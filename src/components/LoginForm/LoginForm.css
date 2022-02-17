@@ -1,7 +1,7 @@
 /* UNIVERSAL FONT SETTINGS */
 button,
 .title,
-label,
+.logLabel,
 a {
   color: white !important;
   font-family: Calibri;
