@@ -1,6 +1,7 @@
 import { React } from 'react';
 import './CreateSiteModal.css';
 import { Container, Col, Row } from 'react-bootstrap';
+import { BsQuestionCircle } from 'react-icons/bs';
 
 const CreateSiteModal = () => {
   return (
@@ -36,7 +37,7 @@ const CreateSiteModal = () => {
                 </Col>
                 <Col lg={5}>
                   <label htmlFor="primary-title">
-                    Title
+                    Title <BsQuestionCircle />
                     <input type="text" className="form-control" placeholder="placeholder" />
                   </label>
                 </Col>
@@ -64,7 +65,7 @@ const CreateSiteModal = () => {
                 </Col>
                 <Col lg={5}>
                   <label htmlFor="secondary-title">
-                    Title
+                    Title <BsQuestionCircle />
                     <input type="text" className="form-control" placeholder="placeholder" />
                   </label>
                 </Col>
