@@ -6,8 +6,11 @@ const CreateSiteModal = () => {
   return (
     <Container>
       <Col md={{ span: 8, offset: 2 }}>
-        <form className="form-group">
+        <form className="form-group site-form">
           <div className="formwrapper">
+            <div className="form-header">
+              <h2 className="form-title">CREATE NEW SITE</h2>
+            </div>
             <h3 className="subtitles">Basic Information</h3>
             <div className="input-area">
               <Col md={5}>
@@ -83,7 +86,9 @@ const CreateSiteModal = () => {
               <textarea className="form-control" placeholder="placeholder" />
             </label>
 
-            <button type="submit">Save</button>
+            <button type="submit" className="btn save-btn">
+              Save
+            </button>
           </div>
         </form>
       </Col>
