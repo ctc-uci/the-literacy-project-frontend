@@ -9,11 +9,11 @@ const SiteView = () => {
 
   const theadData = [
     {
-      headerTitle: 'Name',
+      headerTitle: 'Site Name',
       headerPopover: '',
     },
     {
-      headerTitle: 'Schools',
+      headerTitle: 'Master Teacher',
       headerPopover: '',
     },
     {
@@ -21,11 +21,15 @@ const SiteView = () => {
       headerPopover:
         "<p><strong style='color:#28a745'>Active:</strong> This user is active in the current cycle. They have full access and can log in.</p> <p><strong style='color:#5f758d'>Inactive:</strong> This user is inactive in the current cycle. They cannot log in until an admin user reactivates their account.</p> <p><strong style='color:#17a2b8'>Email Sent:</strong> An email sign up link was sent. They have not set up their account yet.",
     },
+    {
+      headerTitle: 'Additional Info',
+      headerPopover: '',
+    },
   ];
   const tbodyData = [
     {
       id: 1,
-      items: ['Test Name', 'Test School', 'Active'],
+      items: ['Test Name', 'Master Teacher A', 'Active', 'Temp'],
     },
   ];
 
@@ -93,7 +97,12 @@ const SiteView = () => {
             hasHeader
             headerText="<strong>How do I create a teacher account?</strong> To create a teacher account, please go to the Teachers tab above."
           />
-          <ManagementDataSection sectionTitle="Sites" theadData={theadData} tbodyData={tbodyData} />
+          <ManagementDataSection
+            sectionTitle="Sites"
+            theadData={theadData}
+            tbodyData={tbodyData}
+            tbodyColIsBadge={[1]}
+          />
         </div>
       </div>
       <div className="data">

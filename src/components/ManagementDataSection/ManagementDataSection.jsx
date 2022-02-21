@@ -6,14 +6,22 @@ import Table from '../Table/Table';
 import InformationPopover from '../Popover/InformationPopover';
 import CreateMasterTeacherModal from '../CreateMasterTeacherModal/CreateMasterTeacherModal';
 
-const ManagementDataSection = ({ sectionTitle, theadData, tbodyData, hasHeader, headerText }) => {
+const ManagementDataSection = ({
+  sectionTitle,
+  theadData,
+  tbodyData,
+  hasHeader,
+  headerText,
+  tbodyColIsBadge,
+}) => {
   let popover;
   if (hasHeader) {
     popover = <InformationPopover bodyText={headerText} />;
   } else {
     popover = null;
   }
-  const [modalIsOpen, setModalOpen] = useState(false);
+
+  const [modalIsOpen, setModalOpen] = useState('');
 
   return (
     <div>
@@ -22,12 +30,17 @@ const ManagementDataSection = ({ sectionTitle, theadData, tbodyData, hasHeader, 
         {popover}
       </h1>
       <Button variant="primary">Add Existing {sectionTitle}</Button>
-      <Button variant="warning" onClick={() => setModalOpen(true)}>
+      <Button variant="warning" onClick={() => setModalOpen(sectionTitle)}>
         Create New {sectionTitle}
       </Button>
       <input type="text" placeholder={`Search ${sectionTitle}`} />
-      <Table theadData={theadData} tbodyData={tbodyData} />
-      <CreateMasterTeacherModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
+      <Table theadData={theadData} tbodyData={tbodyData} tbodyColIsBadge={tbodyColIsBadge} />
+      <CreateMasterTeacherModal
+        isOpen={
+          modalIsOpen === 'Master Teacher'
+        } /* Since this is a generic section, you must first check the sectionTitle to ensure that the correct modal is triggered */
+        setIsOpen={setModalOpen}
+      />
     </div>
   );
 };
@@ -38,6 +51,7 @@ ManagementDataSection.defaultProps = {
   tbodyData: [],
   hasHeader: false,
   headerText: '',
+  tbodyColIsBadge: [],
 };
 
 ManagementDataSection.propTypes = {
@@ -46,6 +60,7 @@ ManagementDataSection.propTypes = {
   tbodyData: PropTypes.arrayOf(PropTypes.object),
   hasHeader: PropTypes.bool,
   headerText: PropTypes.string,
+  tbodyColIsBadge: PropTypes.arrayOf(PropTypes.number),
 };
 
 export default ManagementDataSection;

@@ -6,5 +6,8 @@ td {
 }
 
 /* Classes */
+.custom-badge {
+  cursor: pointer;
+}
 
 /* IDs */

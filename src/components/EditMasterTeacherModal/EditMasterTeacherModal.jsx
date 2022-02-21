@@ -1,105 +1,83 @@
 import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import './EditMasterTeacherModal.css';
-
-import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
+import { Modal, Button, Alert, CloseButton, Form } from 'react-bootstrap';
 
 const EditMasterTeacherModal = ({ isOpen, setIsOpen }) => {
-  // const CreateTeacherModal = () => {
-  // console.log('isOpen is');
-  // console.log(isOpen);
-  // console.log('setIsOpen is');
-  // console.log(setIsOpen);
+  const [showEditMasterTeacherAlert, setShowEditMasterTeacherAlert] = useState(false);
+  const closeModal = () => {
+    setIsOpen(false);
+    setShowEditMasterTeacherAlert(true);
+  };
 
-  // Placeholders, replace later with backend call
-  // const [districts, setDistricts] = useState([]);
-  const districts = ['District 1', 'District 2', 'District 3', 'District 4'];
-  const [district, setDistrict] = useState('Default District');
-  // Placeholders, replace later with backend call
-  // const [schools, setSchools] = useState([]);
-  const schools = ['School 1', 'School 2', 'School 3', 'School 4'];
-  const [school, setSchool] = useState('No School');
-  // Placeholders, replace later with backend call
-  // const [status, setStatus] = useState("Active");
-  const statuses = ['Active', 'Inactive'];
   const [status, setStatus] = useState('Active');
 
-  const [firstName, setFirstName] = useState('Sam');
-  const [lastName, setLastName] = useState('Smith');
-  const [email, setEmail] = useState('default@email.com');
-
-  return isOpen ? (
+  return (
     <>
-      <div className="edit-master-teacher-modal">
-        <div className="edit-master-teacher-modal-top-bar">
-          <div className="edit-master-teacher-modal-top-bar-title">Edit Teacher</div>
-          <div className="edit-master-teacher-modal-exit-button">
-            <button
-              type="button"
-              className="edit-master-teacher-modal-exit-button"
-              onClick={() => {
-                setIsOpen(false);
-              }}
-            >
-              X
-            </button>
+      <Modal show={isOpen} onHide={() => setIsOpen(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Teacher</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            <Form.Group className="mb-5" controlId="editTeacherAccount.firstName">
+              <Form.Label>First Name</Form.Label>
+              <Form.Control placeholder="First Name" />
+            </Form.Group>
+            <Form.Group className="mb-5" controlId="editTeacherAccount.lastName">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control placeholder="Last Name" />
+            </Form.Group>
+            <Form.Group className="mb-5" controlId="editTeacherAccount.email">
+              <Form.Label>Email</Form.Label>
+              <Form.Control type="email" placeholder="example@gmail.com" />
+            </Form.Group>
+            <Form.Group className="mb-5" controlId="editTeacherAccount.status">
+              <Form.Label>Status</Form.Label>
+              <Form.Control as="select" onChange={e => setStatus(e.target.value)}>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </Form.Control>
+              {status === 'Inactive' ? (
+                <Form.Label id="status-inactive-text">
+                  *** If a teacher is made inactive, their assigned sites will be removed from them.
+                </Form.Label>
+              ) : null}
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="editTeacherAccount.assignSite">
+              <Form.Label>Assign Site(s)</Form.Label>
+              <Form.Select aria-label="Default select example">
+                <option>Select Site...</option>
+                <option value="School One">School One</option>
+                <option value="School Two">School Two</option>
+                <option value="School Three">School Three</option>
+              </Form.Select>
+            </Form.Group>
           </div>
-        </div>
-        <div className="edit-master-teacher-modal-body">
-          {/* create the form */}
-          <div className="edit-master-teacher-modal-field-desc">Area</div>
-          <DropdownMenu choices={districts} current={district} setFn={setDistrict} />
-          <div className="edit-master-teacher-modal-field-desc">First Name</div>
-          <input
-            className="modal-text-input"
-            type="text"
-            defaultValue={firstName}
-            onChange={e => setFirstName(e.target.value)}
-          />
-          <div className="edit-master-teacher-modal-field-desc">Last Name</div>
-          <input
-            className="modal-text-input"
-            type="text"
-            defaultValue={lastName}
-            onChange={e => setLastName(e.target.value)}
-          />
-          <div className="edit-master-teacher-modal-field-desc">Email</div>
-          <input
-            className="modal-text-input"
-            type="text"
-            defaultValue={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <div className="edit-master-teacher-modal-field-desc">Status</div>
-          <DropdownMenu choices={statuses} current={status} setFn={setStatus} />
-          <div className="edit-master-teacher-modal-field-desc">Assign Site</div>
-          <DropdownMenu choices={schools} current={school} setFn={setSchool} />
-        </div>
-        <div className="edit-master-teacher-modal-bottom-bar">
-          {/* create the save + add another / save buttons */}
-          {/* change save function later */}
-          <button
-            type="button"
-            className="edit-master-teacher-modal-delete-button"
-            onClick={() => {
-              setIsOpen(false);
-            }}
-          >
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={() => setIsOpen(false)}>
             Delete
-          </button>
-          <button
-            type="button"
-            className="edit-master-teacher-modal-save-button"
-            onClick={() => {
-              setIsOpen(false);
-            }}
-          >
+          </Button>
+          <Button variant="primary" onClick={closeModal}>
             Save Changes
-          </button>
-        </div>
-      </div>
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {showEditMasterTeacherAlert ? (
+        <Alert variant="primary" className="alert-custom">
+          {"Changed Maria Sanchez's status to inactive."}{' '}
+          <Alert.Link href="/" className="alert-link-custom">
+            UNDO
+          </Alert.Link>
+          <CloseButton
+            className="alert-close-btn"
+            onClick={() => setShowEditMasterTeacherAlert(false)}
+          />
+        </Alert>
+      ) : null}
     </>
-  ) : null;
+  );
 };
 
 EditMasterTeacherModal.propTypes = {
