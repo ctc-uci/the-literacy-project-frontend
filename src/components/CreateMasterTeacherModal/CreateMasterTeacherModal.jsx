@@ -1,82 +1,71 @@
 import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import './CreateMasterTeacherModal.css';
-import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
+import { Modal, Button, Form } from 'react-bootstrap';
+import ConfirmMasterTeacherModal from '../ConfirmMasterTeacherModal/ConfirmMasterTeacherModal';
 
 const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
-  // const CreateTeacherModal = () => {
-  // console.log('isOpen is');
-  // console.log(isOpen);
-  // console.log('setIsOpen is');
-  // console.log(setIsOpen);
-  // Placeholders, replace later with backend call
-  // const [districts, setDistricts] = useState([]);
-  const districts = ['District 1', 'District 2', 'District 3', 'District 4'];
-  const [district, setDistrict] = useState('Default District');
-  // Placeholders, replace later with backend call
-  // const [schools, setSchools] = useState([]);
-  const schools = ['School 1', 'School 2', 'School 3', 'School 4'];
-  const [school, setSchool] = useState('No School');
-  const [email, setEmail] = useState('default@email.com');
+  const [confirmModalIsOpen, setConfirmModalOpen] = useState(false);
 
-  return isOpen ? (
+  const closeModal = () => setIsOpen(false);
+
+  const sendEmailSuccessSequence = () => {
+    setIsOpen(false);
+    setConfirmModalOpen(true);
+  };
+
+  return (
     <>
-      <div className="create-master-teacher-modal">
-        <div className="create-master-teacher-modal-top-bar">
-          {/* create the title and the x button
-          (clicking the x button should set something to false so that the modal doesn't show) */}
-          <div className="create-master-teacher-modal-top-bar-title">Create Teacher Account</div>
-          <div className="create-master-teacher-modal-exit-button">
-            <button
-              type="button"
-              className="create-master-teacher-exit-button"
-              onClick={() => {
-                setIsOpen(false);
-              }}
-            >
-              X
-            </button>
+      <Modal
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        show={isOpen}
+        onHide={closeModal}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Create Teacher Account</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <div>
+            <Form.Group className="mb-5" controlId="createTeacherAccount.firstName">
+              <Form.Label>First Name</Form.Label>
+              <Form.Control placeholder="First Name" />
+            </Form.Group>
+            <Form.Group className="mb-5" controlId="createTeacherAccount.lastName">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control placeholder="Last Name" />
+            </Form.Group>
+            <Form.Group className="mb-5" controlId="createTeacherAccount.email" required="true">
+              <Form.Label>
+                <>
+                  Email
+                  <span id="asterisk">*</span>
+                </>
+              </Form.Label>
+              <Form.Control type="email" placeholder="example@gmail.com" />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="createTeacherAccount.assignSite">
+              <Form.Label>Assign Site(s)</Form.Label>
+              <Form.Select aria-label="Default select example">
+                <option>No School Selected</option>
+                <option value="School One">School One</option>
+                <option value="School Two">School Two</option>
+                <option value="School Three">School Three</option>
+              </Form.Select>
+            </Form.Group>
           </div>
-        </div>
-        <div className="create-master-teacher-modal-body">
-          {/* create the form */}
-          <div className="create-master-teacher-modal-field-desc">Area</div>
-          <DropdownMenu choices={districts} current={district} setFn={setDistrict} />
-          <div className="create-master-teacher-modal-field-desc">Email</div>
-          <input
-            className="modal-text-input"
-            type="text"
-            defaultValue={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <div className="create-master-teacher-modal-field-desc">Site</div>
-          <DropdownMenu choices={schools} current={school} setFn={setSchool} />
-        </div>
-        <div className="create-master-teacher-modal-bottom-bar">
-          {/* create the save + add another / save buttons */}
-          {/* change save function later */}
-          <button
-            type="button"
-            className="create-send-button"
-            onClick={() => {
-              setIsOpen(false);
-            }}
-          >
-            Send and Create Another
-          </button>
-          <button
-            type="button"
-            className="create-save-button"
-            onClick={() => {
-              setIsOpen(false);
-            }}
-          >
-            Create
-          </button>
-        </div>
-      </div>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="primary" onClick={sendEmailSuccessSequence}>
+            Send Email
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <ConfirmMasterTeacherModal isOpen={confirmModalIsOpen} setIsOpen={setConfirmModalOpen} />
     </>
-  ) : null;
+  );
 };
 
 CreateMasterTeacherModal.propTypes = {

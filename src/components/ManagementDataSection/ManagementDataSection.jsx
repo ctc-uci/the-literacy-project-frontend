@@ -1,9 +1,10 @@
 import './ManagementDataSection.css';
-import React from 'react';
+import { React, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import Table from '../Table/Table';
 import InformationPopover from '../Popover/InformationPopover';
+import CreateMasterTeacherModal from '../CreateMasterTeacherModal/CreateMasterTeacherModal';
 
 const ManagementDataSection = ({ sectionTitle, theadData, tbodyData, hasHeader, headerText }) => {
   let popover;
@@ -12,6 +13,8 @@ const ManagementDataSection = ({ sectionTitle, theadData, tbodyData, hasHeader, 
   } else {
     popover = null;
   }
+  const [modalIsOpen, setModalOpen] = useState(false);
+
   return (
     <div>
       <h1 style={{ height: 'calc(1.375rem + 1.5vw)' }}>
@@ -19,9 +22,12 @@ const ManagementDataSection = ({ sectionTitle, theadData, tbodyData, hasHeader, 
         {popover}
       </h1>
       <Button variant="primary">Add Existing {sectionTitle}</Button>
-      <Button variant="warning">Create New {sectionTitle}</Button>
+      <Button variant="warning" onClick={() => setModalOpen(true)}>
+        Create New {sectionTitle}
+      </Button>
       <input type="text" placeholder={`Search ${sectionTitle}`} />
       <Table theadData={theadData} tbodyData={tbodyData} />
+      <CreateMasterTeacherModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
     </div>
   );
 };

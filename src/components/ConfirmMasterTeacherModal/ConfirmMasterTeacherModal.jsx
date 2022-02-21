@@ -1,49 +1,46 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import './ConfirmMasterTeacherModal.css';
+import { Modal, Button, Alert, CloseButton } from 'react-bootstrap';
 
 const ConfirmMasterTeacherModal = ({ isOpen, setIsOpen }) => {
-  return isOpen ? (
+  const [showAlert, setShowAlert] = useState(false);
+  const closeModal = () => {
+    setIsOpen(false);
+    setShowAlert(true);
+  };
+
+  return (
     <>
-      <div className="confirm-master-teacher-modal">
-        <div className="confirm-master-teacher-modal-top-bar">
-          <div className="confirm-master-teacher-modal-title">Teacher Confirmation</div>
-        </div>
-        <div className="confirm-master-teacher-main">
-          <div className="main-text">
-            Verification email was sent. Once confirmed, the master-teacher will be in the system.
-          </div>
-          <button
-            type="button"
-            className="create-master-teacher-exit-button"
-            onClick={() => {
-              setIsOpen(false);
-            }}
-          >
-            X
-          </button>
-          <button
-            type="button"
-            className="close-button"
-            onClick={() => {
-              setIsOpen(false);
-            }}
-          >
+      <Modal show={isOpen} onHide={closeModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Teacher Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Verification email was sent. Once confirmed, the teacher will be in the system.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModal}>
             Close
-          </button>
-          <button
-            type="button"
-            className="send-another"
-            onClick={() => {
-              setIsOpen(false);
-            }}
-          >
-            Send another
-          </button>
+          </Button>
+          <Button variant="primary" onClick={closeModal}>
+            Send Another
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {showAlert ? (
+        <div className="center-block">
+          <Alert variant="primary" className="alert-custom">
+            Successfully created teacher accounts!{' '}
+            <Alert.Link href="/" className="alert-link-custom">
+              Create more
+            </Alert.Link>
+            <CloseButton className="alert-close-btn" onClick={() => setShowAlert(false)} />
+          </Alert>
         </div>
-      </div>
+      ) : null}
     </>
-  ) : null;
+  );
 };
 
 ConfirmMasterTeacherModal.propTypes = {
