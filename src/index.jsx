@@ -31,6 +31,7 @@ import AreaManagement from './pages/area-management/area-management';
 import SchoolManagement from './pages/sites-management/sites-management';
 import AdminAccountView from './pages/admin-account/admin-account';
 import AdminCreateView from './pages/admin-create-account/admin-create';
+import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -67,6 +68,7 @@ ReactDOM.render(
         <Route path="/sites/management" exact element={<SchoolManagement />} />
         <Route path="/admin/account" element={<AdminAccountView />} />
         <Route path="/admin/create" element={<AdminCreateView />} />
+        <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
       </Routes>
     </Router>
   </React.StrictMode>,
