@@ -25,19 +25,8 @@ function AssessmentRow({ testNumber, gameName, skillTest, passingScore, numQuest
         <td className="player-score">
           <form onChange={handlePreScore}>
             <input placeholder={0} type="number" name="Pre Score" min={0} max={numQuestions} />
-            {/*/
-            {numQuestions}*/}
           </form>
         </td>
-        {/*
-        <td>
-          <form onChange={handlePostScore}>
-            <input placeholder={0} type="number" name="Post Score" min={0} max={numQuestions} />/
-            {numQuestions}
-          </form>
-        </td>
-        <td>{preScore / numQuestions === 0 ? '---' : change * 100}%</td>
-        */}
       </tr>
     );
   }
@@ -49,10 +38,6 @@ function AssessmentRow({ testNumber, gameName, skillTest, passingScore, numQuest
       <td className="skill-test">{skillTest}</td>
       <td>---</td>
       <td>-----</td>
-      {/*
-      <td>-----</td>
-      <td>---</td>
-      */}
     </tr>
   );
   // Notes for later:
