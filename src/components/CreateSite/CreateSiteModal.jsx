@@ -1,97 +1,99 @@
-import { React, useState } from 'react';
-import { PropTypes } from 'prop-types';
+import { React } from 'react';
 import './CreateSiteModal.css';
+import { Container, Col, Row } from 'react-bootstrap';
 
-import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
+const CreateSiteModal = () => {
+  return (
+    <Container>
+      <Col md={{ span: 8, offset: 2 }}>
+        <form className="form-group site-form">
+          <div className="formwrapper">
+            <div className="form-header">
+              <h2 className="form-title">CREATE NEW SITE</h2>
+            </div>
+            <h3 className="required-subtitles">Basic Information</h3>
+            <div className="input-area">
+              <Col md={5}>
+                <label htmlFor="site-name">
+                  Name
+                  <input type="text" className="form-control" placeholder="placeholder" />
+                </label>
+                <label htmlFor="address">
+                  Address
+                  <input type="text" className="form-control" placeholder="placeholder" />
+                </label>
+              </Col>
+            </div>
 
-const CreateSiteModal = ({ isOpen, setIsOpen }) => {
-  // const CreateTeacherModal = () => {
-  // console.log('isOpen is');
-  // console.log(isOpen);
-  // console.log('setIsOpen is');
-  // console.log(setIsOpen);
-  // Placeholders, replace later with backend call
-  // const [districts, setDistricts] = useState([]);
-  const districts = ['District 1', 'District 2', 'District 3', 'District 4'];
-  const [district, setDistrict] = useState('Default District');
-  // Placeholders, replace later with backend call
-  // const [teachers, setTeachers] = useState([]);
-  const teachers = ['Teacher 1', 'Teacher 2', 'Teacher 3', 'Teacher 4'];
-  const [teacher, setTeacher] = useState('No Teacher');
+            <h3 className="required-subtitles">Primary Contact</h3>
+            <div className="input-area">
+              <Row>
+                <Col lg={5}>
+                  <label htmlFor="primary-name">
+                    Name
+                    <input type="text" className="form-control" placeholder="placeholder" />
+                  </label>
+                </Col>
+                <Col lg={5}>
+                  <label htmlFor="primary-title">
+                    Title
+                    <input type="text" className="form-control" placeholder="placeholder" />
+                  </label>
+                </Col>
+              </Row>
+              <Col md={5}>
+                <label htmlFor="primary-email">
+                  Email
+                  <input type="text" className="form-control" placeholder="placeholder" />
+                </label>
+                <label htmlFor="primary-phone">
+                  Phone Number
+                  <input type="text" className="form-control" placeholder="placeholder" />
+                </label>
+              </Col>
+            </div>
 
-  const [siteName, setSiteName] = useState('School Name');
-  const [address, setAddress] = useState('School Address');
+            <h3 className="optional-subtitles">Secondary Contact</h3>
+            <div className="input-area">
+              <Row>
+                <Col lg={5}>
+                  <label htmlFor="secondary-name">
+                    Name
+                    <input type="text" className="form-control" placeholder="placeholder" />
+                  </label>
+                </Col>
+                <Col lg={5}>
+                  <label htmlFor="secondary-title">
+                    Title
+                    <input type="text" className="form-control" placeholder="placeholder" />
+                  </label>
+                </Col>
+              </Row>
+              <Col md={5}>
+                <label htmlFor="secondary-email">
+                  Email
+                  <input type="text" className="form-control" placeholder="placeholder" />
+                </label>
+                <label htmlFor="secondary-phone">
+                  Phone Number
+                  <input type="text" className="form-control" placeholder="placeholder" />
+                </label>
+              </Col>
+            </div>
 
-  return isOpen ? (
-    <>
-      <div className="create-site-modal">
-        <div className="create-site-modal-top-bar">
-          {/* create the title and the x button
-          (clicking the x button should set something to false so that the modal doesn't show) */}
-          <div className="create-site-modal-top-bar-title">Create New School</div>
-          <div className="create-site-modal-exit-button">
-            <button
-              type="button"
-              className="create-site-exit-button"
-              onClick={() => {
-                setIsOpen(false);
-              }}
-            >
-              X
+            <h3 className="optional-subtitles">Notes</h3>
+            <label htmlFor="notes" className="input-area">
+              <textarea className="form-control" placeholder="placeholder" />
+            </label>
+
+            <button type="submit" className="btn save-btn">
+              Save
             </button>
           </div>
-        </div>
-        <div className="create-site-modal-body">
-          {/* create the form */}
-          <div className="create-site-modal-field-desc">Area</div>
-          <DropdownMenu choices={districts} current={district} setFn={setDistrict} />
-          <div className="create-site-modal-field-desc">Name</div>
-          <input
-            className="modal-text-input"
-            type="text"
-            defaultValue={siteName}
-            onChange={e => setSiteName(e.target.value)}
-          />
-          <div className="create-site-modal-field-desc">Address</div>
-          <input
-            className="modal-text-input"
-            type="text"
-            defaultValue={address}
-            onChange={e => setAddress(e.target.value)}
-          />
-          <div className="create-site-modal-field-desc">Master Teacher</div>
-          <DropdownMenu choices={teachers} current={teacher} setFn={setTeacher} />
-        </div>
-        <div className="create-site-modal-bottom-bar">
-          {/* create the save + add another / save buttons */}
-          {/* change save function later */}
-          <button
-            type="button"
-            className="create-site-modal-save-create-button"
-            onClick={() => {
-              setIsOpen(false);
-            }}
-          >
-            Save and Create Another
-          </button>
-          <button
-            type="button"
-            className="create-site-modal-save-button"
-            onClick={() => {
-              setIsOpen(false);
-            }}
-          >
-            Create
-          </button>
-        </div>
-      </div>
-    </>
-  ) : null;
-};
-
-CreateSiteModal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  setIsOpen: PropTypes.func.isRequired,
+        </form>
+      </Col>
+    </Container>
+  );
 };
 
 export default CreateSiteModal;
