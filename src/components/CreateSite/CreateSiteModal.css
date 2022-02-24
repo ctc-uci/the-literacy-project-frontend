@@ -20,16 +20,29 @@
   padding-top: 25px;
 }
 
+.required-subtitles::after {
+  color: #e32;
+  content: ' *';
+  display:inline;
+}
+
 /* all the text areas */
-.subtitles {
-  font-family: Calibr, 'sans-serif';
+.required-subtitles {
+  font-family: Calibri, 'sans-serif';
+  font-size: 24px;
+  padding-top: 20px;
+  padding-left: 30px
+}
+
+.optional-subtitles {
+  font-family: Calibri, 'sans-serif';
   font-size: 24px;
   padding-top: 20px;
   padding-left: 30px
 }
 
 .input-area {
-  font-family: Calibr, 'sans-serif';
+  font-family: Calibri, 'sans-serif';
   font-size: 16px;
   padding: 0px 30px 10px 50px;
 }

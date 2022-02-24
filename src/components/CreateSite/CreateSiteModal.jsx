@@ -1,7 +1,6 @@
 import { React } from 'react';
 import './CreateSiteModal.css';
 import { Container, Col, Row } from 'react-bootstrap';
-import { BsQuestionCircle } from 'react-icons/bs';
 
 const CreateSiteModal = () => {
   return (
@@ -12,7 +11,7 @@ const CreateSiteModal = () => {
             <div className="form-header">
               <h2 className="form-title">CREATE NEW SITE</h2>
             </div>
-            <h3 className="subtitles">Basic Information</h3>
+            <h3 className="required-subtitles">Basic Information</h3>
             <div className="input-area">
               <Col md={5}>
                 <label htmlFor="site-name">
@@ -26,7 +25,7 @@ const CreateSiteModal = () => {
               </Col>
             </div>
 
-            <h3 className="subtitles">Primary Contact</h3>
+            <h3 className="required-subtitles">Primary Contact</h3>
             <div className="input-area">
               <Row>
                 <Col lg={5}>
@@ -37,7 +36,7 @@ const CreateSiteModal = () => {
                 </Col>
                 <Col lg={5}>
                   <label htmlFor="primary-title">
-                    Title <BsQuestionCircle />
+                    Title
                     <input type="text" className="form-control" placeholder="placeholder" />
                   </label>
                 </Col>
@@ -54,7 +53,7 @@ const CreateSiteModal = () => {
               </Col>
             </div>
 
-            <h3 className="subtitles">Secondary Contact</h3>
+            <h3 className="optional-subtitles">Secondary Contact</h3>
             <div className="input-area">
               <Row>
                 <Col lg={5}>
@@ -65,7 +64,7 @@ const CreateSiteModal = () => {
                 </Col>
                 <Col lg={5}>
                   <label htmlFor="secondary-title">
-                    Title <BsQuestionCircle />
+                    Title
                     <input type="text" className="form-control" placeholder="placeholder" />
                   </label>
                 </Col>
@@ -82,7 +81,7 @@ const CreateSiteModal = () => {
               </Col>
             </div>
 
-            <h3 className="subtitles">Notes</h3>
+            <h3 className="optional-subtitles">Notes</h3>
             <label htmlFor="notes" className="input-area">
               <textarea className="form-control" placeholder="placeholder" />
             </label>
