@@ -1,20 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './AssessmentRow.css';
 
 function AssessmentRow({ testNumber, gameName, skillTest, passingScore, numQuestions }) {
-  const [preScore, setPreScore] = useState(0);
-  const [postScore, setPostScore] = useState(0);
-
-  const handlePreScore = event => {
-    setPreScore(event.target.value);
-  };
-
-  const handlePostScore = event => {
-    setPostScore(event.target.value);
-  };
-
-  const change = (postScore - preScore) / numQuestions;
   if (numQuestions !== 0) {
     return (
       <tr>
@@ -23,7 +11,7 @@ function AssessmentRow({ testNumber, gameName, skillTest, passingScore, numQuest
         <td className="skill-test">{skillTest}</td>
         <td>{passingScore}</td>
         <td className="player-score">
-          <form onChange={handlePreScore}>
+          <form>
             <input placeholder={0} type="number" name="Pre Score" min={0} max={numQuestions} />
           </form>
         </td>

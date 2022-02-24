@@ -1,11 +1,11 @@
 import React from 'react';
+import TextArea from 'react-expanding-textarea';
 import AssessmentRow from './AssessmentRow';
 import './AssessmentScoreCard.css';
-import TextArea from 'react-expanding-textarea';
 
 function AssessmentScoreCard() {
   return (
-    <div class="div">
+    <div className="div">
       <table>
         <tr>
           <th>#</th>

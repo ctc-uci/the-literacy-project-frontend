@@ -1,5 +1,5 @@
 import React from 'react';
-import AssessmentScoreCard from '../../components/AssessmentCard/AssessmentScoreCard.jsx';
+import AssessmentScoreCard from '../../components/AssessmentCard/AssessmentScoreCard';
 import './assessment-scorecard-input.css';
 
 const AssessmentScorecardInput = () => {
@@ -20,10 +20,10 @@ const AssessmentScorecardInput = () => {
         </div>
         <AssessmentScoreCard />
       </div>
-      <button type="button" class="btn btn-dark">
+      <button type="button" className="btn btn-dark">
         EDIT
       </button>
-      <button type="button" class="btn btn-dark">
+      <button type="button" className="btn btn-dark">
         SAVE
       </button>
     </div>
