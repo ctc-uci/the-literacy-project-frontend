@@ -11,10 +11,10 @@ function RecoverPassword() {
           Recover <br /> Password{' '}
         </h1>
 
-        <form>
+        <form className="recoverForm">
           {/* email input and label */}
           <div className="emailInput">
-            <label htmlFor="email">
+            <label className="recLabel" htmlFor="email">
               Enter your email and instructions will be sent to recover your password.
               <br />
               <input type="text" id="emailInput" placeholder="Email Address" />

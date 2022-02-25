@@ -20,18 +20,32 @@ function AttitudeScoreTableRow({ rowNumber, setScoreTable }) {
     <>
       <tr>
         <td>
-          <form onChange={handleRecScore}>
+          <form className="attRowForm" onChange={handleRecScore}>
+            {rowNumber}.
             <label htmlFor="rec">
-              {rowNumber}.
-              <input type="number" min="0" max="4" name="rec" value={recScore} />
+              <input
+                className="attInput"
+                type="number"
+                min="0"
+                max="4"
+                name="rec"
+                value={recScore}
+              />
             </label>
           </form>
         </td>
         <td>
-          <form onChange={handleAcademicScore}>
+          <form className="attRowForm" onChange={handleAcademicScore}>
+            {rowNumber}.
             <label htmlFor="academic">
-              {rowNumber}.
-              <input type="number" min="0" max="4" name="academic" value={academicScore} />
+              <input
+                className="attInput"
+                type="number"
+                min="0"
+                max="4"
+                name="academic"
+                value={academicScore}
+              />
             </label>
           </form>
         </td>

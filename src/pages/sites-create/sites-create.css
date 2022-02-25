@@ -1,6 +1,11 @@
-h1.sites-create-view {
-  color: green;
-  background-color: #555555;
-  height: 500px;
-  width: 200px;
+.routing{
+  padding: 50px 0px 30px 0px;
+  font-size: 24px;
+  color: #6C757D;
+}
+
+.link {
+  font-size: 24px;
+  color: #3288C4 !important;
+  text-decoration: none;
 }
