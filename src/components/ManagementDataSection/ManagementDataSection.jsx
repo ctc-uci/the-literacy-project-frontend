@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import Table from '../Table/Table';
 import InformationPopover from '../Popover/InformationPopover';
 import CreateMasterTeacherModal from '../CreateMasterTeacherModal/CreateMasterTeacherModal';
+import CreateSiteModal from '../CreateSite/CreateSiteModal';
 
 const ManagementDataSection = ({
   sectionTitle,
@@ -38,6 +39,12 @@ const ManagementDataSection = ({
       <CreateMasterTeacherModal
         isOpen={
           modalIsOpen === 'Master Teacher'
+        } /* Since this is a generic section, you must first check the sectionTitle to ensure that the correct modal is triggered */
+        setIsOpen={setModalOpen}
+      />
+      <CreateSiteModal
+        isOpen={
+          modalIsOpen === 'Sites'
         } /* Since this is a generic section, you must first check the sectionTitle to ensure that the correct modal is triggered */
         setIsOpen={setModalOpen}
       />

@@ -13,11 +13,11 @@ function NavigationBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/dashboard" style={{ color: '#6A91BC' }}>
-              Home
-            </Nav.Link>
             <Nav.Link href="/area-management" style={{ color: '#6A91BC' }}>
               Area Management
+            </Nav.Link>
+            <Nav.Link href="/dashboard" style={{ color: '#6A91BC' }}>
+              People
             </Nav.Link>
             <Nav.Link href="/settings" style={{ color: '#6A91BC' }}>
               Settings

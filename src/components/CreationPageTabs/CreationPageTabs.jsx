@@ -5,10 +5,12 @@ import SiteView from '../../pages/sites/sites';
 import AdminView from '../../pages/admin/admin';
 import TeacherView from '../../pages/master-teachers/master-teachers';
 import StudentView from '../../pages/students/students';
+import NavigationBarTwo from '../NavigationBarTwo/NavigationBarTwo';
 
 const CreationPageTabs = () => {
   return (
     <div>
+      <NavigationBarTwo />
       <Tabs defaultActiveKey="sites">
         <Tab eventKey="sites" title="Sites">
           <SiteView />
