@@ -1,52 +1,16 @@
 import React from 'react';
+import TextArea from 'react-expanding-textarea';
 import AssessmentRow from './AssessmentRow';
+import './AssessmentScoreCard.css';
 
 function AssessmentScoreCard() {
   return (
-    <>
-      <form>
-        <label htmlFor="name">
-          Player Name:
-          <input type="text" id="name" />
-        </label>
-        <label htmlFor="age">
-          Age:
-          <input type="text" id="age" />
-        </label>
-        <label htmlFor="grade">
-          Grade:
-          <input type="text" id="grade" />
-        </label>
-        <label htmlFor="site">
-          Site:
-          <input type="text" id="site" />
-        </label>
-        <label htmlFor="district">
-          District:
-          <input type="text" id="district" />
-        </label>
-        <br />
-        <label htmlFor="adult">
-          Parent/Teacher:
-          <input type="text" id="adult" />
-        </label>
-        <label htmlFor="pre-test">
-          Pre-Test Date:
-          <input type="text" id="pre-test" />
-        </label>
-        <label htmlFor="post-test">
-          Post-Test Date:
-          <input type="text" id="post-test" />
-        </label>
-        <label htmlFor="skill-gain">
-          Skill Gain %:
-          <input type="text" id="skill-gain" />
-        </label>
-      </form>
+    <div className="div">
       <table>
         <tr>
+          <th>#</th>
           <th>Game Name</th>
-          <th>Phonic Skill Test</th>
+          <th>Phonic Skills</th>
           <th>Passing Score</th>
           <th>Player Score</th>
         </tr>
@@ -141,13 +105,9 @@ function AssessmentScoreCard() {
           passingScore="4/5"
           numQuestions={5}
         />
-        <label htmlFor="notes">
-          Notes:
-          <input type="text" id="notes" />
-        </label>
-        <button type="button">Save</button>
       </table>
-    </>
+      <TextArea placeholder="Notes" className="notes" rows="3" />
+    </div>
   );
 }
 

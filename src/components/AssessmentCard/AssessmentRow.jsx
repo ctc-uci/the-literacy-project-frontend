@@ -1,52 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import './AssessmentRow.css';
 
 function AssessmentRow({ testNumber, gameName, skillTest, passingScore, numQuestions }) {
-  const [preScore, setPreScore] = useState(0);
-  const [postScore, setPostScore] = useState(0);
-
-  const handlePreScore = event => {
-    setPreScore(event.target.value);
-  };
-
-  const handlePostScore = event => {
-    setPostScore(event.target.value);
-  };
-
-  const change = (postScore - preScore) / numQuestions;
   if (numQuestions !== 0) {
     return (
       <tr>
-        <td>{testNumber}</td>
-        <td>{gameName}</td>
-        <td>{skillTest}</td>
+        <td className="test-number">{testNumber}</td>
+        <td className="game-name">{gameName}</td>
+        <td className="skill-test">{skillTest}</td>
         <td>{passingScore}</td>
-        <td>
-          <form onChange={handlePreScore}>
-            <input placeholder={0} type="number" name="Pre Score" min={0} max={numQuestions} />/
-            {numQuestions}
+        <td className="player-score">
+          <form>
+            <input placeholder={0} type="number" name="Pre Score" min={0} max={numQuestions} />
           </form>
         </td>
-        <td>
-          <form onChange={handlePostScore}>
-            <input placeholder={0} type="number" name="Post Score" min={0} max={numQuestions} />/
-            {numQuestions}
-          </form>
-        </td>
-        <td>{preScore / numQuestions === 0 ? '---' : change * 100}%</td>
       </tr>
     );
   }
 
   return (
     <tr>
-      <td>{testNumber}</td>
-      <td>{gameName}</td>
-      <td>{skillTest}</td>
+      <td className="test-number">{testNumber}</td>
+      <td className="game-name">{gameName}</td>
+      <td className="skill-test">{skillTest}</td>
       <td>---</td>
       <td>-----</td>
-      <td>-----</td>
-      <td>---</td>
     </tr>
   );
   // Notes for later:
