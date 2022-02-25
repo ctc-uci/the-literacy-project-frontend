@@ -1,63 +1,25 @@
-.confirm-master-teacher-modal {
-  background-color: #fdfdfd;
-  color: #000;
-  font-family: 'SF Compact', Helvetica, Arial, sans-serif;
-  font-size: 20px;
-  line-height: 24px;
-  width: 500px;
-  height: 213px;
-  border: 1.5px solid #ced4da;
-  position: absolute;
-  top: 20%;
-  left: 20%;
-}
-
-.confirm-master-teacher-modal-top-bar {
-  padding: 20px 20px 20px 30px;
-  display: flex;
-  justify-content: center;
-  border-bottom: 1.5px solid #ced4da;
-}
-
-.confirm-master-teacher-modal-title {
-  font-size: 20px;
-  font: Calibri;
+.alert-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-right: auto;
+  margin-left: auto;
   text-align: center;
+  max-width: 450px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
-.confirm-master-teacher-main {
-  padding: 10px 35px 50px 100px;
-  width: 314px;
-  height: 148px;
+.alert-close-btn {
+  margin-left: 5em !important;
+  font-size: 0.5em !important;
 }
 
-.main-text {
-  text-align: center;
-  font-size: 16px;
+.alert-link-custom {
+  color: #084298 !important;
 }
 
-.close-button {
-  width: 59px;
-  height: 36px;
-  background: #5f758d;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  padding: 6px, 12px;
-  margin-top: 35px;
-  margin-left: 205px;
-  color: #fdfdfd;
-}
-
-.send-another {
-  background-color: #3288c4;
-  color: #fdfdfd;
-  width: 96px;
-  height: 36px;
-  border-radius: 4px;
-  padding: 6px, 12px, 6px, 12px;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  border-width: 1px;
-  border-color: #fdfdfd;
+#asterisk {
+  color: red;
 }

@@ -31,6 +31,7 @@ import AreaManagement from './pages/area-management/area-management';
 import SchoolManagement from './pages/sites-management/sites-management';
 import AdminAccountView from './pages/admin-account/admin-account';
 import AdminCreateView from './pages/admin-create-account/admin-create';
+import PeopleView from './pages/people/people';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -62,6 +63,7 @@ ReactDOM.render(
         <Route path="/settings" element={<SettingsView />} />
         <Route path="/settings/change-password" element={<SettingsChangePasswordView />} />
         <Route path="/settings/edit" element={<SettingsEditView />} />
+        <Route path="/people" exact element={<PeopleView />} />
         <Route path="/admin" element={<AdminView />} />
         <Route path="/area-management" element={<AreaManagement />} />
         <Route path="/sites/management" exact element={<SchoolManagement />} />
