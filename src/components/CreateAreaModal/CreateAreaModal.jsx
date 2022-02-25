@@ -9,16 +9,20 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
     setIsOpen(false);
     setShowAlert(true);
   };
+  const closeModalNoAlert = () => {
+    setIsOpen(false);
+    setShowAlert(false);
+  };
   return (
     <>
       <Modal
         aria-labelledby="contained-modal-title-vcenter"
         centered
         show={isOpen}
-        onHide={closeModal}
+        onHide={closeModalNoAlert}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Create New Area</Modal.Title>
+          <Modal.Title className="modalTitle">Create New Area</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>

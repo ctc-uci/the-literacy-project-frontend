@@ -38,7 +38,7 @@ const ManagementDataSection = ({
         {sectionTitle}
         {popover}
       </h1>
-      <Button variant="primary">Add Existing {sectionTitle}</Button>
+      {/* <Button variant="primary">Add Existing {sectionTitle}</Button> */}
       <Button variant="warning" onClick={clickManager}>
         Create New {sectionTitle}
       </Button>
