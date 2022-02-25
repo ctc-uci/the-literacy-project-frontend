@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { Dropdown, Button, DropdownButton, Card } from 'react-bootstrap';
 import './sites.css';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
+import Plus from '../../assets/icons/plus.svg';
+import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
 
 const SiteView = () => {
   const [areaDropdownTitle, setAreaDropdownTitle] = useState('Bellevue SD');
   const [schoolYearDropdownTitle, setSchoolYearDropdownTitle] = useState('Cycle 1');
+  const [modalIsOpen, setModalOpen] = useState(false);
 
   const theadData = [
     {
@@ -43,6 +46,7 @@ const SiteView = () => {
   return (
     <div className="site-container">
       <div>
+        <h1>Areas</h1>
         <div className="school-year-info">
           <h1>School Year</h1>
           <input type="text" list="school-year" className="school-year-input" />
@@ -72,7 +76,16 @@ const SiteView = () => {
           </div>
         </div>
         <div>
-          <h1>Area</h1>
+          <Button
+            variant="warning"
+            onClick={() => {
+              setModalOpen(true);
+            }}
+          >
+            New Area
+            <img className="plus__icon" src={Plus} alt="Plus Icon" />
+          </Button>
+          <CreateAreaModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
           <DropdownButton drop="down" title={areaDropdownTitle} variant="primary">
             <Dropdown.Item eventKey="1" onClick={e => changeAreaTitle(e)}>
               Bellvue SD
