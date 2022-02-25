@@ -1,90 +1,25 @@
-.edit-master-teacher-modal {
-  background-color: #fdfdfd;
-  color: #000;
-  font-family: 'SF Compact', Helvetica, Arial, sans-serif;
-  font-size: 1.2em;
-  width: 40%;
-  height: 800px;
-  border: 1.5px solid #ced4da;
-  border-radius: 10px;
-  position: absolute;
-  top: 15%;
-  left: 30%;
-}
-
-.edit-master-teacher-modal-top-bar {
-  padding: 15px 10px 15px 10px;
-  display: flex;
-  justify-content: center;
-  border-bottom: 1.5px solid #ced4da;
-}
-
-.edit-master-teacher-modal-top-bar-title {
-  font-size: 20px;
-  font: Calibri;
+.alert-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-right: auto;
+  margin-left: auto;
   text-align: center;
+  max-width: 500px !important;
+  display: inline-block;
+  vertical-align: middle;
 }
 
-.edit-master-teacher-modal-body {
-  padding: 10px 15%;
+.alert-close-btn {
+  margin-left: 5em;
+  font-size: 0.5em;
 }
 
-.edit-master-teacher-modal-field-desc {
-  padding: 20px 10px 15px 10px;
+.alert-link-custom {
+  color: #084298 !important;
 }
 
-.modal-text-input {
-  border: 1px solid #ced4da;
-  color: #767676;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  text-align: left;
-  padding-left: 2%;
-  width: 98%;
-  border-radius: 10px;
-  border: 1px solid #ced4da;
-  line-height: 32px;
-  font-family: 'SF Compact', Helvetica, Arial, sans-serif;
-  font-size: 1em;
-}
-
-.edit-master-teacher-modal-exit-button {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background-color: #fdfdfd;
-  /* border: 1px dotted black; */
-  border: 0px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.edit-master-teacher-modal-delete-button {
-  background-color: #e53e3e;
-  color: #fdfdfd;
-  width: 96px;
-  height: 36px;
-  border-radius: 4px;
-  size: 16px;
-  text-align: center;
-  border: 0px;
-  padding: 6px, 12px, 6px, 12px;
-  position: absolute;
-  bottom: 20px;
-  right: 156px;
-  cursor: pointer;
-}
-
-.edit-master-teacher-modal-save-button {
-  background-color: #3288c4;
-  color: #fdfdfd;
-  width: 120px;
-  height: 36px;
-  border-radius: 4px;
-  padding: 6px, 12px, 6px, 12px;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  border: 0px;
-  cursor: pointer;
+#status-inactive-text {
+  color: #3288c4;
 }

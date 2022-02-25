@@ -63,6 +63,7 @@ ReactDOM.render(
         <Route path="/settings" element={<SettingsView />} />
         <Route path="/settings/change-password" element={<SettingsChangePasswordView />} />
         <Route path="/settings/edit" element={<SettingsEditView />} />
+        <Route path="/people" exact element={<PeopleView />} />
         <Route path="/admin" element={<AdminView />} />
         <Route path="/area-management" element={<AreaManagement />} />
         <Route path="/sites/management" exact element={<SchoolManagement />} />

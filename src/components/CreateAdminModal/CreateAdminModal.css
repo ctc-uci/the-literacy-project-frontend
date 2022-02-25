@@ -1,7 +1,7 @@
 .create-admin-modal {
   background-color: #fdfdfd;
   color: #000;
-  font-family: 'SF Compact', Helvetica, Arial, sans-serif;
+  font-family: 'Calibri', Helvetica, Arial, sans-serif;
   font-size: 1.2em;
   width: 30%;
   height: 250px;
@@ -71,16 +71,7 @@
   cursor: pointer;
 }
 
-.create-admin-modal-save-button {
+.modalSave {
   background-color: #3288c4;
   color: #fdfdfd;
-  width: 96px;
-  height: 36px;
-  border-radius: 4px;
-  padding: 6px, 12px, 6px, 12px;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  border: 0px;
-  cursor: pointer;
 }

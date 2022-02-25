@@ -1,0 +1,27 @@
+.area-container > div {
+  padding: 50px;
+}
+
+.data {
+  text-align: center;
+  border-left: 1px solid #c4c4c4;
+}
+
+.graph {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  height: 200px;
+  width: 200px;
+}
+
+.stats {
+  background: #e9ecef;
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  height: auto;
+  width: 200px;
+  padding: 20px;
+  margin: 20px 0;
+}
