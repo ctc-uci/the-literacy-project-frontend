@@ -104,13 +104,6 @@ const SiteView = () => {
         </div>
         <div>
           <ManagementDataSection
-            sectionTitle="Master Teacher"
-            theadData={theadData}
-            tbodyData={tbodyData}
-            hasHeader
-            headerText="<strong>How do I create a teacher account?</strong> To create a teacher account, please go to the Teachers tab above."
-          />
-          <ManagementDataSection
             sectionTitle="Sites"
             theadData={theadData}
             tbodyData={tbodyData}
