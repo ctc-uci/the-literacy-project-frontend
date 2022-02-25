@@ -1,23 +1,26 @@
 import React from 'react';
 import './people.css';
+import { Tabs, Tab } from 'react-bootstrap';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
+import AdminView from '../admin/admin';
+import NavigationBarTwo from '../../components/NavigationBarTwo/NavigationBarTwo';
 
-const MasterTeacherView = () => {
+const PeopleView = () => {
   const theadData = [
     {
       headerTitle: 'Name',
       headerPopover: '',
     },
     {
-      headerTitle: 'Email',
+      headerTitle: 'Contact Information',
       headerPopover: '',
     },
     {
-      headerTitle: 'School',
+      headerTitle: 'Sites',
       headerPopover: '',
     },
     {
-      headerTitle: 'District',
+      headerTitle: 'Area',
       headerPopover: '',
     },
     {
@@ -33,14 +36,25 @@ const MasterTeacherView = () => {
     },
   ];
   return (
-    <div className="master-teacher-container">
-      <ManagementDataSection
-        sectionTitle="Master Teachers"
-        theadData={theadData}
-        tbodyData={tbodyData}
-      />
+    <div className="people-container">
+      <NavigationBarTwo />
+      <Tabs defaultActiveKey="staff">
+        <Tab eventKey="staff" title="Staff">
+          <AdminView />
+          <div className="master-teacher-container">
+            <ManagementDataSection
+              sectionTitle="Master Teacher"
+              theadData={theadData}
+              tbodyData={tbodyData}
+            />
+          </div>
+        </Tab>
+        <Tab eventKey="students" title="Students">
+          stuff will go here soon
+        </Tab>
+      </Tabs>
     </div>
   );
 };
 
-export default MasterTeacherView;
+export default PeopleView;
