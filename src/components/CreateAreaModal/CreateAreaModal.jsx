@@ -32,10 +32,10 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
 
         <Modal.Footer>
           <Button variant="secondary" onClick={closeModal}>
-            Create
+            Create and Add Another
           </Button>
           <Button variant="primary" onClick={closeModal}>
-            Create and Add Another
+            Create
           </Button>
         </Modal.Footer>
       </Modal>
