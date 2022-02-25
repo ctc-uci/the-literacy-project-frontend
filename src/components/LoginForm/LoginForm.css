@@ -1,12 +1,12 @@
 /* UNIVERSAL FONT SETTINGS */
-button,
+/* button,
 .title,
 .logLabel,
 a {
   color: white !important;
   font-family: Calibri;
   font-style: normal;
-}
+} */
 
 /* ADMIN/TEACHER USER TABS */
 .userTabs {

@@ -32,6 +32,7 @@ import SchoolManagement from './pages/sites-management/sites-management';
 import AdminAccountView from './pages/admin-account/admin-account';
 import AdminCreateView from './pages/admin-create-account/admin-create';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
+import PeopleView from './pages/people/people';
 
 ReactDOM.render(
   <React.StrictMode>
