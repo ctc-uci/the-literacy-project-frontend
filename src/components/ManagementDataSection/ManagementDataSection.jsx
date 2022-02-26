@@ -40,14 +40,19 @@ const ManagementDataSection = ({
         {popover}
       </h1>
       {/* <Button variant="primary">Add Existing {sectionTitle}</Button> */}
-      <Button variant="warning" onClick={clickManager}>
+      <Button variant="warning" onClick={clickManager} className="create-btn">
         Create New {sectionTitle}
       </Button>
       <input type="text" placeholder={`Search ${sectionTitle}`} />
-      <Table theadData={theadData} tbodyData={tbodyData} tbodyColIsBadge={tbodyColIsBadge} />
+      <Table
+        theadData={theadData}
+        tbodyData={tbodyData}
+        tbodyColIsBadge={tbodyColIsBadge}
+        sectionTitle={sectionTitle}
+      />
       <CreateMasterTeacherModal
         isOpen={
-          modalIsOpen === 'Master Teacher'
+          modalIsOpen === 'Master Teachers'
         } /* Since this is a generic section, you must first check the sectionTitle to ensure that the correct modal is triggered */
         setIsOpen={setModalOpen}
       />
