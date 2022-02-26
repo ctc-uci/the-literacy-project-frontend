@@ -1,7 +1,11 @@
-Button {
+/* Button {
+  margin: 10px;
+} */
+
+.create-btn {
   margin: 10px;
 }
 
-Button:focus {
+.create-btn:focus {
   outline: none;
 }

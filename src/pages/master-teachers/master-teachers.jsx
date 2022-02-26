@@ -9,15 +9,15 @@ const MasterTeacherView = () => {
       headerPopover: '',
     },
     {
-      headerTitle: 'Email',
+      headerTitle: 'Contact Information',
       headerPopover: '',
     },
     {
-      headerTitle: 'School',
+      headerTitle: 'Sites',
       headerPopover: '',
     },
     {
-      headerTitle: 'District',
+      headerTitle: 'Area',
       headerPopover: '',
     },
     {
@@ -29,7 +29,7 @@ const MasterTeacherView = () => {
   const tbodyData = [
     {
       id: 1,
-      items: ['Test Name', 'test@email.com', 'Test School', 'Test District', 'Active'],
+      items: ['Test Name', 'test@email.com', 'Test School', 'Test Area', 'Active'],
     },
   ];
   return (
@@ -38,6 +38,7 @@ const MasterTeacherView = () => {
         sectionTitle="Master Teachers"
         theadData={theadData}
         tbodyData={tbodyData}
+        tbodyColIsBadge={[2]}
       />
     </div>
   );

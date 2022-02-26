@@ -4,7 +4,7 @@ import TableRow from '../TableRow/TableRow';
 import TableHead from '../TableHead/TableHead';
 import './Table.css';
 
-const Table = ({ theadData, tbodyData, tbodyColIsBadge }) => {
+const Table = ({ theadData, tbodyData, tbodyColIsBadge, sectionTitle }) => {
   return (
     <table className="table">
       <thead className="table-head">
@@ -16,7 +16,14 @@ const Table = ({ theadData, tbodyData, tbodyColIsBadge }) => {
       </thead>
       <tbody className="table-body">
         {tbodyData.map(item => {
-          return <TableRow key={item.id} data={item.items} colIsBadge={tbodyColIsBadge} />;
+          return (
+            <TableRow
+              key={item.id}
+              data={item.items}
+              colIsBadge={tbodyColIsBadge}
+              sectionTitle={sectionTitle}
+            />
+          );
         })}
       </tbody>
     </table>
@@ -27,6 +34,7 @@ Table.defaultProps = {
   theadData: [],
   tbodyData: [],
   tbodyColIsBadge: [],
+  sectionTitle: '',
 };
 
 Table.propTypes = {
@@ -38,6 +46,7 @@ Table.propTypes = {
   ),
   tbodyData: PropTypes.arrayOf(PropTypes.object),
   tbodyColIsBadge: PropTypes.arrayOf(PropTypes.number),
+  sectionTitle: PropTypes.string,
 };
 
 export default Table;
