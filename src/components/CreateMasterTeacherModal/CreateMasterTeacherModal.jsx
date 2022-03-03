@@ -3,13 +3,23 @@ import { PropTypes } from 'prop-types';
 import './CreateMasterTeacherModal.css';
 import { Modal, Button, Form } from 'react-bootstrap';
 import ConfirmMasterTeacherModal from '../ConfirmMasterTeacherModal/ConfirmMasterTeacherModal';
+import { TLPBackend } from '../../common/utils';
 
 const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
+  const [firstName, setFirstName] = useState('');
   const [confirmModalIsOpen, setConfirmModalOpen] = useState(false);
 
   const closeModal = () => setIsOpen(false);
 
   const sendEmailSuccessSequence = () => {
+    TLPBackend.post('/teachers/create', {
+      // eslint-disable-next-line object-shorthand
+      firstName: firstName,
+      lastName: 'temp',
+      phoneNumber: '1234567890',
+      email: 'email@test.com',
+      title: 'Teacher',
+    });
     setIsOpen(false);
     setConfirmModalOpen(true);
   };
@@ -30,7 +40,11 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
           <div>
             <Form.Group className="mb-5" controlId="createTeacherAccount.firstName">
               <Form.Label>First Name</Form.Label>
-              <Form.Control placeholder="First Name" />
+              <Form.Control
+                placeholder="First Name"
+                value={firstName}
+                onChange={e => setFirstName(e.target.value)}
+              />
             </Form.Group>
             <Form.Group className="mb-5" controlId="createTeacherAccount.lastName">
               <Form.Label>Last Name</Form.Label>
