@@ -33,6 +33,7 @@ import AdminAccountView from './pages/admin-account/admin-account';
 import AdminCreateView from './pages/admin-create-account/admin-create';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
 import PeopleView from './pages/people/people';
+import AreaDetails from './pages/area-details/area-details';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -71,6 +72,7 @@ ReactDOM.render(
         <Route path="/admin/account" element={<AdminAccountView />} />
         <Route path="/admin/create" element={<AdminCreateView />} />
         <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
+        <Route path="/area-details" element={<AreaDetails />} />
       </Routes>
     </Router>
   </React.StrictMode>,
