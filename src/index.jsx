@@ -5,7 +5,6 @@ import './index.css';
 import App from './App';
 
 // page imports
-import SiteView from './pages/sites/sites';
 import SitesCreateView from './pages/sites-create/sites-create';
 import SitesExportDataView from './pages/sites-export-data/sites-export-data';
 import AssignStudentsView from './pages/assign-students/assign-students';
@@ -26,11 +25,7 @@ import TeachersRemoveTeacherView from './pages/master-teachers-remove-master-tea
 import SettingsView from './pages/settings/settings';
 import SettingsChangePasswordView from './pages/settings-change-password/settings-change-password';
 import SettingsEditView from './pages/settings-edit/settings-edit';
-import AdminView from './pages/admin/admin';
 import AreaManagement from './pages/area-management/area-management';
-import SchoolManagement from './pages/sites-management/sites-management';
-import AdminAccountView from './pages/admin-account/admin-account';
-import AdminCreateView from './pages/admin-create-account/admin-create';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
 import PeopleView from './pages/people/people';
 
@@ -39,7 +34,6 @@ ReactDOM.render(
     <Router>
       <Routes>
         <Route path="/" exact element={<App />} />
-        <Route path="/sites" exact element={<SiteView />} />
         <Route path="/sites/create" exact element={<SitesCreateView />} />
         <Route path="/sites/assign-students" exact element={<AssignStudentsView />} />
         <Route path="/sites/export-data" exact element={<SitesExportDataView />} />
@@ -57,7 +51,7 @@ ReactDOM.render(
         <Route path="/master-teachers/edit" exact element={<TeachersEditView />} />
         <Route path="/master-teachers/export-data" exact element={<TeachersExportDataView />} />
         <Route
-          path="/master-teacher/remove-teacher"
+          path="/master-teachers/remove-teacher"
           exact
           element={<TeachersRemoveTeacherView />}
         />
@@ -65,11 +59,7 @@ ReactDOM.render(
         <Route path="/settings/change-password" element={<SettingsChangePasswordView />} />
         <Route path="/settings/edit" element={<SettingsEditView />} />
         <Route path="/people" exact element={<PeopleView />} />
-        <Route path="/admin" element={<AdminView />} />
         <Route path="/area-management" element={<AreaManagement />} />
-        <Route path="/sites/management" exact element={<SchoolManagement />} />
-        <Route path="/admin/account" element={<AdminAccountView />} />
-        <Route path="/admin/create" element={<AdminCreateView />} />
         <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
       </Routes>
     </Router>
