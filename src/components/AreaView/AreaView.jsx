@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import { Link } from 'react-router-dom';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
+import SitesTable from './sitesTable';
 import './AreaView.module.css';
 import Plus from '../../assets/icons/plus.svg';
 
@@ -14,7 +15,7 @@ const AreaView = () => {
   // const [cycleChoices, setCycleChoices] = useState(['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4']);
   const cycleChoices = ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
   const [searchQuery, setSearchQuery] = useState('');
-  console.log(searchQuery);
+  // console.log(searchQuery);
 
   return (
     <div>
@@ -50,6 +51,10 @@ const AreaView = () => {
             <img className="plus__icon" src={Plus} alt="Plus Icon" />
           </button>
         </Link>
+      </div>
+
+      <div className="sites-table-container">
+        <SitesTable />
       </div>
     </div>
   );
