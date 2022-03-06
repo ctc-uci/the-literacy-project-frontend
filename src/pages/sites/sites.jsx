@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dropdown, Button, DropdownButton, Card } from 'react-bootstrap';
+import { TLPBackend } from '../../common/utils';
 import './sites.css';
 // import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import Plus from '../../assets/icons/plus.svg';
@@ -11,6 +12,7 @@ const SiteView = () => {
   // const [areaDropdownTitle, setAreaDropdownTitle] = useState('Bellevue SD');
   const [schoolYearDropdownTitle, setSchoolYearDropdownTitle] = useState('Cycle 1');
   const [modalIsOpen, setModalOpen] = useState(false);
+  const [areaResponseData, setAreaResponseData] = useState([]);
 
   const areas = [
     {
@@ -70,38 +72,20 @@ const SiteView = () => {
     });
   }
 
-  // const theadData = [
-  //   {
-  //     headerTitle: 'Site Name',
-  //     headerPopover: '',
-  //   },
-  //   {
-  //     headerTitle: 'Master Teacher',
-  //     headerPopover: '',
-  //   },
-  //   {
-  //     headerTitle: 'Status',
-  //     headerPopover:
-  //       "<p><strong style='color:#28a745'>Active:</strong> This user is active in the current cycle. They have full access and can log in.</p> <p><strong style='color:#5f758d'>Inactive:</strong> This user is inactive in the current cycle. They cannot log in until an admin user reactivates their account.</p> <p><strong style='color:#17a2b8'>Email Sent:</strong> An email sign up link was sent. They have not set up their account yet.",
-  //   },
-  //   {
-  //     headerTitle: 'Additional Info',
-  //     headerPopover: '',
-  //   },
-  // ];
-  // const tbodyData = [
-  //   {
-  //     id: 1,
-  //     items: ['Test Name', 'Master Teacher A', 'Active', 'Temp'],
-  //   },
-  // ];
-
-  // const changeAreaTitle = event => {
-  //   setAreaDropdownTitle(event.target.textContent);
-  // };
   const changeSchoolYearTitle = event => {
     setSchoolYearDropdownTitle(event.target.textContent);
   };
+
+  useEffect(() => {
+    TLPBackend.get('/areas')
+      .then(res => {
+        setAreaResponseData(res.data);
+        console.log(areaResponseData);
+      })
+      .catch(err => {
+        alert(err);
+      });
+  }, []);
 
   return (
     <div>
