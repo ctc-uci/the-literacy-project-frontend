@@ -6,27 +6,62 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 0px 50px;
+  height: calc(100vh - 101px);
 }
 
 .site-container > div {
   padding: 50px;
 }
+.site-container  h1 {
+  font-size: 1.7em;
+}
+.area-content {
+  width: 100%
+}
+.site-container-information {
+  padding: 40px 0 0 50px;
+  height: 100%;
+  width: 100%;
+}
+
+.school-year-container {
+  display: flex;
+  align-items: center;
+}
 
 .school-year-info {
   display: inline-flex;
-}
-
-.school-year-info > * {
-  margin: auto;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .school-year-input {
   margin: 0 20px;
 }
+.search-school {
+  display: flex;
+  align-items: center;
+}
+
+.area-button-options-container {
+  margin: 50px 0 20px 0;
+  display: flex;
+  justify-content: space-between;
+}
+.create-new-area-button {
+  margin: 0;
+}
 
 .data {
   text-align: center;
   border-left: 1px solid #c4c4c4;
+}
+
+.data > p {
+  margin: 0;
+  font-size: 15px;
 }
 
 .graph {
@@ -36,16 +71,19 @@
   width: 200px;
 }
 
-.stats {
-  background: #e9ecef;
+.area-data-stats {
+  background: #bbcbe2;
   border: 1px solid #dfdfdf;
   border-radius: 10px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   height: auto;
   width: 200px;
-  padding: 20px;
+  padding: 40px;
   margin: 20px 0;
+}
+.area-data-stats > p {
+  margin: 0;
 }
 
 .btn-warning {

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Dropdown, Button, DropdownButton, Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import './sites.css';
 // import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
+import { BsFillCaretDownFill, BsPeople } from 'react-icons/bs';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
 import NavigationBarTwo from '../../components/NavigationBarTwo/NavigationBarTwo';
 import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
+import SchoolIcon from '../../assets/icons/school.svg';
+import TeacherIcon from '../../assets/icons/Teacher.svg';
 
 const SiteView = () => {
   // const [areaDropdownTitle, setAreaDropdownTitle] = useState('Bellevue SD');
-  const [schoolYearDropdownTitle, setSchoolYearDropdownTitle] = useState('Cycle 1');
   const [modalIsOpen, setModalOpen] = useState(false);
 
   const areas = [
@@ -99,57 +101,53 @@ const SiteView = () => {
   // const changeAreaTitle = event => {
   //   setAreaDropdownTitle(event.target.textContent);
   // };
-  const changeSchoolYearTitle = event => {
-    setSchoolYearDropdownTitle(event.target.textContent);
-  };
 
   return (
     <div>
       <NavigationBarTwo />
       <div className="site-container">
-        <div>
+        <div className="area-content">
           <h1>Areas</h1>
-          <div className="school-year-info">
-            <h1>School Year</h1>
-            <input type="text" list="school-year" className="school-year-input" />
-            <datalist id="school-year">
-              <option value="2021-2022" aria-label="2021-2022" />
-              <option value="2020-2021" aria-label="2020-2021" />
-              <option value="2019-2020" aria-label="2019-2020" />
-            </datalist>
-            <h2>Cycle</h2>
-            <DropdownButton drop="down" title={schoolYearDropdownTitle} variant="primary">
-              <Dropdown.Item eventKey="1" onClick={e => changeSchoolYearTitle(e)}>
-                Cycle 1
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="2" onClick={e => changeSchoolYearTitle(e)}>
-                Cycle 2
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="3" onClick={e => changeSchoolYearTitle(e)}>
-                Cycle 3
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="4" onClick={e => changeSchoolYearTitle(e)}>
-                Cycle 4
-              </Dropdown.Item>
-            </DropdownButton>
-            <div className="search-school">
-              <input type="text" placeholder="Search All Schools" />
-              <Button variant="primary">Search</Button>
+          <div className="site-container-information">
+            <div className="school-year-info">
+              <div className="school-year-container">
+                <h1>School Year</h1>
+                <input type="text" list="school-year" className="school-year-input" />
+                <datalist id="school-year">
+                  <option value="2021-2022" aria-label="2021-2022" />
+                  <option value="2020-2021" aria-label="2020-2021" />
+                  <option value="2019-2020" aria-label="2019-2020" />
+                </datalist>
+              </div>
+              <div className="search-school">
+                <input type="text" placeholder="Search All Schools" />
+                <Button variant="primary">Search</Button>
+              </div>
             </div>
+            <div className="area-button-options-container">
+              <Button
+                variant="warning"
+                className="create-new-area-button"
+                onClick={() => {
+                  setModalOpen(true);
+                }}
+              >
+                <img className="plus__icon" src={Plus} alt="Plus Icon" />
+                New Area
+              </Button>
+              <CreateAreaModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
+              <Button
+                variant="primary"
+                className="create-new-area-button"
+                onClick={() => {
+                  console.log('needs functionality');
+                }}
+              >
+                Sort By: A-Z <BsFillCaretDownFill />
+              </Button>
+            </div>
+            {mapAreas()}
           </div>
-          <div>
-            <Button
-              variant="warning"
-              onClick={() => {
-                setModalOpen(true);
-              }}
-            >
-              New Area
-              <img className="plus__icon" src={Plus} alt="Plus Icon" />
-            </Button>
-            <CreateAreaModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
-          </div>
-          {mapAreas()}
           {/* <div>
             <ManagementDataSection
               sectionTitle="Sites"
@@ -161,14 +159,33 @@ const SiteView = () => {
         </div>
         <div className="data">
           <Button variant="primary">Export to CSV</Button>
-          <h2>Data</h2>
-          <h3>Average Scores</h3>
+          <p>All Areas</p>
+          <p>Year: 2021-22 Cycle: 1</p>
+          <p>
+            <strong>Average Growth in Reading</strong>
+          </p>
           {/* placeholder for graph */}
           <Card className="graph" />
-          <Card className="stats">
-            <p>40 Students</p>
-            <p>4 Teachers</p>
-            <p>4 Sites</p>
+          <Card className="area-data-stats">
+            <p>
+              <BsPeople /> 40 Students
+            </p>
+            <p>
+              <img
+                className="area-dropdown__open__area_stats__section-icon"
+                src={TeacherIcon}
+                alt="Teacher Icon"
+              />
+              4 Teachers
+            </p>
+            <p>
+              <img
+                className="area-dropdown__open__area_stats__section-icon"
+                src={SchoolIcon}
+                alt="School Icon"
+              />
+              4 Sites
+            </p>
           </Card>
         </div>
       </div>

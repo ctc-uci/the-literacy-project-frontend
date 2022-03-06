@@ -9,7 +9,7 @@
 }
 /* Classes */
 .area-dropdown {
-  margin: 10px;
+  margin: 10px 0px;
   border-radius: 5px;
   border: 1px solid #b2b2b2;
 }
@@ -41,11 +41,13 @@
   grid-template-rows: 1fr;
   gap: 0px 0px;
   grid-template-areas: '. . .';
-  height: 128px;
+  height: 205px;
 }
 .area-dropdown__open__area_stats {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  height: calc(100% - 22px);
 }
 .area-dropdown__open__area_stats__section {
   display: flex;
