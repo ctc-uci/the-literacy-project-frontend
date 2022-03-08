@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { cookieKeys, cookieConfig } from './auth/cookie_utils';
 
-const baseURL = `${process.env.BACKEND_HOST}:${process.env.BACKEND_PORT}`;
+const baseURL = `${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`;
 
 // Using Firebase Web version 9
 const firebaseConfig = {

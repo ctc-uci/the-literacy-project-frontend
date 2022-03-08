@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { CookiesProvider } from 'react-cookie';
 import './index.css';
 import App from './App';
 
@@ -33,46 +34,50 @@ import AdminAccountView from './pages/admin-account/admin-account';
 import AdminCreateView from './pages/admin-create-account/admin-create';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
 import PeopleView from './pages/people/people';
+import Register from './components/Register/register';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <Routes>
-        <Route path="/" exact element={<App />} />
-        <Route path="/sites" exact element={<SiteView />} />
-        <Route path="/sites/create" exact element={<SitesCreateView />} />
-        <Route path="/sites/assign-students" exact element={<AssignStudentsView />} />
-        <Route path="/sites/export-data" exact element={<SitesExportDataView />} />
-        <Route path="/students" exact element={<StudentView />} />
-        <Route path="/students/create" exact element={<StudentsCreateView />} />
-        <Route path="/students/edit" exact element={<StudentsEditView />} />
-        <Route path="/students/export-data" exact element={<StudentsExportDataView />} />
-        <Route path="/login" exact element={<LoginView />} />
-        <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
-        <Route path="/login/master-teacher-start/:id" exact element={<LoginTeacherStartView />} />
-        <Route path="/dashboard" exact element={<DashboardView />} />
-        <Route path="/master-teachers" exact element={<TeacherView />} />
-        <Route path="/master-teachers/confirm" exact element={<TeachersConfirmation />} />
-        <Route path="/master-teachers/create" exact element={<TeachersCreateView />} />
-        <Route path="/master-teachers/edit" exact element={<TeachersEditView />} />
-        <Route path="/master-teachers/export-data" exact element={<TeachersExportDataView />} />
-        <Route
-          path="/master-teacher/remove-teacher"
-          exact
-          element={<TeachersRemoveTeacherView />}
-        />
-        <Route path="/settings" element={<SettingsView />} />
-        <Route path="/settings/change-password" element={<SettingsChangePasswordView />} />
-        <Route path="/settings/edit" element={<SettingsEditView />} />
-        <Route path="/people" exact element={<PeopleView />} />
-        <Route path="/admin" element={<AdminView />} />
-        <Route path="/area-management" element={<AreaManagement />} />
-        <Route path="/sites/management" exact element={<SchoolManagement />} />
-        <Route path="/admin/account" element={<AdminAccountView />} />
-        <Route path="/admin/create" element={<AdminCreateView />} />
-        <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
-      </Routes>
-    </Router>
+    <CookiesProvider>
+      <Router>
+        <Routes>
+          <Route path="/" exact element={<App />} />
+          <Route path="/register" exact element={<Register />} />
+          <Route path="/sites" exact element={<SiteView />} />
+          <Route path="/sites/create" exact element={<SitesCreateView />} />
+          <Route path="/sites/assign-students" exact element={<AssignStudentsView />} />
+          <Route path="/sites/export-data" exact element={<SitesExportDataView />} />
+          <Route path="/students" exact element={<StudentView />} />
+          <Route path="/students/create" exact element={<StudentsCreateView />} />
+          <Route path="/students/edit" exact element={<StudentsEditView />} />
+          <Route path="/students/export-data" exact element={<StudentsExportDataView />} />
+          <Route path="/login" exact element={<LoginView />} />
+          <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
+          <Route path="/login/master-teacher-start/:id" exact element={<LoginTeacherStartView />} />
+          <Route path="/dashboard" exact element={<DashboardView />} />
+          <Route path="/master-teachers" exact element={<TeacherView />} />
+          <Route path="/master-teachers/confirm" exact element={<TeachersConfirmation />} />
+          <Route path="/master-teachers/create" exact element={<TeachersCreateView />} />
+          <Route path="/master-teachers/edit" exact element={<TeachersEditView />} />
+          <Route path="/master-teachers/export-data" exact element={<TeachersExportDataView />} />
+          <Route
+            path="/master-teacher/remove-teacher"
+            exact
+            element={<TeachersRemoveTeacherView />}
+          />
+          <Route path="/settings" element={<SettingsView />} />
+          <Route path="/settings/change-password" element={<SettingsChangePasswordView />} />
+          <Route path="/settings/edit" element={<SettingsEditView />} />
+          <Route path="/people" exact element={<PeopleView />} />
+          <Route path="/admin" element={<AdminView />} />
+          <Route path="/area-management" element={<AreaManagement />} />
+          <Route path="/sites/management" exact element={<SchoolManagement />} />
+          <Route path="/admin/account" element={<AdminAccountView />} />
+          <Route path="/admin/create" element={<AdminCreateView />} />
+          <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
+        </Routes>
+      </Router>
+    </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

@@ -8,6 +8,9 @@ const Register = () => {
   const [checkPassword, setCheckPassword] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [role, setRole] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
   const navigate = useNavigate();
 
   /**
@@ -21,7 +24,16 @@ const Register = () => {
       if (password !== checkPassword) {
         throw new Error("Passwords don't match");
       }
-      await registerWithEmailAndPassword(email, password, role, navigate, '/login');
+      await registerWithEmailAndPassword(
+        email,
+        password,
+        role,
+        firstName,
+        lastName,
+        phoneNumber,
+        navigate,
+        '/login',
+      );
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -31,23 +43,53 @@ const Register = () => {
     <div>
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
-        <input type="text" onChange={({ target }) => setEmail(target.value)} placeholder="Email" />
+        <input
+          type="text"
+          onChange={({ target }) => setEmail(target.value)}
+          placeholder="Email"
+          required
+        />
         <br />
-        <input onChange={({ target }) => setRole(target.value)} placeholder="Role" />
+        <input onChange={({ target }) => setRole(target.value)} placeholder="Role" required />
+        <br />
+        <input
+          type="text"
+          onChange={({ target }) => setFirstName(target.value)}
+          placeholder="First Name"
+          required
+        />
+        <br />
+        <input
+          type="text"
+          onChange={({ target }) => setLastName(target.value)}
+          placeholder="Last Name"
+          required
+        />
+        <br />
+        <input
+          type="text"
+          onChange={({ target }) => setPhoneNumber(target.value)}
+          placeholder="Phone Number"
+          required
+        />
         <br />
         <input
           onChange={({ target }) => setPassword(target.value)}
           placeholder="Password"
           type="password"
+          required
         />
         <br />
         <input
           onChange={({ target }) => setCheckPassword(target.value)}
           placeholder="Re-enter Password"
           type="password"
+          required
         />
         <br />
-        <button type="submit">Register</button>
+        <button type="submit" onClick={handleSubmit}>
+          Register
+        </button>
       </form>
       <p>{errorMessage}</p>
     </div>

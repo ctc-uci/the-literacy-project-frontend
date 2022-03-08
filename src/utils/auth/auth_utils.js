@@ -72,11 +72,12 @@ const createUserInFirebase = async (email, password) => {
  * @param {string} email
  * @param {string} password
  * @param {string} role
- * @returns A UserCredential object from firebase
- */
-const createUser = async (email, password, role) => {
+ * @param {string} firstName
+ * @param {string} lastName
+ * @param {string} phoneNumber */
+const createUser = async (email, password, role, firstName, lastName, phoneNumber) => {
   const user = await createUserInFirebase(email, password);
-  await createUserInDB(email, user.uid, role, false, password);
+  await createUserInDB(role, email, password, user.uid, firstName, lastName, phoneNumber);
   sendEmailVerification(user);
 };
 
@@ -88,8 +89,17 @@ const createUser = async (email, password, role) => {
  * @param {hook} navigate An instance of the useNavigate hook from react-router-dom
  * @param {string} redirectPath path to redirect users once logged in
  */
-const registerWithEmailAndPassword = async (email, password, role, navigate, redirectPath) => {
-  await createUser(email, password, role);
+const registerWithEmailAndPassword = async (
+  email,
+  password,
+  role,
+  firstName,
+  lastName,
+  phoneNumber,
+  navigate,
+  redirectPath,
+) => {
+  await createUser(email, password, role, firstName, lastName, phoneNumber);
   navigate(redirectPath);
 };
 
