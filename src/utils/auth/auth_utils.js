@@ -120,7 +120,8 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
   }
   cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
   const user = await TLPBackend.get(`/tlp-users/${auth.currentUser.uid}`);
-  cookies.set(cookieKeys.ROLE, user.data.user.role, cookieConfig);
+  console.log(user);
+  cookies.set(cookieKeys.POSITION, user.data.position, cookieConfig);
   navigate(redirectPath);
 };
 
@@ -147,7 +148,7 @@ const sendInviteLink = async (email, role) => {
 /**
  * Completes the password reset process, given a confirmation code and new password
  * @param {string} code The confirmation code sent via email to the user
- * @param {string} newPassowrd The new password
+ * @param {string} newPassword The new password
  */
 const confirmNewPassword = async (code, newPassword) => {
   await confirmPasswordReset(auth, code, newPassword);

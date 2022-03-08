@@ -35,6 +35,7 @@ import AdminCreateView from './pages/admin-create-account/admin-create';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
 import PeopleView from './pages/people/people';
 import Register from './components/Register/register';
+import EmailAction from './components/EmailAction/EmailAction';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -75,6 +76,7 @@ ReactDOM.render(
           <Route path="/admin/account" element={<AdminAccountView />} />
           <Route path="/admin/create" element={<AdminCreateView />} />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
+          <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
         </Routes>
       </Router>
     </CookiesProvider>

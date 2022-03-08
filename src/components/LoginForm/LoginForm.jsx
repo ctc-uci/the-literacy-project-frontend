@@ -78,6 +78,7 @@ const LoginForm = ({ cookies }) => {
                 id="email"
                 onChange={({ target }) => setEmail(target.value)}
                 placeholder="Email Address"
+                required
               />
             </label>
           </div>
@@ -91,6 +92,7 @@ const LoginForm = ({ cookies }) => {
                 onChange={({ target }) => setPassword(target.value)}
                 id="password"
                 placeholder="Password"
+                required
               />
               <FaEye id="eyeIcon" color="black" onClick={togglePasswordVisibility} />
             </label>
