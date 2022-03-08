@@ -9,11 +9,11 @@ const StudentView = () => {
       headerPopover: '',
     },
     {
-      headerTitle: 'Teacher',
+      headerTitle: 'Site',
       headerPopover: '',
     },
     {
-      headerTitle: 'School',
+      headerTitle: 'Ethnicity',
       headerPopover: '',
     },
     {
@@ -21,11 +21,11 @@ const StudentView = () => {
       headerPopover: '',
     },
     {
-      headerTitle: 'Cycle',
+      headerTitle: 'School Year/Cycle',
       headerPopover: '',
     },
     {
-      headerTitle: 'Scores',
+      headerTitle: 'View Profile',
       headerPopover: '',
     },
   ];
@@ -34,11 +34,11 @@ const StudentView = () => {
       id: 1,
       items: [
         'Test Name',
-        'Test Teacher',
-        'Test School',
+        'Test Site',
+        'Test Ethnicity',
         'Test District',
-        '2020-Cycle 1',
-        'View Score btn',
+        'Test Cycle',
+        'Test Profile',
       ],
     },
   ];
