@@ -1,8 +1,11 @@
-import { React, useState } from 'react';
-import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
+import { React, useState, useEffect } from 'react';
+// import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import ManagementDataSection from '../ManagementDataSection/ManagementDataSection';
+import { TLPBackend } from '../../common/utils';
 
 const SitesTable = () => {
+  const areaId = 3;
+
   const theadData = [
     {
       headerTitle: 'Status',
@@ -18,49 +21,86 @@ const SitesTable = () => {
       headerPopover: '',
     },
     {
-      headerTitle: 'Additional Info',
+      headerTitle: 'Site Notes',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'Site Info',
       headerPopover: '',
     },
   ];
 
-  // const [sites, setSites] = useState([]);
   // dummy data for now
-  const sites = [
-    {
-      siteName: 'Lakeside Middle School',
-      masterTeachers: [],
-      status: 'Active',
-    },
-    {
-      siteName: 'Irvine Elementary School',
-      masterTeachers: ['Harry Potter', 'Hermione Granger'],
-      status: 'Sent',
-    },
-  ];
+  // const sites = [
+  //   {
+  //     siteName: 'Lakeside Middle School',
+  //     masterTeachers: [],
+  //     status: 'Active',
+  //   },
+  //   {
+  //     siteName: 'Irvine Elementary School',
+  //     masterTeachers: ['Harry Potter', 'Hermione Granger'],
+  //     status: 'Sent',
+  //   },
+  // ];
+
+  const [sites, setSites] = useState([]);
+  const getSites = async () => {
+    const { data: siteData } = await TLPBackend.get('/sites');
+    const areaSites = siteData.filter(s => s.areaId === areaId);
+    // return areaSites;
+    setSites(areaSites);
+  };
+
+  useEffect(getSites, []);
+  // console.log(sites);
+
+  // const [teachersList, setTeachers] = useState([]);
+  // const getTeachers = async siteId => {
+  //   const { data: teachers } = await TLPBackend.get('/teachers');
+  //   const siteTeachers = teachers.filter(t => {
+  //     // console.log(t);
+  //     return t.sites && t.sites.includes(siteId);
+  //   });
+  //   // setTeachers(siteTeachers);
+  //   return siteTeachers;
+  // };
+
+  // getTeachers(5).then(result => console.log(result));
 
   let i = 1;
-  const statusChoices = ['Active', 'Inactive', 'Sent'];
+  // const statusChoices = ['Active', 'Inactive', 'Sent'];
   const tbodyData = sites.map(s => {
-    const [currStatus, setCurrStatus] = useState(s.status);
-    const statusDropdown = (
-      <DropdownMenu choices={statusChoices} current={currStatus} setFn={setCurrStatus} />
-    );
+    // const [currStatus, setCurrStatus] = useState('Active');
+    // const statusDropdown = (
+    //   <DropdownMenu choices={statusChoices} current={currStatus} setFn={setCurrStatus} />
+    // );
     const additionalInfo = (
       <button type="button" className="btn btn-primary">
-        Additional Info
+        View Info
       </button>
     );
-    let teachers;
-    if (s.masterTeachers.length === 0) {
-      teachers = 'No Teacher Assigned';
-    } else {
-      teachers = s.masterTeachers.join(' ');
-    }
+    const siteNotes = (
+      <button type="button" className="btn btn-primary">
+        View Note
+      </button>
+    );
+    // let b;
+    // getTeachers(s.siteId);
+    // console.log(teachersList);
+    // if (teachersList.length === 0) {
+    //   b = 'No Teacher Assigned';
+    // } else {
+    //   console.log(teachersList.map(t => t.firstName + ' ' + t.lastName))
+    //   b = teachersList.map(t => t.firstName + ' ' + t.lastName).join(' ');
+    // }
+    const teachers = s.primaryContactInfo.firstName + s.primaryContactInfo.lastName;
 
+    // let teachers = getTeachers(s.siteId);
     i += 1;
     return {
       id: i,
-      items: [statusDropdown, s.siteName, teachers, additionalInfo],
+      items: ['active', s.siteName, teachers, siteNotes, additionalInfo],
     };
   });
 
