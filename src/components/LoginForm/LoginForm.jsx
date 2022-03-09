@@ -125,9 +125,6 @@ const LoginForm = ({ cookies }) => {
           <a id="forgotPassword" href="login/reset-password">
             Forgot password?
           </a>
-          <a id="noAccount" href="/">
-            Don&apos;t have an account?
-          </a>
         </div>
       </div>
     </div>

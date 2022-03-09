@@ -34,8 +34,15 @@ import AdminAccountView from './pages/admin-account/admin-account';
 import AdminCreateView from './pages/admin-create-account/admin-create';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
 import PeopleView from './pages/people/people';
-import Register from './components/Register/register';
+import Register from './components/Register/Register';
 import EmailAction from './components/EmailAction/EmailAction';
+import ProtectedRoute from './utils/ProtectedRoute';
+import { AUTH_ROLES } from './utils/config';
+
+const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
+// TODO: add protected routes -- use current few as examples
+// specify component to render if access allowed, redirectPath if access denied
+// use roles from AUTH_ROLES; add to roles list
 
 ReactDOM.render(
   <React.StrictMode>
@@ -44,7 +51,17 @@ ReactDOM.render(
         <Routes>
           <Route path="/" exact element={<App />} />
           <Route path="/register" exact element={<Register />} />
-          <Route path="/sites" exact element={<SiteView />} />
+          <Route
+            path="/sites"
+            exact
+            element={
+              <ProtectedRoute
+                Component={SiteView}
+                redirectPath="/login"
+                roles={[ADMIN_ROLE, USER_ROLE]}
+              />
+            }
+          />
           <Route path="/sites/create" exact element={<SitesCreateView />} />
           <Route path="/sites/assign-students" exact element={<AssignStudentsView />} />
           <Route path="/sites/export-data" exact element={<SitesExportDataView />} />
@@ -58,7 +75,17 @@ ReactDOM.render(
           <Route path="/dashboard" exact element={<DashboardView />} />
           <Route path="/master-teachers" exact element={<TeacherView />} />
           <Route path="/master-teachers/confirm" exact element={<TeachersConfirmation />} />
-          <Route path="/master-teachers/create" exact element={<TeachersCreateView />} />
+          <Route
+            path="/master-teachers/create"
+            exact
+            element={
+              <ProtectedRoute
+                Component={TeachersCreateView}
+                redirectPath="/login"
+                roles={[ADMIN_ROLE]}
+              />
+            }
+          />
           <Route path="/master-teachers/edit" exact element={<TeachersEditView />} />
           <Route path="/master-teachers/export-data" exact element={<TeachersExportDataView />} />
           <Route
@@ -66,7 +93,16 @@ ReactDOM.render(
             exact
             element={<TeachersRemoveTeacherView />}
           />
-          <Route path="/settings" element={<SettingsView />} />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute
+                Component={SettingsView}
+                redirectPath="/login"
+                roles={[ADMIN_ROLE, USER_ROLE]}
+              />
+            }
+          />
           <Route path="/settings/change-password" element={<SettingsChangePasswordView />} />
           <Route path="/settings/edit" element={<SettingsEditView />} />
           <Route path="/people" exact element={<PeopleView />} />

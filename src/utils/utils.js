@@ -74,8 +74,8 @@ const refreshToken = async () => {
     });
     // Sets the appropriate cookies after refreshing access token
     setCookie(cookieKeys.ACCESS_TOKEN, idToken, cookieConfig);
-    const user = await TLPBackend.get(`/users/${auth.currentUser.uid}`);
-    setCookie(cookieKeys.ROLE, user.data.user.role, cookieConfig);
+    const user = await TLPBackend.get(`/tlp-users/${auth.currentUser.uid}`);
+    setCookie(cookieKeys.POSITION, user.data.position, cookieConfig);
     return idToken;
   }
   return null;

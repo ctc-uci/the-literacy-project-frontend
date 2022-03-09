@@ -10,9 +10,9 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
 import { TLPBackend, auth } from '../utils';
-import AUTH_ROLES from './auth_config';
+import { AUTH_ROLES, USER_STATUS } from '../config';
 
-const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES.AUTH_ROLES;
+const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
 
 /**
  * Makes requests to add user to NPO DB. Deletes user if Firebase error
@@ -118,9 +118,20 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
   if (!auth.currentUser.emailVerified) {
     throw new Error('Please verify your email before logging in.');
   }
-  cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
+
   const user = await TLPBackend.get(`/tlp-users/${auth.currentUser.uid}`);
-  console.log(user);
+  // if user status is pending but verified, this is their first time logging in after verifying,
+  // so make backend call to update their status to active
+  // if user status is inactive, they cannot log in
+  if (user.data.active === USER_STATUS.PENDING) {
+    await TLPBackend.put(`/tlp-users/${auth.currentUser.uid}`);
+  } else if (user.data.active !== USER_STATUS.ACTIVE) {
+    throw new Error(
+      'Your account is currently not active. Please contact administration for more information.',
+    );
+  }
+
+  cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
   cookies.set(cookieKeys.POSITION, user.data.position, cookieConfig);
   navigate(redirectPath);
 };
@@ -137,11 +148,11 @@ const sendPasswordReset = async email => {
  * Sends password reset to new account created with stated email
  * @param {string} email The email to create an account with
  */
-const sendInviteLink = async (email, role) => {
+const sendInviteLink = async (role, email, firstName, lastName, phoneNumber) => {
   // generate a random password (not going to be used as new account will reset password)
   const randomPassword = Math.random().toString(36).slice(-8);
   const user = await createUserInFirebase(email, randomPassword);
-  createUserInDB(email, user.uid, role, false, randomPassword);
+  await createUserInDB(role, email, randomPassword, user.uid, firstName, lastName, phoneNumber);
   sendPasswordReset(email);
 };
 
@@ -156,6 +167,7 @@ const confirmNewPassword = async (code, newPassword) => {
 
 /**
  * Applies a verification code sent to the user by email or other out-of-band mechanism.
+ * Updates the user's active status in the backend
  * @param {string} code The confirmation code sent via email to the user
  */
 const confirmVerifyEmail = async code => {

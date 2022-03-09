@@ -11,7 +11,10 @@ const userIsAuthenticated = async (roles, cookies) => {
       return false;
     }
     const loggedIn = await TLPBackend.get(`/auth/verifyToken/${accessToken}`);
-    return roles.includes(cookies.get(cookieKeys.ROLE)) && loggedIn.status === 200;
+    return (
+      roles.includes(decodeURIComponent(cookies.get(cookieKeys.POSITION))) &&
+      loggedIn.status === 200
+    );
   } catch (err) {
     clearCookies(cookies);
     return false;

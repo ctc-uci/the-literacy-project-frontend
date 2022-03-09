@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import RecoverPassword from '../RecoverPassword/RecoverPassword';
+import RecoverPassword from '../ResetPassword/ResetPassword';
 import VerifyEmail from '../VerifyEmail/VerifyEmail';
 
 const EmailAction = ({ redirectPath }) => {
