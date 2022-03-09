@@ -34,7 +34,7 @@ import AdminAccountView from './pages/admin-account/admin-account';
 import AdminCreateView from './pages/admin-create-account/admin-create';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
 import PeopleView from './pages/people/people';
-import Register from './components/Register/Register';
+import Register from './components/Register/register';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './utils/ProtectedRoute';
 import { AUTH_ROLES } from './utils/config';
