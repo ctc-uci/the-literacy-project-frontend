@@ -41,7 +41,8 @@ ReactDOM.render(
       <Routes>
         <Route path="/" exact element={<App />} />
         <Route path="/sites" exact element={<SiteView />} />
-        <Route path="/sites/create" exact element={<SitesCreateView />} />
+        <Route path="/sites/create/" exact render={() => window.location.replace('/sites')} />
+        <Route path="/sites/create/:areaId" exact element={<SitesCreateView />} />
         <Route path="/sites/assign-students" exact element={<AssignStudentsView />} />
         <Route path="/sites/export-data" exact element={<SitesExportDataView />} />
         <Route path="/students" exact element={<StudentView />} />

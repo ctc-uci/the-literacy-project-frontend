@@ -14,7 +14,7 @@ const AreaView = () => {
   // const [cycleChoices, setCycleChoices] = useState(['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4']);
   const cycleChoices = ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
   const [searchQuery, setSearchQuery] = useState('');
-  console.log(searchQuery);
+  // console.log(searchQuery);
 
   return (
     <div>
