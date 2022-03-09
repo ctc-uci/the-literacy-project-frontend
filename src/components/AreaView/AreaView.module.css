@@ -1,5 +1,61 @@
-.all-areas-breadcrumb {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #3288c4;
+* {
+  box-sizing: border-box;
+}
+
+.site_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.site_container > div {
+  padding: 50px;
+}
+
+.all_areas_breadcrumb {
+  font-size: rem;
+  font-size: 40px;
+  color: #3288c4 !important;
+  text-decoration: none;
+}
+
+.search_query_filters {
+  display: inline-flex;
+}
+
+.search_query_filters > * {
+  margin: auto;
+}
+
+.select_school_year {
+  margin: 0 45px;
+}
+
+.data {
+  text-align: center;
+  border-left: 1px solid #c4c4c4;
+}
+
+.graph {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  height: 200px;
+  width: 200px;
+}
+
+.stats {
+  background: #e9ecef;
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  height: auto;
+  width: 200px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.btn-warning {
+  background: #ffd350;
+  text-decoration-color: black;
 }
