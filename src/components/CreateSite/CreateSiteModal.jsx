@@ -51,6 +51,7 @@ const CreateSiteModal = areaId => {
       addressCity: data.addressCity,
       addressZip: data.addressZip,
       ...areaId,
+      active: 'true',
       notes: data.notes,
       primaryContactInfo: {
         // Revisit later: currently only one input field for name,
@@ -83,7 +84,7 @@ const CreateSiteModal = areaId => {
     }
 
     // send form data to server
-    // console.log(formData);
+    console.log(formData);
     await TLPBackend.post('/sites', formData, {
       headers: {
         'Content-Type': 'application/json',
@@ -258,8 +259,14 @@ const CreateSiteModal = areaId => {
                 <label htmlFor="secondary-phone">
                   Phone Number
                   <input
-                    type="text"
                     className="form-control"
+                    type="number"
+                    // Phone #s are <= 10 digits
+                    onInput={e => {
+                      if (e.target.value.length > 10) {
+                        e.target.value = e.target.value.slice(0, 10);
+                      }
+                    }}
                     name="secondaryPhone"
                     placeholder="placeholder"
                     {...register('secondaryPhone')}
@@ -289,7 +296,7 @@ const CreateSiteModal = areaId => {
 };
 
 CreateSiteModal.propTypes = {
-  areaId: PropTypes.string.isRequired,
+  areaId: PropTypes.number.isRequired,
 };
 
 export default CreateSiteModal;
