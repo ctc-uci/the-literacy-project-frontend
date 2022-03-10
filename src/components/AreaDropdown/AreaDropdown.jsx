@@ -56,13 +56,14 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
               <div className="area-dropdown__open__site-lookup__header">Sites</div>
               <div className="area-dropdown__open__site-lookup__body">
                 {areaSites.map(site => {
+                  console.log(site);
                   return (
                     <Link
                       className="area-dropdown__open__site-link"
-                      to={`/site/${site.site_id}`}
-                      key={`site-${site.site_id}`}
+                      to={`/site/${site.siteId}`}
+                      key={`site-${site.siteId}`}
                     >
-                      {site.site_name}
+                      {site.siteName}
                     </Link>
                   );
                 })}

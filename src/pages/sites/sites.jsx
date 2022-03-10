@@ -14,59 +14,88 @@ const SiteView = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
 
-  const areas = [
-    {
-      area_id: 1,
-      area_name: 'Bellevue SD',
-      area_stats: {
-        student_count: 15,
-        master_teacher_count: 2,
-        site_count: 2,
-      },
-      area_sites: [
-        {
-          site_id: 1,
-          site_name: 'Highland Middle School',
-        },
-        {
-          site_id: 2,
-          site_name: 'Odle Middle School',
-        },
-        {
-          site_id: 3,
-          site_name: 'Odle Middle School',
-        },
-        {
-          site_id: 4,
-          site_name: 'Odle Middle School',
-        },
-        {
-          site_id: 5,
-          site_name: 'Odle Middle School',
-        },
-      ],
-    },
-    {
-      area_id: 2,
-      area_name: 'Irvine Unified School District',
-      area_stats: {
-        student_count: 30,
-        master_teacher_count: 22,
-        site_count: 5,
-      },
-      area_sites: [],
-    },
-  ];
+  // const areas = [
+  //   {
+  //     area_id: 1,
+  //     area_name: 'Bellevue SD',
+  //     area_stats: {
+  //       student_count: 15,
+  //       master_teacher_count: 2,
+  //       site_count: 2,
+  //     },
+  //     area_sites: [
+  //       {
+  //         site_id: 1,
+  //         site_name: 'Highland Middle School',
+  //       },
+  //       {
+  //         site_id: 2,
+  //         site_name: 'Odle Middle School',
+  //       },
+  //       {
+  //         site_id: 3,
+  //         site_name: 'Odle Middle School',
+  //       },
+  //       {
+  //         site_id: 4,
+  //         site_name: 'Odle Middle School',
+  //       },
+  //       {
+  //         site_id: 5,
+  //         site_name: 'Odle Middle School',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     area_id: 2,
+  //     area_name: 'Irvine Unified School District',
+  //     area_stats: {
+  //       student_count: 30,
+  //       master_teacher_count: 22,
+  //       site_count: 5,
+  //     },
+  //     area_sites: [],
+  //   },
+  // ];
+
+  // function (areaReponse)
+  // Iterate through the response data
+  // get request to /site/:areaid
+  // ["area_name"] = siteResponseData
+
+  // get areas, and then filter unique Area Ids
+
+  // Logic: Call areas, create an array of all areas
+
+  // Filter: Filter for specific area ID and remove after
+  // Repeat filter step until empty array
+
+  const addAssociatedSiteToArea = () => {
+    // eslint-disable-next-line no-plusplus
+    for (let ind = 0; ind < areaResponseData.length; ind++) {
+      TLPBackend.get(`/sites/area/${areaResponseData[ind].areaId}`)
+        .then(res => {
+          areaResponseData[ind].area_sites = res.data;
+        })
+        .catch(err => {
+          alert(err);
+        });
+    }
+  };
 
   function mapAreas() {
-    return areas.map(area => {
+    return areaResponseData.map(area => {
       return (
         <AreaDropdown
-          areaId={area.area_id}
-          areaName={area.area_name}
-          areaStats={area.area_stats}
+          areaId={area.areaId}
+          areaName={area.areaName}
+          areaStats={{
+            student_count: 15,
+            master_teacher_count: 2,
+            site_count: 2,
+          }}
           areaSites={area.area_sites}
-          key={`area-dropdown-${area.area_id}`}
+          key={`area-dropdown-${area.areaId}`}
         />
       );
     });
@@ -79,8 +108,10 @@ const SiteView = () => {
   useEffect(() => {
     TLPBackend.get('/areas')
       .then(res => {
-        setAreaResponseData(res.data);
-        console.log(areaResponseData);
+        setTimeout(() => {
+          setAreaResponseData(res.data);
+        }, 4000);
+        addAssociatedSiteToArea();
       })
       .catch(err => {
         alert(err);
