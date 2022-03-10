@@ -6,30 +6,58 @@ import { PropTypes } from 'prop-types';
 import './DropdownMenu.css';
 import DownwardChevron from '../../assets/downward-chevron.svg';
 
-const DropdownMenu = ({ choices, current, setFn, className }) => {
+const DropdownMenu = ({ choices, current, setFn, ...prop }) => {
+  // ------------ ...prop Custom CSS Classes -----------------
+  // outerClass - width of dropdown menu
+  // innerClass - height of dropdown menu, corners, content justify, ...
+  // buttonClass - selected choice text
+  // arrowClass - dropdown arrow
+  // choiceWrapperClass - wrapper for all dropdown choices (opens on choice click)
+  // choiceClass - single dropdown choice
+  // ------------ If your overriding attributes don't work, use !important -----------------
   const [showChoices, setShowChoices] = useState(false);
   return (
-    <div className={`${className != null ? `className${' '}` : ''}dropdown-super-wrapper`}>
+    <div
+      className={`${
+        prop.outerClass != null ? `${prop.outerClass}${' '}` : ''
+      }dropdown-super-wrapper`}
+    >
       <div
         role="button"
         tabIndex={0}
-        className="dropdown-wrapper"
+        className={`${prop.innerClass != null ? `${prop.innerClass}${' '}` : ''}dropdown-wrapper`}
         onClick={() => setShowChoices(!showChoices)}
       >
-        <div className="dropdown-button">{current}</div>
+        <div
+          className={`${
+            prop.buttonClass != null ? `${prop.buttonClass}${' '}` : ''
+          }dropdown-button`}
+        >
+          {current}
+        </div>
         <img
           alt="arrow"
           src={DownwardChevron}
-          className={showChoices ? 'dropdown-arrow-up' : 'dropdown-arrow-down'}
+          className={
+            showChoices
+              ? `${prop.arrowClass != null ? `${prop.arrowClass}${' '}` : ''}dropdown-arrow-up`
+              : `${prop.arrowClass != null ? `${prop.arrowClass}${' '}` : ''}dropdown-arrow-down`
+          }
         />
       </div>
       <div>
         {showChoices ? (
-          <div className="dropdown-choices-wrapper">
+          <div
+            className={`${
+              prop.choiceWrapperClass != null ? `${prop.choiceWrapperClass}${' '}` : ''
+            }dropdown-choices-wrapper`}
+          >
             {choices.map(choice => (
               // eslint-disable-next-line jsx-a11y/click-events-have-key-events
               <div
-                className="dropdown-choice"
+                className={`${
+                  prop.choiceClass != null ? `${prop.choiceClass}${' '}` : ''
+                }dropdown-choice`}
                 role="button"
                 tabIndex={0}
                 key={choice}
@@ -53,11 +81,6 @@ DropdownMenu.propTypes = {
   choices: PropTypes.arrayOf(PropTypes.string).isRequired,
   current: PropTypes.string.isRequired,
   setFn: PropTypes.func.isRequired,
-  className: PropTypes.string,
-};
-
-DropdownMenu.defaultProps = {
-  className: null,
 };
 
 export default DropdownMenu;
