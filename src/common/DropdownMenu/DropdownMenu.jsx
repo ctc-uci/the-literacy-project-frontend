@@ -14,7 +14,9 @@ const DropdownMenu = ({ choices, current, setFn, ...prop }) => {
   // arrowClass - dropdown arrow
   // choiceWrapperClass - wrapper for all dropdown choices (opens on choice click)
   // choiceClass - single dropdown choice
-  // ------------ If your overriding attributes don't work, use !important -----------------
+  // -- If your overriding attributes don't work, double-select your
+  // -- custom classes in your module.css like: .custom-class.custom-class {}
+  // More info: http://alvinnovian.com/blog/css-modules-overriding
   const [showChoices, setShowChoices] = useState(false);
   return (
     <div
