@@ -6,10 +6,10 @@ import { PropTypes } from 'prop-types';
 import './DropdownMenu.css';
 import DownwardChevron from '../../assets/downward-chevron.svg';
 
-const DropdownMenu = ({ choices, current, setFn }) => {
+const DropdownMenu = ({ choices, current, setFn, className }) => {
   const [showChoices, setShowChoices] = useState(false);
   return (
-    <div className="dropdown-super-wrapper">
+    <div className={`${className != null ? `className${' '}` : ''}dropdown-super-wrapper`}>
       <div
         role="button"
         tabIndex={0}
@@ -53,6 +53,11 @@ DropdownMenu.propTypes = {
   choices: PropTypes.arrayOf(PropTypes.string).isRequired,
   current: PropTypes.string.isRequired,
   setFn: PropTypes.func.isRequired,
+  className: PropTypes.string,
+};
+
+DropdownMenu.defaultProps = {
+  className: null,
 };
 
 export default DropdownMenu;
