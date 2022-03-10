@@ -1,11 +1,18 @@
 import { React, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import ManagementDataSection from '../ManagementDataSection/ManagementDataSection';
 import { TLPBackend } from '../../common/utils';
 
-const SitesTable = () => {
-  const areaId = 3;
+// TODO: seperate data from components
+// Combining components and data into a single object
+// to be passed elsewhere is messy, just pass the data
+// to a component that can render everything
 
+const SitesTable = ({ areaId }) => {
+  const statusChoices = ['Active', 'Inactive'];
+
+  // Table headers
   const theadData = [
     {
       headerTitle: 'Status',
@@ -30,86 +37,62 @@ const SitesTable = () => {
     },
   ];
 
-  // dummy data for now
-  // const sites = [
-  //   {
-  //     siteName: 'Lakeside Middle School',
-  //     masterTeachers: [],
-  //     status: 'Active',
-  //   },
-  //   {
-  //     siteName: 'Irvine Elementary School',
-  //     masterTeachers: ['Harry Potter', 'Hermione Granger'],
-  //     status: 'Sent',
-  //   },
-  // ];
-
-  const [sites, setSites] = useState([]);
-  const getSites = async () => {
-    const { data: siteData } = await TLPBackend.get('/sites');
-    const areaSites = siteData.filter(s => s.areaId === areaId);
-    // return areaSites;
-    setSites(areaSites);
-  };
-
-  useEffect(getSites, []);
-  // console.log(sites);
-
-  // const [teachersList, setTeachers] = useState([]);
-  const getTeachers = async siteId => {
-    const { data: teachers } = await TLPBackend.get('/teachers');
-    const siteTeachers = teachers.filter(t => {
-      // console.log(t);
-      return t.sites && t.sites.includes(siteId);
-    });
-    // setTeachers(siteTeachers); // DANGER DO NOT UNCOMMENT
-    console.log(siteTeachers);
-  };
-
-  // getTeachers(5).then(result => console.log(result));
-  useEffect(async () => {
-    await getTeachers(5);
-  }, []);
-
-  const [currStatus, setCurrStatus] = useState('Active');
-  const statusChoices = ['Active', 'Inactive', 'Sent'];
-  const statusDropdown = (
-    // TODO: Add a function to map each site's dropdown to its own active status instead of shared common state var
-    <DropdownMenu choices={statusChoices} current={currStatus} setFn={setCurrStatus} />
+  // additionalInfo + siteNotes are static buttons to be put per row. TODO - make this dynamic
+  const additionalInfo = (
+    <button type="button" className="btn btn-primary">
+      View Info
+    </button>
+  );
+  const siteNotes = (
+    <button type="button" className="btn btn-primary">
+      View Note
+    </button>
   );
 
-  let i = 1;
-  const tbodyData = sites.map(s => {
-    const additionalInfo = (
-      <button type="button" className="btn btn-primary">
-        View Info
-      </button>
-    );
-    const siteNotes = (
-      <button type="button" className="btn btn-primary">
-        View Note
-      </button>
-    );
-    // let b;
-    // getTeachers(s.siteId);
-    // console.log(teachersList);
-    // if (teachersList.length === 0) {
-    //   b = 'No Teacher Assigned';
-    // } else {
-    //   console.log(teachersList.map(t => `${t.firstName} ${t.lastName}`));
-    //   b = teachersList.map(t => `${t.firstName} ${t.lastName}`).join(' ');
-    // }
-    const teachers = s.primaryContactInfo.firstName + s.primaryContactInfo.lastName;
+  // teacherString returns a string that is used to display the master teacher's name
+  const teacherString = teachersObj =>
+    teachersObj.length > 0
+      ? `${teachersObj[0].firstName} ${teachersObj[0].lastName}`
+      : 'No Teacher Assigned';
 
-    // let teachers = getTeachers(s.siteId);
-    i += 1;
-    return {
-      id: i,
-      items: [statusDropdown, s.siteName, teachers, siteNotes, additionalInfo],
-    };
-  });
+  const [tableData, setTableData] = useState([]);
+  const buildTable = async () => {
+    const { data: fetchedSites } = await TLPBackend.get(`/sites/area/${areaId}`);
+    // For each site, get teachers
+    const res = await Promise.all(
+      fetchedSites.map(async site => {
+        // console.log(site);
+        const { data: siteTeachers } = await TLPBackend.get(`/teachers/site/${site.siteId}`);
+        return {
+          id: site.siteId,
+          items: [
+            <DropdownMenu
+              key={site.siteId}
+              choices={statusChoices}
+              current={site.active ? 'Active' : 'Inactive'}
+              setFn={() => {}}
+            />,
+            site.siteName,
+            teacherString(siteTeachers),
+            siteNotes,
+            additionalInfo,
+          ],
+        };
+      }),
+    );
+    setTableData(res);
+  };
 
-  return <ManagementDataSection theadData={theadData} tbodyData={tbodyData} />;
+  useEffect(async () => {
+    buildTable();
+  }, []);
+
+  // Plugs table headers and data into ManagementDataSection
+  return <ManagementDataSection theadData={theadData} tbodyData={tableData} />;
+};
+
+SitesTable.propTypes = {
+  areaId: PropTypes.number.isRequired,
 };
 
 export default SitesTable;

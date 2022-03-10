@@ -72,7 +72,8 @@ ReactDOM.render(
         <Route path="/admin/account" element={<AdminAccountView />} />
         <Route path="/admin/create" element={<AdminCreateView />} />
         <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
-        <Route path="/area-details" element={<AreaDetails />} />
+        <Route path="/area" render={() => window.location.replace('/area-management')} />
+        <Route path="/area/:areaId" element={<AreaDetails />} />
       </Routes>
     </Router>
   </React.StrictMode>,
