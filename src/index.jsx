@@ -109,7 +109,16 @@ ReactDOM.render(
           <Route path="/settings/edit" element={<SettingsEditView />} />
           <Route path="/people" exact element={<PeopleView />} />
           <Route path="/admin" element={<AdminView />} />
-          <Route path="/area-management" element={<AreaManagement />} />
+          <Route
+            path="/area-management"
+            element={
+              <ProtectedRoute
+                Component={AreaManagement}
+                redirectPath="/login"
+                roles={[ADMIN_ROLE, USER_ROLE]}
+              />
+            }
+          />
           <Route path="/sites/management" exact element={<SchoolManagement />} />
           <Route path="/admin/account" element={<AdminAccountView />} />
           <Route path="/admin/create" element={<AdminCreateView />} />

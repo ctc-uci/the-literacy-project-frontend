@@ -5,18 +5,6 @@ import { cookieKeys, cookieConfig } from './auth/cookie_utils';
 
 const baseURL = `${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`;
 
-// to keep position and active status variables consistent and matching backend ENUM
-const AUTH_ROLES = {
-  ADMIN_ROLE: 'admin',
-  USER_ROLE: 'master teacher',
-};
-
-const USER_STATUS = {
-  ACTIVE: 'active',
-  INACTIVE: 'inactive',
-  PENDING: 'pending',
-};
-
 // Converts JS Date object into string, formatted MM/DD/YYYY
 const formatDate = value => {
   return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -92,6 +80,7 @@ const refreshToken = async () => {
     setCookie(cookieKeys.ACCESS_TOKEN, idToken, cookieConfig);
     const user = await TLPBackend.get(`/tlp-users/${auth.currentUser.uid}`);
     setCookie(cookieKeys.POSITION, user.data.position, cookieConfig);
+    setCookie(cookieKeys.USER_ID, user.data.userId, cookieConfig);
     return idToken;
   }
   return null;
@@ -153,4 +142,4 @@ const addAuthInterceptor = axiosInstance => {
 
 addAuthInterceptor(TLPBackend);
 
-export { auth, TLPBackend, refreshToken, AUTH_ROLES, USER_STATUS, formatDate };
+export { auth, TLPBackend, refreshToken, formatDate };

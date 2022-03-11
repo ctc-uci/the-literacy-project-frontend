@@ -133,6 +133,8 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
 
   cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
   cookies.set(cookieKeys.POSITION, user.data.position, cookieConfig);
+  // this is userId from the database, not the firebase ID
+  cookies.set(cookieKeys.USER_ID, user.data.userId, cookieConfig);
   navigate(redirectPath);
 };
 

@@ -18,6 +18,7 @@ const cookieConfig = {
 const cookieKeys = {
   ACCESS_TOKEN: 'accessToken',
   POSITION: 'position',
+  USER_ID: 'userId',
 };
 
 /**
