@@ -5,7 +5,7 @@ import SiteView from '../../pages/sites/sites';
 // import AdminView from '../../pages/admin/admin';
 // import TeacherView from '../../pages/master-teachers/master-teachers';
 // import StudentView from '../../pages/students/students';
-// import NavigationBarTwo from '../NavigationBarTwo/NavigationBarTwo';
+// import NavigationBar from '../NavigationBar/NavigationBar';
 
 const CreationPageTabs = () => {
   return (
