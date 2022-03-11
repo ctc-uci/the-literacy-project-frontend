@@ -71,6 +71,15 @@
   margin-left: auto;
 }
 
+.arrow {
+  position: relative;
+  left: 200px;
+  margin-top: -30px;
+  width: 80%;
+  border-style: dashed dashed hidden hidden;
+  border-color: #6c757d;
+}
+
 .emptyArea {
   color: #6c757d;
   font-weight: 300;

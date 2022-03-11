@@ -91,9 +91,9 @@ const SitesTable = ({ areaId }) => {
     buildTable();
   }, []);
 
-  // Plugs table headers and data into ManagementDataSection
   return (
     <div>
+      {/* creates the functionality above the table */}
       <div className={styles.tableButtons}>
         <Link to={`/sites/create/${areaId}`}>
           <button type="button" className="btn btn-warning">
@@ -113,10 +113,11 @@ const SitesTable = ({ areaId }) => {
         )}
       </div>
       {tableData.length !== 0 ? (
-        <Table theadData={theadData} tbodyData={tableData} hasHeader={false} />
+        // Plugs table headers and data into Table
+        <Table theadData={theadData} tbodyData={tableData} />
       ) : (
-        <div>
-          <Col md={{ span: 6, offset: 3 }} className={styles.emptyArea}>
+        <div className={styles.arrow}>
+          <Col md={{ span: 7, offset: 1 }} className={styles.emptyArea}>
             <p>No sites have been created for this area yet. Click here to create</p>
           </Col>
         </div>
