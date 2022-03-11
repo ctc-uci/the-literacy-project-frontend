@@ -81,7 +81,7 @@ const AreaView = () => {
             </div>
           </div>
 
-          <div className={styles.site_container}>
+          <div className="sites-table-container">
             <SitesTable areaId={Number.parseInt(areaId, 10)} />
           </div>
         </div>
