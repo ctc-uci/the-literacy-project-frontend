@@ -18,10 +18,7 @@ import LoginTeacherStartView from './pages/login-teacher-start/login-teacher-sta
 import DashboardView from './pages/dashboard/dashboard';
 import TeacherView from './pages/master-teachers/master-teachers';
 import TeachersConfirmation from './pages/master-teachers-confirm/master-teachers-confirm';
-import TeachersCreateView from './pages/master-teachers-create/master-teachers-create';
-import TeachersEditView from './pages/master-teachers-edit/master-teachers-edit';
 import TeachersExportDataView from './pages/master-teachers-export-data/master-teachers-export-data';
-import TeachersRemoveTeacherView from './pages/master-teachers-remove-master-teacher/master-teachers-remove-teacher';
 import SettingsView from './pages/settings/settings';
 import SettingsChangePasswordView from './pages/settings-change-password/settings-change-password';
 import SettingsEditView from './pages/settings-edit/settings-edit';
@@ -47,14 +44,7 @@ ReactDOM.render(
         <Route path="/dashboard" exact element={<DashboardView />} />
         <Route path="/master-teachers" exact element={<TeacherView />} />
         <Route path="/master-teachers/confirm" exact element={<TeachersConfirmation />} />
-        <Route path="/master-teachers/create" exact element={<TeachersCreateView />} />
-        <Route path="/master-teachers/edit" exact element={<TeachersEditView />} />
         <Route path="/master-teachers/export-data" exact element={<TeachersExportDataView />} />
-        <Route
-          path="/master-teachers/remove-teacher"
-          exact
-          element={<TeachersRemoveTeacherView />}
-        />
         <Route path="/settings" element={<SettingsView />} />
         <Route path="/settings/change-password" element={<SettingsChangePasswordView />} />
         <Route path="/settings/edit" element={<SettingsEditView />} />
