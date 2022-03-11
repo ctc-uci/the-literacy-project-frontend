@@ -3,8 +3,8 @@ import { PropTypes } from 'prop-types';
 import './CreateMasterTeacherModal.css';
 import { Modal, Button, Form } from 'react-bootstrap';
 import ConfirmMasterTeacherModal from '../ConfirmMasterTeacherModal/ConfirmMasterTeacherModal';
-import { AUTH_ROLES } from '../../utils/config';
-import { sendInviteLink } from '../../utils/auth/auth_utils';
+import { AUTH_ROLES } from '../../common/config';
+import { sendInviteLink } from '../../common/auth/auth_utils';
 
 const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
   const [confirmModalIsOpen, setConfirmModalOpen] = useState(false);

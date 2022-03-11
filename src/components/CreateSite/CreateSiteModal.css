@@ -1,4 +1,14 @@
-/* css in loginForm was overriding my form */
+/* Removing increment/decrement arrows for ZIP number field */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
 .site-form {
   display: block;
 }
@@ -60,4 +70,14 @@ label {
   width: 160px;
   background-color: #3288c4;
   margin: 60px 0px 30px 70px;
+}
+
+.input-fields-coalesce-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.addr-small-field {
+  width: 90%;
+  margin-right: 10%;
 }

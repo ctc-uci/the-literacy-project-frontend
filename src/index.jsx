@@ -33,11 +33,12 @@ import SchoolManagement from './pages/sites-management/sites-management';
 import AdminAccountView from './pages/admin-account/admin-account';
 import AdminCreateView from './pages/admin-create-account/admin-create';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
+import AreaDetails from './pages/area-details/area-details';
 import PeopleView from './pages/people/people';
 import Register from './components/Register/register';
 import EmailAction from './components/EmailAction/EmailAction';
-import ProtectedRoute from './utils/ProtectedRoute';
-import { AUTH_ROLES } from './utils/config';
+import ProtectedRoute from './common/ProtectedRoute';
+import { AUTH_ROLES } from './common/config';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
 // TODO: add protected routes -- use current few as examples
@@ -62,7 +63,8 @@ ReactDOM.render(
               />
             }
           />
-          <Route path="/sites/create" exact element={<SitesCreateView />} />
+          <Route path="/sites/create/" exact render={() => window.location.replace('/sites')} />
+          <Route path="/sites/create/:areaId" exact element={<SitesCreateView />} />
           <Route path="/sites/assign-students" exact element={<AssignStudentsView />} />
           <Route path="/sites/export-data" exact element={<SitesExportDataView />} />
           <Route path="/students" exact element={<StudentView />} />
@@ -112,6 +114,7 @@ ReactDOM.render(
           <Route path="/admin/account" element={<AdminAccountView />} />
           <Route path="/admin/create" element={<AdminCreateView />} />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
+          <Route path="/area-details" element={<AreaDetails />} />
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
         </Routes>
       </Router>

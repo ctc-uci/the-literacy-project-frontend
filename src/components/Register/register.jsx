@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { registerWithEmailAndPassword } from '../../utils/auth/auth_utils';
+import { registerWithEmailAndPassword } from '../../common/auth/auth_utils';
 
 const Register = () => {
   const [email, setEmail] = useState();

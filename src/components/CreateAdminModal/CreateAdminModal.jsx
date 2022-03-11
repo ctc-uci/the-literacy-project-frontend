@@ -2,8 +2,8 @@ import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import './CreateAdminModal.css';
 import { Modal, Button, Form, Alert, CloseButton } from 'react-bootstrap';
-import { AUTH_ROLES } from '../../utils/config';
-import { sendInviteLink } from '../../utils/auth/auth_utils';
+import { AUTH_ROLES } from '../../common/config';
+import { sendInviteLink } from '../../common/auth/auth_utils';
 
 const CreateAdminModal = ({ isOpen, setIsOpen }) => {
   const [showAlert, setShowAlert] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { sendPasswordReset } from '../../utils/auth/auth_utils';
+import { sendPasswordReset } from '../../common/auth/auth_utils';
 import './RecoverPassword.css';
 
 function RecoverPassword() {

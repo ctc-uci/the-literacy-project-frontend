@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { confirmVerifyEmail } from '../../utils/auth/auth_utils';
+import { confirmVerifyEmail } from '../../common/auth/auth_utils';
 
 const VerifyEmail = ({ code }) => {
   const [errorMessage, setErrorMessage] = useState();
