@@ -91,7 +91,7 @@ const AreaView = () => {
           </div>
 
           <div className="sites-table-container">
-            <SitesTable />
+            <SitesTable areaId={Number.parseInt(areaId, 10)} />
           </div>
         </div>
         <div className="data">
@@ -113,10 +113,6 @@ const AreaView = () => {
             <img className="plus__icon" src={Plus} alt="Plus Icon" />
           </button>
         </Link>
-      </div>
-
-      <div className="sites-table-container">
-        <SitesTable areaId={Number.parseInt(areaId, 10)} />
       </div>
     </div>
   );
