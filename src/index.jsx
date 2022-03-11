@@ -33,6 +33,7 @@ import AdminAccountView from './pages/admin-account/admin-account';
 import AdminCreateView from './pages/admin-create-account/admin-create';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
 import PeopleView from './pages/people/people';
+import AreaDetails from './pages/area-details/area-details';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -40,7 +41,8 @@ ReactDOM.render(
       <Routes>
         <Route path="/" exact element={<App />} />
         <Route path="/sites" exact element={<SiteView />} />
-        <Route path="/sites/create" exact element={<SitesCreateView />} />
+        <Route path="/sites/create/" exact render={() => window.location.replace('/sites')} />
+        <Route path="/sites/create/:areaId" exact element={<SitesCreateView />} />
         <Route path="/sites/assign-students" exact element={<AssignStudentsView />} />
         <Route path="/sites/export-data" exact element={<SitesExportDataView />} />
         <Route path="/students" exact element={<StudentView />} />
@@ -71,6 +73,7 @@ ReactDOM.render(
         <Route path="/admin/account" element={<AdminAccountView />} />
         <Route path="/admin/create" element={<AdminCreateView />} />
         <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
+        <Route path="/area-details" element={<AreaDetails />} />
       </Routes>
     </Router>
   </React.StrictMode>,
