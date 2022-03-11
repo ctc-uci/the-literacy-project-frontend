@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, DropdownButton, Dropdown, InputGroup, FormControl } from 'react-bootstrap';
 import './sites.css';
 // import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
-import { BsFillCaretDownFill, BsPeople } from 'react-icons/bs';
+import { BsFillCaretDownFill, BsPeople, BsFilterRight } from 'react-icons/bs';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
 import NavigationBarTwo from '../../components/NavigationBarTwo/NavigationBarTwo';
@@ -13,6 +13,7 @@ import TeacherIcon from '../../assets/icons/Teacher.svg';
 const SiteView = () => {
   // const [areaDropdownTitle, setAreaDropdownTitle] = useState('Bellevue SD');
   const [modalIsOpen, setModalOpen] = useState(false);
+  const [schoolYear, setSchoolYear] = useState('2020-21');
 
   const areas = [
     {
@@ -72,6 +73,10 @@ const SiteView = () => {
     });
   }
 
+  const updateSchoolYear = newSchoolYear => {
+    setSchoolYear(newSchoolYear);
+  };
+
   // const theadData = [
   //   {
   //     headerTitle: 'Site Name',
@@ -106,21 +111,52 @@ const SiteView = () => {
     <div>
       <NavigationBarTwo />
       <div className="site-container">
+        <h1>Areas</h1>
         <div className="area-content">
-          <h1>Areas</h1>
           <div className="site-container-information">
             <div className="school-year-info">
               <div className="school-year-container">
                 <h1>School Year</h1>
-                <input type="text" list="school-year" className="school-year-input" />
-                <datalist id="school-year">
-                  <option value="2021-2022" aria-label="2021-2022" />
-                  <option value="2020-2021" aria-label="2020-2021" />
-                  <option value="2019-2020" aria-label="2019-2020" />
-                </datalist>
+                <DropdownButton
+                  variant="outline-secondary"
+                  title={schoolYear}
+                  id="input-group-dropdown-1"
+                >
+                  <Dropdown.Item
+                    onClick={() => {
+                      updateSchoolYear('2021-22');
+                    }}
+                  >
+                    2021-22
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => {
+                      updateSchoolYear('2020-21');
+                    }}
+                  >
+                    2020-21
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => {
+                      updateSchoolYear('2019-20');
+                    }}
+                  >
+                    2019-20
+                  </Dropdown.Item>
+                </DropdownButton>
               </div>
               <div className="search-school">
-                <input type="text" placeholder="Search All Schools" />
+                <InputGroup>
+                  <FormControl
+                    className="search-school-search-bar"
+                    placeholder="Search"
+                    aria-label="Search"
+                    aria-describedby="search-school-search-icon"
+                  />
+                  <InputGroup.Text id="search-school-search-icon">
+                    <BsFilterRight />
+                  </InputGroup.Text>
+                </InputGroup>
                 <Button variant="primary">Search</Button>
               </div>
             </div>
@@ -148,6 +184,37 @@ const SiteView = () => {
             </div>
             {mapAreas()}
           </div>
+          <div className="sites-data">
+            <Button variant="primary">Export to CSV</Button>
+            <p>All Areas</p>
+            <p>Year: 2021-22 Cycle: 1</p>
+            <p>
+              <strong>Average Growth in Reading</strong>
+            </p>
+            {/* placeholder for graph */}
+            <Card className="sites-graph" />
+            <Card className="area-data-stats">
+              <p>
+                <BsPeople /> 40 Students
+              </p>
+              <p>
+                <img
+                  className="area-dropdown__open__area_stats__section-icon"
+                  src={TeacherIcon}
+                  alt="Teacher Icon"
+                />
+                4 Teachers
+              </p>
+              <p>
+                <img
+                  className="area-dropdown__open__area_stats__section-icon"
+                  src={SchoolIcon}
+                  alt="School Icon"
+                />
+                4 Sites
+              </p>
+            </Card>
+          </div>
           {/* <div>
             <ManagementDataSection
               sectionTitle="Sites"
@@ -156,37 +223,6 @@ const SiteView = () => {
               tbodyColIsBadge={[1]}
             />
           </div> */}
-        </div>
-        <div className="data">
-          <Button variant="primary">Export to CSV</Button>
-          <p>All Areas</p>
-          <p>Year: 2021-22 Cycle: 1</p>
-          <p>
-            <strong>Average Growth in Reading</strong>
-          </p>
-          {/* placeholder for graph */}
-          <Card className="graph" />
-          <Card className="area-data-stats">
-            <p>
-              <BsPeople /> 40 Students
-            </p>
-            <p>
-              <img
-                className="area-dropdown__open__area_stats__section-icon"
-                src={TeacherIcon}
-                alt="Teacher Icon"
-              />
-              4 Teachers
-            </p>
-            <p>
-              <img
-                className="area-dropdown__open__area_stats__section-icon"
-                src={SchoolIcon}
-                alt="School Icon"
-              />
-              4 Sites
-            </p>
-          </Card>
         </div>
       </div>
     </div>
