@@ -1,8 +1,12 @@
 import { React, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
-import ManagementDataSection from '../ManagementDataSection/ManagementDataSection';
+import Table from '../Table/Table';
 import { TLPBackend } from '../../common/utils';
+import styles from './AreaView.module.css';
+import Plus from '../../assets/icons/plus.svg';
 
 // TODO: seperate data from components
 // Combining components and data into a single object
@@ -88,7 +92,37 @@ const SitesTable = ({ areaId }) => {
   }, []);
 
   // Plugs table headers and data into ManagementDataSection
-  return <ManagementDataSection theadData={theadData} tbodyData={tableData} />;
+  return (
+    <div>
+      <div className={styles.tableButtons}>
+        <Link to={`/sites/create/${areaId}`}>
+          <button type="button" className="btn btn-warning">
+            Create New Site
+            <img className="plus__icon" src={Plus} alt="Plus Icon" />
+          </button>
+        </Link>
+        {tableData.length !== 0 && (
+          <>
+            <input type="text" placeholder="Search" />
+            <div className={styles.sort}>
+              <button type="button" className="btn btn-primary">
+                Sort By: A-Z
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+      {tableData.length !== 0 ? (
+        <Table theadData={theadData} tbodyData={tableData} hasHeader={false} />
+      ) : (
+        <div>
+          <Col md={{ span: 6, offset: 3 }} className={styles.emptyArea}>
+            <p>No sites have been created for this area yet. Click here to create</p>
+          </Col>
+        </div>
+      )}
+    </div>
+  );
 };
 
 SitesTable.propTypes = {

@@ -5,7 +5,6 @@ import { TLPBackend } from '../../common/utils';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import SitesTable from './sitesTable';
 import styles from './AreaView.module.css';
-import Plus from '../../assets/icons/plus.svg';
 import NavigationBarTwo from '../NavigationBarTwo/NavigationBarTwo';
 
 const BackToAllAreas = () => {
@@ -81,17 +80,9 @@ const AreaView = () => {
               <Button variant="primary">Search</Button>
             </div>
           </div>
-          <div>
-            <Link to="/sites/create">
-              <button type="button" className="btn btn-warning">
-                Create New Site
-                <img className="plus__icon" src={Plus} alt="Plus Icon" />
-              </button>
-            </Link>
-          </div>
 
-          <div className="sites-table-container">
-            <SitesTable />
+          <div className={styles.site_container}>
+            <SitesTable areaId={Number.parseInt(areaId, 10)} />
           </div>
         </div>
         <div className="data">
@@ -106,17 +97,6 @@ const AreaView = () => {
             <p># Sites</p>
           </Card>
         </div>
-
-        <Link to={`/sites/create/${areaId}`}>
-          <button type="button" className="btn btn-warning">
-            Create New Site
-            <img className="plus__icon" src={Plus} alt="Plus Icon" />
-          </button>
-        </Link>
-      </div>
-
-      <div className="sites-table-container">
-        <SitesTable areaId={Number.parseInt(areaId, 10)} />
       </div>
     </div>
   );

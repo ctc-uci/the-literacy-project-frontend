@@ -59,3 +59,22 @@
   background: #ffd350;
   text-decoration-color: black;
 }
+
+.tableButtons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.sort {
+  display: flex;
+  margin-left: auto;
+}
+
+.emptyArea {
+  color: #6c757d;
+  font-weight: 300;
+  font-size: 56px;
+  line-height: 67px;
+  margin-top: 150px;
+}
