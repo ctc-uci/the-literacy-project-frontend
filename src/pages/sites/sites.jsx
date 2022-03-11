@@ -70,17 +70,22 @@ const SiteView = () => {
   // Filter: Filter for specific area ID and remove after
   // Repeat filter step until empty array
 
-  const addAssociatedSiteToArea = () => {
-    // eslint-disable-next-line no-plusplus
-    for (let ind = 0; ind < areaResponseData.length; ind++) {
-      TLPBackend.get(`/sites/area/${areaResponseData[ind].areaId}`)
-        .then(res => {
-          areaResponseData[ind].area_sites = res.data;
-        })
-        .catch(err => {
-          alert(err);
-        });
+  const addAssociatedSiteToArea = async resData => {
+    async function fetchAllSites() {
+      // eslint-disable-next-line no-plusplus
+      for (let ind = 0; ind < resData.length; ind++) {
+        TLPBackend.get(`/sites/area/${resData[ind].areaId}`)
+          .then(res => {
+            // eslint-disable-next-line no-param-reassign
+            resData[ind].area_sites = res.data;
+          })
+          .catch(() => {});
+      }
     }
+    await fetchAllSites();
+    setTimeout(() => {
+      setAreaResponseData(resData);
+    }, 2000);
   };
 
   function mapAreas() {
@@ -106,16 +111,16 @@ const SiteView = () => {
   };
 
   useEffect(() => {
-    TLPBackend.get('/areas')
-      .then(res => {
-        setTimeout(() => {
-          setAreaResponseData(res.data);
-        }, 4000);
-        addAssociatedSiteToArea();
-      })
-      .catch(err => {
-        alert(err);
-      });
+    async function fetchAreas() {
+      await TLPBackend.get('/areas')
+        .then(res => {
+          setTimeout(() => {
+            addAssociatedSiteToArea(res.data);
+          }, 1000);
+        })
+        .catch(() => {});
+    }
+    fetchAreas();
   }, []);
 
   return (

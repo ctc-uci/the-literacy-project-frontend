@@ -23,16 +23,14 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
       areaName,
       active: 'true',
     })
-      .then(res => {
-        console.log(res.data);
+      .then(() => {
         setAlertText(`Successfully created area: ${areaName}`);
         setIsAlertSuccess(true);
         closeModal();
       })
-      .catch(err => {
+      .catch(() => {
         setAlertText(`[ERROR] unable to create area: ${areaName}`);
         setIsAlertSuccess(false);
-        console.error(err);
         closeModal();
       });
   };

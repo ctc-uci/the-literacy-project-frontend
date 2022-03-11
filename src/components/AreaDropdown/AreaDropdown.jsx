@@ -56,7 +56,6 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
               <div className="area-dropdown__open__site-lookup__header">Sites</div>
               <div className="area-dropdown__open__site-lookup__body">
                 {areaSites.map(site => {
-                  console.log(site);
                   return (
                     <Link
                       className="area-dropdown__open__site-link"
