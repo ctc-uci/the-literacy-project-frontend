@@ -1,9 +1,9 @@
-import './students.css';
+import './admin-students-view.css';
 import React, { useState, useEffect } from 'react';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import { TLPBackend } from '../../common/utils';
 
-const StudentView = () => {
+const AdminStudentsView = () => {
   const [studentLst, setStudentLst] = useState([]);
   const [error, setError] = useState(null);
   const theadData = [
@@ -75,4 +75,4 @@ const StudentView = () => {
   );
 };
 
-export default StudentView;
+export default AdminStudentsView;
