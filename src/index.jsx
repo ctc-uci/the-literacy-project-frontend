@@ -8,10 +8,6 @@ import App from './App';
 import SitesCreateView from './pages/sites-create/sites-create';
 import SitesExportDataView from './pages/sites-export-data/sites-export-data';
 import AssignStudentsView from './pages/assign-students/assign-students';
-import StudentView from './pages/students/students';
-import StudentsCreateView from './pages/students-create/students-create';
-import StudentsEditView from './pages/students-edit/students-edit';
-import StudentsExportDataView from './pages/students-export-data/students-export-data';
 import LoginView from './pages/login/login';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
 import LoginTeacherStartView from './pages/login-teacher-start/login-teacher-start';
@@ -36,10 +32,6 @@ ReactDOM.render(
         <Route path="/sites/create/:areaId" exact element={<SitesCreateView />} />
         <Route path="/sites/assign-students" exact element={<AssignStudentsView />} />
         <Route path="/sites/export-data" exact element={<SitesExportDataView />} />
-        <Route path="/students" exact element={<StudentView />} />
-        <Route path="/students/create" exact element={<StudentsCreateView />} />
-        <Route path="/students/edit" exact element={<StudentsEditView />} />
-        <Route path="/students/export-data" exact element={<StudentsExportDataView />} />
         <Route path="/login" exact element={<LoginView />} />
         <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
         <Route path="/login/master-teacher-start/:id" exact element={<LoginTeacherStartView />} />
