@@ -1,14 +1,27 @@
 import './settings.css';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { instanceOf } from 'prop-types';
 import TeacherView from './teacherView';
 import AdminView from './adminView';
+import { logout, useNavigate } from '../../common/auth/auth_utils';
+import { Cookies, withCookies } from '../../common/auth/cookie_utils';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 
 // import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-const SettingsView = () => {
+const SettingsView = ({ cookies }) => {
   // Placeholders, replace later with backend call
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState();
+
+  const handleLogOut = async () => {
+    try {
+      await logout('/login', navigate, cookies);
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
+  };
 
   const name = 'LastName FirstName';
   const email = 'firstname.lastname@gmail.com';
@@ -49,11 +62,21 @@ const SettingsView = () => {
         {/* ACCESSIBILITY option */}
 
         <div className="logout">
-          <p>log out</p>
+          {errorMessage && <p>{errorMessage}</p>}
+          <input
+            type="button"
+            value="Log Out"
+            className="btn btn-danger btn-sm "
+            onClick={handleLogOut}
+          />
         </div>
       </div>
     </div>
   );
 };
 
-export default SettingsView;
+SettingsView.propTypes = {
+  cookies: instanceOf(Cookies).isRequired,
+};
+
+export default withCookies(SettingsView);
