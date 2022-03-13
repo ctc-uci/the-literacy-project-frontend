@@ -1,11 +1,11 @@
 import React from 'react';
 import './area-management.css';
-import CreationPageTabs from '../../components/CreationPageTabs/CreationPageTabs';
+import SiteView from '../sites/sites';
 
 const AreaManagement = () => {
   return (
     <div>
-      <CreationPageTabs />
+      <SiteView />
     </div>
   );
 };
