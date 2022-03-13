@@ -57,7 +57,7 @@ ReactDOM.render(
               <ProtectedRoute
                 Component={AreaManagement}
                 redirectPath="/login"
-                roles={[ADMIN_ROLE, USER_ROLE]}
+                roles={[ADMIN_ROLE]}
               />
             }
           />
