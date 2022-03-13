@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import './LoginForm.css';
 import { FaEye } from 'react-icons/fa';
+import { instanceOf } from 'prop-types';
+import { Cookies, withCookies } from '../../common/auth/cookie_utils';
+import { logInWithEmailAndPassword, useNavigate } from '../../common/auth/auth_utils';
 
-function LoginForm() {
+const LoginForm = ({ cookies }) => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [errorMessage, setErrorMessage] = useState();
+
   // eye icon in password input, toggles hiding password
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePasswordVisibility = () => {
@@ -13,6 +21,20 @@ function LoginForm() {
   const [rememberMe, setRememberMe] = useState(false);
   const toggleRememberMe = () => {
     setRememberMe(!rememberMe);
+  };
+
+  /**
+   * This function handles logging in with email/password (standard log in)
+   * If the user signs in successfully, they are redirected to /logout, otherwise they are redirected to the login screen
+   * @param {Event} e
+   */
+  const handleSubmit = async e => {
+    try {
+      e.preventDefault();
+      await logInWithEmailAndPassword(email, password, '/area-management', navigate, cookies);
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
   };
 
   // tabs above login form, sets user to admin/teacher and adjusts background color
@@ -51,7 +73,13 @@ function LoginForm() {
             <label className="logLabel" htmlFor="email">
               Email
               <br />
-              <input type="text" id="email" placeholder="Email Address" />
+              <input
+                type="text"
+                id="email"
+                onChange={({ target }) => setEmail(target.value)}
+                placeholder="Email Address"
+                required
+              />
             </label>
           </div>
 
@@ -61,8 +89,10 @@ function LoginForm() {
               <br />
               <input
                 type={passwordShown ? 'text' : 'password'}
+                onChange={({ target }) => setPassword(target.value)}
                 id="password"
                 placeholder="Password"
+                required
               />
               <FaEye id="eyeIcon" color="black" onClick={togglePasswordVisibility} />
             </label>
@@ -80,11 +110,14 @@ function LoginForm() {
             </label>
           </div>
 
+          {errorMessage && <p>{errorMessage}</p>}
+
           <input
             id="submitButton"
             type="submit"
             value="Login"
             style={{ backgroundColor: loginButtonColor, color: loginButtonFontColor }}
+            onClick={handleSubmit}
           />
         </form>
 
@@ -92,13 +125,14 @@ function LoginForm() {
           <a id="forgotPassword" href="login/reset-password">
             Forgot password?
           </a>
-          <a id="noAccount" href="/">
-            Don&apos;t have an account?
-          </a>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default LoginForm;
+LoginForm.propTypes = {
+  cookies: instanceOf(Cookies).isRequired,
+};
+
+export default withCookies(LoginForm);
