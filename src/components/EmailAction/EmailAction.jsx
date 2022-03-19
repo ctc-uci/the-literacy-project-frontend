@@ -1,18 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import RecoverPassword from '../ResetPassword/ResetPassword';
+import ResetPassword from '../ResetPassword/ResetPassword';
 import VerifyEmail from '../VerifyEmail/VerifyEmail';
+import { TLPBackend } from '../../common/utils';
 
 const EmailAction = ({ redirectPath }) => {
   const { search } = useLocation();
   const mode = new URLSearchParams(search).get('mode');
   const code = new URLSearchParams(search).get('oobCode');
+  // const inviteId = new URLSearchParams(search).get('inviteID');
+  const [isLoading, setIsLoading] = useState(true);
+  const [inviteId, setInviteId] = useState(new URLSearchParams(search).get('inviteID'));
+
+  useEffect(async () => {
+    // check if code (inviteID) is valid with backend
+    // if not redirect to error page -- invite link is invalid
+    // else redirect to recover password page
+    if (mode === 'inviteUser' && inviteId !== null) {
+      const user = await TLPBackend.get(`/tlp-users/invite/${inviteId}`);
+      if (!(user && user.data)) {
+        setInviteId(null);
+      }
+    }
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return <h1>LOADING...</h1>;
+  }
+  if (mode === 'inviteUser') {
+    if (inviteId === null) {
+      // TODO: Change redirect path for invalid invite?
+      return <Navigate to={redirectPath} />;
+    }
+    return <ResetPassword newAcc code={inviteId} />;
+  }
 
   if (code === null) {
     return <Navigate to={redirectPath} />;
   }
-  return mode === 'resetPassword' ? <RecoverPassword code={code} /> : <VerifyEmail code={code} />;
+
+  return mode === 'resetPassword' ? <ResetPassword code={code} /> : <VerifyEmail code={code} />;
 };
 
 EmailAction.propTypes = {

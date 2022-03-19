@@ -2,14 +2,16 @@ import {
   signInWithEmailAndPassword,
   signOut,
   createUserWithEmailAndPassword,
-  sendEmailVerification,
   sendPasswordResetEmail,
   confirmPasswordReset,
   applyActionCode,
 } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { nanoid } from 'nanoid';
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
-import { TLPBackend, auth } from '../utils';
+import InviteEmail from '../../components/InviteEmail/InviteEmail';
+import { TLPBackend, auth, sendEmail } from '../utils';
 import { AUTH_ROLES, USER_STATUS } from '../config';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
@@ -78,7 +80,6 @@ const createUserInFirebase = async (email, password) => {
 const createUser = async (email, password, role, firstName, lastName, phoneNumber) => {
   const user = await createUserInFirebase(email, password);
   await createUserInDB(role, email, password, user.uid, firstName, lastName, phoneNumber);
-  sendEmailVerification(user);
 };
 
 /**
@@ -120,12 +121,8 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
   }
 
   const user = await TLPBackend.get(`/tlp-users/${auth.currentUser.uid}`);
-  // if user status is pending but verified, this is their first time logging in after verifying,
-  // so make backend call to update their status to active
   // if user status is inactive, they cannot log in
-  if (user.data.active === USER_STATUS.PENDING) {
-    await TLPBackend.put(`/tlp-users/${auth.currentUser.uid}`);
-  } else if (user.data.active !== USER_STATUS.ACTIVE) {
+  if (user.data.active !== USER_STATUS.ACTIVE) {
     throw new Error(
       'Your account is currently not active. Please contact administration for more information.',
     );
@@ -147,15 +144,36 @@ const sendPasswordReset = async email => {
 };
 
 /**
- * Sends password reset to new account created with stated email
- * @param {string} email The email to create an account with
+ * Creates user in firebase and database and sends user an email with an invite link
+ * @param {string} role either ADMIN or MASTER TEACHER
+ * @param {string} email email to be associated with account
+ * @param {string} firstName
+ * @param {string} lastName
+ * @param {string} phoneNumber
  */
 const sendInviteLink = async (role, email, firstName, lastName, phoneNumber) => {
   // generate a random password (not going to be used as new account will reset password)
   const randomPassword = Math.random().toString(36).slice(-8);
   const user = await createUserInFirebase(email, randomPassword);
   await createUserInDB(role, email, randomPassword, user.uid, firstName, lastName, phoneNumber);
-  sendPasswordReset(email);
+
+  const inviteId = nanoid();
+  await TLPBackend.post(`tlp-users/new-invite`, {
+    inviteId,
+    firebaseId: user.uid,
+  });
+  const url = `${process.env.REACT_APP_FRONTEND_HOST}:${process.env.REACT_APP_FRONTEND_PORT}/emailAction?mode=inviteUser&inviteID=${inviteId}`;
+
+  await sendEmail(email, <InviteEmail url={url} />);
+};
+
+/**
+ * Calls backend update the password of user to finish account set up
+ * @param {string} inviteId The inviteId from invite email
+ * @param {string} password New password for account
+ */
+const finishAccountSetUp = async (inviteId, password) => {
+  await TLPBackend.post(`tlp-users/complete-creation`, { inviteId, password });
 };
 
 /**
@@ -196,4 +214,5 @@ export {
   sendInviteLink,
   confirmNewPassword,
   confirmVerifyEmail,
+  finishAccountSetUp,
 };

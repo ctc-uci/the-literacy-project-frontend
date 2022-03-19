@@ -69,7 +69,7 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
                 onChange={({ target }) => setPhoneNumber(target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-5" controlId="createAdminAccount.email" required="true">
+            <Form.Group className="mb-5" controlId="createAdminAccount.email" required>
               <Form.Label>
                 <>
                   Email

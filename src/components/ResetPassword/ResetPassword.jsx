@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { confirmNewPassword } from '../../common/auth/auth_utils';
+import { confirmNewPassword, finishAccountSetUp } from '../../common/auth/auth_utils';
 
-const ResetPassword = ({ code }) => {
+const ResetPassword = ({ newAcc, code }) => {
   const [password, setPassword] = useState();
   const [checkPassword, setCheckPassword] = useState();
   const [errorMessage, setErrorMessage] = useState();
@@ -13,7 +13,11 @@ const ResetPassword = ({ code }) => {
       if (password !== checkPassword) {
         throw new Error("Passwords don't match");
       }
-      await confirmNewPassword(code, password);
+      if (newAcc) {
+        await finishAccountSetUp(code, password);
+      } else {
+        await confirmNewPassword(code, password);
+      }
       setConfirmationMessage('Password changed. You can now sign in with your new password.');
       setErrorMessage('');
       setPassword('');
@@ -53,6 +57,7 @@ const ResetPassword = ({ code }) => {
 };
 
 ResetPassword.propTypes = {
+  newAcc: PropTypes.bool.isRequired,
   code: PropTypes.string.isRequired,
 };
 
