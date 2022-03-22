@@ -1,7 +1,6 @@
 import {
   signInWithEmailAndPassword,
   signOut,
-  createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   confirmPasswordReset,
   applyActionCode,
@@ -34,6 +33,7 @@ const createUserInDB = async (
   firstName,
   lastName,
   phoneNumber,
+  inviteId,
 ) => {
   try {
     const body = {
@@ -42,6 +42,7 @@ const createUserInDB = async (
       lastName,
       phoneNumber,
       email,
+      inviteId,
     };
     if (role === ADMIN_ROLE) {
       await TLPBackend.post('/admins', body);
@@ -56,52 +57,6 @@ const createUserInDB = async (
     userToBeTerminated.delete();
     throw new Error(err.message);
   }
-};
-
-/**
- * Creates a user in firebase database
- * @param {string} email
- * @param {string} password
- * @returns A UserCredential object from firebase
- */
-const createUserInFirebase = async (email, password) => {
-  const user = await createUserWithEmailAndPassword(auth, email, password);
-  return user.user;
-};
-
-/**
- * Creates a user (both in firebase and database)
- * @param {string} email
- * @param {string} password
- * @param {string} role
- * @param {string} firstName
- * @param {string} lastName
- * @param {string} phoneNumber */
-const createUser = async (email, password, role, firstName, lastName, phoneNumber) => {
-  const user = await createUserInFirebase(email, password);
-  await createUserInDB(role, email, password, user.uid, firstName, lastName, phoneNumber);
-};
-
-/**
- * Registers a new user using the email provider
- * @param {string} email
- * @param {string} password
- * @param {string} role
- * @param {hook} navigate An instance of the useNavigate hook from react-router-dom
- * @param {string} redirectPath path to redirect users once logged in
- */
-const registerWithEmailAndPassword = async (
-  email,
-  password,
-  role,
-  firstName,
-  lastName,
-  phoneNumber,
-  navigate,
-  redirectPath,
-) => {
-  await createUser(email, password, role, firstName, lastName, phoneNumber);
-  navigate(redirectPath);
 };
 
 /**
@@ -144,36 +99,57 @@ const sendPasswordReset = async email => {
 };
 
 /**
- * Creates user in firebase and database and sends user an email with an invite link
- * @param {string} role either ADMIN or MASTER TEACHER
+ * Generates a new invite link for user and stores all related information
+ * to create the account after invite has been processed.
+ * @param {string} position either ADMIN or MASTER TEACHER
  * @param {string} email email to be associated with account
  * @param {string} firstName
  * @param {string} lastName
  * @param {string} phoneNumber
  */
-const sendInviteLink = async (role, email, firstName, lastName, phoneNumber) => {
-  // generate a random password (not going to be used as new account will reset password)
-  const randomPassword = Math.random().toString(36).slice(-8);
-  const user = await createUserInFirebase(email, randomPassword);
-  await createUserInDB(role, email, randomPassword, user.uid, firstName, lastName, phoneNumber);
-
+const sendInviteLink = async (position, email, firstName, lastName, phoneNumber) => {
   const inviteId = nanoid();
-  await TLPBackend.post(`tlp-users/new-invite`, {
-    inviteId,
-    firebaseId: user.uid,
-  });
   const url = `${process.env.REACT_APP_FRONTEND_HOST}:${process.env.REACT_APP_FRONTEND_PORT}/emailAction?mode=inviteUser&inviteID=${inviteId}`;
 
-  await sendEmail(email, <InviteEmail url={url} />);
+  try {
+    await TLPBackend.post(`tlp-users/new-invite`, {
+      inviteId,
+      email,
+      position,
+      firstName,
+      lastName,
+      phoneNumber,
+    });
+
+    await sendEmail(email, <InviteEmail url={url} />);
+  } catch (err) {
+    // catch potential error of email being invalid format
+    // remove invite from invite table in backend
+    // propagate up error message
+    await TLPBackend.delete(`tlp-users/invite/${inviteId}`);
+    throw new Error(err.message);
+  }
 };
 
 /**
- * Calls backend update the password of user to finish account set up
+ * Calls backend to retrieve data linked to invite
+ * Create account in FireBase and Database
  * @param {string} inviteId The inviteId from invite email
  * @param {string} password New password for account
  */
 const finishAccountSetUp = async (inviteId, password) => {
-  await TLPBackend.post(`tlp-users/complete-creation`, { inviteId, password });
+  const res = await TLPBackend.post(`tlp-users/complete-creation`, { inviteId, password });
+  const { data } = res;
+  await createUserInDB(
+    data.position,
+    data.email,
+    password,
+    data.firebaseId,
+    data.firstName,
+    data.lastName,
+    data.phoneNumber,
+    inviteId,
+  );
 };
 
 /**
@@ -208,7 +184,6 @@ const logout = async (redirectPath, navigate, cookies) => {
 export {
   useNavigate,
   logInWithEmailAndPassword,
-  registerWithEmailAndPassword,
   sendPasswordReset,
   logout,
   sendInviteLink,

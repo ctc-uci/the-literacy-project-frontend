@@ -20,11 +20,13 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
   const closeModalNoAlert = () => {
     setIsOpen(false);
     setShowAlert(false);
+    setErrorMessage('');
   };
 
   const handleSubmit = async e => {
     try {
       e.preventDefault();
+      setErrorMessage('');
       await sendInviteLink(AUTH_ROLES.ADMIN_ROLE, email, firstName, lastName, phoneNumber);
       setErrorMessage('');
       setEmail('');
