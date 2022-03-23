@@ -4,7 +4,7 @@ import './sites.css';
 // import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
-import NavigationBarTwo from '../../components/NavigationBarTwo/NavigationBarTwo';
+import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
 
 const SiteView = () => {
@@ -105,7 +105,7 @@ const SiteView = () => {
 
   return (
     <div>
-      <NavigationBarTwo />
+      <NavigationBar />
       <div className="site-container">
         <div>
           <h1>Areas</h1>

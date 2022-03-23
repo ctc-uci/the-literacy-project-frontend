@@ -3,7 +3,7 @@ import './people.css';
 import { Tabs, Tab } from 'react-bootstrap';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import AdminView from '../admin/admin';
-import NavigationBarTwo from '../../components/NavigationBarTwo/NavigationBarTwo';
+import NavigationBar from '../../components/NavigationBar/NavigationBar';
 
 const PeopleView = () => {
   const theadData = [
@@ -37,7 +37,7 @@ const PeopleView = () => {
   ];
   return (
     <div className="people-container">
-      <NavigationBarTwo />
+      <NavigationBar />
       <Tabs defaultActiveKey="staff">
         <Tab eventKey="staff" title="Staff">
           <AdminView />
