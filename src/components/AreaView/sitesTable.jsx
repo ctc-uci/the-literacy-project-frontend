@@ -75,6 +75,7 @@ const SitesTable = ({ areaId }) => {
               choices={statusChoices}
               current={site.active ? 'Active' : 'Inactive'}
               setFn={() => {}}
+              innerClass={styles.site_dropdown_inner}
             />,
             site.siteName,
             teacherString(siteTeachers),
@@ -103,7 +104,8 @@ const SitesTable = ({ areaId }) => {
         </Link>
         {tableData.length !== 0 && (
           <>
-            <input type="text" placeholder="Search" />
+            <input type="text" className={styles.sites_filter_input} placeholder="Search" />
+            {/* TODO: Will need different sorts for this sort button */}
             <div className={styles.sort}>
               <button type="button" className="btn btn-primary">
                 Sort By: A-Z

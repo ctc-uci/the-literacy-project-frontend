@@ -5,7 +5,6 @@ import { TLPBackend } from '../../common/utils';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import SitesTable from './sitesTable';
 import styles from './AreaView.module.css';
-import NavigationBarTwo from '../NavigationBarTwo/NavigationBarTwo';
 
 const BackToAllAreas = () => {
   window.location.replace('/area-management');
@@ -48,42 +47,53 @@ const AreaView = () => {
 
   return (
     <div>
-      <NavigationBarTwo />
       <div className={styles.site_container}>
-        <div>
-          <h1>
-            <Link to="/area-management" className={styles.all_areas_breadcrumb}>
+        <div className={styles.main_content}>
+          <div className={styles.areas_breadcrumb}>
+            <Link to="/area-management" className={styles.all_areas_link}>
               Areas{' '}
             </Link>
             / {areaName}
-          </h1>
+          </div>
           <div className={styles.search_query_filters}>
-            <h1>School Year</h1>
-            <div className={styles.select_school_year}>
-              <DropdownMenu
-                choices={schoolYearChoices}
-                current={schoolYear}
-                setFn={setSchoolYear}
-              />
+            <div className={styles.select_school_year_container}>
+              <h1 className={styles.school_year_header}>School Year</h1>
+              <div className={styles.select_school_year}>
+                <DropdownMenu
+                  choices={schoolYearChoices}
+                  current={schoolYear}
+                  setFn={setSchoolYear}
+                  innerClass={styles.search_option_dropdown_inner}
+                />
+              </div>
             </div>
-            <h2>Cycle</h2>
-            <div className={styles.select_school_year}>
-              <DropdownMenu choices={cycleChoices} current={cycle} setFn={setCycle} />
+            <div className={styles.select_cycle_container}>
+              <h1 className={styles.cycle_header}>Cycle</h1>
+              <div className={styles.select_cycle}>
+                <DropdownMenu
+                  choices={cycleChoices}
+                  current={cycle}
+                  setFn={setCycle}
+                  innerClass={styles.search_option_dropdown_inner}
+                />
+              </div>
             </div>
-            <div className="site-search-bar">
+            <div className={styles.search_sites_container}>
               <input
                 type="text"
+                className={styles.site_search_bar}
                 placeholder="Search Sites"
                 defaultValue={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
               />
-              <Button variant="primary">Search</Button>
+              <Button variant="primary" className={styles.site_search_button}>
+                Search
+              </Button>
             </div>
           </div>
-
-          <div className={styles.site_container}>
-            <SitesTable areaId={Number.parseInt(areaId, 10)} />
-          </div>
+          {/* <div className="site-container"> */}
+          <SitesTable areaId={Number.parseInt(areaId, 10)} />
+          {/* </div> */}
         </div>
         <div className="data">
           <Button variant="primary">Export to CSV</Button>
