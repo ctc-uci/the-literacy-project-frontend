@@ -1,15 +1,29 @@
-import { React, useState } from 'react';
+import { React, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Badge, Button } from 'react-bootstrap';
+import { Badge, Button, Form } from 'react-bootstrap';
 import { FaTrashAlt, FaPlus, FaPencilAlt } from 'react-icons/fa';
 import EditMasterTeacherModal from '../EditMasterTeacherModal/EditMasterTeacherModal';
 
-const TableRow = ({ data, colIsBadge, sectionTitle }) => {
+const TableRow = ({ data, colIsBadge, sectionTitle, statusCol }) => {
   const [modalIsOpen, setModalOpen] = useState('');
 
   const addBadgeStyles = {
     cursor: 'pointer',
     marginLeft: '0.5em',
+  };
+
+  const styleStatus = val => {
+    if (val === 'active' || val === 'inactive') {
+      return (
+        <Form.Group className="mb-3">
+          <Form.Select style={{ width: '110px' }}>
+            <option value={val}>{val === 'active' ? 'Active' : 'Inactive'}</option>
+            <option>{val === 'active' ? 'Inactive' : 'Active'}</option>
+          </Form.Select>
+        </Form.Group>
+      );
+    }
+    return 'Account Pending';
   };
 
   return (
@@ -33,12 +47,21 @@ const TableRow = ({ data, colIsBadge, sectionTitle }) => {
           if (colIsBadge.includes(ind)) {
             return (
               <td key={item}>
-                <Badge bg="dark" style={{ cursor: 'pointer' }}>
-                  {item} <FaTrashAlt color="red" cursor="pointer" />
-                </Badge>
+                {item !== null && (
+                  <Badge bg="dark" style={{ cursor: 'pointer' }}>
+                    {item} <FaTrashAlt color="red" cursor="pointer" />
+                  </Badge>
+                )}
                 <Badge bg="primary" style={addBadgeStyles}>
                   Add Site <FaPlus cursor="pointer" />
                 </Badge>
+              </td>
+            );
+          }
+          if (statusCol === ind) {
+            return (
+              <td key={item} style={{ color: '#17A2B8' }}>
+                {styleStatus(item)}
               </td>
             );
           }
@@ -59,12 +82,14 @@ TableRow.defaultProps = {
   data: [],
   colIsBadge: [],
   sectionTitle: '',
+  statusCol: -1,
 };
 
 TableRow.propTypes = {
   data: PropTypes.arrayOf(),
   colIsBadge: PropTypes.arrayOf(PropTypes.number),
   sectionTitle: PropTypes.string,
+  statusCol: PropTypes.number,
 };
 
 export default TableRow;
