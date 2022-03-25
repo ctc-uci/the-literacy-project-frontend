@@ -19,6 +19,7 @@ const Table = ({ theadData, tbodyData, tbodyColIsBadge, sectionTitle, statusCol 
           return (
             <TableRow
               key={item.id}
+              uniqueKey={item.id} // can't access by key in table row props
               data={item.items}
               colIsBadge={tbodyColIsBadge}
               sectionTitle={sectionTitle}

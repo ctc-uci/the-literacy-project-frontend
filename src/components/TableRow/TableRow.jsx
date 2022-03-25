@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Badge, Button, Form } from 'react-bootstrap';
 import { FaTrashAlt, FaPlus, FaPencilAlt } from 'react-icons/fa';
 import EditMasterTeacherModal from '../EditMasterTeacherModal/EditMasterTeacherModal';
+import EditAdminModal from '../EditAdminModal/EditAdminModal';
 
-const TableRow = ({ data, colIsBadge, sectionTitle, statusCol }) => {
+const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   const [modalIsOpen, setModalOpen] = useState('');
 
   const addBadgeStyles = {
@@ -73,12 +74,19 @@ const TableRow = ({ data, colIsBadge, sectionTitle, statusCol }) => {
           modalIsOpen === 'Master Teachers'
         } /* Since this is a generic section, you must first check the sectionTitle to ensure that the correct modal is triggered */
         setIsOpen={setModalOpen}
+        teacherId={uniqueKey}
+      />
+      <EditAdminModal
+        isOpen={modalIsOpen === 'Admin'}
+        setIsOpen={setModalOpen}
+        adminId={uniqueKey}
       />
     </>
   );
 };
 
 TableRow.defaultProps = {
+  uniqueKey: null,
   data: [],
   colIsBadge: [],
   sectionTitle: '',
@@ -86,6 +94,7 @@ TableRow.defaultProps = {
 };
 
 TableRow.propTypes = {
+  uniqueKey: PropTypes.number,
   data: PropTypes.arrayOf(),
   colIsBadge: PropTypes.arrayOf(PropTypes.number),
   sectionTitle: PropTypes.string,
