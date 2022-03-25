@@ -46,14 +46,12 @@ const MasterTeacherView = () => {
 
   const tbodyData = [];
   masterTeacherList.forEach(mtObj => {
-    const { firstName } = mtObj;
-    const { lastName } = mtObj;
+    const { firstName, lastName } = mtObj;
     tbodyData.push({
       id: mtObj.userId,
       items: [`${firstName} ${lastName}`, mtObj.email, mtObj.sites, mtObj.active, 'notes'],
     });
   });
-
   return (
     <div className="master-teacher-container">
       <ManagementDataSection
