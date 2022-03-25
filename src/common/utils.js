@@ -140,12 +140,6 @@ const addAuthInterceptor = axiosInstance => {
   );
 };
 
-const objectToArray = obj => {
-  const values = Object.values(obj);
-  console.log('values:', values);
-  return values;
-};
-
 addAuthInterceptor(TLPBackend);
 
-export { auth, TLPBackend, refreshToken, formatDate, objectToArray };
+export { auth, TLPBackend, refreshToken, formatDate };
