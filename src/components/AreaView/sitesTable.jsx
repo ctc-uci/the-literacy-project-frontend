@@ -59,6 +59,15 @@ const SitesTable = ({ areaId }) => {
       ? `${teachersObj[0].firstName} ${teachersObj[0].lastName}`
       : 'No Teacher Assigned';
 
+  // Callback for setting site active status
+  const updateSiteStatus = async (newChoice, site) => {
+    const newStatus = newChoice === 'Active';
+    await TLPBackend.put(`/sites/${site.siteId}`, {
+      ...site,
+      active: newStatus,
+    });
+  };
+
   const [tableData, setTableData] = useState([]);
   const buildTable = async () => {
     const { data: fetchedSites } = await TLPBackend.get(`/sites/area/${areaId}`);
@@ -74,7 +83,9 @@ const SitesTable = ({ areaId }) => {
               key={site.siteId}
               choices={statusChoices}
               current={site.active ? 'Active' : 'Inactive'}
-              setFn={() => {}}
+              setFn={newChoice => {
+                updateSiteStatus(newChoice, site);
+              }}
               innerClass={styles.site_dropdown_inner}
             />,
             site.siteName,
