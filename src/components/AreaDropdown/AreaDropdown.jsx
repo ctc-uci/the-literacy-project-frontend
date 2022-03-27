@@ -5,9 +5,11 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
+import EditAreaModal from '../EditAreaModal/EditAreaModal';
 
 function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [editAreaModalIsOpen, setEditAreaModalIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -77,13 +79,17 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
         <div className="area-dropdown__closed_container">
           <div className="area-dropdown__closed-area-name-wrapper">
             <p className="area-dropdown__closed-area-name">{areaName}</p>
-            <Link to={`/site/${areaId}/edit`} className="area-dropdown__closed-area-edit-icon">
-              <BsPencil />
-            </Link>
+            <BsPencil onClick={() => setEditAreaModalIsOpen(true)} />
           </div>
           <BsFillCaretRightFill className="area-dropdown__closed-area-caret" />
         </div>
       )}
+      <EditAreaModal
+        areaId={areaId}
+        areaName={areaName}
+        isOpen={editAreaModalIsOpen}
+        setIsOpen={setEditAreaModalIsOpen}
+      />
     </div>
   );
 }
