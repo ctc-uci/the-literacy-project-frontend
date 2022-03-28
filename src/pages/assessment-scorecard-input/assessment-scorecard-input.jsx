@@ -13,12 +13,12 @@ const AssessmentScorecardInput = () => {
             <input placeholder="input date here" />
           </div>
         </div>
-        <AssessmentScoreCard />
+        <AssessmentScoreCard name="preTest" />
         <div className="test-date" style={{ marginRight: '310px', marginTop: '50px' }}>
           <div>Post-Test Date:</div>
           <input placeholder="input date here" />
         </div>
-        <AssessmentScoreCard />
+        <AssessmentScoreCard name="postTest" />
       </div>
       <button type="button" className="btn btn-dark">
         EDIT

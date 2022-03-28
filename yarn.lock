@@ -7563,11 +7563,6 @@ fast-levenshtein@^2.0.6, fast-levenshtein@~2.0.6:
   resolved "https://registry.npmjs.org/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
 
-fast-shallow-equal@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/fast-shallow-equal/-/fast-shallow-equal-1.0.0.tgz"
-  integrity sha512-HPtaa38cPgWvaCFmRNhlc6NG7pv6NUHqjPgVAkWGoB9mQMwYB27/K0CvOM5Czy+qpT3e8XJ6Q4aPAnzpNpzNaw==
-
 fastq@^1.6.0:
   version "1.13.0"
   resolved "https://registry.npmjs.org/fastq/-/fastq-1.13.0.tgz"
@@ -12827,15 +12822,6 @@ react-error-overlay@^6.0.9:
   resolved "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.9.tgz"
   integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
 
-react-expanding-textarea@^2.3.4:
-  version "2.3.4"
-  resolved "https://registry.npmjs.org/react-expanding-textarea/-/react-expanding-textarea-2.3.4.tgz"
-  integrity sha512-zg/14CyPrIbjPgjfQGxcCmSv9nCrSNpmYpnqyOnNwaOJb8zxWD/GXN8Dgnp5jx8CPU6uIfZVhxs7h2hiOXiSHQ==
-  dependencies:
-    fast-shallow-equal "^1.0.0"
-    react-with-forwarded-ref "^0.3.3"
-    tslib "^2.0.3"
-
 react-fast-compare@^3.0.1, react-fast-compare@^3.2.0:
   version "3.2.0"
   resolved "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-3.2.0.tgz"
@@ -12852,10 +12838,10 @@ react-helmet-async@^1.0.7:
     react-fast-compare "^3.2.0"
     shallowequal "^1.1.0"
 
-react-hook-form@^7.27.1:
-  version "7.27.1"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.27.1.tgz#fe5fbcb6bf58751f66d9569e998d671480cc57f6"
-  integrity sha512-N3a7A6zIQ8DJeThisVZGtOUabTbJw+7DHJidmB9w8m3chckv2ZWKb5MHps9d2pPJqmCDoWe53Bos56bYmJms5w==
+react-hook-form@^7.28.1:
+  version "7.28.1"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.28.1.tgz#95fc37be6c6b9d57212eb7eca055fb36d079b3b7"
+  integrity sha512-mgwxvXuvt3FMY/mdnWbPc++Zf1U5xYzkhOaL05mtFMLvXc9MvUhMUlKtUVuO12sOrgT3nPXBgVFawtiJ4ONrgg==
 
 react-icons@^4.3.1:
   version "4.3.1"
@@ -13028,13 +13014,6 @@ react-transition-group@^4.4.1:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
-
-react-with-forwarded-ref@^0.3.3:
-  version "0.3.4"
-  resolved "https://registry.npmjs.org/react-with-forwarded-ref/-/react-with-forwarded-ref-0.3.4.tgz"
-  integrity sha512-SRq/uTdTh+02JDwYzEEhY2aNNWl/CP2EKP2nQtXzhJw06w6PgYnJt2ObrebvFJu6+wGzX3vDHU3H/ux9hxyZUQ==
-  dependencies:
-    tslib "^2.0.3"
 
 react@^17.0.2:
   version "17.0.2"
