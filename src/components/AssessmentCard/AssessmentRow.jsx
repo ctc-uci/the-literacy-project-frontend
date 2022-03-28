@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './AssessmentRow.css';
+import styles from './AssessmentRow.module.css';
 
-function AssessmentRow({ testNumber, gameName, skillTest, passingScore, numQuestions }) {
+const AssessmentRow = ({ testNumber, gameName, skillTest, passingScore, numQuestions }) => {
   if (numQuestions !== 0) {
     return (
       <tr>
-        <td className="test-number">{testNumber}</td>
-        <td className="game-name">{gameName}</td>
-        <td className="skill-test">{skillTest}</td>
+        <td className={styles['test-number']}>{testNumber}</td>
+        <td className={styles['game-name']}>{gameName}</td>
+        <td className={styles['skill-test']}>{skillTest}</td>
         <td>{passingScore}</td>
-        <td className="player-score">
+        <td className={styles['player-score']}>
           <form>
             <input placeholder={0} type="number" name="Pre Score" min={0} max={numQuestions} />
           </form>
@@ -21,16 +21,16 @@ function AssessmentRow({ testNumber, gameName, skillTest, passingScore, numQuest
 
   return (
     <tr>
-      <td className="test-number">{testNumber}</td>
-      <td className="game-name">{gameName}</td>
-      <td className="skill-test">{skillTest}</td>
+      <td className={styles['test-number']}>{testNumber}</td>
+      <td className={styles['game-name']}>{gameName}</td>
+      <td className={styles['skill-test']}>{skillTest}</td>
       <td>---</td>
       <td>-----</td>
     </tr>
   );
   // Notes for later:
   // We need to make sure we error check postScore and preScore for being Int
-}
+};
 
 AssessmentRow.defaultProps = {
   testNumber: 0,

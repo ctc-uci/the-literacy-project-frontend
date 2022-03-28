@@ -1,11 +1,11 @@
 import React from 'react';
 import TextArea from 'react-expanding-textarea';
 import AssessmentRow from './AssessmentRow';
-import './AssessmentScoreCard.css';
+import styles from './AssessmentScoreCard.module.css';
 
-function AssessmentScoreCard() {
+const AssessmentScoreCard = () => {
   return (
-    <div className="div">
+    <div className={styles.div}>
       <table>
         <tr>
           <th>#</th>
@@ -106,10 +106,10 @@ function AssessmentScoreCard() {
           numQuestions={5}
         />
       </table>
-      <TextArea placeholder="Notes" className="notes" rows="3" />
+      <TextArea placeholder="Notes" className={styles.notes} rows="3" />
     </div>
   );
-}
+};
 
 // Ideas for table layout:
 // Have given information stored in an array of objects like [{testNumber: 1, gameName: "Alphabet", skillTest = "m,n,o,p", passingScore = "13/15"}, {...}, ...]
