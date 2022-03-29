@@ -1,8 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useFormContext } from 'react-hook-form';
 import styles from './AssessmentRow.module.css';
 
-const AssessmentRow = ({ testNumber, gameName, skillTest, passingScore, numQuestions }) => {
+const AssessmentRow = ({
+  formName,
+  fieldIndex,
+  testNumber,
+  gameName,
+  skillTest,
+  passingScore,
+  numQuestions,
+}) => {
+  const { register } = useFormContext();
   if (numQuestions !== 0) {
     return (
       <tr>
@@ -12,7 +22,7 @@ const AssessmentRow = ({ testNumber, gameName, skillTest, passingScore, numQuest
         <td>{passingScore}</td>
         <td className={styles['player-score']}>
           <form>
-            <input placeholder={0} type="number" name="Pre Score" min={0} max={numQuestions} />
+            <input type="number" {...register(`${formName}.${fieldIndex}.value`)} />
           </form>
         </td>
       </tr>
@@ -41,6 +51,8 @@ AssessmentRow.defaultProps = {
 };
 
 AssessmentRow.propTypes = {
+  formName: PropTypes.number.isRequired,
+  fieldIndex: PropTypes.number.isRequired,
   testNumber: PropTypes.number,
   gameName: PropTypes.string,
   skillTest: PropTypes.string,
