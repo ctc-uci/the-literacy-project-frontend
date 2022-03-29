@@ -12,7 +12,10 @@ const AssessmentRow = ({
   passingScore,
   numQuestions,
 }) => {
-  const { register } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
   if (numQuestions !== 0) {
     return (
       <tr>
@@ -21,9 +24,11 @@ const AssessmentRow = ({
         <td className={styles['skill-test']}>{skillTest}</td>
         <td>{passingScore}</td>
         <td className={styles['player-score']}>
-          <form>
-            <input type="number" {...register(`${formName}.${fieldIndex}.value`)} />
-          </form>
+          <input
+            type="number"
+            className={errors?.[formName]?.[fieldIndex]?.playerScore ? styles['input-error'] : ''}
+            {...register(`${formName}.${fieldIndex}.playerScore`)}
+          />
         </td>
       </tr>
     );

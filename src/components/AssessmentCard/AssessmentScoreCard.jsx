@@ -15,7 +15,7 @@ const rowList = [
     phonicSkills: 'm, p, t, e, k, c, D, b, i, L, u, w, a, S, z',
     passingScore: '13/15',
     numQuestions: 15,
-    value: 0,
+    playerScore: 0,
   },
   {
     testNumber: 2,
@@ -23,7 +23,7 @@ const rowList = [
     phonicSkills: '/m/, /d/, /p/, /f/, /w/, /l/, /h/',
     passingScore: '6/7',
     numQuestions: 7,
-    value: 0,
+    playerScore: 0,
   },
   {
     testNumber: 3,
@@ -31,7 +31,7 @@ const rowList = [
     phonicSkills: 'pat, hit, bet, hut, hop, nak, rit, lep, tum, rof',
     passingScore: '8/10',
     numQuestions: 10,
-    value: 0,
+    playerScore: 0,
   },
   {
     testNumber: 4,
@@ -40,44 +40,43 @@ const rowList = [
       'is, of, two, are, the, you, does, give, said, some, want, were, their, where, would',
     passingScore: '0/15',
     numQuestions: 15,
-    value: 0,
+    playerScore: 0,
   },
 ];
-
-// const schema = yup.object({
-//   userType: yup.string('User type is required').required('User type is required'),
-//   email: yup.string().email('Invalid email').required('Email is required'),
-// });
 
 const AssessmentScoreCard = ({ name }) => {
   const [formOutput, setFormOutput] = useState();
 
+  const schema = yup.object({
+    [name]: yup.array().of(
+      yup.object({
+        playerScore: yup.number().positive().min(0, 'Number must be positive'),
+      }),
+    ),
+  });
+
   const methods = useForm({
     defaultValues: {
-      [`${name}`]: rowList,
+      [name]: rowList,
     },
+    resolver: yupResolver(schema),
+    delayError: 750,
   });
+
   const { fields } = useFieldArray({
     name,
     control: methods.control,
   });
 
   const onSubmit = async data => {
-    const scores = data[name].map(row => row.value);
+    const scores = data[name].map(row => row.playerScore);
 
     const formattedData = {
-      [`${name}`]: scores,
+      [name]: scores,
       notes: data.notes,
     };
     setFormOutput(formattedData);
   };
-
-  /*
-                <tr key={field.id}>
-                <p>{field.gameName}</p>
-                <input type="number" {...register(`${name}.${index}.value`)} />
-              </tr>
-  */
 
   return (
     <FormProvider {...methods}>
