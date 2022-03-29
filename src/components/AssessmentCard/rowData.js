@@ -5,7 +5,6 @@ const rowData = [
     phonicSkills: 'm, p, t, e, k, c, D, b, i, L, u, w, a, S, z',
     passingScore: '13/15',
     numQuestions: 15,
-    playerScore: 0,
   },
   {
     testNumber: 2,
@@ -13,7 +12,6 @@ const rowData = [
     phonicSkills: '/m/, /d/, /p/, /f/, /w/, /l/, /h/',
     passingScore: '6/7',
     numQuestions: 7,
-    playerScore: 0,
   },
   {
     testNumber: 3,
@@ -21,7 +19,6 @@ const rowData = [
     phonicSkills: 'pat, hit, bet, hut, hop, nak, rit, lep, tum, rof',
     passingScore: '8/10',
     numQuestions: 10,
-    playerScore: 0,
   },
   {
     testNumber: 4,
@@ -30,7 +27,6 @@ const rowData = [
       'is, of, two, are, the, you, does, give, said, some, want, were, their, where, would',
     passingScore: '0/15',
     numQuestions: 15,
-    playerScore: 0,
   },
 ];
 

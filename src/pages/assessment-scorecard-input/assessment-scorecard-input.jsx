@@ -4,8 +4,8 @@ import AssessmentScoreCard from '../../components/AssessmentCard/AssessmentScore
 const AssessmentScorecardInput = () => {
   return (
     <div>
-      <AssessmentScoreCard name="pretestA" />
-      <AssessmentScoreCard name="posttestA" />
+      <AssessmentScoreCard name="pretestA" headerText="Pre-Test" />
+      <AssessmentScoreCard name="posttestA" headerText="Post-Test" />
     </div>
   );
 };

@@ -3,9 +3,24 @@ import PropTypes from 'prop-types';
 import { useFormContext } from 'react-hook-form';
 import styles from './AssessmentRow.module.css';
 
+const scoreInput = (playerScore, editState, register, errors, formName, fieldIndex) => {
+  if (editState === 'editing') {
+    return (
+      <input
+        type="number"
+        className={errors?.[formName]?.[fieldIndex]?.playerScore ? styles['input-error'] : ''}
+        {...register(`${formName}.${fieldIndex}.playerScore`)}
+      />
+    );
+  }
+  return playerScore;
+};
+
 const AssessmentRow = ({
   formName,
   fieldIndex,
+  editState,
+  playerScore,
   testNumber,
   gameName,
   skillTest,
@@ -24,11 +39,7 @@ const AssessmentRow = ({
         <td className={styles['skill-test']}>{skillTest}</td>
         <td>{passingScore}</td>
         <td className={styles['player-score']}>
-          <input
-            type="number"
-            className={errors?.[formName]?.[fieldIndex]?.playerScore ? styles['input-error'] : ''}
-            {...register(`${formName}.${fieldIndex}.playerScore`)}
-          />
+          {scoreInput(playerScore, editState, register, errors, formName, fieldIndex)}
         </td>
       </tr>
     );
@@ -43,26 +54,18 @@ const AssessmentRow = ({
       <td>-----</td>
     </tr>
   );
-  // Notes for later:
-  // We need to make sure we error check postScore and preScore for being Int
-};
-
-AssessmentRow.defaultProps = {
-  testNumber: 0,
-  gameName: '',
-  skillTest: 'test',
-  passingScore: '1/3',
-  numQuestions: 0,
 };
 
 AssessmentRow.propTypes = {
   formName: PropTypes.number.isRequired,
   fieldIndex: PropTypes.number.isRequired,
-  testNumber: PropTypes.number,
-  gameName: PropTypes.string,
-  skillTest: PropTypes.string,
-  passingScore: PropTypes.string,
-  numQuestions: PropTypes.number,
+  editState: PropTypes.string.isRequired,
+  playerScore: PropTypes.number.isRequired,
+  testNumber: PropTypes.number.isRequired,
+  gameName: PropTypes.string.isRequired,
+  skillTest: PropTypes.string.isRequired,
+  passingScore: PropTypes.string.isRequired,
+  numQuestions: PropTypes.number.isRequired,
 };
 
 export default AssessmentRow;

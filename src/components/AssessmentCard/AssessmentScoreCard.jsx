@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,8 +9,36 @@ import AssessmentRow from './AssessmentRow';
 import styles from './AssessmentScoreCard.module.css';
 import rowData from './rowData';
 
-const AssessmentScoreCard = ({ name }) => {
-  const [formOutput, setFormOutput] = useState();
+const ScoreCardButton = ({ editState, setEditState }) => {
+  const setAsEditing = e => {
+    e.preventDefault();
+    setEditState('editing');
+  };
+  if (editState === 'newInput') {
+    return (
+      <Button as="button" type="button" onClick={e => setAsEditing(e)}>
+        + Input Scores
+      </Button>
+    );
+  }
+  if (editState === 'editing') {
+    return (
+      <Button as="button" type="submit">
+        Submit Scores
+      </Button>
+    );
+  }
+  return (
+    <Button as="button" type="button" onClick={e => setAsEditing(e)}>
+      Edit Scores
+    </Button>
+  );
+};
+
+const AssessmentScoreCard = ({ name, headerText }) => {
+  const [formOutput, setFormOutput] = useState(); // TODO: remove
+  // Edit states: newInput, editing, editExisting
+  const [editState, setEditState] = useState('newInput');
 
   const schema = yup.object({
     [name]: yup.array().of(
@@ -40,13 +68,24 @@ const AssessmentScoreCard = ({ name }) => {
       [name]: scores,
       notes: data.notes,
     };
+    setEditState('editExisting');
     setFormOutput(formattedData);
   };
+
+  // Populate rowData
+  useEffect(() => {
+    // TODO: use DB values to populate
+    methods.setValue(
+      name,
+      rowData.map(row => ({ ...row, playerScore: 0 })),
+    );
+  }, []);
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Button type="submit">Submit</Button>
+        {headerText}
+        <ScoreCardButton editState={editState} setEditState={setEditState} />
         <div>
           <table>
             <tr>
@@ -57,7 +96,13 @@ const AssessmentScoreCard = ({ name }) => {
               <th>Player Score</th>
             </tr>
             {fields.map((field, index) => (
-              <AssessmentRow key={field.id} formName={name} fieldIndex={index} {...field} />
+              <AssessmentRow
+                key={field.id}
+                formName={name}
+                fieldIndex={index}
+                editState={editState}
+                {...field}
+              />
             ))}
           </table>
           <textarea
@@ -74,12 +119,14 @@ const AssessmentScoreCard = ({ name }) => {
   );
 };
 
-// Ideas for table layout:
-// Have given information stored in an array of objects like [{testNumber: 1, gameName: "Alphabet", skillTest = "m,n,o,p", passingScore = "13/15"}, {...}, ...]
-// And then to create the whole table just use the .map function or some other function to create each assessment row.
+ScoreCardButton.propTypes = {
+  editState: PropTypes.string.isRequired,
+  setEditState: PropTypes.func.isRequired,
+};
 
 AssessmentScoreCard.propTypes = {
   name: PropTypes.string.isRequired,
+  headerText: PropTypes.string.isRequired,
 };
 
 export default AssessmentScoreCard;
