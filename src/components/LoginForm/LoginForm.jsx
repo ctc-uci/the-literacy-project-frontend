@@ -68,7 +68,7 @@ const LoginForm = ({ cookies }) => {
       <div className="formWrapper" style={{ backgroundColor: loginColor }}>
         <h1 className="title"> Log In </h1>
 
-        <form>
+        <form className="loginForm">
           <div className="emailInput">
             <label className="logLabel" htmlFor="email">
               Email
