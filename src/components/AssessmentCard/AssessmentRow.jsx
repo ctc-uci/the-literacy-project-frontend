@@ -3,7 +3,16 @@ import PropTypes from 'prop-types';
 import { useFormContext } from 'react-hook-form';
 import styles from './AssessmentRow.module.css';
 
-const scoreInput = (playerScore, editState, register, errors, formName, fieldIndex) => {
+const scoreInput = (
+  playerScore,
+  numQuestions,
+  editState,
+  register,
+  errors,
+  formName,
+  fieldIndex,
+) => {
+  if (numQuestions === 0) return '-----';
   if (editState === 'editing') {
     return (
       <input
@@ -13,7 +22,7 @@ const scoreInput = (playerScore, editState, register, errors, formName, fieldInd
       />
     );
   }
-  return playerScore;
+  return `${playerScore || 0}/${numQuestions}`;
 };
 
 const AssessmentRow = ({
@@ -31,36 +40,28 @@ const AssessmentRow = ({
     register,
     formState: { errors },
   } = useFormContext();
-  if (numQuestions !== 0) {
-    return (
-      <tr>
-        <td className={styles['test-number']}>{testNumber}</td>
-        <td className={styles['game-name']}>{gameName}</td>
-        <td className={styles['skill-test']}>{skillTest}</td>
-        <td>{passingScore}</td>
-        <td className={styles['player-score']}>
-          {scoreInput(playerScore, editState, register, errors, formName, fieldIndex)}
-        </td>
-      </tr>
-    );
-  }
-
   return (
     <tr>
       <td className={styles['test-number']}>{testNumber}</td>
       <td className={styles['game-name']}>{gameName}</td>
       <td className={styles['skill-test']}>{skillTest}</td>
-      <td>---</td>
-      <td>-----</td>
+      <td>{numQuestions !== 0 ? passingScore : '---'}</td>
+      <td className={styles['player-score']}>
+        {scoreInput(playerScore, numQuestions, editState, register, errors, formName, fieldIndex)}
+      </td>
     </tr>
   );
 };
 
+AssessmentRow.defaultProps = {
+  playerScore: 0,
+};
+
 AssessmentRow.propTypes = {
-  formName: PropTypes.number.isRequired,
+  formName: PropTypes.string.isRequired,
   fieldIndex: PropTypes.number.isRequired,
   editState: PropTypes.string.isRequired,
-  playerScore: PropTypes.number.isRequired,
+  playerScore: PropTypes.number,
   testNumber: PropTypes.number.isRequired,
   gameName: PropTypes.string.isRequired,
   skillTest: PropTypes.string.isRequired,

@@ -4,6 +4,7 @@ import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Button from 'react-bootstrap/Button';
+
 import AssessmentRow from './AssessmentRow';
 
 import styles from './AssessmentScoreCard.module.css';
@@ -35,7 +36,7 @@ const ScoreCardButton = ({ editState, setEditState }) => {
   );
 };
 
-const AssessmentScoreCard = ({ name, headerText }) => {
+const AssessmentScoreCard = ({ studentData, name, headerText }) => {
   const [formOutput, setFormOutput] = useState(); // TODO: remove
   // Edit states: newInput, editing, editExisting
   const [editState, setEditState] = useState('newInput');
@@ -43,7 +44,7 @@ const AssessmentScoreCard = ({ name, headerText }) => {
   const schema = yup.object({
     [name]: yup.array().of(
       yup.object({
-        playerScore: yup.number().positive().min(0, 'Number must be positive'),
+        playerScore: yup.number().integer().positive().min(0, 'Number must be positive').nullable(),
       }),
     ),
   });
@@ -74,12 +75,11 @@ const AssessmentScoreCard = ({ name, headerText }) => {
 
   // Populate rowData
   useEffect(() => {
-    // TODO: use DB values to populate
     methods.setValue(
       name,
-      rowData.map(row => ({ ...row, playerScore: 0 })),
+      rowData.map((row, i) => ({ ...row, playerScore: studentData?.[name]?.[i] })),
     );
-  }, []);
+  }, [studentData]);
 
   return (
     <FormProvider {...methods}>
@@ -88,22 +88,24 @@ const AssessmentScoreCard = ({ name, headerText }) => {
         <ScoreCardButton editState={editState} setEditState={setEditState} />
         <div>
           <table>
-            <tr>
-              <th>#</th>
-              <th>Game Name</th>
-              <th>Phonic Skills</th>
-              <th>Passing Score</th>
-              <th>Player Score</th>
-            </tr>
-            {fields.map((field, index) => (
-              <AssessmentRow
-                key={field.id}
-                formName={name}
-                fieldIndex={index}
-                editState={editState}
-                {...field}
-              />
-            ))}
+            <tbody>
+              <tr>
+                <th>#</th>
+                <th>Game Name</th>
+                <th>Phonic Skills</th>
+                <th>Passing Score</th>
+                <th>Player Score</th>
+              </tr>
+              {fields.map((field, index) => (
+                <AssessmentRow
+                  key={field.id}
+                  formName={name}
+                  fieldIndex={index}
+                  editState={editState}
+                  {...field}
+                />
+              ))}
+            </tbody>
           </table>
           <textarea
             placeholder="Notes"
@@ -125,6 +127,8 @@ ScoreCardButton.propTypes = {
 };
 
 AssessmentScoreCard.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  studentData: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
   headerText: PropTypes.string.isRequired,
 };
