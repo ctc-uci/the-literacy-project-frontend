@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import './EditAdminModal.css';
 import { Modal, Button, Alert, CloseButton, Form } from 'react-bootstrap';
-import { TLPBackend } from '../../common/utils';
+import { TLPBackend, reloadPage } from '../../common/utils';
 
 const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
   const [showEditAdminAlert, setShowEditAdminAlert] = useState(false);
@@ -16,6 +16,7 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
   const closeModal = () => {
     setIsOpen(false);
     setShowEditAdminAlert(true);
+    reloadPage();
   };
 
   const updateAdminData = async () => {

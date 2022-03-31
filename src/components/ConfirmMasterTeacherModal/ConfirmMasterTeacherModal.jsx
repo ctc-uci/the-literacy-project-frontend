@@ -2,12 +2,14 @@ import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import './ConfirmMasterTeacherModal.css';
 import { Modal, Button, Alert, CloseButton } from 'react-bootstrap';
+import { reloadPage } from '../../common/utils';
 
 const ConfirmMasterTeacherModal = ({ isOpen, setIsOpen }) => {
   const [showAlert, setShowAlert] = useState(false);
   const closeModal = () => {
     setIsOpen(false);
     setShowAlert(true);
+    reloadPage();
   };
 
   return (

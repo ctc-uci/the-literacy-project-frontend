@@ -140,6 +140,8 @@ const addAuthInterceptor = axiosInstance => {
   );
 };
 
+const reloadPage = () => window.location.reload();
+
 addAuthInterceptor(TLPBackend);
 
-export { auth, TLPBackend, refreshToken, formatDate };
+export { auth, TLPBackend, refreshToken, formatDate, reloadPage };

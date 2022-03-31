@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import './EditMasterTeacherModal.css';
 import { Modal, Button, Alert, CloseButton, Form } from 'react-bootstrap';
-import { TLPBackend } from '../../common/utils';
+import { TLPBackend, reloadPage } from '../../common/utils';
 
 const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [showEditMasterTeacherAlert, setShowEditMasterTeacherAlert] = useState(false);
@@ -16,6 +16,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const closeModal = () => {
     setIsOpen(false);
     setShowEditMasterTeacherAlert(true);
+    reloadPage();
   };
 
   const updateMasterTeacherData = async () => {
