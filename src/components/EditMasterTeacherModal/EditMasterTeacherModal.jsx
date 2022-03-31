@@ -16,7 +16,6 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const closeModal = () => {
     setIsOpen(false);
     setShowEditMasterTeacherAlert(true);
-    reloadPage();
   };
 
   const updateMasterTeacherData = async () => {
@@ -27,11 +26,13 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
       email,
       active: status.toLowerCase(),
     });
+    reloadPage();
     closeModal();
   };
 
   const deleteMasterTeacher = async () => {
     await TLPBackend.delete(`/teachers/${teacherId}`);
+    reloadPage();
     setIsOpen(false);
   };
 

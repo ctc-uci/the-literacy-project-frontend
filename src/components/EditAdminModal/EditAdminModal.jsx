@@ -16,7 +16,6 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
   const closeModal = () => {
     setIsOpen(false);
     setShowEditAdminAlert(true);
-    reloadPage();
   };
 
   const updateAdminData = async () => {
@@ -27,11 +26,13 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
       email,
       active: status.toLowerCase(),
     });
+    reloadPage();
     closeModal();
   };
 
   const deleteAdmin = async () => {
     await TLPBackend.delete(`/admins/${adminId}`);
+    reloadPage();
     setIsOpen(false);
   };
 
