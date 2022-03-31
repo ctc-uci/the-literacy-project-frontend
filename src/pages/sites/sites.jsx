@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Dropdown, Button, DropdownButton, Card } from 'react-bootstrap';
 import { TLPBackend } from '../../common/utils';
 import './sites.css';
-// import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
 import NavigationBarTwo from '../../components/NavigationBarTwo/NavigationBarTwo';
 import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
 
 const SiteView = () => {
-  // const [areaDropdownTitle, setAreaDropdownTitle] = useState('Bellevue SD');
   const [schoolYearDropdownTitle, setSchoolYearDropdownTitle] = useState('Cycle 1');
   const [modalIsOpen, setModalOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
