@@ -1,5 +1,4 @@
 import React from 'react';
-import './InviteEmail.css';
 import PropTypes from 'prop-types';
 import { Email, Item, A } from 'react-html-email';
 
