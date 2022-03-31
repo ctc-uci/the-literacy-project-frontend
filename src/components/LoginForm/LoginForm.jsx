@@ -31,7 +31,7 @@ const LoginForm = ({ cookies }) => {
   const handleSubmit = async e => {
     try {
       e.preventDefault();
-      await logInWithEmailAndPassword(email, password, '/area-management', navigate, cookies);
+      await logInWithEmailAndPassword(email, password, '/settings', navigate, cookies);
     } catch (err) {
       setErrorMessage(err.message);
     }
