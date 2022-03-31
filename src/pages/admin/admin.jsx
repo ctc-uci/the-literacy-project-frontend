@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './admin.css';
+import styles from './admin.module.css';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import { TLPBackend } from '../../common/utils';
 
@@ -47,7 +47,7 @@ const AdminView = () => {
   });
 
   return (
-    <div className="admin-container">
+    <div className={styles['admin-container']}>
       <ManagementDataSection
         sectionTitle="Admin"
         theadData={theadData}

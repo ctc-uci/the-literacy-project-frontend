@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './master-teachers.css';
+import styles from './master-teachers.module.css';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import { TLPBackend } from '../../common/utils';
 
@@ -53,7 +53,7 @@ const MasterTeacherView = () => {
     });
   });
   return (
-    <div className="master-teacher-container">
+    <div className={styles['master-teacher-container']}>
       <ManagementDataSection
         sectionTitle="Master Teachers"
         theadData={theadData}

@@ -1,7 +1,8 @@
 import { React, useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
-import './EditMasterTeacherModal.css';
-import { Modal, Button, Alert, CloseButton, Form } from 'react-bootstrap';
+import { Modal, Button, Alert, CloseButton, Form, Badge } from 'react-bootstrap';
+import { BsX } from 'react-icons/bs';
+import styles from './EditMasterTeacherModal.module.css';
 import { TLPBackend } from '../../common/utils';
 
 const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
@@ -12,6 +13,12 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [status, setStatus] = useState('');
+
+  const [sites, setSites] = useState([]);
+  const removeSite = e => {
+    const name = e.target.getAttribute('name');
+    setSites(sites.filter(site => site !== name));
+  };
 
   const closeModal = () => {
     setIsOpen(false);
@@ -92,14 +99,30 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                 <option value="Inactive">Inactive</option>
               </Form.Control>
               {status === 'Inactive' ? (
-                <Form.Label id="status-inactive-text">
+                <Form.Label id={styles['status-inactive-text']}>
                   *** If a teacher is made inactive, their assigned sites will be removed from them.
                 </Form.Label>
               ) : null}
             </Form.Group>
             <Form.Group className="mb-3" controlId="editTeacherAccount.assignSite">
               <Form.Label>Assign Site(s)</Form.Label>
-              <Form.Select aria-label="Default select example">
+              <div>
+                {sites.map(site => {
+                  return (
+                    // eslint-disable-next-line react/jsx-key
+                    <Badge bg="secondary" className={styles['site-badge']}>
+                      <BsX cursor="pointer" name={site} onClick={removeSite} /> {site}
+                    </Badge>
+                  );
+                })}
+              </div>
+              <Form.Select
+                onChange={({ target }) => {
+                  if (target.value !== 'Select Site...' && !sites.includes(target.value)) {
+                    setSites([...sites, target.value]);
+                  }
+                }}
+              >
                 <option>Select Site...</option>
                 <option value="School One">School One</option>
                 <option value="School Two">School Two</option>
@@ -122,13 +145,13 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
         </Modal.Footer>
       </Modal>
       {showEditMasterTeacherAlert ? (
-        <Alert variant="primary" className="alert-custom">
+        <Alert variant="primary" className={styles['alert-custom']}>
           {`Updated ${firstName} ${lastName}'s information.`}{' '}
-          <Alert.Link href="/" className="alert-link-custom">
+          <Alert.Link href="/" className={styles['alert-link-custom']}>
             UNDO
           </Alert.Link>
           <CloseButton
-            className="alert-close-btn"
+            className={styles['alert-close-btn']}
             onClick={() => setShowEditMasterTeacherAlert(false)}
           />
         </Alert>
