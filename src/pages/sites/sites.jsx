@@ -14,62 +14,6 @@ const SiteView = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
 
-  // const areas = [
-  //   {
-  //     area_id: 1,
-  //     area_name: 'Bellevue SD',
-  //     area_stats: {
-  //       student_count: 15,
-  //       master_teacher_count: 2,
-  //       site_count: 2,
-  //     },
-  //     area_sites: [
-  //       {
-  //         site_id: 1,
-  //         site_name: 'Highland Middle School',
-  //       },
-  //       {
-  //         site_id: 2,
-  //         site_name: 'Odle Middle School',
-  //       },
-  //       {
-  //         site_id: 3,
-  //         site_name: 'Odle Middle School',
-  //       },
-  //       {
-  //         site_id: 4,
-  //         site_name: 'Odle Middle School',
-  //       },
-  //       {
-  //         site_id: 5,
-  //         site_name: 'Odle Middle School',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     area_id: 2,
-  //     area_name: 'Irvine Unified School District',
-  //     area_stats: {
-  //       student_count: 30,
-  //       master_teacher_count: 22,
-  //       site_count: 5,
-  //     },
-  //     area_sites: [],
-  //   },
-  // ];
-
-  // function (areaReponse)
-  // Iterate through the response data
-  // get request to /site/:areaid
-  // ["area_name"] = siteResponseData
-
-  // get areas, and then filter unique Area Ids
-
-  // Logic: Call areas, create an array of all areas
-
-  // Filter: Filter for specific area ID and remove after
-  // Repeat filter step until empty array
-
   const addAssociatedSiteToArea = async resData => {
     async function fetchAllSites() {
       // eslint-disable-next-line no-plusplus
@@ -170,14 +114,6 @@ const SiteView = () => {
             <CreateAreaModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
           </div>
           {mapAreas()}
-          {/* <div>
-            <ManagementDataSection
-              sectionTitle="Sites"
-              theadData={theadData}
-              tbodyData={tbodyData}
-              tbodyColIsBadge={[1]}
-            />
-          </div> */}
         </div>
         <div className="data">
           <Button variant="primary">Export to CSV</Button>
