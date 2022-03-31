@@ -4,6 +4,7 @@ import './CreateAdminModal.css';
 import { Modal, Button, Form, Alert, CloseButton } from 'react-bootstrap';
 import { AUTH_ROLES } from '../../common/config';
 import { sendInviteLink } from '../../common/auth/auth_utils';
+import { reloadPage } from '../../common/utils';
 
 const CreateAdminModal = ({ isOpen, setIsOpen }) => {
   const [showAlert, setShowAlert] = useState(false);
@@ -16,6 +17,7 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
   const closeModal = () => {
     setIsOpen(false);
     setShowAlert(true);
+    reloadPage();
   };
   const closeModalNoAlert = () => {
     setIsOpen(false);

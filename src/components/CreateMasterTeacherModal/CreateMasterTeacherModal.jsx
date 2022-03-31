@@ -6,6 +6,7 @@ import styles from './CreateMasterTeacherModal.module.css';
 import ConfirmMasterTeacherModal from '../ConfirmMasterTeacherModal/ConfirmMasterTeacherModal';
 import { AUTH_ROLES } from '../../common/config';
 import { sendInviteLink } from '../../common/auth/auth_utils';
+import { reloadPage } from '../../common/utils';
 
 const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
   const [confirmModalIsOpen, setConfirmModalOpen] = useState(false);
@@ -35,6 +36,7 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
       setErrorMessage('');
       setEmail('');
       sendEmailSuccessSequence();
+      reloadPage();
     } catch (err) {
       setErrorMessage(err.message);
     }

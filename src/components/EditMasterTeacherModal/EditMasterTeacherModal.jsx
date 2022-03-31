@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { Modal, Button, Alert, CloseButton, Form, Badge } from 'react-bootstrap';
 import { BsX } from 'react-icons/bs';
 import styles from './EditMasterTeacherModal.module.css';
-import { TLPBackend } from '../../common/utils';
+import { TLPBackend, reloadPage } from '../../common/utils';
 
 const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [showEditMasterTeacherAlert, setShowEditMasterTeacherAlert] = useState(false);
@@ -33,11 +33,13 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
       email,
       active: status.toLowerCase(),
     });
+    reloadPage();
     closeModal();
   };
 
   const deleteMasterTeacher = async () => {
     await TLPBackend.delete(`/teachers/${teacherId}`);
+    reloadPage();
     setIsOpen(false);
   };
 
