@@ -16,12 +16,13 @@ import AreaManagement from './pages/area-management/area-management';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
 import AreaDetails from './pages/area-details/area-details';
 import PeopleView from './pages/people/people';
+import NotFoundView from './pages/not-found/not-found';
+import AccessDeniedView from './pages/access-denied/access-denied';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
-// TODO: add routes for access-denied and not-found pages
 
 ReactDOM.render(
   <React.StrictMode>
@@ -95,6 +96,8 @@ ReactDOM.render(
           />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
+          <Route exact path="/access-denied" element={<AccessDeniedView />} />
+          <Route exact path="/not-found" element={<NotFoundView />} />
           <Route exact path="*" element={<Navigate to="/not-found" />} />
         </Routes>
       </Router>
