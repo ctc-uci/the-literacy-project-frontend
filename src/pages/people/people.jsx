@@ -3,7 +3,7 @@ import { Tabs, Tab } from 'react-bootstrap';
 import styles from './people.module.css';
 import AdminView from '../admin/admin';
 import AdminStudentsView from '../admin-students-view/admin-students-view';
-import MasterTeacherView from '../master-teachers/master-teachers';
+import MasterTeacherView from '../master-teachers-table/master-teachers-table';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 
 const PeopleView = () => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from './master-teachers.module.css';
+import styles from './master-teachers-table.module.css';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import { TLPBackend } from '../../common/utils';
 
