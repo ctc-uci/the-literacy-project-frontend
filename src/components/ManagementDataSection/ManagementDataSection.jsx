@@ -1,4 +1,4 @@
-import './ManagementDataSection.css';
+import './ManagementDataSection.module.css';
 import { React, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
