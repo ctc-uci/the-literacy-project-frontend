@@ -1,111 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dropdown, Button, DropdownButton, Card } from 'react-bootstrap';
+import { TLPBackend } from '../../common/utils';
 import './sites.css';
-// import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
-import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
 
 const SiteView = () => {
-  // const [areaDropdownTitle, setAreaDropdownTitle] = useState('Bellevue SD');
   const [schoolYearDropdownTitle, setSchoolYearDropdownTitle] = useState('Cycle 1');
   const [modalIsOpen, setModalOpen] = useState(false);
+  const [areaResponseData, setAreaResponseData] = useState([]);
 
-  const areas = [
-    {
-      area_id: 1,
-      area_name: 'Bellevue SD',
-      area_stats: {
-        student_count: 15,
-        master_teacher_count: 2,
-        site_count: 2,
-      },
-      area_sites: [
-        {
-          site_id: 1,
-          site_name: 'Highland Middle School',
-        },
-        {
-          site_id: 2,
-          site_name: 'Odle Middle School',
-        },
-        {
-          site_id: 3,
-          site_name: 'Odle Middle School',
-        },
-        {
-          site_id: 4,
-          site_name: 'Odle Middle School',
-        },
-        {
-          site_id: 5,
-          site_name: 'Odle Middle School',
-        },
-      ],
-    },
-    {
-      area_id: 2,
-      area_name: 'Irvine Unified School District',
-      area_stats: {
-        student_count: 30,
-        master_teacher_count: 22,
-        site_count: 5,
-      },
-      area_sites: [],
-    },
-  ];
+  const addAssociatedSiteToArea = async resData => {
+    async function fetchAllSites() {
+      // eslint-disable-next-line no-plusplus
+      for (let ind = 0; ind < resData.length; ind++) {
+        TLPBackend.get(`/sites/area/${resData[ind].areaId}`)
+          .then(res => {
+            // eslint-disable-next-line no-param-reassign
+            resData[ind].area_sites = res.data;
+          })
+          .catch(() => {});
+      }
+    }
+    await fetchAllSites();
+    setTimeout(() => {
+      setAreaResponseData(resData);
+    }, 2000);
+  };
 
   function mapAreas() {
-    return areas.map(area => {
+    return areaResponseData.map(area => {
       return (
         <AreaDropdown
-          areaId={area.area_id}
-          areaName={area.area_name}
-          areaStats={area.area_stats}
+          areaId={area.areaId}
+          areaName={area.areaName}
+          areaStats={{
+            student_count: 15,
+            master_teacher_count: 2,
+            site_count: 2,
+          }}
           areaSites={area.area_sites}
-          key={`area-dropdown-${area.area_id}`}
+          key={`area-dropdown-${area.areaId}`}
         />
       );
     });
   }
 
-  // const theadData = [
-  //   {
-  //     headerTitle: 'Site Name',
-  //     headerPopover: '',
-  //   },
-  //   {
-  //     headerTitle: 'Master Teacher',
-  //     headerPopover: '',
-  //   },
-  //   {
-  //     headerTitle: 'Status',
-  //     headerPopover:
-  //       "<p><strong style='color:#28a745'>Active:</strong> This user is active in the current cycle. They have full access and can log in.</p> <p><strong style='color:#5f758d'>Inactive:</strong> This user is inactive in the current cycle. They cannot log in until an admin user reactivates their account.</p> <p><strong style='color:#17a2b8'>Email Sent:</strong> An email sign up link was sent. They have not set up their account yet.",
-  //   },
-  //   {
-  //     headerTitle: 'Additional Info',
-  //     headerPopover: '',
-  //   },
-  // ];
-  // const tbodyData = [
-  //   {
-  //     id: 1,
-  //     items: ['Test Name', 'Master Teacher A', 'Active', 'Temp'],
-  //   },
-  // ];
-
-  // const changeAreaTitle = event => {
-  //   setAreaDropdownTitle(event.target.textContent);
-  // };
   const changeSchoolYearTitle = event => {
     setSchoolYearDropdownTitle(event.target.textContent);
   };
 
+  useEffect(() => {
+    async function fetchAreas() {
+      await TLPBackend.get('/areas')
+        .then(res => {
+          setTimeout(() => {
+            addAssociatedSiteToArea(res.data);
+          }, 1000);
+        })
+        .catch(() => {});
+    }
+    fetchAreas();
+  }, []);
+
   return (
     <div>
-      <NavigationBar />
       <div className="site-container">
         <div>
           <h1>Areas</h1>
@@ -150,14 +110,6 @@ const SiteView = () => {
             <CreateAreaModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
           </div>
           {mapAreas()}
-          {/* <div>
-            <ManagementDataSection
-              sectionTitle="Sites"
-              theadData={theadData}
-              tbodyData={tbodyData}
-              tbodyColIsBadge={[1]}
-            />
-          </div> */}
         </div>
         <div className="data">
           <Button variant="primary">Export to CSV</Button>

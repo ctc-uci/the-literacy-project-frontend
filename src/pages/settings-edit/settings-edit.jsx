@@ -111,11 +111,6 @@ const SettingsEditView = () => {
           {statusBtn}
         </div>
       </div>
-      {/* {isTeacher ? (
-        <TeacherView name={name} email={email} active={active} district={district} />
-      ) : (
-        <AdminView name={name} email={email} status={active} />
-      )} */}
 
       <h3 className="offset-md-1 subtitle">Password</h3>
       <form className="container">

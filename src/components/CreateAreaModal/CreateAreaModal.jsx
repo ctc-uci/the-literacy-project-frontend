@@ -2,9 +2,14 @@ import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import './CreateAreaModal.css';
 import { Modal, Button, Form, Alert, CloseButton } from 'react-bootstrap';
+import { TLPBackend } from '../../common/utils';
 
 const CreateAreaModal = ({ isOpen, setIsOpen }) => {
   const [showAlert, setShowAlert] = useState(false);
+  const [areaName, setAreaName] = useState('');
+  const [alertText, setAlertText] = useState('');
+  const [isAlertSuccess, setIsAlertSuccess] = useState(true);
+
   const closeModal = () => {
     setIsOpen(false);
     setShowAlert(true);
@@ -12,6 +17,22 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
   const closeModalNoAlert = () => {
     setIsOpen(false);
     setShowAlert(false);
+  };
+  const submitNewArea = () => {
+    TLPBackend.post('/areas', {
+      areaName,
+      active: 'true',
+    })
+      .then(() => {
+        setAlertText(`Successfully created area: ${areaName}`);
+        setIsAlertSuccess(true);
+        closeModal();
+      })
+      .catch(() => {
+        setAlertText(`[ERROR] unable to create area: ${areaName}`);
+        setIsAlertSuccess(false);
+        closeModal();
+      });
   };
   return (
     <>
@@ -29,7 +50,14 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
           <div>
             <Form.Group className="mb-5" controlId="createArea.name">
               <Form.Label>Name</Form.Label>
-              <Form.Control placeholder="Name" />
+              <Form.Control
+                placeholder="Name"
+                defaultValue={areaName}
+                onChange={e => {
+                  setAreaName(e.target.value);
+                }}
+                required
+              />
             </Form.Group>
           </div>
         </Modal.Body>
@@ -38,15 +66,15 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
           <Button variant="secondary" onClick={closeModal}>
             Create and Add Another
           </Button>
-          <Button variant="primary" onClick={closeModal}>
+          <Button variant="primary" onClick={submitNewArea}>
             Create
           </Button>
         </Modal.Footer>
       </Modal>
       {showAlert ? (
         <div className="center-block">
-          <Alert variant="primary" className="alert-custom">
-            Successfully created area!{' '}
+          <Alert variant={isAlertSuccess ? 'primary' : 'danger'} className="alert-custom">
+            {alertText}
             <CloseButton className="alert-close-btn" onClick={() => setShowAlert(false)} />
           </Alert>
         </div>

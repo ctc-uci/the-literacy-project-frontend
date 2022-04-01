@@ -59,10 +59,10 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
                   return (
                     <Link
                       className="area-dropdown__open__site-link"
-                      to={`/site/${site.site_id}`}
-                      key={`site-${site.site_id}`}
+                      to={`/site/${site.siteId}`}
+                      key={`site-${site.siteId}`}
                     >
-                      {site.site_name}
+                      {site.siteName}
                     </Link>
                   );
                 })}
@@ -70,14 +70,14 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
             </div>
           </div>
           <div className="area-dropdown__open__edit-sites-link">
-            <Link to={`/site/${areaId}/edit`}>VIEW SITES</Link>
+            <Link to={`/area/${areaId}`}>VIEW SITES</Link>
           </div>
         </div>
       ) : (
         <div className="area-dropdown__closed_container">
           <div className="area-dropdown__closed-area-name-wrapper">
             <p className="area-dropdown__closed-area-name">{areaName}</p>
-            <Link to={`/site/${areaId}/edit`} className="area-dropdown__closed-area-edit-icon">
+            <Link to={`/area/${areaId}`} className="area-dropdown__closed-area-edit-icon">
               <BsPencil />
             </Link>
           </div>

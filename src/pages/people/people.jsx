@@ -3,6 +3,7 @@ import './people.css';
 import { Tabs, Tab } from 'react-bootstrap';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import AdminView from '../admin/admin';
+import AdminStudentsView from '../admin-students-view/admin-students-view';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 
 const PeopleView = () => {
@@ -50,7 +51,7 @@ const PeopleView = () => {
           </div>
         </Tab>
         <Tab eventKey="students" title="Students">
-          stuff will go here soon
+          <AdminStudentsView />
         </Tab>
       </Tabs>
     </div>

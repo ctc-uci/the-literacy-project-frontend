@@ -2,9 +2,17 @@ import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import './CreateAdminModal.css';
 import { Modal, Button, Form, Alert, CloseButton } from 'react-bootstrap';
+import { AUTH_ROLES } from '../../common/config';
+import { sendInviteLink } from '../../common/auth/auth_utils';
 
 const CreateAdminModal = ({ isOpen, setIsOpen }) => {
   const [showAlert, setShowAlert] = useState(false);
+  const [email, setEmail] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [errorMessage, setErrorMessage] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+
   const closeModal = () => {
     setIsOpen(false);
     setShowAlert(true);
@@ -12,6 +20,20 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
   const closeModalNoAlert = () => {
     setIsOpen(false);
     setShowAlert(false);
+    setErrorMessage('');
+  };
+
+  const handleSubmit = async e => {
+    try {
+      e.preventDefault();
+      setErrorMessage('');
+      await sendInviteLink(AUTH_ROLES.ADMIN_ROLE, email, firstName, lastName, phoneNumber);
+      setErrorMessage('');
+      setEmail('');
+      closeModal();
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
   };
 
   return (
@@ -30,28 +52,46 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
           <div>
             <Form.Group className="mb-5" controlId="createAdmin.firstName">
               <Form.Label>First Name</Form.Label>
-              <Form.Control placeholder="First Name" />
+              <Form.Control
+                placeholder="First Name"
+                onChange={({ target }) => setFirstName(target.value)}
+              />
             </Form.Group>
             <Form.Group className="mb-5" controlId="createAdmin.lastName">
               <Form.Label>Last Name</Form.Label>
-              <Form.Control placeholder="Last Name" />
+              <Form.Control
+                placeholder="Last Name"
+                onChange={({ target }) => setLastName(target.value)}
+              />
             </Form.Group>
-            <Form.Group className="mb-5" controlId="createAdminAccount.email" required="true">
+            <Form.Group className="mb-5" controlId="createAdmin.phoneNumber">
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                placeholder="Phone Number"
+                onChange={({ target }) => setPhoneNumber(target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="mb-5" controlId="createAdminAccount.email" required>
               <Form.Label>
                 <>
                   Email
                   <span id="asterisk">*</span>
                 </>
               </Form.Label>
-              <Form.Control type="email" placeholder="example@gmail.com" />
+              <Form.Control
+                type="email"
+                placeholder="example@gmail.com"
+                onChange={({ target }) => setEmail(target.value)}
+              />
             </Form.Group>
           </div>
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="primary" className="modalSave" onClick={closeModal}>
+          <Button variant="primary" className="modalSave" onClick={handleSubmit}>
             Send Email
           </Button>
+          {errorMessage && <p>{errorMessage}</p>}
         </Modal.Footer>
       </Modal>
       {showAlert ? (
