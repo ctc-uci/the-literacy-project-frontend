@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { TLPBackend } from '../../common/utils';
 import './EditAreaModal.css';
 
 const EditAreaModal = props => {
@@ -9,16 +10,20 @@ const EditAreaModal = props => {
   const [name, setName] = useState(areaName);
   const [status, setStatus] = useState(true);
 
-  const deleteArea = () => {
-    // TODO: connect to api
-    console.log(`Deleted ${areaId}`);
+  const closeModal = () => {
     setIsOpen(false);
   };
 
+  const deleteArea = () => {
+    TLPBackend.delete(`/areas/${areaId}`).then(() => {
+      closeModal();
+    });
+  };
+
   const updateArea = () => {
-    // TODO: connect to api
-    console.log(`Update ${areaId}. Name=${name}, Status=${status}`);
-    setIsOpen(false);
+    TLPBackend.put(`/areas/${areaId}`, { areaName: name, active: status }).then(() => {
+      closeModal();
+    });
   };
 
   return (
@@ -50,13 +55,10 @@ const EditAreaModal = props => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={() => deleteArea(areaId)}>
+          <Button variant="danger" onClick={() => deleteArea()}>
             Delete
           </Button>
-          <Button variant="info" onClick={() => setIsOpen(false)}>
-            Save and Add Another
-          </Button>
-          <Button variant="primary" onClick={() => updateArea(areaId)}>
+          <Button variant="primary" onClick={() => updateArea()}>
             Save Changes
           </Button>
         </Modal.Footer>
