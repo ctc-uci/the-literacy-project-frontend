@@ -1,9 +1,11 @@
+/* TODO: global css colors */
 .form-header {
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-content: center;
+  margin: 24px 0;
 }
 
 .form-header p {
@@ -12,6 +14,75 @@
   padding: 0;
   align-self: center;
   color: #868E96;
+}
+
+.form-header button {
+  margin: 0;
+}
+
+.form-header button:hover {
+  background-color: none !important;
+}
+
+.input-score-button {
+  background: #FFD350;
+  color: #868E96;
+}
+
+.input-score-button:hover {
+  background-color: #FFD350;
+  color: #868E96;
+  border-color: #FFD350;
+  filter: brightness(110%);
+}
+
+.input-score-button:active {
+  background-color: #FFD350;
+  color: #868E96;
+  border-color: #FFD350;
+  filter: brightness(110%);
+}
+
+.checkmark-icon {
+  margin-right: 5px;
+}
+
+.submit-score-button {
+  background: #28A745;
+  color: white;
+}
+
+.submit-score-button:hover {
+  background: #28A745;
+  color: white;
+  border-color: #28A745;
+  filter: brightness(110%);
+}
+
+.submit-score-button:active {
+  background: #28A745;
+  color: white;
+  border-color: #28A745;
+  filter: brightness(110%);
+}
+
+.edit-score-button {
+  background: #3288C4;
+  color: #E9ECEF;
+}
+
+.edit-score-button:hover {
+  background: #3288C4;
+  color: #E9ECEF;
+  border-color: #3288C4;
+  filter: brightness(110%);
+}
+
+.edit-score-button:active {
+  background: #3288C4;
+  color: #E9ECEF;
+  border-color: #3288C4;
+  filter: brightness(110%);
 }
 
 .scorecard-table {

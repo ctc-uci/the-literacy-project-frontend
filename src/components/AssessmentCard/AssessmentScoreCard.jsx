@@ -4,6 +4,7 @@ import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Button from 'react-bootstrap/Button';
+import { IoCheckmarkDoneOutline } from 'react-icons/io5';
 
 import { TLPBackend } from '../../common/utils';
 import AssessmentRow from './AssessmentRow';
@@ -30,7 +31,8 @@ const ScoreCardButton = ({ editState, setEditState }) => {
   }
   if (editState === 'editing') {
     return (
-      <Button as="button" type="submit" className={styles['submit-score-button']}>
+      <Button as="button" type="submit" variant="success" className={styles['submit-score-button']}>
+        <IoCheckmarkDoneOutline className={styles['checkmark-icon']} />
         Submit Scores
       </Button>
     );
