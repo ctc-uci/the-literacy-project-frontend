@@ -38,7 +38,7 @@ const rowData = [
   {
     testNumber: 6,
     gameName: 'Long & Short Vowel Pass',
-    skillTest: 'no assessment',
+    skillTest: 'No Assessment',
     passingScore: 'n/a',
     numQuestions: 0,
   },
@@ -52,7 +52,7 @@ const rowData = [
   {
     testNumber: 8,
     gameName: 'Consonant Blend & Digraph Dribble',
-    skillTest: 'no assessment',
+    skillTest: 'No Assessment',
     passingScore: 'n/a',
     numQuestions: 0,
   },

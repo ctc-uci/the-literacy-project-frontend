@@ -18,20 +18,30 @@ const ScoreCardButton = ({ editState, setEditState }) => {
   };
   if (editState === 'newInput') {
     return (
-      <Button as="button" type="button" onClick={e => setAsEditing(e)}>
+      <Button
+        as="button"
+        type="button"
+        className={styles['input-score-button']}
+        onClick={e => setAsEditing(e)}
+      >
         + Input Scores
       </Button>
     );
   }
   if (editState === 'editing') {
     return (
-      <Button as="button" type="submit">
+      <Button as="button" type="submit" className={styles['submit-score-button']}>
         Submit Scores
       </Button>
     );
   }
   return (
-    <Button as="button" type="button" onClick={e => setAsEditing(e)}>
+    <Button
+      as="button"
+      type="button"
+      className={styles['edit-score-button']}
+      onClick={e => setAsEditing(e)}
+    >
       Edit Scores
     </Button>
   );
@@ -82,6 +92,7 @@ const AssessmentScoreCard = ({ studentID, name, headerText }) => {
       name,
       rowData.map((row, i) => ({ ...row, playerScore: studentData?.[name]?.[i] })),
     );
+    setEditState(!studentData?.[name] ? 'newInput' : 'editExisting');
   }, [studentData]);
 
   const onSubmit = async data => {
@@ -102,17 +113,18 @@ const AssessmentScoreCard = ({ studentID, name, headerText }) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        {headerText}
-        <ScoreCardButton editState={editState} setEditState={setEditState} />
+        <div className={styles['form-header']}>
+          <p>{headerText}</p>
+          <ScoreCardButton editState={editState} setEditState={setEditState} />
+        </div>
         <div>
-          <table>
+          <table className={styles['scorecard-table']}>
             <tbody>
               <tr>
-                <th>#</th>
                 <th>Game Name</th>
                 <th>Phonic Skills</th>
                 <th>Passing Score</th>
-                <th>Player Score</th>
+                <th>Score</th>
               </tr>
               {fields.map((field, index) => (
                 <AssessmentRow

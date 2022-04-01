@@ -1,17 +1,30 @@
-.skill-test {
-  width: 200px;
+.assessment-row td {
+  text-align: center;
+  vertical-align: middle;
+  height: 75px;
 }
 
-.test-number {
-  width: 50px;
+.assessment-row input {
+  max-width: 48px;
 }
 
 .game-name {
-  width: 200px;
+  max-width: 425px;
+  background: #FFE79F;
+}
+
+.skill-test {
+  max-width: 425px;
+}
+
+.passing-score {
+  max-width: 130px;
 }
 
 .player-score {
-  width: 100px;
+  width: 130px;
+  background: #E9ECEF;
+  font-weight: bold;
 }
 
 .input-error {

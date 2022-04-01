@@ -30,7 +30,6 @@ const AssessmentRow = ({
   fieldIndex,
   editState,
   playerScore,
-  testNumber,
   gameName,
   skillTest,
   passingScore,
@@ -41,11 +40,10 @@ const AssessmentRow = ({
     formState: { errors },
   } = useFormContext();
   return (
-    <tr>
-      <td className={styles['test-number']}>{testNumber}</td>
+    <tr className={styles['assessment-row']}>
       <td className={styles['game-name']}>{gameName}</td>
       <td className={styles['skill-test']}>{skillTest}</td>
-      <td>{numQuestions !== 0 ? passingScore : '---'}</td>
+      <td className={styles['passing-score']}>{numQuestions !== 0 ? passingScore : '---'}</td>
       <td className={styles['player-score']}>
         {scoreInput(playerScore, numQuestions, editState, register, errors, formName, fieldIndex)}
       </td>
@@ -62,7 +60,6 @@ AssessmentRow.propTypes = {
   fieldIndex: PropTypes.number.isRequired,
   editState: PropTypes.string.isRequired,
   playerScore: PropTypes.number,
-  testNumber: PropTypes.number.isRequired,
   gameName: PropTypes.string.isRequired,
   skillTest: PropTypes.string.isRequired,
   passingScore: PropTypes.string.isRequired,

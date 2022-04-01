@@ -1,3 +1,31 @@
+.form-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.form-header p {
+  font-size: 28px;
+  margin: 0;
+  padding: 0;
+  align-self: center;
+  color: #868E96;
+}
+
+.scorecard-table {
+  width: 100%;
+}
+
+.scorecard-table th {
+  text-align: center;
+  vertical-align: middle;
+  padding: 5px 0;
+  background: #868E96;
+  color: white;
+}
+
 .notes {
-  width: 647px;
+  width: 100%;
 }
