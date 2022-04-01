@@ -16,15 +16,17 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
   };
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      className="area-dropdown"
-      onClick={toggleDropdown}
-      onKeyDown={() => {}}
-    >
+    <div className="area-dropdown">
       {isOpen ? (
-        <div className="area-dropdown__open-container">
+        <div
+          className="area-dropdown__open-container"
+          onClick={toggleDropdown}
+          role="button"
+          tabIndex={0}
+          onKeyDown={event => {
+            if (event.key === 'Enter') toggleDropdown();
+          }}
+        >
           <div className="area-dropdown__open__area_stats">
             <div className="area-dropdown__open__area_stats__section">
               <BsPeople className="area-dropdown__open__area_stats__section-icon" />
@@ -77,11 +79,26 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
         </div>
       ) : (
         <div className="area-dropdown__closed_container">
-          <div className="area-dropdown__closed-area-name-wrapper">
+          <BsPencil
+            role="button"
+            onClick={() => setEditAreaModalIsOpen(true)}
+            tabIndex={0}
+            onKeyDown={event => {
+              if (event.key === 'Enter') setEditAreaModalIsOpen(true);
+            }}
+          />
+          <div
+            className="area-dropdown__closed-area-name-wrapper"
+            onClick={toggleDropdown}
+            role="button"
+            tabIndex={0}
+            onKeyDown={event => {
+              if (event.key === 'Enter') toggleDropdown();
+            }}
+          >
             <p className="area-dropdown__closed-area-name">{areaName}</p>
-            <BsPencil onClick={() => setEditAreaModalIsOpen(true)} />
+            <BsFillCaretRightFill className="area-dropdown__closed-area-caret" />
           </div>
-          <BsFillCaretRightFill className="area-dropdown__closed-area-caret" />
         </div>
       )}
       <EditAreaModal
