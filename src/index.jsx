@@ -16,7 +16,6 @@ import AreaManagement from './pages/area-management/area-management';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
 import AreaDetails from './pages/area-details/area-details';
 import PeopleView from './pages/people/people';
-import Register from './components/Register/register';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
@@ -32,7 +31,6 @@ ReactDOM.render(
       <Router>
         <Routes>
           <Route path="/" exact element={<LoginView />} />
-          <Route path="/register" exact element={<Register />} />
           <Route path="/sites/create/" exact render={() => window.location.replace('/sites')} />
           <Route path="/sites/create/:areaId" exact element={<SitesCreateView />} />
           <Route path="/login" exact element={<LoginView />} />

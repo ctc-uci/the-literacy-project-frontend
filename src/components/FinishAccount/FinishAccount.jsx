@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { confirmNewPassword } from '../../common/auth/auth_utils';
+import { finishAccountSetUp } from '../../common/auth/auth_utils';
 
-const ResetPassword = ({ code }) => {
+const FinishAccount = ({ inviteId, data }) => {
   const [password, setPassword] = useState();
   const [checkPassword, setCheckPassword] = useState();
   const [errorMessage, setErrorMessage] = useState();
@@ -14,8 +14,11 @@ const ResetPassword = ({ code }) => {
       if (password !== checkPassword) {
         throw new Error("Passwords don't match");
       }
-      await confirmNewPassword(code, password);
-      setConfirmationMessage('Password changed. You can now sign in with your new password.');
+      await finishAccountSetUp(inviteId, password);
+
+      setConfirmationMessage(
+        'Your account is set up. You can now login in with your email and password',
+      );
       setErrorMessage('');
       setPassword('');
     } catch (err) {
@@ -24,10 +27,18 @@ const ResetPassword = ({ code }) => {
   };
   return (
     <div>
-      <h2>Reset Password</h2>
+      <h2>Finish Account Creation</h2>
       {errorMessage && <p>{errorMessage}</p>}
       {!confirmationMessage && (
         <form onSubmit={handleResetPassword}>
+          <input placeholder="First Name" disabled value={data.firstName} />
+          <br />
+          <input placeholder="Last Name" disabled value={data.lastName} />
+          <br />
+          <input placeholder="Email" disabled value={data.email} />
+          <br />
+          <input placeholder="Position" disabled value={data.position} />
+          <br />
           <input
             type="password"
             onChange={({ target }) => setPassword(target.value)}
@@ -40,7 +51,7 @@ const ResetPassword = ({ code }) => {
             placeholder="Re-enter Password"
           />
           <br />
-          <button type="submit">Reset Password</button>
+          <button type="submit">Set Password</button>
         </form>
       )}
       {confirmationMessage && (
@@ -53,8 +64,9 @@ const ResetPassword = ({ code }) => {
   );
 };
 
-ResetPassword.propTypes = {
-  code: PropTypes.string.isRequired,
+FinishAccount.propTypes = {
+  inviteId: PropTypes.string.isRequired,
+  data: PropTypes.arrayOf.isRequired,
 };
 
-export default ResetPassword;
+export default FinishAccount;

@@ -1,14 +1,10 @@
 import axios from 'axios';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { renderEmail } from 'react-html-email';
 import { cookieKeys, cookieConfig } from './auth/cookie_utils';
 
 const baseURL = `${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`;
-
-// Converts JS Date object into string, formatted MM/DD/YYYY
-const formatDate = value => {
-  return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-};
 
 // Using Firebase Web version 9
 const firebaseConfig = {
@@ -29,6 +25,19 @@ const TLPBackend = axios.create({
 });
 
 const refreshUrl = `https://securetoken.googleapis.com/v1/token?key=${process.env.REACT_APP_FIREBASE_APIKEY}`;
+
+// Converts JS Date object into string, formatted MM/DD/YYYY
+const formatDate = value => {
+  return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+};
+
+export const sendEmail = async (email, htmlMessage) => {
+  try {
+    await TLPBackend.post('/send-email', { email, htmlMessage: renderEmail(htmlMessage) });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
 
 /**
  * Sets a cookie in the browser
@@ -66,7 +75,7 @@ const getCurrentUser = authInstance =>
   });
 
 // Refreshes the current user's access token by making a request to Firebase
-const refreshToken = async () => {
+export const refreshToken = async () => {
   const currentUser = await getCurrentUser(auth);
   if (currentUser) {
     const refreshT = currentUser.refreshToken;
@@ -144,4 +153,4 @@ const reloadPage = () => window.location.reload();
 
 addAuthInterceptor(TLPBackend);
 
-export { auth, TLPBackend, refreshToken, formatDate, reloadPage };
+export { auth, TLPBackend, formatDate, reloadPage };
