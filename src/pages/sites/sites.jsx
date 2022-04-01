@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Card, DropdownButton, Dropdown, InputGroup, FormControl } from 'react-bootstrap';
-import './sites.css';
+import { BsFillCaretDownFill, BsPeople, BsFilterRight, BsFilter } from 'react-icons/bs';
+import styles from './sites.module.css';
 // import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
-import { BsFillCaretDownFill, BsPeople, BsFilterRight } from 'react-icons/bs';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
 import NavigationBarTwo from '../../components/NavigationBarTwo/NavigationBarTwo';
@@ -110,17 +110,17 @@ const SiteView = () => {
   return (
     <div>
       <NavigationBarTwo />
-      <div className="site-container">
+      <div className={styles['site-container']}>
         <h1>Areas</h1>
-        <div className="area-content">
-          <div className="site-container-information">
-            <div className="school-year-info">
-              <div className="school-year-container">
+        <div className={styles['area-content']}>
+          <div className={styles['site-container-information']}>
+            <div className={styles['school-year-info']}>
+              <div className={styles['school-year-container']}>
                 <h1>School Year</h1>
                 <DropdownButton
                   variant="outline-secondary"
                   title={schoolYear}
-                  id="input-group-dropdown-1"
+                  id={styles['input-group-dropdown-1']}
                 >
                   <Dropdown.Item
                     onClick={() => {
@@ -145,61 +145,82 @@ const SiteView = () => {
                   </Dropdown.Item>
                 </DropdownButton>
               </div>
-              <div className="search-school">
+              <div className={styles['search-school']}>
                 <InputGroup>
                   <FormControl
-                    className="search-school-search-bar"
+                    className={styles['search-school-search-bar']}
                     placeholder="Search"
                     aria-label="Search"
                     aria-describedby="search-school-search-icon"
                   />
-                  <InputGroup.Text id="search-school-search-icon">
+                  <InputGroup.Text id={styles['search-school-search-icon']}>
                     <BsFilterRight />
                   </InputGroup.Text>
                 </InputGroup>
-                <Button variant="primary">Search</Button>
+                <Button
+                  variant="primary"
+                  className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
+                >
+                  Search
+                </Button>
               </div>
             </div>
-            <div className="area-button-options-container">
+            <div className={styles['area-button-options-container']}>
               <Button
                 variant="warning"
-                className="create-new-area-button"
+                className={styles['create-new-area-button']}
                 onClick={() => {
                   setModalOpen(true);
                 }}
               >
-                <img className="plus__icon" src={Plus} alt="Plus Icon" />
+                <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
                 New Area
               </Button>
               <CreateAreaModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
-              <Button
-                variant="primary"
-                className="create-new-area-button"
-                onClick={() => {
-                  console.log('needs functionality');
-                }}
-              >
-                Sort By: A-Z <BsFillCaretDownFill />
-              </Button>
+              <div className={styles['area-button-options-right']}>
+                <Button
+                  variant="primary"
+                  className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
+                  onClick={() => {
+                    console.log('needs functionality');
+                  }}
+                >
+                  Filter By <BsFilter />
+                </Button>
+                <Button
+                  variant="primary"
+                  className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
+                  onClick={() => {
+                    console.log('needs functionality');
+                  }}
+                >
+                  Sort By: A-Z <BsFillCaretDownFill />
+                </Button>
+              </div>
             </div>
             {mapAreas()}
           </div>
-          <div className="sites-data">
-            <Button variant="primary">Export to CSV</Button>
+          <div className={styles['sites-data']}>
+            <Button
+              variant="primary"
+              className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
+            >
+              Export to CSV
+            </Button>
             <p>All Areas</p>
             <p>Year: 2021-22 Cycle: 1</p>
             <p>
               <strong>Average Growth in Reading</strong>
             </p>
             {/* placeholder for graph */}
-            <Card className="sites-graph" />
-            <Card className="area-data-stats">
+            <Card className={styles['sites-graph']} />
+            <Card className={styles['area-data-stats']}>
               <p>
                 <BsPeople /> 40 Students
               </p>
               <p>
                 <img
-                  className="area-dropdown__open__area_stats__section-icon"
+                  className={styles['area-dropdown__open__area_stats__section-icon']}
                   src={TeacherIcon}
                   alt="Teacher Icon"
                 />
@@ -207,7 +228,7 @@ const SiteView = () => {
               </p>
               <p>
                 <img
-                  className="area-dropdown__open__area_stats__section-icon"
+                  className={styles['area-dropdown__open__area_stats__section-icon']}
                   src={SchoolIcon}
                   alt="School Icon"
                 />

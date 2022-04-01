@@ -14,6 +14,17 @@
 .site-container  h1 {
   font-size: 1.4em;
 }
+.tlp-button-primary {
+  background-color: #3288C4;
+}
+.tlp-button {
+  border: none;
+  margin: 0 0 0 10px;
+}
+
+.tlp-button-primary:hover {
+  background-color: #2b79b1;
+}
 .area-content {
   width: 100%;
   display: flex;
