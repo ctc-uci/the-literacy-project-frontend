@@ -3,7 +3,7 @@ import styles from './master-teachers-table.module.css';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import { TLPBackend } from '../../common/utils';
 
-const MasterTeacherView = () => {
+const MasterTeacherTableView = () => {
   const [masterTeacherList, setMasterTeacherList] = useState([]);
   const [error, setError] = useState(null);
   const theadData = [
@@ -65,4 +65,4 @@ const MasterTeacherView = () => {
   );
 };
 
-export default MasterTeacherView;
+export default MasterTeacherTableView;
