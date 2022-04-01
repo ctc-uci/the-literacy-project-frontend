@@ -59,10 +59,10 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
                   return (
                     <Link
                       className="area-dropdown__open__site-link"
-                      to={`/site/${site.site_id}`}
-                      key={`site-${site.site_id}`}
+                      to={`/site/${site.siteId}`}
+                      key={`site-${site.siteId}`}
                     >
-                      {site.site_name}
+                      {site.siteName}
                     </Link>
                   );
                 })}
