@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Navigate, BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import './index.css';
 
@@ -8,8 +8,9 @@ import './index.css';
 import SitesCreateView from './pages/sites-create/sites-create';
 import LoginView from './pages/login/login';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
-import TeacherView from './pages/master-teachers/master-teachers';
-import TeachersExportDataView from './pages/master-teachers-export-data/master-teachers-export-data';
+// import TeacherView from './pages/master-teachers/master-teachers';
+// import TeachersExportDataView from './pages/master-teachers-export-data/master-teachers-export-data';
+import SiteView from './pages/sites/sites';
 import SettingsView from './pages/settings/settings';
 import SettingsEditView from './pages/settings-edit/settings-edit';
 import AreaManagement from './pages/area-management/area-management';
@@ -21,9 +22,6 @@ import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
-// TODO: add protected routes -- use current few as examples
-// specify component to render if access allowed, redirectPath if access denied
-// use roles from AUTH_ROLES; add to roles list
 
 ReactDOM.render(
   <React.StrictMode>
@@ -31,12 +29,10 @@ ReactDOM.render(
       <Router>
         <Routes>
           <Route path="/" exact element={<LoginView />} />
-          <Route path="/sites/create/" exact render={() => window.location.replace('/sites')} />
-          <Route path="/sites/create/:areaId" exact element={<SitesCreateView />} />
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
-          <Route path="/master-teachers" exact element={<TeacherView />} />
-          <Route path="/master-teachers/export-data" exact element={<TeachersExportDataView />} />
+          {/* <Route path="/master-teachers" exact element={<TeacherView />} /> */}
+          {/* <Route path="/master-teachers/export-data" exact element={<TeachersExportDataView />} /> */}
           <Route
             path="/settings"
             element={
@@ -47,8 +43,22 @@ ReactDOM.render(
               />
             }
           />
-          <Route path="/settings/edit" element={<SettingsEditView />} />
-          <Route path="/people" exact element={<PeopleView />} />
+          <Route
+            path="/settings/edit"
+            element={
+              <ProtectedRoute
+                Component={SettingsEditView}
+                redirectPath="/login"
+                roles={[ADMIN_ROLE, USER_ROLE]}
+              />
+            }
+          />
+          <Route
+            path="/people"
+            element={
+              <ProtectedRoute Component={PeopleView} redirectPath="/login" roles={[ADMIN_ROLE]} />
+            }
+          />
           <Route
             path="/area-management"
             element={
@@ -59,8 +69,30 @@ ReactDOM.render(
               />
             }
           />
+          <Route path="/sites/create" exact element={<Navigate to="/sites" />} />
+          <Route
+            path="/sites"
+            element={
+              <ProtectedRoute Component={SiteView} redirectPath="/login" roles={[ADMIN_ROLE]} />
+            }
+          />
+          <Route
+            path="/sites/create/:areaId"
+            element={
+              <ProtectedRoute
+                Component={SitesCreateView}
+                redirectPath="/login"
+                roles={[ADMIN_ROLE]}
+              />
+            }
+          />
+          <Route
+            path="/area-details"
+            element={
+              <ProtectedRoute Component={AreaDetails} redirectPath="/login" roles={[ADMIN_ROLE]} />
+            }
+          />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
-          <Route path="/area-details" element={<AreaDetails />} />
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
         </Routes>
       </Router>
