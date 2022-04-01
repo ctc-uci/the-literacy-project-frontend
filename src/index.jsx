@@ -10,7 +10,6 @@ import LoginView from './pages/login/login';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
 // import TeacherView from './pages/master-teachers/master-teachers';
 // import TeachersExportDataView from './pages/master-teachers-export-data/master-teachers-export-data';
-import SiteView from './pages/sites/sites';
 import SettingsView from './pages/settings/settings';
 import SettingsEditView from './pages/settings-edit/settings-edit';
 import AreaManagement from './pages/area-management/area-management';
@@ -22,6 +21,7 @@ import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
+// TODO: add routes for access-denied and not-found pages
 
 ReactDOM.render(
   <React.StrictMode>
@@ -56,7 +56,11 @@ ReactDOM.render(
           <Route
             path="/people"
             element={
-              <ProtectedRoute Component={PeopleView} redirectPath="/login" roles={[ADMIN_ROLE]} />
+              <ProtectedRoute
+                Component={PeopleView}
+                redirectPath="/access-denied"
+                roles={[ADMIN_ROLE]}
+              />
             }
           />
           <Route
@@ -64,16 +68,9 @@ ReactDOM.render(
             element={
               <ProtectedRoute
                 Component={AreaManagement}
-                redirectPath="/login"
+                redirectPath="/access-denied"
                 roles={[ADMIN_ROLE]}
               />
-            }
-          />
-          <Route path="/sites/create" exact element={<Navigate to="/sites" />} />
-          <Route
-            path="/sites"
-            element={
-              <ProtectedRoute Component={SiteView} redirectPath="/login" roles={[ADMIN_ROLE]} />
             }
           />
           <Route
@@ -81,7 +78,7 @@ ReactDOM.render(
             element={
               <ProtectedRoute
                 Component={SitesCreateView}
-                redirectPath="/login"
+                redirectPath="/access-denied"
                 roles={[ADMIN_ROLE]}
               />
             }
@@ -89,11 +86,16 @@ ReactDOM.render(
           <Route
             path="/area-details"
             element={
-              <ProtectedRoute Component={AreaDetails} redirectPath="/login" roles={[ADMIN_ROLE]} />
+              <ProtectedRoute
+                Component={AreaDetails}
+                redirectPath="/access-denied"
+                roles={[ADMIN_ROLE]}
+              />
             }
           />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
+          <Route exact path="*" element={<Navigate to="/not-found" />} />
         </Routes>
       </Router>
     </CookiesProvider>
