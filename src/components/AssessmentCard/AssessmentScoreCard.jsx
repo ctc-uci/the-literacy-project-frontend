@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Button from 'react-bootstrap/Button';
 
+import { TLPBackend } from '../../common/utils';
 import AssessmentRow from './AssessmentRow';
 
 import styles from './AssessmentScoreCard.module.css';
@@ -36,10 +37,10 @@ const ScoreCardButton = ({ editState, setEditState }) => {
   );
 };
 
-const AssessmentScoreCard = ({ studentData, name, headerText }) => {
-  const [formOutput, setFormOutput] = useState(); // TODO: remove
+const AssessmentScoreCard = ({ studentID, name, headerText }) => {
   // Edit states: newInput, editing, editExisting
   const [editState, setEditState] = useState('newInput');
+  const [studentData, setStudentData] = useState({});
 
   const schema = yup.object({
     [name]: yup.array().of(
@@ -62,6 +63,27 @@ const AssessmentScoreCard = ({ studentData, name, headerText }) => {
     control: methods.control,
   });
 
+  const updateStudentScores = async scores => {
+    const res = await TLPBackend.put(`./students/update-scores/${studentID}`, scores);
+    setStudentData(res.data);
+  };
+
+  const fetchStudentScores = async () => {
+    const res = await TLPBackend.get(`./students/${studentID}`);
+    setStudentData(res.data);
+  };
+
+  // Populate table on load
+  useEffect(async () => {
+    fetchStudentScores();
+  }, []);
+  useEffect(() => {
+    methods.setValue(
+      name,
+      rowData.map((row, i) => ({ ...row, playerScore: studentData?.[name]?.[i] })),
+    );
+  }, [studentData]);
+
   const onSubmit = async data => {
     const scores = data[name].map(row => row.playerScore);
 
@@ -69,17 +91,13 @@ const AssessmentScoreCard = ({ studentData, name, headerText }) => {
       [name]: scores,
       notes: data.notes,
     };
-    setEditState('editExisting');
-    setFormOutput(formattedData);
-  };
 
-  // Populate rowData
-  useEffect(() => {
-    methods.setValue(
-      name,
-      rowData.map((row, i) => ({ ...row, playerScore: studentData?.[name]?.[i] })),
-    );
-  }, [studentData]);
+    // eslint-disable-next-line no-console
+    console.log(formattedData);
+
+    setEditState('editExisting');
+    updateStudentScores(formattedData);
+  };
 
   return (
     <FormProvider {...methods}>
@@ -115,7 +133,6 @@ const AssessmentScoreCard = ({ studentData, name, headerText }) => {
             {...methods.register('notes')}
           />
         </div>
-        <pre>{JSON.stringify(formOutput, null, 2)}</pre>
       </form>
     </FormProvider>
   );
@@ -127,8 +144,7 @@ ScoreCardButton.propTypes = {
 };
 
 AssessmentScoreCard.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  studentData: PropTypes.object.isRequired,
+  studentID: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   headerText: PropTypes.string.isRequired,
 };
