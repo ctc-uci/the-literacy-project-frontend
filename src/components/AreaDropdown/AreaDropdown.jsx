@@ -7,7 +7,7 @@ import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
 import EditAreaModal from '../EditAreaModal/EditAreaModal';
 
-function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
+function AreaDropdown({ areaId, areaActive, areaName, areaStats, areaSites }) {
   const [isOpen, setIsOpen] = useState(false);
   const [editAreaModalIsOpen, setEditAreaModalIsOpen] = useState(false);
 
@@ -103,6 +103,7 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
       )}
       <EditAreaModal
         areaId={areaId}
+        areaActive={areaActive}
         areaName={areaName}
         isOpen={editAreaModalIsOpen}
         setIsOpen={setEditAreaModalIsOpen}
@@ -113,6 +114,7 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
 
 AreaDropdown.defaultProps = {
   areaId: null,
+  areaActive: false,
   areaName: '',
   areaStats: {},
   areaSites: [],
@@ -121,6 +123,7 @@ AreaDropdown.defaultProps = {
 AreaDropdown.propTypes = {
   areaId: PropTypes.number,
   areaName: PropTypes.string,
+  areaActive: PropTypes.bool,
   // areaStats: PropTypes.arrayOf(
   //   PropTypes.shape({
   //     student_count: PropTypes.number,

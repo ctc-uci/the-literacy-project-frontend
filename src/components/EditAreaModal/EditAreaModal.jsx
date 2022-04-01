@@ -5,16 +5,17 @@ import { TLPBackend } from '../../common/utils';
 import './EditAreaModal.css';
 
 const EditAreaModal = props => {
-  const { areaId, areaName, isOpen, setIsOpen } = props;
+  const { areaId, areaActive, areaName, isOpen, setIsOpen } = props;
 
   const [name, setName] = useState(areaName);
-  const [status, setStatus] = useState(true);
+  const [status, setStatus] = useState(areaActive);
 
   const closeModal = () => {
     setIsOpen(false);
   };
 
   const deleteArea = () => {
+    // TODO: add confirmation modal before deleting (BLOCKED by PR #75)
     TLPBackend.delete(`/areas/${areaId}`).then(() => {
       closeModal();
     });
@@ -47,6 +48,7 @@ const EditAreaModal = props => {
               <Form.Control
                 as="select"
                 onChange={({ target }) => setStatus(target.value === 'Active')}
+                defaultValue={areaActive ? 'Active' : 'Inactive'}
               >
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
@@ -69,6 +71,7 @@ const EditAreaModal = props => {
 
 EditAreaModal.propTypes = {
   areaId: PropTypes.number.isRequired,
+  areaActive: PropTypes.bool.isRequired,
   areaName: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
