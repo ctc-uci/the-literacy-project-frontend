@@ -1,8 +1,8 @@
-import './ManagementDataSection.module.css';
 import { React, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import { FaPlus, FaFilter } from 'react-icons/fa';
+import styles from './ManagementDataSection.module.css';
 import Table from '../Table/Table';
 import InformationPopover from '../Popover/InformationPopover';
 import CreateMasterTeacherModal from '../CreateMasterTeacherModal/CreateMasterTeacherModal';
@@ -83,14 +83,14 @@ const ManagementDataSection = ({
   return (
     <div>
       {displaySectionTitle()}
-      <div className="ctrl-group">
-        <div className="inner-ctrl">{displayCreateButton()}</div>
-        <div className="inner-ctrl ctrl-margin">
+      <div className={styles['ctrl-group']}>
+        <div className={styles['inner-ctrl']}>{displayCreateButton()}</div>
+        <div className={styles['inner-ctrl']}>
           <input type="text" placeholder={`Search ${sectionTitle}`} />
         </div>
         <div style={{ float: 'right' }}>
-          <div className="inner-ctrl ctrl-margin">{displayFilterButton()}</div>
-          <div className="inner-ctrl ctrl-margin">{displaySortByButton()}</div>
+          <div className={styles['inner-ctrl']}>{displayFilterButton()}</div>
+          <div className={styles['inner-ctrl']}>{displaySortByButton()}</div>
         </div>
       </div>
       <Table
