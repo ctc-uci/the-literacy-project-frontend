@@ -7,6 +7,7 @@ import Table from '../Table/Table';
 import { TLPBackend } from '../../common/utils';
 import styles from './AreaView.module.css';
 import Plus from '../../assets/icons/plus.svg';
+import NotesModal from '../NotesModal/NotesModal';
 
 // TODO: seperate data from components
 // Combining components and data into a single object
@@ -41,6 +42,7 @@ const SitesTable = ({ areaId }) => {
     },
   ];
 
+  const [modalShow, setModalShow] = useState(false);
   // additionalInfo + siteNotes are static buttons to be put per row. TODO - make this dynamic
   const additionalInfo = (
     <button type="button" className="btn btn-primary">
@@ -48,7 +50,7 @@ const SitesTable = ({ areaId }) => {
     </button>
   );
   const siteNotes = (
-    <button type="button" className="btn btn-primary">
+    <button type="button" className="btn btn-primary" onClick={() => setModalShow(true)}>
       View Note
     </button>
   );
@@ -135,6 +137,8 @@ const SitesTable = ({ areaId }) => {
           </Col>
         </div>
       )}
+
+      <NotesModal isOpen={modalShow} setIsOpen={setModalShow} />
     </div>
   );
 };

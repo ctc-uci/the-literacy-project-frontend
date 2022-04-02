@@ -1,0 +1,17 @@
+.title {
+  font-family: 'Calibri', sans-serif;
+  font-size: 20px;
+  padding-bottom: 0px;
+}
+
+.noteContainer {
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.noteText {
+  padding: 10px;
+  font-family: 'Calibri', sans-serif;
+  font-size: 14px;
+}
