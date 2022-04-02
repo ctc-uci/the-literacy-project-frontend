@@ -1,0 +1,19 @@
+.create-btn {
+  margin: 10px;
+}
+
+.create-btn:focus {
+  outline: none;
+}
+
+.ctrl-group {
+  width: 100%;
+}
+
+.inner-ctrl {
+  display: inline-block;
+}
+
+.ctrl-margin {
+  margin-left: 1em;
+}

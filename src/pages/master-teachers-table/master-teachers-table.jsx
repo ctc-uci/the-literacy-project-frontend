@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import styles from './admin.module.css';
+import styles from './master-teachers-table.module.css';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import { TLPBackend } from '../../common/utils';
 
-const AdminView = () => {
-  const [adminList, setAdminList] = useState([]);
+const MasterTeacherTableView = () => {
+  const [masterTeacherList, setMasterTeacherList] = useState([]);
   const [error, setError] = useState(null);
   const theadData = [
     {
@@ -12,7 +12,11 @@ const AdminView = () => {
       headerPopover: '',
     },
     {
-      headerTitle: 'Email',
+      headerTitle: 'Contact Information',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'Sites',
       headerPopover: '',
     },
     {
@@ -20,42 +24,45 @@ const AdminView = () => {
       headerPopover:
         "<p><strong style='color:#28a745'>Active:</strong> This user is active in the current cycle. They have full access and can log in.</p> <p><strong style='color:#5f758d'>Inactive:</strong> This user is inactive in the current cycle. They cannot log in until an admin user reactivates their account.</p> <p><strong style='color:#17a2b8'>Email Sent:</strong> An email sign up link was sent. They have not set up their account yet.",
     },
+    {
+      headerTitle: 'Notes',
+      headerPopover: '',
+    },
   ];
 
   useEffect(async () => {
-    const res = await TLPBackend.get(`/admins`, {
+    const res = await TLPBackend.get(`/teachers`, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
     if (res.status === 200) {
-      setAdminList(res.data);
+      setMasterTeacherList(res.data);
     } else {
-      setAdminList([]);
+      setMasterTeacherList([]);
       setError(error);
     }
   }, []);
 
   const tbodyData = [];
-  adminList.forEach(mtObj => {
-    const { firstName } = mtObj;
-    const { lastName } = mtObj;
+  masterTeacherList.forEach(mtObj => {
+    const { firstName, lastName } = mtObj;
     tbodyData.push({
       id: mtObj.userId,
-      items: [`${firstName} ${lastName}`, mtObj.email, mtObj.active],
+      items: [`${firstName} ${lastName}`, mtObj.email, mtObj.sites, mtObj.active, 'notes'],
     });
   });
-
   return (
-    <div className={styles['admin-container']}>
+    <div className={styles['master-teacher-container']}>
       <ManagementDataSection
-        sectionTitle="Admin"
+        sectionTitle="Master Teachers"
         theadData={theadData}
         tbodyData={tbodyData}
-        statusCol={2}
+        tbodyColIsBadge={[2]}
+        statusCol={3}
       />
     </div>
   );
 };
 
-export default AdminView;
+export default MasterTeacherTableView;

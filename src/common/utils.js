@@ -17,9 +17,9 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+const auth = getAuth(app);
 
-export const TLPBackend = axios.create({
+const TLPBackend = axios.create({
   baseURL,
   withCredentials: true,
 });
@@ -27,7 +27,7 @@ export const TLPBackend = axios.create({
 const refreshUrl = `https://securetoken.googleapis.com/v1/token?key=${process.env.REACT_APP_FIREBASE_APIKEY}`;
 
 // Converts JS Date object into string, formatted MM/DD/YYYY
-export const formatDate = value => {
+const formatDate = value => {
   return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 };
 
@@ -149,4 +149,8 @@ const addAuthInterceptor = axiosInstance => {
   );
 };
 
+const reloadPage = () => window.location.reload();
+
 addAuthInterceptor(TLPBackend);
+
+export { auth, TLPBackend, formatDate, reloadPage };
