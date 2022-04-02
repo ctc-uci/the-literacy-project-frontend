@@ -43,17 +43,18 @@ const SitesTable = ({ areaId }) => {
   ];
 
   const [modalShow, setModalShow] = useState(false);
+  const [currNote, setCurrNote] = useState('');
   // additionalInfo + siteNotes are static buttons to be put per row. TODO - make this dynamic
   const additionalInfo = (
     <button type="button" className="btn btn-primary">
       View Info
     </button>
   );
-  const siteNotes = (
-    <button type="button" className="btn btn-primary" onClick={() => setModalShow(true)}>
-      View Note
-    </button>
-  );
+
+  const showNote = note => {
+    setCurrNote(note);
+    setModalShow(true);
+  };
 
   // teacherString returns a string that is used to display the master teacher's name
   const teacherString = teachersObj =>
@@ -92,7 +93,14 @@ const SitesTable = ({ areaId }) => {
             />,
             site.siteName,
             teacherString(siteTeachers),
-            siteNotes,
+            <button
+              key={site.siteId}
+              type="button"
+              className="btn btn-primary"
+              onClick={() => showNote(site.notes)}
+            >
+              View Note
+            </button>,
             additionalInfo,
           ],
         };
@@ -138,7 +146,7 @@ const SitesTable = ({ areaId }) => {
         </div>
       )}
 
-      <NotesModal isOpen={modalShow} setIsOpen={setModalShow} />
+      <NotesModal isOpen={modalShow} setIsOpen={setModalShow} noteText={currNote} />
     </div>
   );
 };

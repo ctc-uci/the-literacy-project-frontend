@@ -3,7 +3,7 @@ import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import styles from './NotesModal.module.css';
 
-const NotesModal = ({ isOpen, setIsOpen }) => {
+const NotesModal = ({ isOpen, setIsOpen, noteText }) => {
   return (
     <Modal show={isOpen} onHide={() => setIsOpen(false)} centered>
       <Modal.Header className="border-0 pb-0" closeButton>
@@ -12,7 +12,7 @@ const NotesModal = ({ isOpen, setIsOpen }) => {
 
       <Modal.Body>
         <div className={styles.noteContainer}>
-          <p className={styles.noteText}>Placeholder</p>
+          <p className={styles.noteText}>{noteText}</p>
         </div>
       </Modal.Body>
     </Modal>
@@ -22,6 +22,7 @@ const NotesModal = ({ isOpen, setIsOpen }) => {
 NotesModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
+  noteText: PropTypes.string.isRequired,
 };
 
 export default NotesModal;
