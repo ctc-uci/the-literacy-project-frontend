@@ -3,7 +3,7 @@ import { instanceOf } from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import Image from './tlp.png';
-import './NavigationBar.css';
+import styles from './NavigationBar.module.css';
 import { logout, useNavigate } from '../../common/auth/auth_utils';
 import { Cookies, withCookies } from '../../common/auth/cookie_utils';
 
@@ -27,7 +27,7 @@ const NavigationBar = ({ cookies }) => {
       <Navbar bg="light" expand="lg">
         <Container fluid>
           <Navbar.Brand href="/area-management">
-            <img src={Image} width="80" height="55" className="d-inline-block" alt="" />
+            <img src={Image} width="80" height="55" className={styles['d-inline-block']} alt="" />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -39,7 +39,7 @@ const NavigationBar = ({ cookies }) => {
                 People
               </Nav.Link>
             </Nav>
-            <Nav className="mr-auto">
+            <Nav className={styles['mr-auto']}>
               <Nav.Link href="/settings" style={{ color: '#6A91BC' }}>
                 Settings
               </Nav.Link>
@@ -54,15 +54,17 @@ const NavigationBar = ({ cookies }) => {
       </Navbar>
     );
   }
+
+  // If MT, display the navbar below
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
         <Navbar.Brand href="/home">
-          <img src={Image} width="80" height="55" className="d-inline-block" alt="" />
+          <img src={Image} width="80" height="55" className={styles['d-inline-block']} alt="" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className={styles['mr-auto']}>
             <Nav.Link href="/home" style={{ color: '#6A91BC' }}>
               Home
             </Nav.Link>
@@ -70,10 +72,10 @@ const NavigationBar = ({ cookies }) => {
               Settings
             </Nav.Link>
           </Nav>
-          <Nav className="mr-auto">
-            <form className="form-inline">
+          <Nav className={styles['ms-auto']}>
+            <form className={styles['form-inline']}>
               <input
-                className="form-control mr-sm-2"
+                className={styles['form-control mr-sm-2']}
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
