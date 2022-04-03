@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dropdown, Button, DropdownButton, Card } from 'react-bootstrap';
 import { CSVLink } from 'react-csv';
 import { TLPBackend } from '../../common/utils';
-import './sites.module.css';
+import './sites.css';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
@@ -80,6 +80,7 @@ const SiteView = () => {
         .catch(() => {});
     }
 
+    // FIX THIS TOO
     async function getAllStudentCount() {
       await TLPBackend.get('/students')
         .then(res => {
@@ -164,8 +165,8 @@ const SiteView = () => {
           {/* placeholder for graph */}
           <Card className="graph" />
           <Card className="stats">
-            <p>40 Students</p>
-            <p>4 Teachers</p>
+            <p>{students.length} Students</p>
+            <p>{teachers.length} Teachers</p>
             <p>4 Sites</p>
           </Card>
         </div>
