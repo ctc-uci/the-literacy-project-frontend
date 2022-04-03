@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Dropdown, Button, DropdownButton, Card } from 'react-bootstrap';
+import { CSVLink } from 'react-csv';
 import { TLPBackend } from '../../common/utils';
-import './sites.css';
+import './sites.module.css';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
@@ -11,6 +12,22 @@ const SiteView = () => {
   const [schoolYearDropdownTitle, setSchoolYearDropdownTitle] = useState('Cycle 1');
   const [modalIsOpen, setModalOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
+  // THIS IS ALL STUDENTS - LEAVE A GITHUB COMMENT ON THIS (template for teachers and areas)
+  // filter by area id?? see if student is in site in the area
+  const [students, setStudents] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+
+  const areaHeaders = [
+    { label: 'Area ID', key: 'areaId' },
+    { label: 'Area Name', key: 'areaName' },
+    { label: 'Is Active?', key: 'active' },
+  ];
+  const areaData = [{ areaId: 89710234, areaName: 'Morrow', active: true }];
+  const areaCsvReport = {
+    data: areaData,
+    headers: areaHeaders,
+    filename: `${areaData[0].areaName}_Report.csv`,
+  };
 
   const addAssociatedSiteToArea = async resData => {
     async function fetchAllSites() {
@@ -30,14 +47,14 @@ const SiteView = () => {
     }, 2000);
   };
 
-  function mapAreas() {
+  function mapAreas(studentCount) {
     return areaResponseData.map(area => {
       return (
         <AreaDropdown
           areaId={area.areaId}
           areaName={area.areaName}
           areaStats={{
-            student_count: 15,
+            student_count: studentCount,
             master_teacher_count: 2,
             site_count: 2,
           }}
@@ -62,7 +79,30 @@ const SiteView = () => {
         })
         .catch(() => {});
     }
+
+    async function getAllStudentCount() {
+      await TLPBackend.get('/students')
+        .then(res => {
+          setTimeout(() => {
+            setStudents(res.data);
+          }, 1000);
+        })
+        .catch(() => {});
+    }
+
+    async function getAllTeacherCount() {
+      await TLPBackend.get('/teachers')
+        .then(res => {
+          setTimeout(() => {
+            setTeachers(res.data);
+          }, 1000);
+        })
+        .catch(() => {});
+    }
+
     fetchAreas();
+    getAllStudentCount();
+    getAllTeacherCount();
   }, []);
 
   return (
@@ -111,10 +151,14 @@ const SiteView = () => {
             </Button>
             <CreateAreaModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
           </div>
-          {mapAreas()}
+          {mapAreas(students.length, teachers.count)}
         </div>
         <div className="data">
-          <Button variant="primary">Export to CSV</Button>
+          <Button variant="primary">
+            <CSVLink {...areaCsvReport} class="csvLink">
+              Export to CSV
+            </CSVLink>
+          </Button>
           <h2>Data</h2>
           <h3>Average Scores</h3>
           {/* placeholder for graph */}
