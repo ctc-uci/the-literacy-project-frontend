@@ -33,16 +33,33 @@ const ManagementDataSection = ({
     pageRedirect();
   };
 
+  const displaySectionTitle = () => {
+    if (sectionTitle !== 'Students') {
+      return (
+        <h1 style={{ height: 'calc(1.375rem + 1.5vw)' }}>
+          {sectionTitle}
+          {popover}
+        </h1>
+      );
+    }
+    return null;
+  };
+
+  const displayCreateButton = () => {
+    if (sectionTitle !== 'Students') {
+      return (
+        <Button variant="warning" onClick={clickManager}>
+          Create New {sectionTitle}
+        </Button>
+      );
+    }
+    return null;
+  };
+
   return (
     <div>
-      <h1 style={{ height: 'calc(1.375rem + 1.5vw)' }}>
-        {sectionTitle}
-        {popover}
-      </h1>
-      {/* <Button variant="primary">Add Existing {sectionTitle}</Button> */}
-      <Button variant="warning" onClick={clickManager}>
-        Create New {sectionTitle}
-      </Button>
+      {displaySectionTitle()}
+      {displayCreateButton()}
       <input type="text" placeholder={`Search ${sectionTitle}`} />
       <Table theadData={theadData} tbodyData={tbodyData} tbodyColIsBadge={tbodyColIsBadge} />
       <CreateMasterTeacherModal

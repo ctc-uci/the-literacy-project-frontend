@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import LoginView from './pages/login/login';
 
 function App() {
   return (
     <div className="App">
-      <h1>THE LITERACY PROJECT FRONTEND</h1>
+      <LoginView />
     </div>
   );
 }

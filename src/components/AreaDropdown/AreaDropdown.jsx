@@ -62,7 +62,7 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
                       to={`/site/${site.site_id}`}
                       key={`site-${site.site_id}`}
                     >
-                      {site.site_name}
+                      {site.siteName}
                     </Link>
                   );
                 })}

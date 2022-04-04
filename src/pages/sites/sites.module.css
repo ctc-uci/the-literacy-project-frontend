@@ -11,11 +11,11 @@
   height: calc(100vh - 136px);
   padding: 50px 75px 0;
 }
-.site-container  h1 {
+.site-container h1 {
   font-size: 1.4em;
 }
 .tlp-button-primary {
-  background-color: #3288C4;
+  background-color: #3288c4;
 }
 .tlp-button {
   border: none;
