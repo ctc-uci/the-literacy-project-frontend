@@ -4,30 +4,38 @@ import PropTypes from 'prop-types';
 import styles from './NotesModal.module.css';
 import { TLPBackend } from '../../common/utils';
 
-const NotesModal = ({ isOpen, setIsOpen, site }) => {
+const NotesModal = ({ isOpen, setIsOpen, siteId }) => {
   const [noteText, setNoteText] = useState('');
+  const [currSite, setCurrSite] = useState({});
   const handleNoteChange = e => {
     setNoteText(e.target.value);
   };
 
   // sends a PUT request to update site and closes modal
   const updateNote = async () => {
-    await TLPBackend.put(`/sites/${site.siteId}`, {
-      ...site,
+    await TLPBackend.put(`/sites/${siteId}`, {
+      ...currSite,
       notes: noteText,
     });
     // site.notes = noteText;
     setIsOpen(false);
   };
 
-  // updates the state whenever the componment is passed a new site prop
-  useEffect(() => {
-    if (site.notes === null) {
+  const getNote = async () => {
+    const { data: siteData } = await TLPBackend.get(`/sites/${siteId}`);
+    // return siteData.notes;
+    setCurrSite(siteData);
+    if (siteData.notes === null) {
       setNoteText('');
     } else {
-      setNoteText(site.notes);
+      setNoteText(siteData.notes);
     }
-  }, [site]);
+  };
+
+  // updates the state whenever the componment is passed a new site prop
+  useEffect(async () => {
+    getNote();
+  }, [siteId]);
 
   return (
     <Modal show={isOpen} onHide={() => setIsOpen(false)} centered>
@@ -59,7 +67,7 @@ const NotesModal = ({ isOpen, setIsOpen, site }) => {
 NotesModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  site: PropTypes.objectOf(PropTypes.object).isRequired,
+  siteId: PropTypes.number.isRequired,
 };
 
 export default NotesModal;
