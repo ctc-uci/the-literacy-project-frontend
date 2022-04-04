@@ -10,19 +10,23 @@
 
 .game-name {
   max-width: 425px;
+  min-width: 425px;
   background: #FFE79F;
 }
 
 .skill-test {
   max-width: 425px;
+  min-width: 425px;
 }
 
 .passing-score {
   max-width: 130px;
+  min-width: 130px;
 }
 
 .player-score {
-  width: 130px;
+  max-width: 130px;
+  min-width: 130px;
   background: #E9ECEF;
   font-weight: bold;
 }
