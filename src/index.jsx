@@ -13,6 +13,7 @@ import SettingsView from './pages/settings/settings';
 import SettingsEditView from './pages/settings-edit/settings-edit';
 import AreaManagement from './pages/area-management/area-management';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
+import AttitudeFormInput from './pages/attitude-form-input/attitude-form-input';
 import AreaDetails from './pages/area-details/area-details';
 import PeopleView from './pages/people/people';
 import EmailAction from './components/EmailAction/EmailAction';
@@ -58,6 +59,7 @@ ReactDOM.render(
             }
           />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
+          <Route path="/attitude-form-input" element={<AttitudeFormInput />} />
           <Route path="/area-details" element={<AreaDetails />} />
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
         </Routes>
