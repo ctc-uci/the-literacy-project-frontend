@@ -12,8 +12,12 @@
   padding: 50px 75px 0;
 }
 .site-container h1 {
+  font-size: 1.8em;
+}
+.site-container h2 {
   font-size: 1.4em;
 }
+
 .tlp-button-primary {
   background-color: #3288c4;
 }
@@ -71,6 +75,10 @@
 }
 .create-new-area-button {
   margin: 0;
+}
+.area-button-options-right {
+  display: flex;
+  align-items: center;
 }
 
 .sites-data {

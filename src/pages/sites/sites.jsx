@@ -79,7 +79,7 @@ const SiteView = () => {
           <div className={styles['site-container-information']}>
             <div className={styles['school-year-info']}>
               <div className={styles['school-year-container']}>
-                <h1>School Year</h1>
+                <h2>School Year</h2>
                 <DropdownButton
                   variant="outline-secondary"
                   title={schoolYear}
@@ -195,7 +195,6 @@ const SiteView = () => {
               </p>
             </Card>
           </div>
-          {mapAreas()}
         </div>
       </div>
     </div>
