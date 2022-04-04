@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
-import '../../custom.scss';
 import styles from './people.module.css';
 import AdminView from '../admin/admin';
 import AdminStudentsView from '../admin-students-view/admin-students-view';
