@@ -6,7 +6,6 @@ import * as yup from 'yup';
 import Button from 'react-bootstrap/Button';
 import { IoCheckmarkDoneOutline } from 'react-icons/io5';
 
-import { TLPBackend } from '../../common/utils';
 import AssessmentRow from './AssessmentRow';
 
 import styles from './AssessmentScoreCard.module.css';
@@ -45,10 +44,9 @@ const ScoreCardButton = ({ editState, setEditState }) => {
   );
 };
 
-const AssessmentScoreCard = ({ studentID, name, headerText }) => {
+const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
   // Edit states: newInput, editing, editExisting
   const [editState, setEditState] = useState('newInput');
-  const [studentData, setStudentData] = useState({});
 
   const schema = yup.object({
     [name]: yup.array().of(
@@ -71,27 +69,14 @@ const AssessmentScoreCard = ({ studentID, name, headerText }) => {
     control: methods.control,
   });
 
-  const updateStudentScores = async scores => {
-    const res = await TLPBackend.put(`./students/update-scores/${studentID}`, scores);
-    setStudentData(res.data);
-  };
-
-  const fetchStudentScores = async () => {
-    const res = await TLPBackend.get(`./students/${studentID}`);
-    setStudentData(res.data);
-  };
-
   // Populate table on load
-  useEffect(async () => {
-    fetchStudentScores();
-  }, []);
   useEffect(() => {
     methods.setValue(
       name,
-      rowData.map((row, i) => ({ ...row, playerScore: studentData?.[name]?.[i] })),
+      rowData.map((row, i) => ({ ...row, playerScore: tableData?.[i] })),
     );
-    setEditState(!studentData?.[name] ? 'newInput' : 'editExisting');
-  }, [studentData]);
+    setEditState(tableData === null ? 'newInput' : 'editExisting');
+  }, [tableData]);
 
   const onSubmit = async data => {
     const scores = data[name].map(row => row.playerScore);
@@ -105,7 +90,7 @@ const AssessmentScoreCard = ({ studentID, name, headerText }) => {
     console.log(formattedData);
 
     setEditState('editExisting');
-    updateStudentScores(formattedData);
+    setTableData(formattedData);
   };
 
   return (
@@ -154,9 +139,10 @@ ScoreCardButton.propTypes = {
 };
 
 AssessmentScoreCard.propTypes = {
-  studentID: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   headerText: PropTypes.string.isRequired,
+  tableData: PropTypes.arrayOf(Number).isRequired,
+  setTableData: PropTypes.func.isRequired,
 };
 
 export default AssessmentScoreCard;

@@ -43,3 +43,46 @@
   width: 100%;
   height: 200px;
 }
+
+/* Row styles */
+
+.assessment-row td {
+  text-align: center;
+  vertical-align: middle;
+  height: 75px;
+}
+
+.assessment-row input {
+  max-width: 48px;
+}
+
+.game-name {
+  max-width: 425px;
+  min-width: 425px;
+  background: #FFE79F;
+}
+
+.skill-test {
+  max-width: 425px;
+  min-width: 425px;
+}
+
+.passing-score {
+  max-width: 130px;
+  min-width: 130px;
+}
+
+.player-score {
+  max-width: 130px;
+  min-width: 130px;
+  background: #E9ECEF;
+  font-weight: bold;
+}
+
+.input-error {
+  border: 1px solid red;
+}
+.input-error:focus {
+  outline: none !important;
+  border: 1px solid red;
+}
