@@ -33,12 +33,28 @@ const WarningModal = ({ isOpen, setIsOpen, name, body }) => {
         instead
       </p>
     ),
+    student: (
+      <p style={{ textAlign: 'center' }}>
+        The student will no longer be available after deletion.{' '}
+        <span style={{ fontStyle: 'italic' }}>You cannot undo this</span>. Did you want to edit this
+        student instead?
+      </p>
+    ),
+    group: (
+      <div style={{ textAlign: 'center' }}>
+        <p>
+          The student group information will no longer be available after this deletion.*
+          <span style={{ fontStyle: 'italic' }}>You cannot undo this</span>.
+        </p>
+        <p>*You can still access the students in this group after deletion.</p>
+      </div>
+    ),
   };
 
   return (
     <>
       <Modal show={isOpen} onHide={closeModal}>
-        <div className="modal-header text-center" style={{ color: 'tomato' }} closeButton>
+        <div className="modal-header text-center" style={{ color: '#E53E3E' }} closeButton>
           <h3 className="modal-title w-100">Warning</h3>
         </div>
         <Modal.Body>
