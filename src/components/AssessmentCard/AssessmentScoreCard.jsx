@@ -19,12 +19,7 @@ const ScoreCardButton = ({ editState, setEditState }) => {
   };
   if (editState === 'newInput') {
     return (
-      <Button
-        as="button"
-        type="button"
-        className={styles['input-score-button']}
-        onClick={e => setAsEditing(e)}
-      >
+      <Button as="button" type="button" variant="warning" onClick={e => setAsEditing(e)}>
         + Input Scores
       </Button>
     );
@@ -41,6 +36,7 @@ const ScoreCardButton = ({ editState, setEditState }) => {
     <Button
       as="button"
       type="button"
+      variant="primary"
       className={styles['edit-score-button']}
       onClick={e => setAsEditing(e)}
     >

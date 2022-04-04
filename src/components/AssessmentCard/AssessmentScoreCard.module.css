@@ -1,4 +1,4 @@
-/* TODO: global css colors */
+@import '../../common/vars.css';
 .form-header {
   width: 100%;
   display: flex;
@@ -13,90 +13,33 @@
   margin: 0;
   padding: 0;
   align-self: center;
-  color: #868E96;
+  color: var(--color-dark-gray);
 }
 
 .form-header button {
   margin: 0;
 }
 
-.form-header button:hover {
-  background-color: none !important;
-}
-
-.input-score-button {
-  background: #FFD350;
-  color: #868E96;
-}
-
-.input-score-button:hover {
-  background-color: #FFD350;
-  color: #868E96;
-  border-color: #FFD350;
-  filter: brightness(110%);
-}
-
-.input-score-button:active {
-  background-color: #FFD350;
-  color: #868E96;
-  border-color: #FFD350;
-  filter: brightness(110%);
-}
-
-.checkmark-icon {
-  margin-right: 5px;
-}
-
-.submit-score-button {
-  background: #28A745;
-  color: white;
-}
-
-.submit-score-button:hover {
-  background: #28A745;
-  color: white;
-  border-color: #28A745;
-  filter: brightness(110%);
-}
-
-.submit-score-button:active {
-  background: #28A745;
-  color: white;
-  border-color: #28A745;
-  filter: brightness(110%);
-}
-
-.edit-score-button {
-  background: #3288C4;
-  color: #E9ECEF;
-}
-
-.edit-score-button:hover {
-  background: #3288C4;
-  color: #E9ECEF;
-  border-color: #3288C4;
-  filter: brightness(110%);
-}
-
-.edit-score-button:active {
-  background: #3288C4;
-  color: #E9ECEF;
-  border-color: #3288C4;
-  filter: brightness(110%);
-}
-
 .scorecard-table {
   width: 100%;
+  box-sizing: border-box;
+  border-radius: 2px;
+  margin-bottom: 45px;
+}
+
+.scorecard-table th, td {
+  border: 1px solid #B9B9B9;
 }
 
 .scorecard-table th {
   text-align: center;
   vertical-align: middle;
   padding: 5px 0;
-  background: #868E96;
+  background: var(--color-dark-gray);
   color: white;
 }
 
 .notes {
   width: 100%;
+  height: 200px;
 }
