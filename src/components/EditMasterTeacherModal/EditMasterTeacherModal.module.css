@@ -20,6 +20,11 @@
   color: #084298 !important;
 }
 
+.site-badge {
+  margin-right: 1em;
+  margin-bottom: 0.5em;
+}
+
 #status-inactive-text {
   color: #3288c4;
 }
