@@ -1,0 +1,60 @@
+@import url(https://fonts.googleapis.com/css2?family=Calibri&display=swap);
+@import 'font.css';
+
+:root {
+  font-family: 'Calibri', sans-serif;
+
+  /* Text Colors */
+  --text-color-dark: #212529;
+  --text-color-dark-gray: #6C757D;
+  --text-color-light-gray: #808080;
+  --text-color-white: #FFFFFF;
+
+  /* Components */
+  --color-gray-white: #E9ECEF;
+  --color-dark-gray: #868E96;
+  --color-gray-border: #DEE2E6;
+  --color-gray-card: #DFDFDF;
+
+  /* Forms */
+  --color-form-blue: #80BDFF;
+  --color-darkest-gray: #495057;
+  --color-form-gray: #CED4DA;
+
+  /* Vibrant Blue Theme */
+  --color-blue: #015189;
+  --color-blue-gray: #1A4767;
+  --color-dark-blue: #003459;
+  --color-baby-blue: #3288C4;
+  --color-light-blue: #5998C4;
+
+  /* Yellow Theme */
+  --color-yellow: #FFD350;
+  --color-dark-yellow: #BFA75D;
+  --color-brown-yellow: #A6831A;
+  --color-light-yellow: #FFD37C;
+  --color-yellow-fade: #FFE79F;
+
+  /* Muted Blue Theme */
+  --color-blue-muted: #6A91BC;
+  --color-gray-blue-muted: #5F758D;
+  --color-dark-blue-muted: #224C7A;
+  --color-light-blue-muted: #95B7DE;
+  --color-fade-blue-muted: #A8C1DE;
+
+  /* Red/danger */
+  --color-red-fade: #FED7D7;
+  --color-light-red: #F56565;
+  --color-red: #E53E3E;
+
+  /* Green/success */
+  --color-green: #28A745;
+  --color-light-green: #62BE77;
+  --color-green-fade: #C6F6D5;
+
+  /* Teal/info */
+  --color-teal: #17A2B8;
+  --color-light-teal: #66B9CB;
+  --color-teal-fade: #A4DDE5;
+}
+

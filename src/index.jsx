@@ -8,7 +8,6 @@ import './index.css';
 import SitesCreateView from './pages/sites-create/sites-create';
 import LoginView from './pages/login/login';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
-import TeacherView from './pages/master-teachers/master-teachers';
 import TeachersExportDataView from './pages/master-teachers-export-data/master-teachers-export-data';
 import SettingsView from './pages/settings/settings';
 import SettingsEditView from './pages/settings-edit/settings-edit';
@@ -35,7 +34,6 @@ ReactDOM.render(
           <Route path="/sites/create/:areaId" exact element={<SitesCreateView />} />
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
-          <Route path="/master-teachers" exact element={<TeacherView />} />
           <Route path="/master-teachers/export-data" exact element={<TeachersExportDataView />} />
           <Route
             path="/settings"
