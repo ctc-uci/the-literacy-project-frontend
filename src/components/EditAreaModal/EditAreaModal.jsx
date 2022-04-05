@@ -12,6 +12,7 @@ const EditAreaModal = props => {
 
   const closeModal = () => {
     setIsOpen(false);
+    window.location.reload(true);
   };
 
   const deleteArea = () => {
@@ -45,14 +46,14 @@ const EditAreaModal = props => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="editArea.status">
               <Form.Label>Status</Form.Label>
-              <Form.Control
-                as="select"
+              <Form.Select
                 onChange={({ target }) => setStatus(target.value === 'Active')}
                 defaultValue={areaActive ? 'Active' : 'Inactive'}
+                style={status ? { color: 'green' } : { color: 'red' }}
               >
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
-              </Form.Control>
+              </Form.Select>
             </Form.Group>
           </div>
         </Modal.Body>
