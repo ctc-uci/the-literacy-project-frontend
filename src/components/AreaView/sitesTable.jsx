@@ -67,7 +67,6 @@ const SitesTable = ({ areaId }) => {
   const updateSiteStatus = async (newChoice, site) => {
     const newStatus = newChoice === 'Active';
     await TLPBackend.put(`/sites/${site.siteId}`, {
-      ...site,
       active: newStatus,
     });
   };

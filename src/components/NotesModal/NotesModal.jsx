@@ -6,7 +6,6 @@ import { TLPBackend } from '../../common/utils';
 
 const NotesModal = ({ isOpen, setIsOpen, siteId }) => {
   const [noteText, setNoteText] = useState('');
-  const [currSite, setCurrSite] = useState({});
   const handleNoteChange = e => {
     setNoteText(e.target.value);
   };
@@ -14,7 +13,6 @@ const NotesModal = ({ isOpen, setIsOpen, siteId }) => {
   // sends a PUT request to update site and closes modal
   const updateNote = async () => {
     await TLPBackend.put(`/sites/${siteId}`, {
-      ...currSite,
       notes: noteText,
     });
     // site.notes = noteText;
@@ -24,7 +22,6 @@ const NotesModal = ({ isOpen, setIsOpen, siteId }) => {
   const getNote = async () => {
     const { data: siteData } = await TLPBackend.get(`/sites/${siteId}`);
     // return siteData.notes;
-    setCurrSite(siteData);
     if (siteData.notes === null) {
       setNoteText('');
     } else {
