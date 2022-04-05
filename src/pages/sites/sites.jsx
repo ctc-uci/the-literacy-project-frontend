@@ -40,6 +40,7 @@ const SiteView = () => {
       return (
         <AreaDropdown
           areaId={area.areaId}
+          areaActive={area.active}
           areaName={area.areaName}
           areaStats={{
             student_count: 15,
