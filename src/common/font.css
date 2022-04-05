@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Calibri&display=swap');
+
+body {
+  font-family: 'Calibri', sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  margin: 0;
+  padding: 0;
+  color: var(--text-color-dark);
+}
+
+input, textarea, button {
+    font-family: inherit;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.normal {
+    font-weight: normal;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+h1.white, h2.white, h3.white, h4.white, p.white  {
+    color: var(--text-color-light);
+}
+
+h1 {
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 32px;
+}
+
+h3 {
+    font-size: 28px;
+}
+
+h4 {
+    font-size: 24px;
+}
+
+h5 {
+  font-size: 20px;
+}
+
+h6 {
+  font-size: 16px;
+}
+
+p.large {
+    font-size: 24px;
+}
+
+p.medium {
+    font-size: 18px;
+}
+
+p.small {
+    font-size: 14px;
+}
+
+/* TODO: figure out mobile font sizes */
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 42px;
+    }
+
+    h2 {
+        font-size: 36px;
+    }
+
+    h3 {
+        font-size: 30px;
+    }
+
+    h4 {
+        font-size: 24px;
+    }
+
+    h5 {
+      font-size: 20px;
+    }
+
+    h6 {
+      font-size: 16px;
+    }
+    p.large {
+        font-size: 18px;
+    }
+
+    p.medium {
+        font-size: 14px;
+    }
+
+    p.small {
+        font-size: 12px;
+    }
+}

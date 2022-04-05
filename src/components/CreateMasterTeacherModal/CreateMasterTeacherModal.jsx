@@ -1,10 +1,12 @@
 import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
-import './CreateMasterTeacherModal.css';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Badge } from 'react-bootstrap';
+import { BsX } from 'react-icons/bs';
+import styles from './CreateMasterTeacherModal.module.css';
 import ConfirmMasterTeacherModal from '../ConfirmMasterTeacherModal/ConfirmMasterTeacherModal';
 import { AUTH_ROLES } from '../../common/config';
 import { sendInviteLink } from '../../common/auth/auth_utils';
+import { reloadPage } from '../../common/utils';
 
 const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
   const [confirmModalIsOpen, setConfirmModalOpen] = useState(false);
@@ -13,6 +15,12 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
   const [lastName, setLastName] = useState();
   const [errorMessage, setErrorMessage] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
+
+  const [sites, setSites] = useState([]);
+  const removeSite = e => {
+    const name = e.target.getAttribute('name');
+    setSites(sites.filter(site => site !== name));
+  };
 
   const closeModal = () => setIsOpen(false);
 
@@ -28,6 +36,7 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
       setErrorMessage('');
       setEmail('');
       sendEmailSuccessSequence();
+      reloadPage();
     } catch (err) {
       setErrorMessage(err.message);
     }
@@ -83,7 +92,23 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="createTeacherAccount.assignSite">
               <Form.Label>Assign Site(s)</Form.Label>
-              <Form.Select aria-label="Default select example">
+              <div>
+                {sites.map(site => {
+                  return (
+                    // eslint-disable-next-line react/jsx-key
+                    <Badge bg="secondary" className={styles['site-badge']}>
+                      <BsX cursor="pointer" name={site} onClick={removeSite} /> {site}
+                    </Badge>
+                  );
+                })}
+              </div>
+              <Form.Select
+                onChange={({ target }) => {
+                  if (target.value !== 'No School Selected' && !sites.includes(target.value)) {
+                    setSites([...sites, target.value]);
+                  }
+                }}
+              >
                 <option>No School Selected</option>
                 <option value="School One">School One</option>
                 <option value="School Two">School Two</option>
