@@ -17,15 +17,12 @@
 }
 
 .student-group-row {
-  /* height: 88px; */
   width: 560px;
   height: 88px;
 
   background: #ffffff !important;
   border: 1px solid #dfdfdf !important;
 
-  /* text-align: center; */
-  /* line-height: 88px; */
   font-family: 'Calibri';
   font-style: normal;
 }
@@ -58,4 +55,9 @@
   width: 200px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.export-csv-btn {
+  background-color: var(--color-baby-blue);
+  color: var(--text-color-white);
 }

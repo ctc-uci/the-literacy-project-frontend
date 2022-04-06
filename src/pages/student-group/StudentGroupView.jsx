@@ -4,10 +4,9 @@ import { Button, Container, Row, Card } from 'react-bootstrap';
 import { BsPencil } from 'react-icons/bs';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
-import SiteView from '../sites/sites';
-import styles from './StudentGroup.module.css';
+import styles from './StudentGroupView.module.css';
 
-const StudentGroup = () => {
+const StudentGroupView = () => {
   const groupNum = 3;
   const siteName = 'Irvine';
   const siteAddress = 'address';
@@ -44,18 +43,11 @@ const StudentGroup = () => {
           <p>Average Scores for Student Group C</p>
           {/* placeholder for graph */}
           <Card className={styles['student-group-graph']} />
-
-          <Button
-            variant="primary"
-            className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
-          >
-            Export to CSV
-          </Button>
+          <Button className={styles['export-csv-btn']}> Export to CSV </Button>
         </div>
       </div>
-      <SiteView />
     </div>
   );
 };
 
-export default StudentGroup;
+export default StudentGroupView;
