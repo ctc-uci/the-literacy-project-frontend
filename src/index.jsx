@@ -19,6 +19,7 @@ import AccessDeniedView from './pages/access-denied/access-denied';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
+import StudentGroup from './pages/student-group/StudentGroup';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
 
@@ -30,6 +31,7 @@ ReactDOM.render(
           <Route path="/" exact element={<LoginView />} />
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
+          <Route path="/student-groups/:groupId" exact element={<StudentGroup />} />
           <Route
             path="/settings"
             element={
