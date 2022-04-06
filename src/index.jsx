@@ -19,7 +19,7 @@ import AccessDeniedView from './pages/access-denied/access-denied';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
-import StudentGroupView from './pages/student-group/StudentGroupView';
+import StudentGroupView from './pages/student-group-view/StudentGroupView';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
 

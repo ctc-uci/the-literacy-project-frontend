@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../common/vars.css';
-import { Button, Container, Row, Card } from 'react-bootstrap';
+import { Button, Container, Card } from 'react-bootstrap';
 import { BsPencil } from 'react-icons/bs';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
@@ -30,16 +30,12 @@ const StudentGroupView = () => {
           <h3>Students Assigned</h3>
           <Container fluid>
             {studentGroupList.map(student => {
-              return (
-                <Row key={student} className={styles['student-group-row']}>
-                  <StudentProfileBox studentName={student} />
-                </Row>
-              );
+              return <StudentProfileBox key={student} studentName={student} />;
             })}
           </Container>
         </div>
         <div id={styles['student-group-data-container']}>
-          <h2>Over Group Data </h2>
+          <h2>Overall Group Data </h2>
           <p>Average Scores for Student Group C</p>
           {/* placeholder for graph */}
           <Card className={styles['student-group-graph']} />
