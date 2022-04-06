@@ -2,10 +2,14 @@ import { React, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { BsJournalText } from 'react-icons/bs';
+import { TLPBackend } from '../../common/utils';
+
+// import styles from './AreaView.module.css';
+import styles from './sitesTable.module.css';
+
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import Table from '../Table/Table';
-import { TLPBackend } from '../../common/utils';
-import styles from './AreaView.module.css';
 import Plus from '../../assets/icons/plus.svg';
 import NotesModal from '../NotesModal/NotesModal';
 
@@ -33,7 +37,7 @@ const SitesTable = ({ areaId }) => {
       headerPopover: '',
     },
     {
-      headerTitle: 'Site Notes',
+      headerTitle: 'Notes',
       headerPopover: '',
     },
     {
@@ -93,14 +97,19 @@ const SitesTable = ({ areaId }) => {
             />,
             site.siteName,
             teacherString(siteTeachers),
-            <button
+            // <button
+            //   key={site.siteId}
+            //   type="button"
+            //   className="btn btn-primary"
+            //   onClick={() => showNote(site.siteId)}
+            // >
+            //   View Note
+            // </button>,
+            <BsJournalText
               key={site.siteId}
-              type="button"
-              className="btn btn-primary"
               onClick={() => showNote(site.siteId)}
-            >
-              View Note
-            </button>,
+              className={styles.notes_icon}
+            />,
             additionalInfo,
           ],
         };

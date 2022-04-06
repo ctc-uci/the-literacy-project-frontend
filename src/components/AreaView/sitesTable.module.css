@@ -1,0 +1,49 @@
+.site_dropdown_inner {
+  padding: 1px 2px 1px 5px;
+}
+
+.notes_icon {
+  cursor: pointer;
+  height: 32px;
+  width: auto;
+  margin-top: 12px;
+  margin-left: 2px;
+}
+
+.tableButtons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.sites_filter_input {
+  margin-left: 10px;
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  height: 40px;
+  padding: 7.5px;
+  line-height: 1.5em;
+}
+
+.sort {
+  display: flex;
+  margin-left: auto;
+}
+
+.arrow {
+  position: relative;
+  left: 200px;
+  margin-top: -30px;
+  width: 80%;
+  border-style: dashed dashed hidden hidden;
+  border-color: #6c757d;
+}
+
+.emptyArea {
+  color: #6c757d;
+  font-weight: 300;
+  font-size: 56px;
+  line-height: 67px;
+  margin-top: 150px;
+}
