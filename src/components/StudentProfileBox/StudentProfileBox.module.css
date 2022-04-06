@@ -2,3 +2,14 @@
   background-color: var(--color-baby-blue);
   color: var(--text-color-white);
 }
+
+.student-profile-row {
+  width: 560px;
+  height: 88px;
+
+  background: #ffffff !important;
+  border: 1px solid #dfdfdf !important;
+
+  font-family: 'Calibri';
+  font-style: normal;
+}
