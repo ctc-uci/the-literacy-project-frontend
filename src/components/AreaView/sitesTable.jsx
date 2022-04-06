@@ -2,15 +2,13 @@ import { React, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { BsJournalText } from 'react-icons/bs';
+import { BsJournalText, BsPlus } from 'react-icons/bs';
 import { TLPBackend } from '../../common/utils';
 
-// import styles from './AreaView.module.css';
 import styles from './sitesTable.module.css';
 
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import Table from '../Table/Table';
-import Plus from '../../assets/icons/plus.svg';
 import NotesModal from '../NotesModal/NotesModal';
 
 // TODO: seperate data from components
@@ -48,7 +46,7 @@ const SitesTable = ({ areaId }) => {
 
   const [modalShow, setModalShow] = useState(false);
   const [currSite, setCurrSite] = useState(0);
-  // const [currNote, setCurrNote] = useState('');
+
   // additionalInfo + siteNotes are static buttons to be put per row. TODO - make this dynamic
   const additionalInfo = (
     <button type="button" className="btn btn-primary">
@@ -97,14 +95,6 @@ const SitesTable = ({ areaId }) => {
             />,
             site.siteName,
             teacherString(siteTeachers),
-            // <button
-            //   key={site.siteId}
-            //   type="button"
-            //   className="btn btn-primary"
-            //   onClick={() => showNote(site.siteId)}
-            // >
-            //   View Note
-            // </button>,
             <BsJournalText
               key={site.siteId}
               onClick={() => showNote(site.siteId)}
@@ -129,7 +119,7 @@ const SitesTable = ({ areaId }) => {
         <Link to={`/sites/create/${areaId}`}>
           <button type="button" className="btn btn-warning">
             Create New Site
-            <img className="plus__icon" src={Plus} alt="Plus Icon" />
+            <BsPlus className={styles.create_button_plus} />
           </button>
         </Link>
         {tableData.length !== 0 && (

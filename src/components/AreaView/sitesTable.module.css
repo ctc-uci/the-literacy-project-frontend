@@ -17,6 +17,14 @@
   margin-bottom: 15px;
 }
 
+.create_button_plus {
+  cursor: pointer;
+  height: 28px;
+  width: auto;
+  margin-left: 2px;
+  margin-bottom: 2px;
+}
+
 .sites_filter_input {
   margin-left: 10px;
   border-radius: 5px;
