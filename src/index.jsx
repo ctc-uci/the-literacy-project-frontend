@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { useNavigate, BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Navigate, BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import './index.css';
 import NavigationBar from './components/NavigationBar/NavigationBar';
@@ -9,22 +9,19 @@ import NavigationBar from './components/NavigationBar/NavigationBar';
 import SitesCreateView from './pages/sites-create/sites-create';
 import LoginView from './pages/login/login';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
-import TeacherView from './pages/master-teachers/master-teachers';
-import TeachersExportDataView from './pages/master-teachers-export-data/master-teachers-export-data';
 import SettingsView from './pages/settings/settings';
 import SettingsEditView from './pages/settings-edit/settings-edit';
 import AreaManagement from './pages/area-management/area-management';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
 import AreaDetails from './pages/area-details/area-details';
 import PeopleView from './pages/people/people';
+import NotFoundView from './pages/not-found/not-found';
+import AccessDeniedView from './pages/access-denied/access-denied';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
-// TODO: add protected routes -- use current few as examples
-// specify component to render if access allowed, redirectPath if access denied
-// use roles from AUTH_ROLES; add to roles list
 
 // useNavigate for redirects
 // const navigate = useNavigate();
@@ -36,12 +33,8 @@ ReactDOM.render(
         <NavigationBar />
         <Routes>
           <Route path="/" exact element={<LoginView />} />
-          <Route path="/sites/create/" exact render={() => useNavigate('/sites')} />
-          <Route path="/sites/create/:areaId" exact element={<SitesCreateView />} />
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
-          <Route path="/master-teachers" exact element={<TeacherView />} />
-          <Route path="/master-teachers/export-data" exact element={<TeachersExportDataView />} />
           <Route
             path="/settings"
             element={
@@ -52,22 +45,63 @@ ReactDOM.render(
               />
             }
           />
-          <Route path="/settings/edit" element={<SettingsEditView />} />
-          <Route path="/people" exact element={<PeopleView />} />
+          <Route
+            path="/settings/edit"
+            element={
+              <ProtectedRoute
+                Component={SettingsEditView}
+                redirectPath="/login"
+                roles={[ADMIN_ROLE, USER_ROLE]}
+              />
+            }
+          />
+          <Route
+            path="/people"
+            element={
+              <ProtectedRoute
+                Component={PeopleView}
+                redirectPath="/access-denied"
+                roles={[ADMIN_ROLE]}
+              />
+            }
+          />
           <Route
             path="/area-management"
             element={
               <ProtectedRoute
                 Component={AreaManagement}
-                redirectPath="/login"
+                redirectPath="/access-denied"
+                roles={[ADMIN_ROLE]}
+              />
+            }
+          />
+          <Route
+            path="/sites/create/:areaId"
+            element={
+              <ProtectedRoute
+                Component={SitesCreateView}
+                redirectPath="/access-denied"
+                roles={[ADMIN_ROLE]}
+              />
+            }
+          />
+          <Route
+            path="/area-details"
+            element={
+              <ProtectedRoute
+                Component={AreaDetails}
+                redirectPath="/access-denied"
                 roles={[ADMIN_ROLE]}
               />
             }
           />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
-          <Route path="/area" render={() => useNavigate('/area-management')} />
+          <Route path="/area" render={() => Navigate('/area-management')} />
           <Route path="/area/:areaId" element={<AreaDetails />} />
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
+          <Route exact path="/access-denied" element={<AccessDeniedView />} />
+          <Route exact path="/not-found" element={<NotFoundView />} />
+          <Route exact path="*" element={<Navigate to="/not-found" />} />
         </Routes>
       </Router>
     </CookiesProvider>

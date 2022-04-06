@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Dropdown, Button, DropdownButton, Card } from 'react-bootstrap';
+import { Button, Card, DropdownButton, Dropdown, InputGroup, FormControl } from 'react-bootstrap';
+import { BsFillCaretDownFill, BsPeople, BsFilterRight, BsFilter } from 'react-icons/bs';
 import { TLPBackend } from '../../common/utils';
-import './sites.css';
+import styles from './sites.module.css';
+// import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
+import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
+import SchoolIcon from '../../assets/icons/school.svg';
+import TeacherIcon from '../../assets/icons/Teacher.svg';
 
 const SiteView = () => {
-  const [schoolYearDropdownTitle, setSchoolYearDropdownTitle] = useState('Cycle 1');
+  // const [areaDropdownTitle, setAreaDropdownTitle] = useState('Bellevue SD');
   const [modalIsOpen, setModalOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
+  const [schoolYear, setSchoolYear] = useState('2020-21');
 
   const addAssociatedSiteToArea = async resData => {
     async function fetchAllSites() {
@@ -34,6 +40,7 @@ const SiteView = () => {
       return (
         <AreaDropdown
           areaId={area.areaId}
+          areaActive={area.active}
           areaName={area.areaName}
           areaStats={{
             student_count: 15,
@@ -47,8 +54,8 @@ const SiteView = () => {
     });
   }
 
-  const changeSchoolYearTitle = event => {
-    setSchoolYearDropdownTitle(event.target.textContent);
+  const updateSchoolYear = newSchoolYear => {
+    setSchoolYear(newSchoolYear);
   };
 
   useEffect(() => {
@@ -66,62 +73,129 @@ const SiteView = () => {
 
   return (
     <div>
-      <div className="site-container">
-        <div>
-          <h1>Areas</h1>
-          <div className="school-year-info">
-            <h1>School Year</h1>
-            <input type="text" list="school-year" className="school-year-input" />
-            <datalist id="school-year">
-              <option value="2021-2022" aria-label="2021-2022" />
-              <option value="2020-2021" aria-label="2020-2021" />
-              <option value="2019-2020" aria-label="2019-2020" />
-            </datalist>
-            <h2>Cycle</h2>
-            <DropdownButton drop="down" title={schoolYearDropdownTitle} variant="primary">
-              <Dropdown.Item eventKey="1" onClick={e => changeSchoolYearTitle(e)}>
-                Cycle 1
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="2" onClick={e => changeSchoolYearTitle(e)}>
-                Cycle 2
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="3" onClick={e => changeSchoolYearTitle(e)}>
-                Cycle 3
-              </Dropdown.Item>
-              <Dropdown.Item eventKey="4" onClick={e => changeSchoolYearTitle(e)}>
-                Cycle 4
-              </Dropdown.Item>
-            </DropdownButton>
-            <div className="search-school">
-              <input type="text" placeholder="Search All Schools" />
-              <Button variant="primary">Search</Button>
+      <NavigationBar />
+      <div className={styles['site-container']}>
+        <h1>Areas</h1>
+        <div className={styles['area-content']}>
+          <div className={styles['site-container-information']}>
+            <div className={styles['school-year-info']}>
+              <div className={styles['school-year-container']}>
+                <h2>School Year</h2>
+                <DropdownButton
+                  variant="outline-secondary"
+                  title={schoolYear}
+                  id={styles['input-group-dropdown-1']}
+                >
+                  <Dropdown.Item
+                    onClick={() => {
+                      updateSchoolYear('2021-22');
+                    }}
+                  >
+                    2021-22
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => {
+                      updateSchoolYear('2020-21');
+                    }}
+                  >
+                    2020-21
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => {
+                      updateSchoolYear('2019-20');
+                    }}
+                  >
+                    2019-20
+                  </Dropdown.Item>
+                </DropdownButton>
+              </div>
+              <div className={styles['search-school']}>
+                <InputGroup>
+                  <FormControl
+                    className={styles['search-school-search-bar']}
+                    placeholder="Search"
+                    aria-label="Search"
+                    aria-describedby="search-school-search-icon"
+                  />
+                  <InputGroup.Text id={styles['search-school-search-icon']}>
+                    <BsFilterRight />
+                  </InputGroup.Text>
+                </InputGroup>
+                <Button
+                  variant="primary"
+                  className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
+                >
+                  Search
+                </Button>
+              </div>
             </div>
+            <div className={styles['area-button-options-container']}>
+              <Button
+                variant="warning"
+                className={styles['create-new-area-button']}
+                onClick={() => {
+                  setModalOpen(true);
+                }}
+              >
+                <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
+                New Area
+              </Button>
+              <CreateAreaModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
+              <div className={styles['area-button-options-right']}>
+                <Button
+                  variant="primary"
+                  className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
+                  onClick={() => {}}
+                >
+                  Filter By <BsFilter />
+                </Button>
+                <Button
+                  variant="primary"
+                  className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
+                  onClick={() => {}}
+                >
+                  Sort By: A-Z <BsFillCaretDownFill />
+                </Button>
+              </div>
+            </div>
+            {mapAreas()}
           </div>
-          <div>
+          <div className={styles['sites-data']}>
             <Button
-              variant="warning"
-              onClick={() => {
-                setModalOpen(true);
-              }}
+              variant="primary"
+              className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
             >
-              New Area
-              <img className="plus__icon" src={Plus} alt="Plus Icon" />
+              Export to CSV
             </Button>
-            <CreateAreaModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
+            <p>All Areas</p>
+            <p>Year: 2021-22 Cycle: 1</p>
+            <p>
+              <strong>Average Growth in Reading</strong>
+            </p>
+            {/* placeholder for graph */}
+            <Card className={styles['sites-graph']} />
+            <Card className={styles['area-data-stats']}>
+              <p>
+                <BsPeople /> 40 Students
+              </p>
+              <p>
+                <img
+                  className={styles['area-dropdown__open__area_stats__section-icon']}
+                  src={TeacherIcon}
+                  alt="Teacher Icon"
+                />
+                4 Teachers
+              </p>
+              <p>
+                <img
+                  className={styles['area-dropdown__open__area_stats__section-icon']}
+                  src={SchoolIcon}
+                  alt="School Icon"
+                />
+                4 Sites
+              </p>
+            </Card>
           </div>
-          {mapAreas()}
-        </div>
-        <div className="data">
-          <Button variant="primary">Export to CSV</Button>
-          <h2>Data</h2>
-          <h3>Average Scores</h3>
-          {/* placeholder for graph */}
-          <Card className="graph" />
-          <Card className="stats">
-            <p>40 Students</p>
-            <p>4 Teachers</p>
-            <p>4 Sites</p>
-          </Card>
         </div>
       </div>
     </div>

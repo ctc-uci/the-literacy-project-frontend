@@ -1,66 +1,70 @@
 import React, { useState } from 'react';
-import './AreaDropdown.css';
 import { BsFillCaretRightFill, BsPencil, BsPeople } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import styles from './AreaDropdown.module.css';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
+import EditAreaModal from '../EditAreaModal/EditAreaModal';
 
-function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
+function AreaDropdown({ areaId, areaActive, areaName, areaStats, areaSites }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [editAreaModalIsOpen, setEditAreaModalIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      className="area-dropdown"
-      onClick={toggleDropdown}
-      onKeyDown={() => {}}
-    >
+    <div className={styles['area-dropdown']}>
       {isOpen ? (
-        <div className="area-dropdown__open-container">
-          <div className="area-dropdown__open__area_stats">
-            <div className="area-dropdown__open__area_stats__section">
-              <BsPeople className="area-dropdown__open__area_stats__section-icon" />
-              <p className="area-dropdown__open__area_stats__section-number">
+        <div
+          className={styles['area-dropdown__open-container']}
+          onClick={toggleDropdown}
+          role="button"
+          tabIndex={0}
+          onKeyDown={event => {
+            if (event.key === 'Enter') toggleDropdown();
+          }}
+        >
+          <div className={styles['area-dropdown__open__area_stats']}>
+            <div className={styles['area-dropdown__open__area_stats__section']}>
+              <BsPeople className={styles['area-dropdown__open__area_stats__section-icon']} />
+              <p className={styles['area-dropdown__open__area_stats__section-number']}>
                 {areaStats.student_count} Students
               </p>
             </div>
-            <div className="area-dropdown__open__area_stats__section">
+            <div className={styles['area-dropdown__open__area_stats__section']}>
               <img
-                className="area-dropdown__open__area_stats__section-icon"
+                className={styles['area-dropdown__open__area_stats__section-icon']}
                 src={TeacherIcon}
                 alt="Teacher Icon"
               />
-              <p className="area-dropdown__open__area_stats__section-number">
+              <p className={styles['area-dropdown__open__area_stats__section-number']}>
                 {areaStats.master_teacher_count} Teachers
               </p>
             </div>
-            <div className="area-dropdown__open__area_stats__section">
+            <div className={styles['area-dropdown__open__area_stats__section']}>
               <img
-                className="area-dropdown__open__area_stats__section-icon"
+                className={styles['area-dropdown__open__area_stats__section-icon']}
                 src={SchoolIcon}
                 alt="School Icon"
               />
-              <p className="area-dropdown__open__area_stats__section-number">
+              <p className={styles['area-dropdown__open__area_stats__section-number']}>
                 {areaStats.site_count} Sites
               </p>
             </div>
           </div>
-          <div className="area-dropdown__open__site-lookup-container">
-            <div className="area-dropdown__open__site-lookup-wrapper">
-              <div className="area-dropdown__open__site-lookup__header">Sites</div>
-              <div className="area-dropdown__open__site-lookup__body">
+          <div className={styles['area-dropdown__open__site-lookup-container']}>
+            <div className={styles['area-dropdown__open__site-lookup-wrapper']}>
+              <div className={styles['area-dropdown__open__site-lookup__header']}>Sites</div>
+              <div className={styles['area-dropdown__open__site-lookup__body']}>
                 {areaSites.map(site => {
                   return (
                     <Link
-                      className="area-dropdown__open__site-link"
-                      to={`/site/${site.siteId}`}
-                      key={`site-${site.siteId}`}
+                      className={styles['area-dropdown__open__site-link']}
+                      to={`/site/${site.site_id}`}
+                      key={`site-${site.site_id}`}
                     >
                       {site.siteName}
                     </Link>
@@ -69,27 +73,48 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
               </div>
             </div>
           </div>
-          <div className="area-dropdown__open__edit-sites-link">
-            <Link to={`/area/${areaId}`}>VIEW SITES</Link>
+          <div className={styles['area-dropdown__open__edit-sites-link']}>
+            <Link to={`/site/${areaId}/edit`}>VIEW SITES</Link>
           </div>
         </div>
       ) : (
-        <div className="area-dropdown__closed_container">
-          <div className="area-dropdown__closed-area-name-wrapper">
-            <p className="area-dropdown__closed-area-name">{areaName}</p>
-            <Link to={`/area/${areaId}`} className="area-dropdown__closed-area-edit-icon">
-              <BsPencil />
-            </Link>
+        <div className={styles['area-dropdown__closed_container']}>
+          <BsPencil
+            role="button"
+            onClick={() => setEditAreaModalIsOpen(true)}
+            tabIndex={0}
+            onKeyDown={event => {
+              if (event.key === 'Enter') setEditAreaModalIsOpen(true);
+            }}
+          />
+          <div
+            className={styles['area-dropdown__closed-area-name-wrapper']}
+            onClick={toggleDropdown}
+            role="button"
+            tabIndex={0}
+            onKeyDown={event => {
+              if (event.key === 'Enter') toggleDropdown();
+            }}
+          >
+            <p className={styles['area-dropdown__closed-area-name']}>{areaName}</p>
+            <BsFillCaretRightFill className={styles['area-dropdown__closed-area-caret']} />
           </div>
-          <BsFillCaretRightFill className="area-dropdown__closed-area-caret" />
         </div>
       )}
+      <EditAreaModal
+        areaId={areaId}
+        areaActive={areaActive}
+        areaName={areaName}
+        isOpen={editAreaModalIsOpen}
+        setIsOpen={setEditAreaModalIsOpen}
+      />
     </div>
   );
 }
 
 AreaDropdown.defaultProps = {
   areaId: null,
+  areaActive: false,
   areaName: '',
   areaStats: {},
   areaSites: [],
@@ -98,6 +123,7 @@ AreaDropdown.defaultProps = {
 AreaDropdown.propTypes = {
   areaId: PropTypes.number,
   areaName: PropTypes.string,
+  areaActive: PropTypes.bool,
   // areaStats: PropTypes.arrayOf(
   //   PropTypes.shape({
   //     student_count: PropTypes.number,
