@@ -37,37 +37,11 @@ const LoginForm = ({ cookies }) => {
     }
   };
 
-  // tabs above login form, sets user to admin/teacher and adjusts background color
-  const [loginColor, setLoginColor] = useState('#1A4767');
-  const [loginButtonColor, setLoginButtonColor] = useState('#BBCBE2');
-  const [loginButtonFontColor, setLoginButtonFontColor] = useState('#212529');
-  const setUserAdmin = () => {
-    setLoginColor('#1A4767');
-    setLoginButtonColor('#BBCBE2');
-    setLoginButtonFontColor('#212529');
-  };
-  const setUserTeacher = () => {
-    setLoginColor('#6A91BC');
-    setLoginButtonColor('#003459');
-    setLoginButtonFontColor('#FFFFFF');
-  };
-
   return (
     <div className="loginFormWrapper">
-      {/* Admin/Teacher tabs, above form */}
-      <div className="userTabs">
-        <button id="adminButton" type="button" onClick={setUserAdmin}>
-          Admin
-        </button>
-        <button id="teacherButton" type="button" onClick={setUserTeacher}>
-          Teacher
-        </button>
-      </div>
-
       {/* body of LoginForm */}
-      <div className="formWrapper" style={{ backgroundColor: loginColor }}>
+      <div className="formWrapper" style={{ backgroundColor: '#1A4767' }}>
         <h1 className="title"> Log In </h1>
-
         <form>
           <div className="emailInput">
             <label className="logLabel" htmlFor="email">
@@ -82,7 +56,6 @@ const LoginForm = ({ cookies }) => {
               />
             </label>
           </div>
-
           <div className="passwordInput">
             <label className="logLabel" htmlFor="password">
               Password
@@ -97,30 +70,26 @@ const LoginForm = ({ cookies }) => {
               <FaEye id="eyeIcon" color="black" onClick={togglePasswordVisibility} />
             </label>
           </div>
-
           <div className="rememberMeBox">
-            <label htmlFor="rememberBox">
+            <label htmlFor="rememberBox" style={{ color: 'white' }}>
               <input
                 type="checkbox"
                 id="rememberBox"
                 checked={rememberMe}
                 onChange={toggleRememberMe}
               />
-              Remember Me?
+              <span className="rememberMeText">Remember Me?</span>
             </label>
           </div>
-
           {errorMessage && <p>{errorMessage}</p>}
-
           <input
             id="submitButton"
             type="submit"
             value="Login"
-            style={{ backgroundColor: loginButtonColor, color: loginButtonFontColor }}
+            style={{ backgroundColor: '#BBCBE2', color: '#212529' }}
             onClick={handleSubmit}
           />
         </form>
-
         <div className="links">
           <a id="forgotPassword" href="login/reset-password">
             Forgot password?

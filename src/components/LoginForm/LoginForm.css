@@ -1,12 +1,11 @@
-/* UNIVERSAL FONT SETTINGS */
-/* button,
+button,
 .title,
 .logLabel,
 a {
   color: white !important;
   font-family: Calibri;
   font-style: normal;
-} */
+}
 
 /* ADMIN/TEACHER USER TABS */
 .userTabs {
@@ -40,7 +39,7 @@ button {
   line-height: 67px;
   text-align: center;
   letter-spacing: -0.02em;
-
+  color: #fffafa;
   padding: 45px 0px 15px 0px;
 }
 
@@ -89,13 +88,19 @@ form #eyeIcon {
 .rememberMeBox {
   padding-bottom: 26px;
 }
+
+.rememberMeText {
+  position: relative;
+  top: -12px;
+}
+
 #rememberBox {
-  margin: 0px 4px 0px 0px;
+  margin: 0px 10px 0px 0px;
 }
 
 /* LOGIN BUTTON */
 #submitButton {
-  padding: 8px 16px;
+  padding: 5px 16px;
   margin-bottom: 7px;
   width: 40%;
   border-radius: 4.8px;
