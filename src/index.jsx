@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { Navigate, BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import './index.css';
-import NavigationBar from './components/NavigationBar/NavigationBar';
 
 // page imports
 import SitesCreateView from './pages/sites-create/sites-create';
@@ -30,7 +29,6 @@ ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
       <Router>
-        <NavigationBar />
         <Routes>
           <Route path="/" exact element={<LoginView />} />
           <Route path="/login" exact element={<LoginView />} />
