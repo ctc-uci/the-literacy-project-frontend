@@ -92,7 +92,7 @@ const CreateSiteModal = areaId => {
     });
     // console.log('Submit success');
     // Send the user back to all sites; TODO add success status notif
-    window.location.replace('/sites');
+    window.location.replace(`/area/${areaId}`);
   };
 
   return (
