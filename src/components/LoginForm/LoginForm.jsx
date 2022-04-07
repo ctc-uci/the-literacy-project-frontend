@@ -40,7 +40,7 @@ const LoginForm = ({ cookies }) => {
   return (
     <div className={styles['login-form-wrapper']}>
       {/* body of LoginForm */}
-      <div className={styles['form-wrapper']} style={{ backgroundColor: '#1A4767' }}>
+      <div className={styles['form-wrapper']}>
         <h1 className={styles.title}> Log In </h1>
         <form>
           <div className={styles['email-input']}>
@@ -91,7 +91,7 @@ const LoginForm = ({ cookies }) => {
           />
         </form>
         <div className={styles.links}>
-          <a id="forgotPassword" href="login/reset-password">
+          <a id="forgotPassword" href="login/recover-password">
             Forgot password?
           </a>
         </div>
