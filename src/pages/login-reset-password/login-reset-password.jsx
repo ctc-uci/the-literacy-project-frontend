@@ -1,9 +1,6 @@
 import React from 'react';
-import './login-reset-password.css';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
-
 import RecoverPassword from '../../components/RecoverPassword/RecoverPassword';
 
 // TEMPORARILY JUST SHOWS THE RECOVER PASSWORD EMAIL SUBMIT COMPONENT
