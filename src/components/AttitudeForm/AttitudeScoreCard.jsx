@@ -106,7 +106,7 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
         </div>
         <div>
           <table className={styles['scorecard-table']}>
-            <tbody>
+            <thead>
               <tr>
                 <th>Recreational Reading</th>
                 <th>Notes</th>
@@ -115,16 +115,37 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
                 <th>Notes</th>
                 <th>Scores</th>
               </tr>
+            </thead>
+            <tbody>
               <AssessmentRows formName={name} formFields={fields} editState={editState} />
             </tbody>
           </table>
-          <textarea
-            placeholder="Notes"
-            className={styles.notes}
-            rows="3"
-            cols="50"
-            {...methods.register('notes')}
-          />
+          <table className={`${styles['scorecard-table']} ${styles['indiv-score-table']}`}>
+            <thead>
+              <tr>
+                <th>Recreational Reading Total</th>
+                <th>Academic Reading Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+          <table className={`${styles['scorecard-table']} ${styles['combined-score-table']}`}>
+            <thead>
+              <tr>
+                <th>Combined Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </form>
     </FormProvider>

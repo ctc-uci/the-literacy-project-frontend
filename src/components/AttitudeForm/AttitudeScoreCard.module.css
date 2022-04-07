@@ -24,7 +24,7 @@
   width: 100%;
   box-sizing: border-box;
   border-radius: 2px;
-  margin-bottom: 45px;
+  margin-bottom: 20px;
 }
 
 .scorecard-table th, td {
@@ -38,10 +38,22 @@
   background: var(--color-dark-gray);
   color: white;
 }
+.indiv-score-table th {
+  max-width: 550px;
+  min-width: 550px;
+}
 
-.notes {
-  width: 100%;
-  height: 200px;
+.combined-score-table {
+  width: 50%;
+  margin: 0 0 0 50%;
+}
+
+.indiv-score-table td, .combined-score-table td {
+  height: 70px;
+  background: var(--color-gray-white);
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
 }
 
 /* Row styles */
