@@ -33,7 +33,7 @@ function RecoverPassword() {
               Please check your email for futher instructions on how to recover your account.
             </div>
             <input
-              id="recoverButton"
+              id={styles['recover-button']}
               type="submit"
               value="Back to Login"
               style={{ fontSize: '20px', backgroundColor: '#BBCBE2' }}
