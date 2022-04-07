@@ -15,7 +15,8 @@
 }
 
 .tlp-button-primary {
-  background-color: #3288c4;
+  background-color: var(--color-baby-blue);
+  color: var(--text-color-white)
 }
 .tlp-button {
   border: none;
