@@ -31,15 +31,15 @@ const AssessmentRow = ({ editState, left, right }) => {
   return (
     <tr>
       <td>
-        {left.testNumber} {left.question}
+        {left?.testNumber}. {left?.question}
       </td>
       <td>notes</td>
-      <td>{left.playerScore}</td>
+      <td>{left?.playerScore}</td>
       <td>
-        {right.testNumber} {right.question}
+        {right?.testNumber}. {right?.question}
       </td>
       <td>notes</td>
-      <td>{right.playerScore}</td>
+      <td>{right?.playerScore}</td>
     </tr>
   );
 };
