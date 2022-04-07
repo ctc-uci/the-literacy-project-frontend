@@ -5,13 +5,13 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import Image from './tlp.png';
 import styles from './NavigationBar.module.css';
 import { logout, useNavigate } from '../../common/auth/auth_utils';
-import { Cookies, withCookies } from '../../common/auth/cookie_utils';
+import { Cookies, withCookies, cookieKeys } from '../../common/auth/cookie_utils';
+import { AUTH_ROLES } from '../../common/config';
 
 const NavigationBar = ({ cookies }) => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState();
-  const path = window.location.pathname;
-  const adminPaths = ['/settings', '/area-management', '/people'];
+  const role = decodeURIComponent(cookies.get(cookieKeys.POSITION));
 
   const handleLogOut = async () => {
     try {
@@ -21,8 +21,8 @@ const NavigationBar = ({ cookies }) => {
     }
   };
 
-  /* temporary way of toggling nav bars, will solidify/change when MT paths are done */
-  if (adminPaths.indexOf(path) > -1) {
+  // get role from cookies and display the corresponding nav bar
+  if (role === AUTH_ROLES.ADMIN_ROLE) {
     return (
       <Navbar bg="light" expand="lg">
         <Container fluid>
@@ -65,7 +65,7 @@ const NavigationBar = ({ cookies }) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className={styles['mr-auto']}>
-            <Nav.Link href="/home" style={{ color: '#6A91BC' }}>
+            <Nav.Link href="/master-teacher" style={{ color: '#6A91BC' }}>
               Home
             </Nav.Link>
             <Nav.Link href="/settings" style={{ color: '#6A91BC' }}>

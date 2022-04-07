@@ -12,6 +12,7 @@ import SettingsView from './pages/settings/settings';
 import SettingsEditView from './pages/settings-edit/settings-edit';
 import AreaManagement from './pages/area-management/area-management';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
+import MasterTeacherView from './pages/master-teacher/master-teacher';
 import AreaDetails from './pages/area-details/area-details';
 import PeopleView from './pages/people/people';
 import NotFoundView from './pages/not-found/not-found';
@@ -30,6 +31,18 @@ ReactDOM.render(
           <Route path="/" exact element={<LoginView />} />
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
+          {/* temporary route */}
+          <Route
+            path="/master-teacher"
+            exact
+            element={
+              <ProtectedRoute
+                Component={MasterTeacherView}
+                redirectPath="/access-denied"
+                roles={[USER_ROLE]}
+              />
+            }
+          />
           <Route
             path="/settings"
             element={
