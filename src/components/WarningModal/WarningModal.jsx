@@ -2,12 +2,19 @@ import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { Modal, Button, Alert, CloseButton } from 'react-bootstrap';
 
-const WarningModal = ({ isOpen, setIsOpen, name, body }) => {
+const WarningModal = ({ isOpen, setIsOpen, name, body, deleteFunc }) => {
   const [showAlert, setShowAlert] = useState(false);
+
   const closeModal = () => {
     setIsOpen(false);
-    setShowAlert(true);
   };
+
+  const deleteCloseModal = () => {
+    setIsOpen(false);
+    setShowAlert(true);
+    deleteFunc();
+  };
+
   const bodies = {
     site: (
       <p style={{ textAlign: 'center' }}>
@@ -64,7 +71,7 @@ const WarningModal = ({ isOpen, setIsOpen, name, body }) => {
           {bodies[body]}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={closeModal}>
+          <Button variant="danger" onClick={deleteCloseModal}>
             Yes, Delete
           </Button>
           <Button variant="primary" onClick={closeModal}>
@@ -92,6 +99,7 @@ WarningModal.propTypes = {
   setIsOpen: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
+  deleteFunc: PropTypes.func.isRequired,
 };
 
 export default WarningModal;

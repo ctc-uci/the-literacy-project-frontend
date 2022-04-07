@@ -4,6 +4,7 @@ import { Modal, Button, Alert, CloseButton, Form, Badge } from 'react-bootstrap'
 import { BsX } from 'react-icons/bs';
 import styles from './EditMasterTeacherModal.module.css';
 import { TLPBackend, reloadPage } from '../../common/utils';
+import WarningModal from '../WarningModal/WarningModal';
 
 const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [showEditMasterTeacherAlert, setShowEditMasterTeacherAlert] = useState(false);
@@ -13,6 +14,8 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [status, setStatus] = useState('');
+  const [warningOpen, setWarningOpen] = useState(false);
+  const teacherName = `${firstName} ${lastName}`;
 
   const [sites, setSites] = useState([]);
   const removeSite = e => {
@@ -35,6 +38,10 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     });
     reloadPage();
     closeModal();
+  };
+
+  const openWarningModal = () => {
+    setWarningOpen(!warningOpen);
   };
 
   const deleteMasterTeacher = async () => {
@@ -60,9 +67,15 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
       setError(error);
     }
   }, []);
-
   return (
     <>
+      <WarningModal
+        isOpen={warningOpen}
+        setIsOpen={setWarningOpen}
+        name={teacherName}
+        body="teacher"
+        deleteFunc={deleteMasterTeacher}
+      />
       <Modal show={isOpen} onHide={() => setIsOpen(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Teacher</Modal.Title>
@@ -138,7 +151,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={deleteMasterTeacher}>
+          <Button variant="danger" onClick={openWarningModal}>
             Delete
           </Button>
           <Button variant="primary" onClick={updateMasterTeacherData}>
