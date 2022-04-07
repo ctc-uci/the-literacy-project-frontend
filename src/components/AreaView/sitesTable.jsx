@@ -61,9 +61,11 @@ const SitesTable = ({ areaId }) => {
 
   // teacherString returns a string that is used to display the master teacher's name
   const teacherString = teachersObj =>
-    teachersObj.length > 0
-      ? `${teachersObj[0].firstName} ${teachersObj[0].lastName}`
-      : 'No Teacher Assigned';
+    teachersObj.length > 0 ? (
+      `${teachersObj[0].firstName} ${teachersObj[0].lastName}`
+    ) : (
+      <span className={styles.no_teacher_assigned}>No Teacher Assigned</span>
+    );
 
   // Callback for setting site active status
   const updateSiteStatus = async (newChoice, site) => {

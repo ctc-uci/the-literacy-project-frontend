@@ -91,3 +91,7 @@
   line-height: 67px;
   margin-top: 150px;
 }
+
+.no_teacher_assigned {
+  color: var(--color-teal);
+}

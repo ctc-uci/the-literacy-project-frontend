@@ -16,7 +16,7 @@
 
 .tlp-button-primary {
   background-color: var(--color-baby-blue);
-  color: var(--text-color-white)
+  color: var(--text-color-white);
 }
 .tlp-button {
   border: none;
