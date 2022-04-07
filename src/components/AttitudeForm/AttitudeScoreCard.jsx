@@ -19,7 +19,7 @@ const ScoreCardButton = ({ editState, setEditState }) => {
   if (editState === 'newInput') {
     return (
       <Button as="button" type="button" variant="warning" onClick={e => setAsEditing(e)}>
-        + Input Scores
+        Input Scores +
       </Button>
     );
   }
@@ -75,8 +75,8 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
       name,
       rowData.map((row, i) => ({
         ...row,
-        playerScore: tableData?.[i] ?? 0,
-        notes: tableData?.[i] ?? 0,
+        playerScore: tableData?.scores?.[i] ?? 0,
+        notes: tableData?.notes?.[i] ?? '',
       })),
     );
     setEditState(tableData === null ? 'newInput' : 'editExisting');

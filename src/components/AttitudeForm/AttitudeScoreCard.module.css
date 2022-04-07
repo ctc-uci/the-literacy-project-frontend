@@ -45,7 +45,7 @@
 
 .combined-score-table {
   width: 50%;
-  margin: 0 0 0 50%;
+  margin-left: 50%;
 }
 
 .indiv-score-table td, .combined-score-table td {
@@ -74,7 +74,7 @@
 .row-notes {
   max-width: 200px;
   min-width: 200px;
-  vertical-align: center;
+  /* vertical-align: center; */
 }
 
 .player-score {

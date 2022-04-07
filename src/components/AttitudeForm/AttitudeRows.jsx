@@ -18,6 +18,9 @@ const notesInput = (notes, column, editState, register, errors, formName, fieldI
       />
     );
   }
+  if (notes === '') {
+    return <p className={styles['empty-notes']}>Empty Notes</p>;
+  }
   return notes;
 };
 

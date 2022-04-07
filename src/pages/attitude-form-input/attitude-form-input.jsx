@@ -21,12 +21,12 @@ const AttitudeFormInput = () => {
     try {
       const res = await TLPBackend.get(`./students/${studentID}`);
       setPreTestData({
-        notes: [],
         scores: res.data.pretestR,
+        notes: [],
       });
       setPostTestData({
-        notes: [],
         scores: res.data.posttestR,
+        notes: [],
       });
     } catch (err) {
       // eslint-disable-next-line no-console
