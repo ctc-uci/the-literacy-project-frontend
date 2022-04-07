@@ -84,7 +84,7 @@ const SiteView = () => {
                 <DropdownButton
                   variant="outline-secondary"
                   title={schoolYear}
-                  id={styles['input-group-dropdown-1']}
+                  className={styles['school-year-dropdown']}
                 >
                   <Dropdown.Item
                     onClick={() => {
