@@ -1,8 +1,7 @@
 .button,
 .title,
-.log-label,
-a {
-  color: white !important;
+.log-label {
+  color: white;
   font-family: Calibri;
   font-style: normal;
 }
