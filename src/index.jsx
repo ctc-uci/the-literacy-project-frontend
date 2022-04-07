@@ -27,7 +27,16 @@ ReactDOM.render(
     <CookiesProvider>
       <Router>
         <Routes>
-          <Route path="/" exact element={<LoginView />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute
+                Component={DashboardView}
+                redirectPath="/login"
+                roles={[ADMIN_ROLE, USER_ROLE]}
+              />
+            }
+          />
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
           <Route
@@ -61,16 +70,6 @@ ReactDOM.render(
             }
           />
           <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute
-                Component={DashboardView}
-                redirectPath="/login"
-                roles={[ADMIN_ROLE, USER_ROLE]}
-              />
-            }
-          />
-          <Route
             path="/sites/create/:areaId"
             element={
               <ProtectedRoute
@@ -91,7 +90,7 @@ ReactDOM.render(
             }
           />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
-          <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
+          <Route exact path="/emailAction" element={<EmailAction redirectPath="/login" />} />
           <Route exact path="/access-denied" element={<AccessDeniedView />} />
           <Route exact path="/not-found" element={<NotFoundView />} />
           <Route exact path="*" element={<Navigate to="/not-found" />} />

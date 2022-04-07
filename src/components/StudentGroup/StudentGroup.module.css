@@ -13,17 +13,11 @@
   background-color: #00000008;
 }
 
-#group-name {
+.group-name {
   align-items: left;
   margin-left: 0;
   margin-right: 0;
   margin-bottom: 0;
-}
-
-#more-icon {
-  margin-left: 230px;
-  vertical-align: middle;
-  cursor: pointer;
 }
 
 .card-body {
@@ -39,10 +33,20 @@
   display: flex;
 }
 
-#students-header {
+.students-header {
   margin-right: 0;
 }
 
-#num-students {
+.num-students {
   margin-left: 220px;
+}
+
+.student-names {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.view-group-btn {
+  color: var(--text-color-white);
 }

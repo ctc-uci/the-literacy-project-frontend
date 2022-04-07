@@ -1,54 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button } from 'react-bootstrap';
-import { BsThreeDots } from 'react-icons/bs';
-import './StudentGroup.css';
+import styles from './StudentGroup.module.css';
 
-const convertDatetime = datetime => {
-  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const day = daysOfWeek[datetime.getDay()];
-  const time = datetime.toLocaleTimeString('en-US');
-  return `${day} ${time}`;
-};
-
-const StudentGroup = ({
-  addressStreet,
-  addressCity,
-  addressState,
-  addressZip,
-  studentList,
-  meetingTime,
-}) => {
+const StudentGroup = ({ studentList, meetingDay, meetingTime }) => {
   return (
     <>
-      <Card className="card">
-        <div className="card-header">
-          <h3 id="group-name">Area </h3>
-          <BsThreeDots id="more-icon" />
+      <Card className={styles.card}>
+        <div className={styles['card-header']}>
+          <h3 className={styles['group-name']}>Group Name</h3>
         </div>
-        <Card.Body className="card-body">
+        <Card.Body className={styles['card-body']}>
           <Card.Text>
-            <div className="card-section">
-              <Card.Title>Site Name</Card.Title>
-              {addressStreet}, {addressCity} {addressState}
-              <br />
-              {addressZip}
-            </div>
-            <div className="card-section">
-              <div className="students-section">
-                <Card.Title id="students-header">
+            <div className={styles['card-section']}>
+              <div className={styles['students-section']}>
+                <Card.Title className={styles['students-header']}>
                   Students
-                  <span id="num-students">{studentList.length}</span>
+                  <span className={styles['num-students']}>{studentList.length}</span>
                 </Card.Title>
               </div>
-              {studentList.join(', ')}
+              <div className={styles['student-names']}>{studentList.join(', ')}</div>
             </div>
-            <div className="card-section">
+            <div className={styles['card-section']}>
               <Card.Title>Meeting Time</Card.Title>
-              {convertDatetime(new Date(meetingTime))}
+              <div>
+                {meetingDay} {meetingTime}
+              </div>
             </div>
           </Card.Text>
-          <Button variant="primary">Manage group</Button>
+          <Button variant="primary" className={styles['view-group-btn']}>
+            View group
+          </Button>
         </Card.Body>
       </Card>
     </>
@@ -56,20 +38,14 @@ const StudentGroup = ({
 };
 
 StudentGroup.defaultProps = {
-  addressStreet: '123 Westview Way',
-  addressCity: 'Irvine',
-  addressState: 'CA',
-  addressZip: '92617',
   studentList: ['Abby', 'Alyssa', 'Cal', 'Danny', 'Erica', 'Jared'],
-  meetingTime: 'December 17, 1995 03:24:00',
+  meetingDay: 'Mondays',
+  meetingTime: '3:30pm',
 };
 
 StudentGroup.propTypes = {
-  addressStreet: PropTypes.string,
-  addressCity: PropTypes.string,
-  addressState: PropTypes.string,
-  addressZip: PropTypes.string,
   studentList: PropTypes.arrayOf(String),
+  meetingDay: PropTypes.string,
   meetingTime: PropTypes.string,
 };
 

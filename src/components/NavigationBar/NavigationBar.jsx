@@ -26,13 +26,13 @@ const NavigationBar = ({ cookies }) => {
     return (
       <Navbar bg="light" expand="lg">
         <Container fluid>
-          <Navbar.Brand href="/area-management">
+          <Navbar.Brand href="/dashboard">
             <img src={Image} width="80" height="55" className={styles['d-inline-block']} alt="" />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/area-management" style={{ color: '#6A91BC' }}>
+              <Nav.Link href="/dashboard" style={{ color: '#6A91BC' }}>
                 Area Management
               </Nav.Link>
               <Nav.Link href="/people" style={{ color: '#6A91BC' }}>
@@ -59,13 +59,13 @@ const NavigationBar = ({ cookies }) => {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="/home">
+        <Navbar.Brand href="/dashboard">
           <img src={Image} width="80" height="55" className={styles['d-inline-block']} alt="" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className={styles['mr-auto']}>
-            <Nav.Link href="/master-teacher" style={{ color: '#6A91BC' }}>
+            <Nav.Link href="/dashboard" style={{ color: '#6A91BC' }}>
               Home
             </Nav.Link>
             <Nav.Link href="/settings" style={{ color: '#6A91BC' }}>
