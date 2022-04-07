@@ -27,18 +27,20 @@
 }
 
 .select_school_year_container {
-  width: 34%;
-  margin-left: clamp(0, 1rem, 30px);
+  width: 30%;
+  height: 40px;
   margin-right: 10px;
-  margin-top: auto;
+  margin-top: 10px;
   margin-bottom: auto;
+  justify-content: flex-start !important;
 }
 
 .select_cycle_container {
   width: 26%;
-  margin-right: clamp(0, 1rem, 20px);
-  margin-top: auto;
+  height: 40px;
+  margin-top: 10px;
   margin-bottom: auto;
+  justify-content: flex-start !important
 }
 
 .search_sites_container {
@@ -50,9 +52,8 @@
 
 .school_year_header,
 .cycle_header {
-  margin-top: 0.3rem;
-  font-size: 1.4rem;
-  line-height: 1.5rem;
+  font-size: 24px;
+  line-height: 1.5;
   text-decoration: none;
 }
 
