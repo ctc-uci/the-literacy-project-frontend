@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { Button, Card } from 'react-bootstrap';
 import { TLPBackend } from '../../common/utils';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
@@ -7,7 +7,7 @@ import SitesTable from './sitesTable';
 import styles from './AreaView.module.css';
 
 const BackToAllAreas = () => {
-  window.location.replace('/area-management');
+  Navigate('/area-management');
 };
 
 const AreaView = () => {
@@ -96,7 +96,12 @@ const AreaView = () => {
           {/* </div> */}
         </div>
         <div className="data">
-          <Button variant="primary">Export to CSV</Button>
+          <div>
+            <h2>{areaName} Data</h2>
+          </div>
+          <Button className={`btn btn-primary ${styles.export_stats_to_csv_btn}`}>
+            Export to CSV
+          </Button>
           <h2>Data</h2>
           <h3>Average Scores</h3>
           {/* placeholder for graph */}

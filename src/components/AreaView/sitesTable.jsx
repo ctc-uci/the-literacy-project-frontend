@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { BsJournalText, BsPlus } from 'react-icons/bs';
+import { BsJournalText, BsPlus, BsFilter } from 'react-icons/bs';
 import { TLPBackend } from '../../common/utils';
 
 import styles from './sitesTable.module.css';
@@ -49,7 +49,7 @@ const SitesTable = ({ areaId }) => {
 
   // additionalInfo + siteNotes are static buttons to be put per row. TODO - make this dynamic
   const additionalInfo = (
-    <button type="button" className="btn btn-primary">
+    <button type="button" className={`btn btn-primary ${styles.view_site_info_btn}`}>
       View Info
     </button>
   );
@@ -92,6 +92,7 @@ const SitesTable = ({ areaId }) => {
                 updateSiteStatus(newChoice, site);
               }}
               innerClass={styles.site_dropdown_inner}
+              buttonClass={styles.site_dropdown_button}
             />,
             site.siteName,
             teacherString(siteTeachers),
@@ -117,7 +118,7 @@ const SitesTable = ({ areaId }) => {
       {/* creates the functionality above the table */}
       <div className={styles.tableButtons}>
         <Link to={`/sites/create/${areaId}`}>
-          <button type="button" className="btn btn-warning">
+          <button type="button" className={`btn btn-warning ${styles.create_site_btn}`}>
             Create New Site
             <BsPlus className={styles.create_button_plus} />
           </button>
@@ -125,9 +126,13 @@ const SitesTable = ({ areaId }) => {
         {tableData.length !== 0 && (
           <>
             <input type="text" className={styles.sites_filter_input} placeholder="Search" />
-            {/* TODO: Will need different sorts for this sort button */}
+            {/* TODO: Will need different sorts for these filter/sort buttons */}
             <div className={styles.sort}>
-              <button type="button" className="btn btn-primary">
+              <button type="button" className={`btn btn-primary ${styles.filter_by_btn}`}>
+                Filter By
+                <BsFilter className={styles.filter_by_icon} />
+              </button>
+              <button type="button" className={`btn btn-primary ${styles.sort_by_btn}`}>
                 Sort By: A-Z
               </button>
             </div>
