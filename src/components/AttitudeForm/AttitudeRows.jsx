@@ -1,45 +1,57 @@
+/* eslint-disable jsx-a11y/tabindex-no-positive */
 /* eslint-disable no-unused-vars */
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useFormContext } from 'react-hook-form';
 import styles from './AttitudeScoreCard.module.css';
 
-const scoreInput = (
-  playerScore,
-  numQuestions,
-  editState,
-  register,
-  errors,
-  formName,
-  fieldIndex,
-) => {
-  if (numQuestions === 0) return '-----';
+const notesInput = (notes, column, editState, register, errors, formName, fieldIndex) => {
+  if (editState === 'editing') {
+    return (
+      <textarea
+        type="text"
+        className={styles['row-note-input']}
+        placeholder="Input Notes Here"
+        tabIndex={column === 'left' ? 1 : 2}
+        // className={errors?.[formName]?.[fieldIndex]?.playerScore ? styles['input-error'] : ''}
+        // {...register(`${formName}.${fieldIndex}.playerScore`)}
+      />
+    );
+  }
+  return notes;
+};
+
+const scoreInput = (playerScore, column, editState, register, errors, formName, fieldIndex) => {
   if (editState === 'editing') {
     return (
       <input
         type="number"
-        className={errors?.[formName]?.[fieldIndex]?.playerScore ? styles['input-error'] : ''}
-        {...register(`${formName}.${fieldIndex}.playerScore`)}
+        className={styles['score-input']}
+        tabIndex={column === 'left' ? 1 : 2}
+        // className={errors?.[formName]?.[fieldIndex]?.playerScore ? styles['input-error'] : ''}
+        // {...register(`${formName}.${fieldIndex}.playerScore`)}
       />
     );
   }
-  return `${playerScore || 0}/${numQuestions}`;
+  return playerScore;
 };
 
 // eslint-disable-next-line react/prop-types
 const AssessmentRow = ({ editState, left, right }) => {
   return (
-    <tr>
-      <td>
+    <tr className={styles['attitude-row']}>
+      <td className={styles.question}>
         {left?.testNumber}. {left?.question}
       </td>
-      <td>notes</td>
-      <td>{left?.playerScore}</td>
-      <td>
+      <td className={styles['row-notes']}>{notesInput(left.notes, 'left', editState)}</td>
+      <td className={styles['player-score']}> {scoreInput(left.playerScore, 'left', editState)}</td>
+      <td className={styles.question}>
         {right?.testNumber}. {right?.question}
       </td>
-      <td>notes</td>
-      <td>{right?.playerScore}</td>
+      <td className={styles['row-notes']}>{notesInput(right.notes, 'right', editState)}</td>
+      <td className={styles['player-score']}>
+        {scoreInput(right.playerScore, 'right', editState)}
+      </td>
     </tr>
   );
 };

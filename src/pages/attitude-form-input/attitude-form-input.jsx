@@ -8,27 +8,39 @@ const AttitudeFormInput = () => {
   // TODO: get studentID
   const studentID = 1;
 
-  const [preTestData, setPreTestData] = useState([]);
-  const [postTestData, setPostTestData] = useState([]);
+  const [preTestData, setPreTestData] = useState({
+    notes: [],
+    scores: [],
+  });
+  const [postTestData, setPostTestData] = useState({
+    notes: [],
+    scores: [],
+  });
 
-  const fetchStudentScores = async () => {
+  const fetchStudentData = async () => {
     try {
       const res = await TLPBackend.get(`./students/${studentID}`);
-      setPreTestData(res.data.pretestR);
-      setPostTestData(res.data.posttestR);
+      setPreTestData({
+        notes: [],
+        scores: res.data.pretestR,
+      });
+      setPostTestData({
+        notes: [],
+        scores: res.data.posttestR,
+      });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
     }
   };
 
-  const setStudentScores = async (setState, scoreName, scores) => {
+  const setStudentData = async (setState, scoreName, scores) => {
     const res = await TLPBackend.put(`./students/update-scores/${studentID}`, scores);
     setState(res.data?.[scoreName]);
   };
 
   useEffect(async () => {
-    fetchStudentScores();
+    fetchStudentData();
   }, []);
 
   return (
@@ -39,13 +51,13 @@ const AttitudeFormInput = () => {
           name="pretestA"
           headerText="Pre-Test"
           tableData={preTestData}
-          setTableData={data => setStudentScores(setPreTestData, 'pretestR', data)}
+          setTableData={data => setStudentData(setPreTestData, 'pretestR', data)}
         />
         <AttitudeScoreCard
           name="posttestA"
           headerText="Post-Test"
           tableData={postTestData}
-          setTableData={data => setStudentScores(setPostTestData, 'posttestR', data)}
+          setTableData={data => setStudentData(setPostTestData, 'posttestR', data)}
         />
       </div>
     </div>

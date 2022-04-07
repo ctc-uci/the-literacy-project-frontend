@@ -75,7 +75,7 @@
 .player-score {
   max-width: 130px;
   min-width: 130px;
-  background: #E9ECEF;
+  background: var(--color-gray-white);
   font-weight: bold;
 }
 

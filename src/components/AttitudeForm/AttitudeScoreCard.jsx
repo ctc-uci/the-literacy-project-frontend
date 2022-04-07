@@ -73,7 +73,11 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
   useEffect(() => {
     methods.setValue(
       name,
-      rowData.map((row, i) => ({ ...row, playerScore: tableData?.[i] ?? 0 })),
+      rowData.map((row, i) => ({
+        ...row,
+        playerScore: tableData?.[i] ?? 0,
+        notes: tableData?.[i] ?? 0,
+      })),
     );
     setEditState(tableData === null ? 'newInput' : 'editExisting');
   }, [tableData]);

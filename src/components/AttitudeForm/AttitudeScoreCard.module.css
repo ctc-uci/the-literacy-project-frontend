@@ -46,37 +46,50 @@
 
 /* Row styles */
 
-.assessment-row td {
+.attitude-row td {
   text-align: center;
   vertical-align: middle;
-  height: 75px;
+  height: 90px;
 }
 
-.assessment-row input {
-  max-width: 48px;
+.question {
+  max-width: 265px;
+  min-width: 265px;
+  padding: 0 8px;
+  background: var(--color-gray-blue-muted2);
 }
 
-.game-name {
-  max-width: 425px;
-  min-width: 425px;
-  background: #FFE79F;
-}
-
-.skill-test {
-  max-width: 425px;
-  min-width: 425px;
-}
-
-.passing-score {
-  max-width: 130px;
-  min-width: 130px;
+.row-notes {
+  max-width: 200px;
+  min-width: 200px;
+  vertical-align: center;
 }
 
 .player-score {
-  max-width: 130px;
-  min-width: 130px;
-  background: #E9ECEF;
+  max-width: 90px;
+  min-width: 90px;
+  background: var(--color-gray-white);
   font-weight: bold;
+}
+
+.row-note-input {
+  width: 100%;
+  height: 90%;
+  padding: 0;
+  border: none !important;
+  resize: none;
+  vertical-align: middle;
+  overflow-y: hidden;
+  line-height: normal;
+}
+
+.row-note-input::-webkit-input-placeholder {
+  text-align: center;
+  line-height: 90px;
+}
+
+.score-input {
+  max-width: 48px;
 }
 
 .input-error {
