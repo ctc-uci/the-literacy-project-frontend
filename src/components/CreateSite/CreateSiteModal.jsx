@@ -38,7 +38,7 @@ const schema = yup
   })
   .required();
 
-const CreateSiteModal = areaId => {
+const CreateSiteModal = ({ areaId }) => {
   const { register, handleSubmit } = useForm({
     resolver: yupResolver(schema),
     delayError: 750,
@@ -50,7 +50,7 @@ const CreateSiteModal = areaId => {
       addressStreet: data.addressStreet,
       addressCity: data.addressCity,
       addressZip: data.addressZip,
-      ...areaId,
+      areaId,
       active: 'true',
       notes: data.notes,
       primaryContactInfo: {
