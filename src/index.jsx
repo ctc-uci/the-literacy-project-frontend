@@ -18,6 +18,7 @@ import PeopleView from './pages/people/people';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
+import StudentView from './pages/student/student';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
 // TODO: add protected routes -- use current few as examples
@@ -57,6 +58,7 @@ ReactDOM.render(
               />
             }
           />
+          <Route path="/student/:studentId" element={<StudentView />} />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
           <Route path="/area-details" element={<AreaDetails />} />
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
