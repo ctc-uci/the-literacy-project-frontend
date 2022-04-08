@@ -28,9 +28,7 @@ const StudentGroup = ({ studentList, meetingDay, meetingTime }) => {
               </div>
             </div>
           </Card.Text>
-          <Button variant="primary" className={styles['view-group-btn']}>
-            View group
-          </Button>
+          <Button variant="primary">View group</Button>
         </Card.Body>
       </Card>
     </>
