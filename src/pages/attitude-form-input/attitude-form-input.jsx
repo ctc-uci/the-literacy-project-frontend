@@ -34,9 +34,14 @@ const AttitudeFormInput = () => {
     }
   };
 
-  const setStudentData = async (setState, scoreName, scores) => {
-    const res = await TLPBackend.put(`./students/update-scores/${studentID}`, scores);
-    setState(res.data?.[scoreName]);
+  const setStudentData = async (setState, scoreName, data) => {
+    console.log('setting student data');
+    console.log(data);
+    const res = await TLPBackend.put(`./students/update-scores/${studentID}`, data);
+    setState({
+      notes: [],
+      scores: res.data?.[scoreName],
+    });
   };
 
   useEffect(async () => {
@@ -48,13 +53,13 @@ const AttitudeFormInput = () => {
       <div>Temporarily reading data from student with ID: {studentID}</div>
       <div className={styles['form-wrapper']}>
         <AttitudeScoreCard
-          name="pretestA"
+          name="pretestR"
           headerText="Pre-Test"
           tableData={preTestData}
           setTableData={data => setStudentData(setPreTestData, 'pretestR', data)}
         />
         <AttitudeScoreCard
-          name="posttestA"
+          name="posttestR"
           headerText="Post-Test"
           tableData={postTestData}
           setTableData={data => setStudentData(setPostTestData, 'posttestR', data)}

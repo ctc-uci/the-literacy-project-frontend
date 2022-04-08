@@ -24,15 +24,21 @@ const notesInput = (notes, column, editState, register, errors, formName, fieldI
   return notes;
 };
 
-const scoreInput = (playerScore, column, editState, register, errors, formName, fieldIndex) => {
+const scoreInput = (playerScore, column, editState, formName, testNumber) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
   if (editState === 'editing') {
     return (
       <input
         type="number"
-        className={styles['score-input']}
         tabIndex={column === 'left' ? 1 : 2}
-        // className={errors?.[formName]?.[fieldIndex]?.playerScore ? styles['input-error'] : ''}
-        // {...register(`${formName}.${fieldIndex}.playerScore`)}
+        className={`${styles['score-input']} ${
+          errors?.[formName]?.[testNumber - 1]?.playerScore ? styles['input-error'] : ''
+        }`}
+        {...register(`${formName}.${testNumber - 1}.playerScore`)}
       />
     );
   }
@@ -40,20 +46,23 @@ const scoreInput = (playerScore, column, editState, register, errors, formName, 
 };
 
 // eslint-disable-next-line react/prop-types
-const AssessmentRow = ({ editState, left, right }) => {
+const AssessmentRow = ({ editState, formName, left, right }) => {
   return (
     <tr className={styles['attitude-row']}>
+      {/* <pre>{JSON.stringify(left, null, 2)}</pre> */}
       <td className={styles.question}>
         {left?.testNumber}. {left?.question}
       </td>
       <td className={styles['row-notes']}>{notesInput(left.notes, 'left', editState)}</td>
-      <td className={styles['player-score']}> {scoreInput(left.playerScore, 'left', editState)}</td>
+      <td className={styles['player-score']}>
+        {scoreInput(left.playerScore, 'left', editState, formName, left.testNumber)}
+      </td>
       <td className={styles.question}>
         {right?.testNumber}. {right?.question}
       </td>
       <td className={styles['row-notes']}>{notesInput(right.notes, 'right', editState)}</td>
       <td className={styles['player-score']}>
-        {scoreInput(right.playerScore, 'right', editState)}
+        {scoreInput(right.playerScore, 'right', editState, formName, right.testNumber)}
       </td>
     </tr>
   );
@@ -67,11 +76,6 @@ const zipData = data => {
 };
 
 const AssessmentRows = ({ formName, formFields, editState }) => {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
-
   const zipped = useMemo(() => zipData(formFields), [formFields]);
 
   return zipped.map((row, rowIndex) => (
@@ -80,6 +84,7 @@ const AssessmentRows = ({ formName, formFields, editState }) => {
       key={rowIndex}
       className={styles['assessment-row']}
       editState={editState}
+      formName={formName}
       {...row}
     />
   ));

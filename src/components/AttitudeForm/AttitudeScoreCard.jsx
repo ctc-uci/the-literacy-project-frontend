@@ -47,6 +47,8 @@ const ScoreCardButton = ({ editState, setEditState }) => {
 const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
   // Edit states: newInput, editing, editExisting
   const [editState, setEditState] = useState('newInput');
+  const [recTotal, setRecTotal] = useState(0);
+  const [acadTotal, setAcadTotal] = useState(0);
 
   const schema = yup.object({
     [name]: yup.array().of(
@@ -80,6 +82,20 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
       })),
     );
     setEditState(tableData === null ? 'newInput' : 'editExisting');
+
+    // Calculate score totals
+    setRecTotal(
+      methods
+        .getValues(name)
+        .filter(row => row.readingType === 'recreational')
+        .reduce((a, b) => a + (b.playerScore || 0), 0),
+    );
+    setAcadTotal(
+      methods
+        .getValues(name)
+        .filter(row => row.readingType === 'academic')
+        .reduce((a, b) => a + (b.playerScore || 0), 0),
+    );
   }, [tableData]);
 
   const onSubmit = async data => {
@@ -129,8 +145,8 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
             </thead>
             <tbody>
               <tr>
-                <td>0</td>
-                <td>0</td>
+                <td>{recTotal}</td>
+                <td>{acadTotal}</td>
               </tr>
             </tbody>
           </table>
@@ -142,7 +158,7 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
             </thead>
             <tbody>
               <tr>
-                <td>0</td>
+                <td>{recTotal + acadTotal}</td>
               </tr>
             </tbody>
           </table>
