@@ -1,7 +1,7 @@
-import React from 'react';
+import { React } from 'react';
 import '../../common/vars.css';
-import { Button, Container, Card } from 'react-bootstrap';
-import { BsPencil } from 'react-icons/bs';
+import { Button, Container, Card, Form } from 'react-bootstrap';
+import { BsPencil, BsBackspace } from 'react-icons/bs';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
 import styles from './StudentGroupView.module.css';
@@ -12,9 +12,45 @@ const StudentGroupView = () => {
   const siteAddress = 'address';
   const meetingTime = 'Monday 3:30PM';
   const studentGroupList = ['Abby Nguyen', 'Ava Jules', 'Kelly Lee', 'Maribel Chen'];
+
   return (
     <div>
       <NavigationBar />
+      <div id={styles['header-container']}>
+        <div className="d-flex">
+          <div>
+            <Button variant="link">
+              <h3>
+                <BsBackspace id={styles['backspace-icon']} />
+                Return to {siteName} Site
+              </h3>
+            </Button>
+          </div>
+          <div className={styles['float-right-section']}>
+            <h1>Student Group {groupNum}</h1>
+          </div>
+        </div>
+        <div className={`d-flex ${styles['dropdown-container']}`}>
+          <div className={`d-flex ${styles['float-right-section']}`}>
+            <Form.Label className={styles['custom-form-label']}>
+              <h4>School Year</h4>
+            </Form.Label>
+            <Form.Select className={styles['custom-form-select']}>
+              <option>2021-22</option>
+              <option>2022-23</option>
+            </Form.Select>
+            <Form.Label className={styles['custom-form-label']}>
+              <h4>Cycle</h4>
+            </Form.Label>
+            <Form.Select className={styles['custom-form-select']}>
+              <option>Cycle 1</option>
+              <option>Cycle 2</option>
+              <option>Cycle 3</option>
+              <option>Cycle 4</option>
+            </Form.Select>
+          </div>
+        </div>
+      </div>
       <div id={styles['page-container']}>
         <div id={styles['student-group-container']}>
           <div className={styles['header-section']}>
