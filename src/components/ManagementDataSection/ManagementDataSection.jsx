@@ -2,6 +2,7 @@ import { React, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import { FaPlus, FaFilter } from 'react-icons/fa';
+import '../../custom.scss';
 import styles from './ManagementDataSection.module.css';
 import Table from '../Table/Table';
 import InformationPopover from '../Popover/InformationPopover';
