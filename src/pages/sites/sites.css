@@ -54,12 +54,11 @@
 }
 
 /* EXPORT TO CSV BUTTON */
-.csvLink{
+.csvLink {
   color: white;
   text-decoration: none;
 }
 
-.csvLink:hover{
+.csvLink:hover {
   color: white;
 }
-

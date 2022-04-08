@@ -22,11 +22,12 @@ const SiteView = () => {
     { label: 'Area Name', key: 'areaName' },
     { label: 'Is Active?', key: 'active' },
   ];
-  const areaData = [{ areaId: 89710234, areaName: 'Morrow', active: true }];
+  const areaData = TLPBackend.get('/areas');
+  console.log(areaData);
   const areaCsvReport = {
-    data: areaData,
+    data: `${areaData}`,
     headers: areaHeaders,
-    filename: `${areaData[0].areaName}_Report.csv`,
+    filename: `Areas_Report.csv`,
   };
 
   const addAssociatedSiteToArea = async resData => {
