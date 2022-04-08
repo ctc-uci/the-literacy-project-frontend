@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './LoginForm.css';
 import { FaEye } from 'react-icons/fa';
 import { instanceOf } from 'prop-types';
+import styles from './LoginForm.module.css';
 import { Cookies, withCookies } from '../../common/auth/cookie_utils';
 import { logInWithEmailAndPassword, useNavigate } from '../../common/auth/auth_utils';
 
@@ -53,29 +53,29 @@ const LoginForm = ({ cookies }) => {
   };
 
   return (
-    <div className="loginFormWrapper">
+    <div className={styles.loginFormWrapper}>
       {/* Admin/Teacher tabs, above form */}
-      <div className="userTabs">
-        <button id="adminButton" type="button" onClick={setUserAdmin}>
+      <div className={styles.userTabs}>
+        <button id={styles.adminButton} type="button" onClick={setUserAdmin}>
           Admin
         </button>
-        <button id="teacherButton" type="button" onClick={setUserTeacher}>
+        <button id={styles.teacherButton} type="button" onClick={setUserTeacher}>
           Teacher
         </button>
       </div>
 
       {/* body of LoginForm */}
-      <div className="formWrapper" style={{ backgroundColor: loginColor }}>
-        <h1 className="title"> Log In </h1>
+      <div className={styles.formWrapper} style={{ backgroundColor: loginColor }}>
+        <h1 className={styles.title}> Log In </h1>
 
         <form>
-          <div className="emailInput">
-            <label className="logLabel" htmlFor="email">
+          <div className={styles.emailInput}>
+            <label className={styles.logLabel} htmlFor="email">
               Email
               <br />
               <input
                 type="text"
-                id="email"
+                id={styles.email}
                 onChange={({ target }) => setEmail(target.value)}
                 placeholder="Email Address"
                 required
@@ -83,26 +83,26 @@ const LoginForm = ({ cookies }) => {
             </label>
           </div>
 
-          <div className="passwordInput">
-            <label className="logLabel" htmlFor="password">
+          <div className={styles.passwordInput}>
+            <label className={styles.logLabel} htmlFor="password">
               Password
               <br />
               <input
                 type={passwordShown ? 'text' : 'password'}
                 onChange={({ target }) => setPassword(target.value)}
-                id="password"
+                id={styles.password}
                 placeholder="Password"
                 required
               />
-              <FaEye id="eyeIcon" color="black" onClick={togglePasswordVisibility} />
+              <FaEye id={styles.eyeIcon} color="black" onClick={togglePasswordVisibility} />
             </label>
           </div>
 
-          <div className="rememberMeBox">
+          <div className={styles.rememberMeBox}>
             <label htmlFor="rememberBox">
               <input
                 type="checkbox"
-                id="rememberBox"
+                id={styles.rememberBox}
                 checked={rememberMe}
                 onChange={toggleRememberMe}
               />
@@ -113,7 +113,7 @@ const LoginForm = ({ cookies }) => {
           {errorMessage && <p>{errorMessage}</p>}
 
           <input
-            id="submitButton"
+            id={styles.submitButton}
             type="submit"
             value="Login"
             style={{ backgroundColor: loginButtonColor, color: loginButtonFontColor }}
@@ -121,8 +121,8 @@ const LoginForm = ({ cookies }) => {
           />
         </form>
 
-        <div className="links">
-          <a id="forgotPassword" href="login/reset-password">
+        <div className={styles.links}>
+          <a id={styles.forgotPassword} href="login/reset-password">
             Forgot password?
           </a>
         </div>
