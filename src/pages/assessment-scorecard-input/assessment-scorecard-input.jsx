@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TLPBackend, scrollToTop } from '../../common/utils';
 
+import ReturnHeader from '../../common/ReturnHeader/ReturnHeader';
 import AssessmentScoreCard from '../../components/AssessmentCard/AssessmentScoreCard';
 import ImprovementGraph from '../../components/ImprovementGraph/ImprovementGraph';
 import styles from './assessment-scorecard-input.module.css';
@@ -36,6 +37,12 @@ const AssessmentScorecardInput = () => {
     <>
       <div>Temporarily reading data from student with ID: {studentID}</div>
       <div className={styles['form-wrapper']}>
+        <ReturnHeader
+          returnText={`Return to ${'Last, First'}`}
+          returnLink="/"
+          rightText="Assessment Score Card"
+        />
+        <hr size="1" className={styles.divider} />
         <AssessmentScoreCard
           name="pretestA"
           headerText="Pre-Test"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TLPBackend, scrollToTop } from '../../common/utils';
 
+import ReturnHeader from '../../common/ReturnHeader/ReturnHeader';
 import AttitudeScoreCard from '../../components/AttitudeForm/AttitudeScoreCard';
 import ImprovementGraph from '../../components/ImprovementGraph/ImprovementGraph';
 import styles from './attitude-form-input.module.css';
@@ -53,6 +54,12 @@ const AttitudeFormInput = () => {
     <>
       <div>Temporarily reading data from student with ID: {studentID}</div>
       <div className={styles['form-wrapper']}>
+        <ReturnHeader
+          returnText={`Return to ${'Last, First'}`}
+          returnLink="/"
+          rightText="Reading Attitude Survey"
+        />
+        <hr size="1" className={styles.divider} />
         <AttitudeScoreCard
           name="pretestR"
           headerText="Pre-Test"

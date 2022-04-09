@@ -1,3 +1,10 @@
+.divider {
+  color: var(--color-dark-gray);
+  background-color: var(--color-dark-gray);
+  height: 3px;
+  margin: 0;
+}
+
 .form-wrapper {
   margin: auto;
   max-width: 1110px;
