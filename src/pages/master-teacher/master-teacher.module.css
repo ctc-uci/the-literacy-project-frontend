@@ -1,0 +1,20 @@
+.main {
+  padding: 0 4em;
+}
+
+.section{
+  margin: 3em 0;
+}
+
+.empty-view {
+  color: var(--text-color-dark-gray);
+  text-align: center;
+}
+
+.arrow {
+
+}
+
+.gray-text {
+  color: var(--text-color-dark-gray);
+}
