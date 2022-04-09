@@ -2,34 +2,53 @@ import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { TLPBackend } from '../../common/utils';
-import './EditAreaModal.css';
+import WarningModal from '../WarningModal/WarningModal';
+import styles from './EditAreaModal.module.css';
+import '../../common/vars.css';
 
 const EditAreaModal = props => {
   const { areaId, areaActive, areaName, isOpen, setIsOpen } = props;
 
   const [name, setName] = useState(areaName);
   const [status, setStatus] = useState(areaActive);
+  const [warningOpen, setWarningOpen] = useState(false);
 
-  const closeModal = () => {
-    setIsOpen(false);
+  const reloadPage = () => {
     window.location.reload(true);
   };
 
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const openWarningModal = () => {
+    setWarningOpen(!warningOpen);
+  };
+
   const deleteArea = () => {
-    // TODO: add confirmation modal before deleting (BLOCKED by PR #75)
     TLPBackend.delete(`/areas/${areaId}`).then(() => {
+      reloadPage();
       closeModal();
     });
   };
 
   const updateArea = () => {
+    // TODO: Add error message if the request fails
     TLPBackend.put(`/areas/${areaId}`, { areaName: name, active: status }).then(() => {
-      closeModal();
+      reloadPage();
+      closeModal(true);
     });
   };
 
   return (
     <>
+      <WarningModal
+        isOpen={warningOpen}
+        setIsOpen={setWarningOpen}
+        name={areaName}
+        body="area"
+        deleteFunc={deleteArea}
+      />
       <Modal show={isOpen} onHide={() => setIsOpen(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Area</Modal.Title>
@@ -58,10 +77,13 @@ const EditAreaModal = props => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={() => deleteArea()}>
+          <Button variant="secondary" className={styles.buttons} onClick={closeModal}>
+            Cancel
+          </Button>
+          <Button variant="danger" className={styles.buttons} onClick={openWarningModal}>
             Delete
           </Button>
-          <Button variant="primary" onClick={() => updateArea()}>
+          <Button variant="primary" className={styles.buttons} onClick={() => updateArea()}>
             Save Changes
           </Button>
         </Modal.Footer>
