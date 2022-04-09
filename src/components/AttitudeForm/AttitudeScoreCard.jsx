@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import { IoCheckmarkDoneOutline } from 'react-icons/io5';
 
 import AssessmentRows from './AttitudeRows';
+import CommonAlert from '../../common/CommonAlert/CommonAlert';
 
 import styles from './AttitudeScoreCard.module.css';
 import rowData from './rowData';
@@ -44,9 +45,10 @@ const ScoreCardButton = ({ editState, setEditState }) => {
   );
 };
 
-const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
+const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
   // Edit states: newInput, editing, editExisting
   const [editState, setEditState] = useState('newInput');
+  const [showAlert, setShowAlert] = useState(false);
   const [recTotal, setRecTotal] = useState(0);
   const [acadTotal, setAcadTotal] = useState(0);
 
@@ -164,6 +166,9 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
           </table>
         </div>
       </form>
+      <CommonAlert variant="danger" open={showAlert} setOpen={setShowAlert}>
+        Scores Successfully Saved.
+      </CommonAlert>
     </FormProvider>
   );
 };
@@ -173,11 +178,11 @@ ScoreCardButton.propTypes = {
   setEditState: PropTypes.func.isRequired,
 };
 
-AssessmentScoreCard.propTypes = {
+AttitudeScoreCard.propTypes = {
   name: PropTypes.string.isRequired,
   headerText: PropTypes.string.isRequired,
   tableData: PropTypes.arrayOf(Number).isRequired,
   setTableData: PropTypes.func.isRequired,
 };
 
-export default AssessmentScoreCard;
+export default AttitudeScoreCard;
