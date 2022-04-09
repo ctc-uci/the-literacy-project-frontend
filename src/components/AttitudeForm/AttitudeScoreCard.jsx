@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
+import { useForm, FormProvider, useFormState, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Button from 'react-bootstrap/Button';
@@ -48,7 +48,10 @@ const ScoreCardButton = ({ editState, setEditState }) => {
 const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
   // Edit states: newInput, editing, editExisting
   const [editState, setEditState] = useState('newInput');
-  const [showAlert, setShowAlert] = useState(false);
+  const [alertState, setAlertState] = useState({
+    variant: 'success',
+    open: false,
+  });
   const [recTotal, setRecTotal] = useState(0);
   const [acadTotal, setAcadTotal] = useState(0);
 
@@ -66,6 +69,10 @@ const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
     },
     resolver: yupResolver(schema),
     delayError: 750,
+  });
+
+  const { isSubmitting, errors } = useFormState({
+    control: methods.control,
   });
 
   const { fields } = useFieldArray({
@@ -100,6 +107,16 @@ const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
     );
   }, [tableData]);
 
+  // Show error alert
+  useEffect(() => {
+    if (errors?.[name]) {
+      setAlertState({
+        variant: 'danger',
+        open: true,
+      });
+    }
+  }, [isSubmitting]);
+
   const onSubmit = async data => {
     const scores = data[name].map(row => row.playerScore);
 
@@ -113,6 +130,10 @@ const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
 
     setEditState('editExisting');
     setTableData(formattedData);
+    setAlertState({
+      variant: 'success',
+      open: true,
+    });
   };
 
   return (
@@ -166,8 +187,14 @@ const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
           </table>
         </div>
       </form>
-      <CommonAlert variant="danger" open={showAlert} setOpen={setShowAlert}>
-        Scores Successfully Saved.
+      <CommonAlert
+        variant={alertState.variant}
+        open={alertState.open}
+        setOpen={val => setAlertState({ ...alertState, open: val })}
+      >
+        {alertState.variant === 'success'
+          ? 'Scores Successfully Saved.'
+          : 'Error Submitting Scores.'}
       </CommonAlert>
     </FormProvider>
   );

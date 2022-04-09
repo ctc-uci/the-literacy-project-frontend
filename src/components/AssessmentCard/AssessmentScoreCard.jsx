@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
+import { useForm, FormProvider, useFormState, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Button from 'react-bootstrap/Button';
 import { IoCheckmarkDoneOutline } from 'react-icons/io5';
 
 import AssessmentRow from './AssessmentRow';
+import CommonAlert from '../../common/CommonAlert/CommonAlert';
 
 import styles from './AssessmentScoreCard.module.css';
 import rowData from './rowData';
@@ -47,6 +48,10 @@ const ScoreCardButton = ({ editState, setEditState }) => {
 const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
   // Edit states: newInput, editing, editExisting
   const [editState, setEditState] = useState('newInput');
+  const [alertState, setAlertState] = useState({
+    variant: 'success',
+    open: false,
+  });
 
   const schema = yup.object({
     [name]: yup.array().of(
@@ -64,6 +69,10 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
     delayError: 750,
   });
 
+  const { isSubmitting, errors } = useFormState({
+    control: methods.control,
+  });
+
   const { fields } = useFieldArray({
     name,
     control: methods.control,
@@ -78,6 +87,16 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
     setEditState(tableData === null ? 'newInput' : 'editExisting');
   }, [tableData]);
 
+  // Show error alert
+  useEffect(() => {
+    if (errors?.[name]) {
+      setAlertState({
+        variant: 'danger',
+        open: true,
+      });
+    }
+  }, [isSubmitting]);
+
   const onSubmit = async data => {
     const scores = data[name].map(row => row.playerScore);
 
@@ -91,6 +110,10 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
 
     setEditState('editExisting');
     setTableData(formattedData);
+    setAlertState({
+      variant: 'success',
+      open: true,
+    });
   };
 
   return (
@@ -129,6 +152,15 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
           />
         </div>
       </form>
+      <CommonAlert
+        variant={alertState.variant}
+        open={alertState.open}
+        setOpen={val => setAlertState({ ...alertState, open: val })}
+      >
+        {alertState.variant === 'success'
+          ? 'Scores Successfully Saved.'
+          : 'Error Submitting Scores.'}
+      </CommonAlert>
     </FormProvider>
   );
 };
