@@ -27,7 +27,7 @@
 }
 
 .select_school_year_container {
-  width: 30%;
+  width: 36%;
   height: 40px;
   margin-right: 10px;
   margin-top: 10px;
@@ -36,7 +36,7 @@
 }
 
 .select_cycle_container {
-  width: 26%;
+  width: 24%;
   height: 40px;
   margin-top: 10px;
   margin-bottom: auto;
@@ -44,7 +44,7 @@
 }
 
 .search_sites_container {
-  width: 44%;
+  width: 40%;
   padding-left: 20px;
   padding-top: 5px;
   margin-right: 0px;

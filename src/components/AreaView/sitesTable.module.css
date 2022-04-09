@@ -95,3 +95,7 @@
 .no_teacher_assigned {
   color: var(--color-teal);
 }
+
+.active_site_dd {
+  color: var(--color-light-green);
+}

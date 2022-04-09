@@ -94,7 +94,9 @@ const SitesTable = ({ areaId }) => {
                 updateSiteStatus(newChoice, site);
               }}
               innerClass={styles.site_dropdown_inner}
-              buttonClass={styles.site_dropdown_button}
+              buttonClass={`${styles.site_dropdown_button} ${
+                site.active ? styles.active_site_dd : ''
+              }`}
             />,
             site.siteName,
             teacherString(siteTeachers),
