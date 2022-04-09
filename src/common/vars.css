@@ -6,54 +6,56 @@
 
   /* Text Colors */
   --text-color-dark: #212529;
-  --text-color-dark-gray: #6c757d;
+  --text-color-dark-gray: #6C757D;
   --text-color-light-gray: #808080;
-  --text-color-white: #ffffff;
+  --text-color-white: #FFFFFF;
 
   /* Components */
-  --color-gray-white: #e9ecef;
-  --color-dark-gray: #868e96;
-  --color-gray-border: #dee2e6;
-  --color-gray-card: #dfdfdf;
+  --color-gray-white: #E9ECEF;
+  --color-dark-gray: #868E96;
+  --color-gray-border: #DEE2E6;
+  --color-gray-card: #DFDFDF;
 
   /* Forms */
-  --color-form-blue: #80bdff;
+  --color-form-blue: #80BDFF;
   --color-darkest-gray: #495057;
-  --color-form-gray: #ced4da;
+  --color-form-gray: #CED4DA;
 
   /* Vibrant Blue Theme */
   --color-blue: #015189;
-  --color-blue-gray: #1a4767;
+  --color-blue-gray: #1A4767;
   --color-dark-blue: #003459;
-  --color-baby-blue: #3288c4;
-  --color-light-blue: #5998c4;
+  --color-baby-blue: #3288C4;
+  --color-light-blue: #5998C4;
 
   /* Yellow Theme */
-  --color-yellow: #ffd350;
-  --color-dark-yellow: #bfa75d;
-  --color-brown-yellow: #a6831a;
-  --color-light-yellow: #ffd37c;
-  --color-yellow-fade: #ffe79f;
+  --color-yellow: #FFD350;
+  --color-dark-yellow: #BFA75D;
+  --color-brown-yellow: #A6831A;
+  --color-light-yellow: #FFD37C;
+  --color-yellow-fade: #FFE79F;
 
   /* Muted Blue Theme */
-  --color-blue-muted: #6a91bc;
-  --color-gray-blue-muted: #5f758d;
-  --color-dark-blue-muted: #224c7a;
-  --color-light-blue-muted: #95b7de;
-  --color-fade-blue-muted: #a8c1de;
+  --color-blue-muted: #6A91BC;
+  --color-gray-blue-muted: #5F758D;
+  --color-gray-blue-muted2: #BBCBE2;
+  --color-dark-blue-muted: #224C7A;
+  --color-light-blue-muted: #95B7DE;
+  --color-fade-blue-muted: #A8C1DE;
 
   /* Red/danger */
-  --color-red-fade: #fed7d7;
-  --color-light-red: #f56565;
-  --color-red: #e53e3e;
+  --color-red-fade: #FED7D7;
+  --color-light-red: #F56565;
+  --color-red: #E53E3E;
 
   /* Green/success */
-  --color-green: #28a745;
-  --color-light-green: #62be77;
-  --color-green-fade: #c6f6d5;
+  --color-green: #28A745;
+  --color-light-green: #62BE77;
+  --color-green-fade: #C6F6D5;
 
   /* Teal/info */
-  --color-teal: #17a2b8;
-  --color-light-teal: #66b9cb;
-  --color-teal-fade: #a4dde5;
+  --color-teal: #17A2B8;
+  --color-light-teal: #66B9CB;
+  --color-teal-fade: #A4DDE5;
 }
+
