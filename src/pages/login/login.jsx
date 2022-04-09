@@ -1,12 +1,9 @@
 import './login.css';
 import React from 'react';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
-
 import LoginForm from '../../components/LoginForm/LoginForm';
-
-import Logo from './tlp.png';
+import Logo from '../../assets/tlp.png';
 
 const LoginView = () => {
   return (
