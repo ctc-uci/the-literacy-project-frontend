@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import './LoginForm.css';
 import { FaEye } from 'react-icons/fa';
 import { instanceOf } from 'prop-types';
 import { Cookies, withCookies } from '../../common/auth/cookie_utils';
 import { logInWithEmailAndPassword, useNavigate } from '../../common/auth/auth_utils';
+import styles from './LoginForm.module.css';
 
 const LoginForm = ({ cookies }) => {
   const navigate = useNavigate();
@@ -37,92 +37,61 @@ const LoginForm = ({ cookies }) => {
     }
   };
 
-  // tabs above login form, sets user to admin/teacher and adjusts background color
-  const [loginColor, setLoginColor] = useState('#1A4767');
-  const [loginButtonColor, setLoginButtonColor] = useState('#BBCBE2');
-  const [loginButtonFontColor, setLoginButtonFontColor] = useState('#212529');
-  const setUserAdmin = () => {
-    setLoginColor('#1A4767');
-    setLoginButtonColor('#BBCBE2');
-    setLoginButtonFontColor('#212529');
-  };
-  const setUserTeacher = () => {
-    setLoginColor('#6A91BC');
-    setLoginButtonColor('#003459');
-    setLoginButtonFontColor('#FFFFFF');
-  };
-
   return (
-    <div className="loginFormWrapper">
-      {/* Admin/Teacher tabs, above form */}
-      <div className="userTabs">
-        <button id="adminButton" type="button" onClick={setUserAdmin}>
-          Admin
-        </button>
-        <button id="teacherButton" type="button" onClick={setUserTeacher}>
-          Teacher
-        </button>
-      </div>
-
+    <div className={styles['login-form-wrapper']}>
       {/* body of LoginForm */}
-      <div className="formWrapper" style={{ backgroundColor: loginColor }}>
-        <h1 className="title"> Log In </h1>
-
+      <div className={styles['form-wrapper']}>
+        <h1 className={styles.title}> Log In </h1>
         <form>
-          <div className="emailInput">
-            <label className="logLabel" htmlFor="email">
+          <div className={styles['email-input']}>
+            <label className={styles['log-label']} htmlFor="email">
               Email
               <br />
               <input
                 type="text"
-                id="email"
+                id={styles.email}
                 onChange={({ target }) => setEmail(target.value)}
                 placeholder="Email Address"
                 required
               />
             </label>
           </div>
-
-          <div className="passwordInput">
-            <label className="logLabel" htmlFor="password">
+          <div className={styles['password-input']}>
+            <label className={styles['log-label']} htmlFor="password">
               Password
               <br />
               <input
                 type={passwordShown ? 'text' : 'password'}
                 onChange={({ target }) => setPassword(target.value)}
-                id="password"
+                id={styles.password}
                 placeholder="Password"
                 required
               />
-              <FaEye id="eyeIcon" color="black" onClick={togglePasswordVisibility} />
+              <FaEye id={styles['eye-icon']} color="black" onClick={togglePasswordVisibility} />
             </label>
           </div>
-
-          <div className="rememberMeBox">
-            <label htmlFor="rememberBox">
+          <div className={styles['remember-me-box']}>
+            <label htmlFor="rememberBox" style={{ color: 'white' }}>
               <input
                 type="checkbox"
-                id="rememberBox"
+                id={styles['remember-box']}
                 checked={rememberMe}
                 onChange={toggleRememberMe}
               />
-              Remember Me?
+              <span className={styles['remember-me-text']}>Remember Me?</span>
             </label>
           </div>
-
           {errorMessage && <p>{errorMessage}</p>}
-
           <input
-            id="submitButton"
+            id={styles['submit-button']}
             type="submit"
             value="Login"
-            style={{ backgroundColor: loginButtonColor, color: loginButtonFontColor }}
+            style={{ backgroundColor: '#BBCBE2', color: '#212529' }}
             onClick={handleSubmit}
           />
         </form>
-
-        <div className="links">
-          <a id="forgotPassword" href="login/reset-password">
+        <div className={styles.links}>
+          <a id="forgotPassword" href="login/recover-password">
             Forgot password?
           </a>
         </div>
