@@ -45,6 +45,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   };
 
   const deleteMasterTeacher = async () => {
+    // TODO: Figure out what to do if it fails
     await TLPBackend.delete(`/teachers/${teacherId}`);
     reloadPage();
     setIsOpen(false);
@@ -144,17 +145,17 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                 <option value="School Three">School Three</option>
               </Form.Select>
             </Form.Group>
-            <Form.Group classname="mb-3" controlId="editTeacherAccount.notes">
+            <Form.Group className="mb-3" controlId="editTeacherAccount.notes">
               <Form.Label>Notes</Form.Label>
               <Form.Control as="textarea" rows={3} />
             </Form.Group>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={openWarningModal}>
+          <Button variant="danger" className={styles.button} onClick={openWarningModal}>
             Delete
           </Button>
-          <Button variant="primary" onClick={updateMasterTeacherData}>
+          <Button variant="primary" className={styles.button} onClick={updateMasterTeacherData}>
             Save Changes
           </Button>
         </Modal.Footer>
