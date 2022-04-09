@@ -87,18 +87,11 @@ const Graph = ({ title, xLabels, preData, postData }) => {
   return <Bar options={options} data={data} />;
 };
 
-Graph.defaultProps = {
-  title: 'Average Scores',
-  xLabels: ['Attitudinal', 'Academic'],
-  preData: [30, 21.5],
-  postData: [54, 66.5],
-};
-
 Graph.propTypes = {
-  title: PropTypes.string,
-  xLabels: PropTypes.arrayOf(PropTypes.string),
-  preData: PropTypes.arrayOf(PropTypes.number),
-  postData: PropTypes.arrayOf(PropTypes.number),
+  title: PropTypes.string.isRequired,
+  xLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
+  preData: PropTypes.arrayOf(PropTypes.number).isRequired,
+  postData: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default Graph;
