@@ -6,6 +6,7 @@ import { withCookies, cookieKeys, Cookies } from '../../common/auth/cookie_utils
 import { TLPBackend } from '../../common/utils';
 import StudentGroup from '../../components/StudentGroup/StudentGroup';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
+import Graph from '../../components/Graph/Graph';
 // import arrow from './arrow.png';
 
 const MasterTeacherView = ({ cookies }) => {
@@ -13,6 +14,7 @@ const MasterTeacherView = ({ cookies }) => {
   const [siteAddress, setSiteAddress] = useState();
   const [studentGroups, setStudentGroups] = useState([]);
   const [siteStudents, setSiteStudents] = useState([]);
+  const [graphData, setGraphData] = useState([]);
 
   // fetch all site data given the site id
   const fetchSiteData = async siteId => {
@@ -27,6 +29,8 @@ const MasterTeacherView = ({ cookies }) => {
     // TODO: set initial school year and cycle to filter
     const students = await TLPBackend.get(`/students/site/${siteId}`);
     setSiteStudents(students.data);
+    console.log(students.data);
+    setGraphData([]);
   };
 
   useEffect(() => {
@@ -52,6 +56,16 @@ const MasterTeacherView = ({ cookies }) => {
         <div className={styles.section}>
           <h3>Data</h3>
           {/* add the graphs */}
+          <Graph
+            title={`Average Scores for ${selectedSiteName} site`}
+            xLabels={['Attitudinal', 'Academic']}
+            graphData={graphData}
+          />
+          {/* <Graph
+            title={`${selectedSiteName} Site Average Scores vs. Other TLP Sites`}
+            xLabels={[`${selectedSiteName}`, 'Other TLP']}
+            graphData={graphData}
+          /> */}
         </div>
         <div className={styles.section}>
           <h3>Student Groups</h3>
