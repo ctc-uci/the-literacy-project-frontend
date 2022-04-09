@@ -81,7 +81,7 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
         notes: tableData?.notes?.[i] ?? '',
       })),
     );
-    setEditState(tableData === null ? 'newInput' : 'editExisting');
+    setEditState(tableData?.scores === null && tableData?.notes ? 'newInput' : 'editExisting');
 
     // Calculate score totals
     setRecTotal(

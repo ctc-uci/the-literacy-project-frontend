@@ -2,3 +2,14 @@
   margin: auto;
   max-width: 1110px;
 }
+
+.improvement-graph {
+  width: 100%;
+  margin: 90px 0 40px 0;
+}
+
+.top-button {
+  max-width: fit-content;
+  font-weight: bold;
+  font-style: italic;
+}

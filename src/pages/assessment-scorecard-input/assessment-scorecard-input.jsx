@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { TLPBackend } from '../../common/utils';
+import { TLPBackend, scrollToTop } from '../../common/utils';
 
 import AssessmentScoreCard from '../../components/AssessmentCard/AssessmentScoreCard';
+import ImprovementGraph from '../../components/ImprovementGraph/ImprovementGraph';
 import styles from './assessment-scorecard-input.module.css';
 
 const AssessmentScorecardInput = () => {
@@ -32,7 +33,7 @@ const AssessmentScorecardInput = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <div>Temporarily reading data from student with ID: {studentID}</div>
       <div className={styles['form-wrapper']}>
         <AssessmentScoreCard
@@ -47,8 +48,20 @@ const AssessmentScorecardInput = () => {
           tableData={postTestData}
           setTableData={data => setStudentScores(setPostTestData, 'posttestA', data)}
         />
+        <div className={styles['improvement-graph']}>
+          <ImprovementGraph data={{ preTestData, postTestData }} />
+        </div>
+        <div
+          onClick={() => scrollToTop()}
+          onKeyDown={() => scrollToTop()}
+          className={styles['top-button']}
+          role="button"
+          tabIndex="0"
+        >
+          Back to Top
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
