@@ -14,24 +14,27 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
 
-const Graph = ({ title, xLabels, graphData }) => {
+const Graph = ({ title, xLabels, preData, postData }) => {
   const yellow = 'rgb(255, 211, 80)';
   const teal = 'rgb(23, 162, 184)';
-  const dataTextColor = 'rgb(95, 117, 141)';
+  const textColor = 'rgb(95, 117, 141)';
   const options = {
     responsive: true,
-    events: [],
     plugins: {
       title: {
         display: true,
         text: title,
+        font: {
+          size: 18,
+          weight: 'bold',
+        },
       },
       legend: {
-        display: false,
+        display: true,
       },
       datalabels: {
         display: true,
-        color: dataTextColor,
+        color: textColor,
         anchor: 'end',
         offset: -20,
         align: 'start',
@@ -48,14 +51,20 @@ const Graph = ({ title, xLabels, graphData }) => {
         title: {
           display: true,
           text: 'Average Score (%)',
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
         },
       },
       x: {
-        labels: ['Pre', 'Post', 'Pre', 'Post'],
-      },
-      secondXAxis: {
-        axis: 'x',
         labels: xLabels,
+        ticks: {
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
+        },
       },
     },
   };
@@ -65,18 +74,31 @@ const Graph = ({ title, xLabels, graphData }) => {
     datasets: [
       {
         label: 'Pre',
-        data: graphData,
-        backgroundColor: [yellow, yellow, teal, teal],
+        data: preData,
+        backgroundColor: yellow,
+      },
+      {
+        label: 'Post',
+        data: postData,
+        backgroundColor: teal,
       },
     ],
   };
   return <Bar options={options} data={data} />;
 };
 
+Graph.defaultProps = {
+  title: 'Average Scores',
+  xLabels: ['Attitudinal', 'Academic'],
+  preData: [30, 21.5],
+  postData: [54, 66.5],
+};
+
 Graph.propTypes = {
-  title: PropTypes.string.isRequired,
-  xLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
-  graphData: PropTypes.arrayOf(PropTypes.number).isRequired,
+  title: PropTypes.string,
+  xLabels: PropTypes.arrayOf(PropTypes.string),
+  preData: PropTypes.arrayOf(PropTypes.number),
+  postData: PropTypes.arrayOf(PropTypes.number),
 };
 
 export default Graph;
