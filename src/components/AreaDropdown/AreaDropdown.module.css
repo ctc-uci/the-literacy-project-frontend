@@ -23,6 +23,8 @@
 }
 .area-dropdown__closed-area-name-wrapper {
   display: flex;
+  margin-left: 0.5em;
+  width: calc(100% - 1.5em);
 }
 .area-dropdown__closed-area-name {
   margin: 0;
@@ -42,7 +44,6 @@
   grid-template-rows: 1fr;
   gap: 0px 0px;
   grid-template-areas: '. . .';
-  height: 205px;
 }
 .area-dropdown__open__area_stats {
   display: flex;
