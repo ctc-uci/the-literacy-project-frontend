@@ -74,7 +74,7 @@ function AreaDropdown({ areaId, areaActive, areaName, areaStats, areaSites }) {
             </div>
           </div>
           <div className={styles['area-dropdown__open__edit-sites-link']}>
-            <Link to={`/area/${areaId}`}>VIEW SITES</Link>
+            <Link to={`/area/${areaId}`}>VIEW ALL</Link>
           </div>
         </div>
       ) : (
