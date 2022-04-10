@@ -6,25 +6,10 @@ import { cookieKeys, cookieConfig } from './auth/cookie_utils';
 
 const baseURL = `${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`;
 
-// Using Firebase Web version 9
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID,
-  appId: process.env.REACT_APP_FIREBASE_APPID,
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
 const TLPBackend = axios.create({
   baseURL,
   withCredentials: true,
 });
-
-const refreshUrl = `https://securetoken.googleapis.com/v1/token?key=${process.env.REACT_APP_FIREBASE_APIKEY}`;
 
 // Converts JS Date object into string, formatted MM/DD/YYYY
 const formatDate = value => {
@@ -38,6 +23,28 @@ export const sendEmail = async (email, htmlMessage) => {
     throw new Error(err.message);
   }
 };
+
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
+
+// Using Firebase Web version 9
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID,
+  appId: process.env.REACT_APP_FIREBASE_APPID,
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const refreshUrl = `https://securetoken.googleapis.com/v1/token?key=${process.env.REACT_APP_FIREBASE_APIKEY}`;
 
 /**
  * Sets a cookie in the browser
@@ -153,4 +160,4 @@ const reloadPage = () => window.location.reload();
 
 addAuthInterceptor(TLPBackend);
 
-export { auth, TLPBackend, formatDate, reloadPage };
+export { auth, TLPBackend, formatDate, reloadPage, scrollToTop };

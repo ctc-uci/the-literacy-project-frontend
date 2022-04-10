@@ -1,8 +1,8 @@
 import { React, useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
-import './EditAdminModal.css';
 import { Modal, Button, Alert, CloseButton, Form } from 'react-bootstrap';
 import { TLPBackend, reloadPage } from '../../common/utils';
+import WarningModal from '../WarningModal/WarningModal';
 
 const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
   const [showEditAdminAlert, setShowEditAdminAlert] = useState(false);
@@ -12,6 +12,8 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [status, setStatus] = useState('');
+  const [warningOpen, setWarningOpen] = useState(false);
+  const adminName = `${firstName} ${lastName}`;
 
   const closeModal = () => {
     setIsOpen(false);
@@ -30,7 +32,12 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
     closeModal();
   };
 
+  const openWarningModal = () => {
+    setWarningOpen(!warningOpen);
+  };
+
   const deleteAdmin = async () => {
+    // TODO: What to do if it fails ??? Need an error message
     await TLPBackend.delete(`/admins/${adminId}`);
     reloadPage();
     setIsOpen(false);
@@ -55,6 +62,13 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
   }, []);
   return (
     <>
+      <WarningModal
+        isOpen={warningOpen}
+        setIsOpen={setWarningOpen}
+        name={adminName}
+        body="admin"
+        deleteFunc={deleteAdmin}
+      />
       <Modal show={isOpen} onHide={() => setIsOpen(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Admin</Modal.Title>
@@ -96,7 +110,7 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={deleteAdmin}>
+          <Button variant="danger" onClick={openWarningModal}>
             Delete
           </Button>
           <Button variant="primary" onClick={updateAdminData}>
