@@ -14,7 +14,20 @@ const MasterTeacherView = ({ cookies }) => {
   const [siteAddress, setSiteAddress] = useState();
   const [studentGroups, setStudentGroups] = useState([]);
   const [siteStudents, setSiteStudents] = useState([]);
-  const [graphData, setGraphData] = useState([]);
+  const [categoricalPre, setCategoricalPre] = useState([]); // attitudinal + academic
+  const [categoricalPost, setCategoricalPost] = useState([]); // attitudinal + academic
+  const [sitePre, setSitePre] = useState([]); // site vs. other TLP
+  const [sitePost, setSitePost] = useState([]); // site vs. other TLP
+
+  // const calculateScores = data => {
+  //   const pre = [];
+  //   const post = [];
+  //   data.forEach(student => {
+
+  //   });
+
+  //   return { pre, post };
+  // };
 
   // fetch all site data given the site id
   const fetchSiteData = async siteId => {
@@ -30,7 +43,10 @@ const MasterTeacherView = ({ cookies }) => {
     const students = await TLPBackend.get(`/students/site/${siteId}`);
     setSiteStudents(students.data);
     console.log(students.data);
-    setGraphData([]);
+    setCategoricalPre([30, 21.5]);
+    setCategoricalPost([54, 66.5]);
+    setSitePre([30, 21.5]);
+    setSitePost([54, 66.5]);
   };
 
   useEffect(() => {
@@ -53,45 +69,63 @@ const MasterTeacherView = ({ cookies }) => {
           <h3>{selectedSiteName}</h3>
           <h3 className={styles['gray-text']}>{siteAddress}</h3>
         </div>
+
         <div className={styles.section}>
           <h3>Data</h3>
           {/* add the graphs */}
-          <Graph
-            title={`Average Scores for ${selectedSiteName} site`}
-            xLabels={['Attitudinal', 'Academic']}
-            graphData={graphData}
-          />
-          {/* <Graph
-            title={`${selectedSiteName} Site Average Scores vs. Other TLP Sites`}
-            xLabels={[`${selectedSiteName}`, 'Other TLP']}
-            graphData={graphData}
-          /> */}
+          {categoricalPre.length === 0 ? (
+            <div className={styles['empty-view']}>
+              <h2>No data is available for this site yet.</h2>
+            </div>
+          ) : (
+            <div className={styles['graph-container']}>
+              <div className={styles.graph}>
+                <Graph
+                  title={`Average Scores for ${selectedSiteName} site`}
+                  xLabels={['Attitudinal', 'Academic']}
+                  preData={categoricalPre}
+                  postData={categoricalPost}
+                />
+              </div>
+              <div className={styles.graph}>
+                <Graph
+                  title={`${selectedSiteName} Site Average Scores vs. Other TLP Sites`}
+                  xLabels={[`${selectedSiteName}`, 'Other TLP']}
+                  preData={sitePre}
+                  postData={sitePost}
+                />
+              </div>
+            </div>
+          )}
         </div>
+
         <div className={styles.section}>
           <h3>Student Groups</h3>
-          {studentGroups.length === 0 && (
+          {studentGroups.length === 0 ? (
             <div className={styles['empty-view']}>
               <h2>No Student Groups is available for this site yet.</h2>
             </div>
+          ) : (
+            studentGroups.map(group => (
+              <StudentGroup
+                key={group.groupId}
+                studentList={siteStudents
+                  .map(s => {
+                    return group.groupId === s.studentGroupId ? s.firstName : '';
+                  })
+                  .filter(t => {
+                    return t !== '';
+                  })}
+                meetingDay={group.meetingDay}
+                meetingTime={group.meetingTime}
+              />
+            ))
           )}
-          {studentGroups.map(group => (
-            <StudentGroup
-              key={group.groupId}
-              studentList={siteStudents
-                .map(s => {
-                  return group.groupId === s.studentGroupId ? s.firstName : '';
-                })
-                .filter(t => {
-                  return t !== '';
-                })}
-              meetingDay={group.meetingDay}
-              meetingTime={group.meetingTime}
-            />
-          ))}
         </div>
+
         <div className={styles.section}>
           <h3>Students</h3>
-          {siteStudents.length === 0 && (
+          {siteStudents.length === 0 ? (
             <div className={styles['empty-view']}>
               <h2>No students have been created for this site yet.</h2>
               <h2>Click here to create.</h2>
@@ -101,11 +135,11 @@ const MasterTeacherView = ({ cookies }) => {
                 alt="arrow pointing to create student button"
               /> */}
             </div>
+          ) : (
+            siteStudents.map(s => (
+              <StudentProfileBox key={s.studentId} studentName={`${s.firstName} ${s.lastName}`} />
+            ))
           )}
-          {/* ?:Maybe alphabetical here? */}
-          {siteStudents.map(s => (
-            <StudentProfileBox key={s.studentId} studentName={`${s.firstName} ${s.lastName}`} />
-          ))}
         </div>
       </div>
     </div>
