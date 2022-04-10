@@ -35,6 +35,7 @@ const DropdownMenu = ({
   choiceClass,
 }) => {
   const [showChoices, setShowChoices] = useState(false);
+  const [currentChoice, setCurrentChoice] = useState(current);
   return (
     <div className={`${outerClass != null ? `${outerClass}${' '}` : ''}dropdown-super-wrapper`}>
       <div
@@ -44,7 +45,7 @@ const DropdownMenu = ({
         onClick={() => setShowChoices(!showChoices)}
       >
         <div className={`${buttonClass != null ? `${buttonClass}${' '}` : ''}dropdown-button`}>
-          {current}
+          {currentChoice}
         </div>
         <img
           alt="arrow"
@@ -73,6 +74,7 @@ const DropdownMenu = ({
                 value={choice}
                 onClick={e => {
                   setFn(e.target.innerText);
+                  setCurrentChoice(e.target.innerText);
                   setShowChoices(false);
                 }}
               >
