@@ -1,0 +1,30 @@
+.student-groups-header, .students-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  padding: 12px 20px;
+  column-gap: 55px;
+}
+
+.student-groups-content, .students-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+
+  width: 90%;
+  padding: 12px 20px;
+  gap: 30px;
+}
+
+.create-button {
+  padding: 4px 8px;
+}
+
+.create-button:hover {
+  background-color: var(--color-dark-blue);
+  border-color: var(--color-dark-blue);
+  color: (--text-color-white);
+}
+

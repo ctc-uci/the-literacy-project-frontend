@@ -1,6 +1,7 @@
 .card {
   text-align: left;
   width: 350px;
+  min-width: 350px;
 }
 
 .card-section {
@@ -8,16 +9,15 @@
 }
 
 .card-header {
-  width: 350px;
+  width: 348px;
   display: flex;
   background-color: #00000008;
+  border-bottom: 1px solid #DFDFDF;
 }
 
 .group-name {
   align-items: left;
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: 0;
+  margin: 12px 0px 12px 20px;
 }
 
 .card-body {
@@ -45,4 +45,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.view-group-btn {
+  color: #ffffff;
 }
