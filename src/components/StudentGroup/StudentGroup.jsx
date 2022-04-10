@@ -11,23 +11,21 @@ const StudentGroup = ({ studentList, meetingDay, meetingTime }) => {
           <h6 className={styles['group-name']}>Group Name</h6>
         </div>
         <Card.Body className={styles['card-body']}>
-          <Card.Text>
-            <div className={styles['card-section']}>
-              <div className={styles['students-section']}>
-                <Card.Title className={styles['students-header']}>
-                  Students
-                  <span className={styles['num-students']}>{studentList.length}</span>
-                </Card.Title>
-              </div>
-              <div className={styles['student-names']}>{studentList.join(', ')}</div>
+          <div className={styles['card-section']}>
+            <div className={styles['students-section']}>
+              <Card.Title className={styles['students-header']}>
+                Students
+                <span className={styles['num-students']}>{studentList.length}</span>
+              </Card.Title>
             </div>
-            <div className={styles['card-section']}>
-              <Card.Title>Meeting Time</Card.Title>
-              <div>
-                {meetingDay} {meetingTime}
-              </div>
+            <div className={styles['student-names']}>{studentList.join(', ')}</div>
+          </div>
+          <div className={styles['card-section']}>
+            <Card.Title>Meeting Time</Card.Title>
+            <div>
+              {meetingDay} {meetingTime}
             </div>
-          </Card.Text>
+          </div>
           <Button className={styles['view-group-btn']} variant="primary">
             View group
           </Button>
@@ -37,16 +35,10 @@ const StudentGroup = ({ studentList, meetingDay, meetingTime }) => {
   );
 };
 
-StudentGroup.defaultProps = {
-  studentList: ['Abby', 'Alyssa', 'Cal', 'Danny', 'Erica', 'Jared'],
-  meetingDay: 'Mondays',
-  meetingTime: '3:30pm',
-};
-
 StudentGroup.propTypes = {
-  studentList: PropTypes.arrayOf(String),
-  meetingDay: PropTypes.string,
-  meetingTime: PropTypes.string,
+  studentList: PropTypes.arrayOf(String).isRequired,
+  meetingDay: PropTypes.string.isRequired,
+  meetingTime: PropTypes.string.isRequired,
 };
 
 export default StudentGroup;
