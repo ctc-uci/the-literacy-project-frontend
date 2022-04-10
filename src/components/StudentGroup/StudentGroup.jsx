@@ -8,7 +8,7 @@ const StudentGroup = ({ studentList, meetingDay, meetingTime }) => {
     <>
       <Card className={styles.card}>
         <div className={styles['card-header']}>
-          <h3 className={styles['group-name']}>Group Name</h3>
+          <h6 className={styles['group-name']}>Group Name</h6>
         </div>
         <Card.Body className={styles['card-body']}>
           <Card.Text>
@@ -28,7 +28,9 @@ const StudentGroup = ({ studentList, meetingDay, meetingTime }) => {
               </div>
             </div>
           </Card.Text>
-          <Button variant="primary">View group</Button>
+          <Button className={styles['view-group-btn']} variant="primary">
+            View group
+          </Button>
         </Card.Body>
       </Card>
     </>

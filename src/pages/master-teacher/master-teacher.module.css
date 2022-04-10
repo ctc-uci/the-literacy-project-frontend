@@ -1,5 +1,6 @@
 .main {
   padding: 0 4em;
+  margin-bottom: 10em;
 }
 
 .section {
@@ -26,6 +27,35 @@
 .arrow {
 }
 
+.header > h3 {
+  margin: 0;
+}
+
 .gray-text {
   color: var(--text-color-dark-gray);
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+  column-gap: 55px;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.create-button {
+  padding: 4px 8px;
+}
+
+.create-button:hover {
+  background-color: var(--color-dark-blue);
+  border-color: var(--color-dark-blue);
+  color: var(--text-color-white);
 }
