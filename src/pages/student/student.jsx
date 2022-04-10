@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { BsPencil, BsBackspace } from 'react-icons/bs';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, DropdownButton, Dropdown, Form } from 'react-bootstrap';
 import { MDBContainer } from 'mdbreact';
 import { Bar } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
@@ -17,19 +17,25 @@ import {
 import styles from './student.module.css';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import { TLPBackend } from '../../common/utils';
-import EditStudentModal from '../../components/EditStudentModal/EditStudentModal';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const StudentView = () => {
   const { studentId } = useParams();
+  const [editMode, setEditMode] = useState(false);
+  const [editStudentData, setEditStudentData] = useState({
+    studentGrade: null,
+    studentGroup: null,
+    studentEthnicity: null,
+    studentHomeTeacher: null,
+  });
+  // const [editOptions, setEditOptions] = useState({});
   const [student, setStudent] = useState({
     preTestA: [0],
     postTestA: [],
     preTestR: [],
     postTestR: [],
   });
-  const [modalIsOpen, setModalOpen] = useState(false);
   const dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // score = 5.5
 
   const data = {
@@ -54,6 +60,29 @@ const StudentView = () => {
     // barChartOptions: {
     //   responsive: true,
     // },
+  };
+
+  const dummyGradeData = [
+    { name: '1st Grade', id: 1 },
+    { name: '2nd Grade', id: 2 },
+    { name: '3rd Grade', id: 3 },
+    { name: '4th Grade', id: 4 },
+    { name: '5th Grade', id: 5 },
+    { name: '6th Grade', id: 6 },
+    { name: '7th Grade', id: 7 },
+    { name: '8th Grade', id: 8 },
+  ];
+
+  const dummyEthnicity = ['white', 'black', 'asian', 'latinx', 'american indian or alaska native'];
+  const dummyStudentGroup = ['Group A', 'Group B', 'Group C', 'Group D'];
+
+  const setStudentEditData = () => {
+    const tempStudentData = {};
+    tempStudentData.studentGrade = '7th Grade';
+    tempStudentData.studentGroup = `Group ${student.studentGroupId}`;
+    tempStudentData.studentEthnicity = student.ethnicity;
+    tempStudentData.studentHomeTeacher = 'Sydney Chiang';
+    setEditStudentData(tempStudentData);
   };
 
   // student.pre.reduce((total, amount) => total + amount, 0) / student.pre.length
@@ -136,7 +165,8 @@ const StudentView = () => {
             <Button
               variant="warning"
               onClick={() => {
-                setModalOpen(true);
+                setStudentEditData();
+                setEditMode(!editMode);
               }}
             >
               Edit Student
@@ -144,7 +174,7 @@ const StudentView = () => {
             </Button>{' '}
           </div>
           <div className={styles['student-information-section__student-info-table-container']}>
-            <Table bordered hover responsive>
+            <Table bordered hover>
               <thead>
                 <tr>
                   <th>Grade</th>
@@ -155,13 +185,89 @@ const StudentView = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>7th Grade</td>
-                  <td>Irvine Site</td>
-                  <td>Group {student.studentGroupId}</td>
-                  <td>{student.ethnicity}</td>
-                  <td>Sydney Chiang</td>
-                </tr>
+                {!editMode ? (
+                  <tr>
+                    <td>7th Grade</td>
+                    <td>Irvine Site</td>
+                    <td>Group {student.studentGroupId}</td>
+                    <td>{student.ethnicity}</td>
+                    <td>Sydney Chiang</td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td>
+                      <DropdownButton
+                        variant="outline-secondary"
+                        title={editStudentData.studentGrade}
+                      >
+                        {dummyGradeData.map(grade => {
+                          return (
+                            <Dropdown.Item
+                              key={grade.name}
+                              onClick={() => {
+                                const tempStudentData = { ...editStudentData };
+                                tempStudentData.studentGrade = grade.name;
+                                setEditStudentData(tempStudentData);
+                              }}
+                            >
+                              {grade.name}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </DropdownButton>
+                    </td>
+                    <td>Irvine Site</td>
+                    <td>
+                      <DropdownButton
+                        variant="outline-secondary"
+                        title={editStudentData.studentGroup}
+                      >
+                        {dummyStudentGroup.map(group => {
+                          return (
+                            <Dropdown.Item
+                              key={group}
+                              onClick={() => {
+                                const tempStudentData = { ...editStudentData };
+                                tempStudentData.studentGrade = group;
+                                setEditStudentData(tempStudentData);
+                              }}
+                            >
+                              {group}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </DropdownButton>
+                    </td>
+                    <td>
+                      <DropdownButton
+                        variant="outline-secondary"
+                        title={editStudentData.studentEthnicity}
+                      >
+                        {dummyEthnicity.map(ethnicity => {
+                          return (
+                            <Dropdown.Item
+                              key={ethnicity}
+                              onClick={() => {
+                                const tempStudentData = { ...editStudentData };
+                                tempStudentData.studentEthnicity = ethnicity;
+                                setEditStudentData(tempStudentData);
+                              }}
+                            >
+                              {ethnicity}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </DropdownButton>
+                    </td>
+                    <td>
+                      <Form.Control
+                        size="sm"
+                        type="text"
+                        value={editStudentData.studentHomeTeacher}
+                      />
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </Table>
           </div>
@@ -171,7 +277,7 @@ const StudentView = () => {
           <h2>Data</h2>
           <div className={styles['data-information-section__data-graphs-container']}>
             <div className={styles['data-information-section__data-graph']}>
-              <p>⠀</p>
+              <p />
               <h6>
                 Average Scores for {student.firstName} {student.lastName}
               </h6>
@@ -230,7 +336,6 @@ const StudentView = () => {
           </div>
         </section>
       </div>
-      <EditStudentModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
     </>
   );
 };
