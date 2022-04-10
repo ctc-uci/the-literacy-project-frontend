@@ -38,7 +38,7 @@ const schema = yup
   })
   .required();
 
-const CreateSiteModal = areaId => {
+const CreateSiteModal = ({ areaId }) => {
   const { register, handleSubmit } = useForm({
     resolver: yupResolver(schema),
     delayError: 750,
@@ -50,7 +50,7 @@ const CreateSiteModal = areaId => {
       addressStreet: data.addressStreet,
       addressCity: data.addressCity,
       addressZip: data.addressZip,
-      ...areaId,
+      areaId,
       active: 'true',
       notes: data.notes,
       primaryContactInfo: {
@@ -92,7 +92,7 @@ const CreateSiteModal = areaId => {
     });
     // console.log('Submit success');
     // Send the user back to all sites; TODO add success status notif
-    window.location.replace('/sites');
+    window.location.replace(`/area/${areaId}`);
   };
 
   return (

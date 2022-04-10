@@ -23,6 +23,9 @@ import LoginResetPasswordView from './pages/login-reset-password/login-reset-pas
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
 
+// useNavigate for redirects
+// const navigate = useNavigate();
+
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
@@ -93,6 +96,8 @@ ReactDOM.render(
             }
           />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
+          <Route path="/area" render={() => Navigate('/area-management')} />
+          <Route path="/area/:areaId" element={<AreaDetails />} />
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
           <Route exact path="/access-denied" element={<AccessDeniedView />} />
           <Route exact path="/not-found" element={<NotFoundView />} />
