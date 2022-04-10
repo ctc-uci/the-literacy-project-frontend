@@ -20,6 +20,7 @@ import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
+import Graph from './components/Graph/Graph'; // temp for testing, to remove
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
 
@@ -97,6 +98,18 @@ ReactDOM.render(
           <Route exact path="/access-denied" element={<AccessDeniedView />} />
           <Route exact path="/not-found" element={<NotFoundView />} />
           <Route exact path="*" element={<Navigate to="/not-found" />} />
+          {/* route for testing */}
+          <Route
+            path="/graph"
+            element={
+              <Graph
+                title="Test Graph"
+                xLabels={['Attitudinal', 'Academic']}
+                preData={[24, 54]}
+                postData={[64, 77]}
+              />
+            }
+          />
         </Routes>
       </Router>
     </CookiesProvider>
