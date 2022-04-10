@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
-import { BsPencil, BsBackspace } from 'react-icons/bs';
+import { BsPencil, BsBackspace, BsCheck2All } from 'react-icons/bs';
 import { Table, Button, DropdownButton, Dropdown, Form } from 'react-bootstrap';
 import { MDBContainer } from 'mdbreact';
 import { Bar } from 'react-chartjs-2';
@@ -162,16 +162,31 @@ const StudentView = () => {
           <hr />
           <div className={styles['student-information-section__title-button-wrapper']}>
             <h2>Student Information</h2>
-            <Button
-              variant="warning"
-              onClick={() => {
-                setStudentEditData();
-                setEditMode(!editMode);
-              }}
-            >
-              Edit Student
-              <BsPencil />
-            </Button>{' '}
+            {!editMode ? (
+              <Button
+                variant="warning"
+                onClick={() => {
+                  setStudentEditData();
+                  setEditMode(!editMode);
+                }}
+              >
+                <span style={{ color: 'black' }}>
+                  Edit Student <BsPencil />
+                </span>
+              </Button>
+            ) : (
+              <Button
+                variant="success"
+                onClick={() => {
+                  // Save edits
+                  setEditMode(!editMode);
+                }}
+              >
+                <span style={{ color: 'white' }}>
+                  <BsCheck2All /> Save Changes
+                </span>
+              </Button>
+            )}
           </div>
           <div className={styles['student-information-section__student-info-table-container']}>
             <Table bordered hover>
