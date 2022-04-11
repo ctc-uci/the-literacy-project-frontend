@@ -59,16 +59,22 @@ const StudentGroupView = () => {
               Edit Group <BsPencil />
             </Button>
           </div>
-          <h5 className="--text-color-light-gray">{siteName} Site</h5>
-          <h5 className="--text-color-light-gray">{siteAddress}</h5>
-          <h3>Meeting Time</h3>
-          <h5 className="--text-color-light-gray">{meetingTime}</h5>
-          <h3>Students Assigned</h3>
-          <Container fluid>
-            {studentGroupList.map(student => {
-              return <StudentProfileBox key={student} studentName={student} />;
-            })}
-          </Container>
+          <div id={styles['site-info-section']}>
+            <h5 className={styles['grey-text']}>{siteName} Site</h5>
+            <h5 className={styles['grey-text']}>{siteAddress}</h5>
+          </div>
+          <div id={styles['meeting-time-section']}>
+            <h3 className={styles['section-header']}>Meeting Time</h3>
+            <h5 className={styles['grey-text']}>{meetingTime}</h5>
+          </div>
+          <div id={styles['students-assigned-section']}>
+            <h3 className={styles['section-header']}>Students Assigned</h3>
+            <Container fluid>
+              {studentGroupList.map(student => {
+                return <StudentProfileBox key={student} studentName={student} />;
+              })}
+            </Container>
+          </div>
         </div>
         <div id={styles['student-group-data-container']}>
           <h2>Overall Group Data </h2>
