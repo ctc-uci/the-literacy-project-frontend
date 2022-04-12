@@ -2,26 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { BsPencil, BsBackspace, BsCheck2All } from 'react-icons/bs';
 import { Table, Button, DropdownButton, Dropdown, Form } from 'react-bootstrap';
-import { MDBContainer } from 'mdbreact';
-import { Bar } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import Graph from '../../components/Graph/Graph';
+
 import styles from './student.module.css';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import { TLPBackend } from '../../common/utils';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-
 const StudentView = () => {
   const { studentId } = useParams();
+  // const [editOptions, setEditOptions] = useState({});
   const [editMode, setEditMode] = useState(false);
   const [editStudentData, setEditStudentData] = useState({
     studentGrade: null,
@@ -36,31 +26,6 @@ const StudentView = () => {
     preTestR: [],
     postTestR: [],
   });
-  const dummy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // score = 5.5
-
-  const data = {
-    labels: ['Pre', 'Post'],
-    datasets: [
-      {
-        id: 1,
-        label: 'Attitudinal',
-        backgroundColor: 'rgb(255, 211, 80)',
-        borderColor: 'rgb(255, 211, 80)',
-        data: [70, 80], // [pre, post]
-      },
-      {
-        id: 2,
-        label: 'Academic',
-        backgroundColor: 'rgb(75, 161, 182)',
-        borderColor: 'rgb(75, 161, 182)',
-        data: [65, 59], // [pre, post]
-      },
-    ],
-
-    // barChartOptions: {
-    //   responsive: true,
-    // },
-  };
 
   const dummyGradeData = [
     { name: '1st Grade', id: 1 },
@@ -101,32 +66,10 @@ const StudentView = () => {
   //    site scores vs all other sites scores (avg?)
   //    This does not necessarily need to be a hook?
 
-  /*
-    data : {
-      student: {
-        attitudinal: {
-          pre
-          post
-        }
-        academic: {
-          pre
-          post
-        }
-      },
-      site_data: {
-        site_nme: {// associated with
-          pre
-          post
-        },
-        tlp_sites: {
-          pre
-          post
-        }
-      }
-    }
-  */
-
   useEffect(async () => {
+    // if( editOptions == {} ) {
+    //   const resOptions = await TLPBackend.get('')
+    // }
     const res = await TLPBackend.get(`/students/${studentId}`, {
       headers: {
         'Content-Type': 'application/json',
@@ -136,8 +79,6 @@ const StudentView = () => {
       // setStudent(res.data); below is for testing
       setStudent({
         ...res.data,
-        pre: dummy,
-        post: dummy,
       });
     }
     console.log('student', student);
@@ -293,19 +234,39 @@ const StudentView = () => {
           <div className={styles['data-information-section__data-graphs-container']}>
             <div className={styles['data-information-section__data-graph']}>
               <p />
-              <h6>
-                Average Scores for {student.firstName} {student.lastName}
-              </h6>
-              <MDBContainer>
-                <Bar data={data} options={data.barChartOptions} />
-              </MDBContainer>
+              <Graph
+                title={`Average Scores for ${student.firstName} ${student.lastName}`}
+                xLabels={['Attitudinal', 'Academic']}
+                preData={[
+                  student.pretestA
+                    ? student.pretestA.reduce((total, amount) => total + amount, 0) /
+                      student.pretestA.length
+                    : 0,
+                  student.pretestR
+                    ? student.pretestR.reduce((total, amount) => total + amount, 0) /
+                      student.pretestR.length
+                    : 0,
+                ]}
+                postData={[
+                  student.posttestA
+                    ? student.posttestA.reduce((total, amount) => total + amount, 0) /
+                      student.posttestA.length
+                    : 0,
+                  student.posttestR
+                    ? student.posttestR.reduce((total, amount) => total + amount, 0) /
+                      student.posttestR.length
+                    : 0,
+                ]}
+              />
             </div>
             <div className={styles['data-information-section__data-graph']}>
               <p>Year: 2021 - 2022</p>
-              <h6>Irvine Site Average Scores vs Other TLP Sites</h6>
-              <MDBContainer>
-                <Bar data={data} options={data.barChartOptions} />
-              </MDBContainer>
+              <Graph
+                title="Irvine Site Average Scores vs Other TLP Sites"
+                xLabels={['Attitudinal', 'Academic']}
+                preData={[30, 54]}
+                postData={[21.5, 66.5]}
+              />
             </div>
           </div>
         </section>
