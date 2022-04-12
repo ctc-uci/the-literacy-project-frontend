@@ -7,7 +7,7 @@ import './index.css';
 // page imports
 import SitesCreateView from './pages/sites-create/sites-create';
 import LoginView from './pages/login/login';
-import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
+import LoginRecoverPasswordView from './pages/login-recover-password/login-recover-password';
 import SettingsView from './pages/settings/settings';
 import SettingsEditView from './pages/settings-edit/settings-edit';
 import AreaManagement from './pages/area-management/area-management';
@@ -19,8 +19,12 @@ import AccessDeniedView from './pages/access-denied/access-denied';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
+import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
+
+// useNavigate for redirects
+// const navigate = useNavigate();
 
 ReactDOM.render(
   <React.StrictMode>
@@ -29,6 +33,7 @@ ReactDOM.render(
         <Routes>
           <Route path="/" exact element={<LoginView />} />
           <Route path="/login" exact element={<LoginView />} />
+          <Route path="/login/recover-password" exact element={<LoginRecoverPasswordView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
           <Route
             path="/settings"
@@ -81,7 +86,7 @@ ReactDOM.render(
             }
           />
           <Route
-            path="/area-details"
+            path="/area/:areaId"
             element={
               <ProtectedRoute
                 Component={AreaDetails}
@@ -91,6 +96,8 @@ ReactDOM.render(
             }
           />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
+          {/* <Route path="/area" render={() => Navigate('/area-management')} /> */}
+          {/* <Route path="/area/:areaId" element={<AreaDetails />} /> */}
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
           <Route exact path="/access-denied" element={<AccessDeniedView />} />
           <Route exact path="/not-found" element={<NotFoundView />} />
