@@ -12,6 +12,9 @@ import { TLPBackend } from '../../common/utils';
 const StudentView = () => {
   const { studentId } = useParams();
   // const [editOptions, setEditOptions] = useState({});
+  // const [showEditAlert, setShowEditAlert] = useState(false);
+  // const [alertText, setAlertText] = useState('');
+  // const [isAlertSuccess, setIsAlertSuccess] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [editStudentData, setEditStudentData] = useState({
     studentGrade: null,
@@ -50,21 +53,26 @@ const StudentView = () => {
     setEditStudentData(tempStudentData);
   };
 
-  // student.pre.reduce((total, amount) => total + amount, 0) / student.pre.length
+  // const submitStudentEditChanges = () => {
+  //   // TODO: Need to flesh out the edit parameters and how to update them appropriately
+  //   TLPBackend.post(`/student/${student.studentId}}`)
+  //     .then(res => {
+  //       setAlertText('Edits Successfully Saved');
+  //       setShowEditAlert(true);
+  //       setIsAlertSuccess(true);
+  //       setStudent(res.data);
+  //     })
+  //     .catch(() => {
+  //       setAlertText(`[ERROR] unable to update student information`);
+  //       setShowEditAlert(true);
+  //       setIsAlertSuccess(false);
+  //     });
+  // };
 
   // logic relating to calculating pre/post
   // const specific = arr.filter(site => site.name === specific_site) //this returns the specific site from the sites
   // pre = specific.pre.reduce((total, amount)=> total+amount, 0)/array.length
   // post = specific.post.reduce((total, amount)=> total+amount, 0)/array.length
-
-  // Hooks
-  // 1) - student info from textbox on web input "on submit we compare"
-  //    - student info from database
-  //    goal with this is to use dependencies so this component doesn't rerender all the time
-
-  // 2) goal collect the student {attitudinal & academic data (avg --> calculate ourselves)}
-  //    site scores vs all other sites scores (avg?)
-  //    This does not necessarily need to be a hook?
 
   useEffect(async () => {
     // if( editOptions == {} ) {
@@ -279,19 +287,19 @@ const StudentView = () => {
                 id: 1,
                 title: 'Reading Attitude Survey',
                 src: 'links-card__assignment-score-card',
-                link: '/student/1/attitude-assignment-score',
+                link: '/student/1/attitude/',
               },
               {
                 id: 2,
                 title: 'Assessment Score Card',
                 src: 'links-card__reading-attitude-survey',
-                link: '/',
+                link: '/student/1/reading/',
               },
               {
                 id: 3,
                 title: 'Go to Student Group',
                 src: 'links-card__student-group',
-                link: '/',
+                link: `/student-group/${student.studentGroupId}`,
               },
             ].map(linkObject => {
               return (
@@ -312,6 +320,14 @@ const StudentView = () => {
           </div>
         </section>
       </div>
+      {/* {showEditAlert ? (
+        <div className="center-block">
+          <Alert variant={isAlertSuccess ? 'primary' : 'danger'} className="alert-custom">
+            {alertText}
+            <CloseButton className="alert-close-btn" onClick={() => setShowEditAlert(false)} />
+          </Alert>
+      </div>
+      ) : null} */}
     </>
   );
 };
