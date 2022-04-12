@@ -87,7 +87,7 @@ ReactDOM.render(
             }
           />
           <Route
-            path="/area-details"
+            path="/area/:areaId"
             element={
               <ProtectedRoute
                 Component={AreaDetails}
@@ -98,8 +98,8 @@ ReactDOM.render(
           />
           <Route path="/student/:studentId" element={<StudentView />} />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
-          <Route path="/area" render={() => Navigate('/area-management')} />
-          <Route path="/area/:areaId" element={<AreaDetails />} />
+          {/* <Route path="/area" render={() => Navigate('/area-management')} /> */}
+          {/* <Route path="/area/:areaId" element={<AreaDetails />} /> */}
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
           <Route exact path="/access-denied" element={<AccessDeniedView />} />
           <Route exact path="/not-found" element={<NotFoundView />} />
