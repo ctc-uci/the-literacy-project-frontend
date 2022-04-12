@@ -33,6 +33,7 @@ const Graph = ({ title, xLabels, preData, postData }) => {
       legend: {
         display: true,
       },
+      // show percentage above each bar
       datalabels: {
         display: true,
         color: textColor,
@@ -40,7 +41,7 @@ const Graph = ({ title, xLabels, preData, postData }) => {
         offset: -20,
         align: 'start',
         formatter: value => {
-          return `${value}%`;
+          return `${value.toFixed(2)}%`; // return percentage rounded to 2 decimal places
         },
       },
     },

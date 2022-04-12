@@ -16,6 +16,82 @@ const formatDate = value => {
   return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 };
 
+// turns military time HH:MM:SS into standard time HH:MM AA
+export const parseTime = time => {
+  const times = time.split(':');
+  const hour = times[0];
+  const minute = times[1];
+
+  if (hour >= 12) {
+    return `${hour === 12 ? hour : hour - 12}:${minute} PM`;
+  }
+  return `${hour}:${minute} AM`;
+};
+
+// calculate the attitudinal and academic pre and post average scores
+export const calculateScores = data => {
+  const attitudinalPossible = 80;
+  const academicPossible = 93;
+  const attitudinal = {
+    pre: 0,
+    preCount: 0,
+    post: 0,
+    postCount: 0,
+  };
+  const academic = {
+    pre: 0,
+    preCount: 0,
+    post: 0,
+    postCount: 0,
+  };
+  const scores = {};
+
+  // remains false if no students in data has non-null pretest scores
+  let hasData = false;
+
+  data.forEach(student => {
+    // if array is not null, get sum and divide by corresponding total possible
+    if (student.pretestR !== null) {
+      hasData = true;
+      attitudinal.pre +=
+        student.pretestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible;
+      attitudinal.preCount += 1;
+
+      // only get student's post score if they have pre-scores
+      if (student.posttestR !== null) {
+        academic.post +=
+          student.posttestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible;
+        academic.postCount += 1;
+      }
+    }
+
+    if (student.pretestA !== null) {
+      hasData = true;
+      academic.pre += student.pretestA.reduce((prev, curr) => prev + curr, 0) / academicPossible;
+      academic.preCount += 1;
+
+      if (student.posttestA !== null) {
+        academic.post +=
+          student.posttestA.reduce((prev, curr) => prev + curr, 0) / academicPossible;
+        academic.postCount += 1;
+      }
+    }
+  });
+
+  if (hasData) {
+    // if counts are 0, return scores of 0. otherwise, calculate average
+    scores.pre = [
+      attitudinal.preCount ? attitudinal.pre / attitudinal.preCount : 0,
+      academic.preCount ? academic.pre / academic.preCount : 0,
+    ];
+    scores.post = [
+      attitudinal.postCount ? attitudinal.post / attitudinal.postCount : 0,
+      academic.postCount ? academic.post / academic.postCount : 0,
+    ];
+  }
+  return scores;
+};
+
 export const sendEmail = async (email, htmlMessage) => {
   try {
     await TLPBackend.post('/send-email', { email, htmlMessage: renderEmail(htmlMessage) });
