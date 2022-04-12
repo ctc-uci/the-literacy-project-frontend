@@ -1,15 +1,13 @@
-/* UNIVERSAL FONT SETTINGS */
-/* button,
+.button,
 .title,
-.logLabel,
-a {
-  color: white !important;
+.log-label {
+  color: white;
   font-family: Calibri;
   font-style: normal;
-} */
+}
 
 /* ADMIN/TEACHER USER TABS */
-.userTabs {
+.user-tabs {
   display: flex;
   justify-content: center;
 }
@@ -20,17 +18,18 @@ button {
   border: none;
   padding: 8px 16px 8px 16px;
 }
-#adminButton {
+#admin-button {
   background: #1a4767;
   border-radius: 4px 0px 0px 4px;
 }
-#teacherButton {
+#teacher-button {
   background: #6a91bc;
   border-radius: 0px 4px 4px 0px;
 }
 
 /* BODY */
-.formWrapper {
+.form-wrapper {
+  background-color: #003459;
   border-radius: 20px;
 }
 
@@ -40,7 +39,7 @@ button {
   line-height: 67px;
   text-align: center;
   letter-spacing: -0.02em;
-
+  color: #fffafa;
   padding: 45px 0px 15px 0px;
 }
 
@@ -54,9 +53,9 @@ form {
 }
 
 /* LABELS AND INPUTS */
-.emailInput,
-.passwordInput,
-.rememberMeBox {
+.email-input,
+.password-input,
+.remember-me-box {
   width: 60%;
 }
 .logLabel {
@@ -77,7 +76,7 @@ form {
 
   font-family: 'Calibri';
 }
-form #eyeIcon {
+form #eye-icon {
   position: absolute;
   cursor: pointer;
   color: #212529 !important;
@@ -86,16 +85,22 @@ form #eyeIcon {
 }
 
 /* CHECKBOX */
-.rememberMeBox {
+.remember-me-box {
   padding-bottom: 26px;
 }
-#rememberBox {
-  margin: 0px 4px 0px 0px;
+
+.remember-me-text {
+  position: relative;
+  top: -12px;
+}
+
+#remember-box {
+  margin: 0px 10px 0px 0px;
 }
 
 /* LOGIN BUTTON */
-#submitButton {
-  padding: 8px 16px;
+#submit-button {
+  padding: 5px 16px;
   margin-bottom: 7px;
   width: 40%;
   border-radius: 4.8px;
@@ -129,10 +134,10 @@ a {
 
 /* MOBILE VERSION RESIZE */
 @media only screen and (max-width: 575px) {
-  .formWrapper {
+  .form-wrapper {
     width: 80%;
   }
-  .loginFormWrapper {
+  .login-form-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;

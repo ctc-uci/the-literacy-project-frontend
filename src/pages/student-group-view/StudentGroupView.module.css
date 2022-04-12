@@ -38,7 +38,9 @@
   margin-bottom: 0.5em;
 }
 
-#site-info-section, #meeting-time-section, #students-assigned-section {
+#site-info-section,
+#meeting-time-section,
+#students-assigned-section {
   margin-bottom: 3em;
 }
 

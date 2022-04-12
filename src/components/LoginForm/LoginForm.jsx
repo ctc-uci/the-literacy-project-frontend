@@ -37,40 +37,14 @@ const LoginForm = ({ cookies }) => {
     }
   };
 
-  // tabs above login form, sets user to admin/teacher and adjusts background color
-  const [loginColor, setLoginColor] = useState('#1A4767');
-  const [loginButtonColor, setLoginButtonColor] = useState('#BBCBE2');
-  const [loginButtonFontColor, setLoginButtonFontColor] = useState('#212529');
-  const setUserAdmin = () => {
-    setLoginColor('#1A4767');
-    setLoginButtonColor('#BBCBE2');
-    setLoginButtonFontColor('#212529');
-  };
-  const setUserTeacher = () => {
-    setLoginColor('#6A91BC');
-    setLoginButtonColor('#003459');
-    setLoginButtonFontColor('#FFFFFF');
-  };
-
   return (
-    <div className={styles.loginFormWrapper}>
-      {/* Admin/Teacher tabs, above form */}
-      <div className={styles.userTabs}>
-        <button id={styles.adminButton} type="button" onClick={setUserAdmin}>
-          Admin
-        </button>
-        <button id={styles.teacherButton} type="button" onClick={setUserTeacher}>
-          Teacher
-        </button>
-      </div>
-
+    <div className={styles['login-form-wrapper']}>
       {/* body of LoginForm */}
-      <div className={styles.formWrapper} style={{ backgroundColor: loginColor }}>
+      <div className={styles['form-wrapper']}>
         <h1 className={styles.title}> Log In </h1>
-
         <form>
-          <div className={styles.emailInput}>
-            <label className={styles.logLabel} htmlFor="email">
+          <div className={styles['email-input']}>
+            <label className={styles['log-label']} htmlFor="email">
               Email
               <br />
               <input
@@ -82,9 +56,8 @@ const LoginForm = ({ cookies }) => {
               />
             </label>
           </div>
-
-          <div className={styles.passwordInput}>
-            <label className={styles.logLabel} htmlFor="password">
+          <div className={styles['password-input']}>
+            <label className={styles['log-label']} htmlFor="password">
               Password
               <br />
               <input
@@ -94,35 +67,31 @@ const LoginForm = ({ cookies }) => {
                 placeholder="Password"
                 required
               />
-              <FaEye id={styles.eyeIcon} color="black" onClick={togglePasswordVisibility} />
+              <FaEye id={styles['eye-icon']} color="black" onClick={togglePasswordVisibility} />
             </label>
           </div>
-
-          <div className={styles.rememberMeBox}>
-            <label htmlFor="rememberBox">
+          <div className={styles['remember-me-box']}>
+            <label htmlFor="rememberBox" style={{ color: 'white' }}>
               <input
                 type="checkbox"
-                id={styles.rememberBox}
+                id={styles['remember-box']}
                 checked={rememberMe}
                 onChange={toggleRememberMe}
               />
-              Remember Me?
+              <span className={styles['remember-me-text']}>Remember Me?</span>
             </label>
           </div>
-
           {errorMessage && <p>{errorMessage}</p>}
-
           <input
-            id={styles.submitButton}
+            id={styles['submit-button']}
             type="submit"
             value="Login"
-            style={{ backgroundColor: loginButtonColor, color: loginButtonFontColor }}
+            style={{ backgroundColor: '#BBCBE2', color: '#212529' }}
             onClick={handleSubmit}
           />
         </form>
-
         <div className={styles.links}>
-          <a id={styles.forgotPassword} href="login/reset-password">
+          <a id="forgotPassword" href="login/recover-password">
             Forgot password?
           </a>
         </div>
