@@ -11,7 +11,7 @@ const NavigationBar = ({ cookies }) => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState();
   const path = window.location.pathname;
-  const adminPaths = ['/settings', '/area-management', '/people'];
+  const adminPaths = ['/settings', '/area-management', '/people', '/sites'];
 
   const handleLogOut = async () => {
     try {

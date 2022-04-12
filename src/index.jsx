@@ -20,6 +20,7 @@ import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
+import ViewEditSite from './pages/ViewEditSite/ViewEditSitePage';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
 
@@ -70,6 +71,16 @@ ReactDOM.render(
             element={
               <ProtectedRoute
                 Component={AreaManagement}
+                redirectPath="/access-denied"
+                roles={[ADMIN_ROLE]}
+              />
+            }
+          />
+          <Route
+            path="/sites/:siteId"
+            element={
+              <ProtectedRoute
+                Component={ViewEditSite}
                 redirectPath="/access-denied"
                 roles={[ADMIN_ROLE]}
               />

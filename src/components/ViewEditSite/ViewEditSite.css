@@ -1,0 +1,132 @@
+/* Removing increment/decrement arrows for ZIP number field */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.active_site_dd {
+  color: var(--color-light-green);
+}
+
+.inactive_site_dd {
+  color: var(--color-red);
+}
+
+.site_dropdown_inner {
+  padding: 2px;
+}
+
+.site-form {
+  display: block;
+}
+
+.formwrapper {
+  border: 1px solid #b3b3b3;
+  border-radius: 5px;
+  align-items: left;
+}
+
+.form-header {
+  height: 90px;
+  background-color: rgba(178, 178, 178, 0.5);
+}
+
+.form-title {
+  font-size: 28px;
+  padding-left: 20px;
+  padding-top: 25px;
+}
+
+.required-subtitles::after {
+  color: #e32;
+  content: ' *';
+  display: inline;
+}
+
+/* all the text areas */
+.required-subtitles {
+  font-family: Calibri, 'sans-serif';
+  font-size: 24px;
+  padding-top: 20px;
+  padding-left: 30px;
+}
+
+.routing {
+  margin-left: 200px;
+  padding: 30px 0px 20px 0px;
+  font-size: 24px;
+  color: #6c757d;
+}
+
+.link {
+  font-size: 24px;
+  color: #3288c4 !important;
+  text-decoration: none;
+}
+
+.text {
+  margin: 10px;
+}
+
+.optional-subtitles {
+  font-family: Calibri, 'sans-serif';
+  font-size: 24px;
+  padding-top: 20px;
+  padding-left: 30px;
+}
+
+.input-area {
+  font-family: Calibri, 'sans-serif';
+  font-size: 16px;
+  padding: 0px 30px 10px 50px;
+}
+
+label {
+  padding-top: 10px;
+}
+
+.form-control {
+  margin-top: 5px;
+}
+
+/* save button */
+.save-btn {
+  width: 160px;
+  background-color: #3288c4;
+  margin: 60px 0px 30px 70px;
+}
+
+.edit-btn {
+  width: 160px;
+  background-color: #ffd350;
+  margin: 60px 0px 30px 70px;
+}
+
+.delete-btn {
+  width: 160px;
+  background-color: #e53e3e;
+  margin: 60px 0px 30px 70px;
+}
+
+.cancel-btn {
+  position: relative;
+  left: 70px;
+  width: 160px;
+  background-color: #5f758d;
+  margin: 60px 0px 30px 70px;
+}
+
+.input-fields-coalesce-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.addr-small-field {
+  width: 90%;
+  margin-right: 10%;
+}
