@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { FaEye } from 'react-icons/fa';
 import { instanceOf } from 'prop-types';
+import styles from './LoginForm.module.css';
 import { Cookies, withCookies } from '../../common/auth/cookie_utils';
 import { logInWithEmailAndPassword, useNavigate } from '../../common/auth/auth_utils';
-import styles from './LoginForm.module.css';
 
 const LoginForm = ({ cookies }) => {
   const navigate = useNavigate();
