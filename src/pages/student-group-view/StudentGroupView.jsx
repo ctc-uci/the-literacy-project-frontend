@@ -1,17 +1,62 @@
-import { React } from 'react';
+import { React, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import '../../common/vars.css';
 import { Button, Container, Card, Form } from 'react-bootstrap';
 import { BsPencil, BsBackspace } from 'react-icons/bs';
+import { TLPBackend, dateStringToTime } from '../../common/utils';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
 import styles from './StudentGroupView.module.css';
 
 const StudentGroupView = () => {
-  const groupNum = 3;
-  const siteName = 'Irvine';
-  const siteAddress = 'address';
-  const meetingTime = 'Monday 3:30PM';
-  const studentGroupList = ['Abby Nguyen', 'Ava Jules', 'Kelly Lee', 'Maribel Chen'];
+  const studentGroupId = useParams().groupId;
+  const [siteId, setSiteId] = useState();
+  const [siteName, setSiteName] = useState('');
+  const [siteAddress, setSiteAddress] = useState('');
+  const [meetingTime, setMeetingTime] = useState('');
+  const [studentGroupList, setStudentGroupList] = useState([]);
+  const [error, setError] = useState(null);
+
+  const getStudentFirstNames = students => {
+    const studentList = [];
+    if (students) {
+      students.forEach(s => studentList.push(`${s.firstName} ${s.lastName}`));
+    }
+    return studentList;
+  };
+
+  useEffect(async () => {
+    const studentGroupRes = await TLPBackend.get(`/student-groups/${studentGroupId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (studentGroupRes.status === 200) {
+      setSiteId(studentGroupRes.data.siteId);
+      setMeetingTime(
+        `${studentGroupRes.data.meetingDay} ${dateStringToTime(studentGroupRes.data.meetingTime)}`,
+      );
+      setStudentGroupList(getStudentFirstNames(studentGroupRes.data.students));
+    } else {
+      setSiteId(-1);
+      setError(error);
+    }
+
+    const sitesRes = await TLPBackend.get(`/sites/${siteId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (sitesRes.status === 200) {
+      setSiteName(sitesRes.data.siteName);
+      setSiteAddress(
+        `${sitesRes.data.addressStreet},  ${sitesRes.data.addressCity} ${sitesRes.data.addressZip}`,
+      );
+    } else {
+      setSiteName('');
+      setError(error);
+    }
+  }, [siteId]);
 
   return (
     <div>
@@ -27,7 +72,7 @@ const StudentGroupView = () => {
             </Button>
           </div>
           <div className={styles['float-right-section']}>
-            <h1>Student Group {groupNum}</h1>
+            <h1>Student Group {studentGroupId}</h1>
           </div>
         </div>
         <div className={`d-flex ${styles['dropdown-container']}`}>
@@ -54,7 +99,7 @@ const StudentGroupView = () => {
       <div id={styles['page-container']}>
         <div id={styles['student-group-container']}>
           <div className={styles['header-section']}>
-            <h2 className={styles['student-group-header']}>Student Group {groupNum}</h2>
+            <h2 className={styles['student-group-header']}>Student Group {studentGroupId}</h2>
             <Button variant="warning" className={styles['edit-group-btn']}>
               Edit Group <BsPencil />
             </Button>
@@ -78,7 +123,7 @@ const StudentGroupView = () => {
         </div>
         <div id={styles['student-group-data-container']}>
           <h2>Overall Group Data </h2>
-          <p>Average Scores for Student Group C</p>
+          <p>Average Scores for Student Group {studentGroupId}</p>
           {/* placeholder for graph */}
           <Card className={styles['student-group-graph']} />
           <Button className={styles['export-csv-btn']}> Export to CSV </Button>

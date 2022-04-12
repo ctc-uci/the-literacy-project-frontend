@@ -151,6 +151,14 @@ const addAuthInterceptor = axiosInstance => {
 
 const reloadPage = () => window.location.reload();
 
+const dateStringToTime = dateString => {
+  // eslint-disable-next-line prefer-const
+  let [hour, minute] = dateString.split(':');
+  const suffix = hour >= 12 ? 'PM' : 'AM';
+  hour = ((Number(hour) + 11) % 12) + 1;
+  return `${hour}:${minute} ${suffix}`;
+};
+
 addAuthInterceptor(TLPBackend);
 
-export { auth, TLPBackend, formatDate, reloadPage };
+export { auth, TLPBackend, formatDate, reloadPage, dateStringToTime };
