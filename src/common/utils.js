@@ -17,19 +17,19 @@ const formatDate = value => {
 };
 
 // turns military time HH:MM:SS into standard time HH:MM AA
-export const parseTime = time => {
-  const times = time.split(':');
-  const hour = times[0];
-  const minute = times[1];
-
-  if (hour >= 12) {
-    return `${hour === 12 ? hour : hour - 12}:${minute} PM`;
-  }
-  return `${hour}:${minute} AM`;
+export const parseTime = dateString => {
+  // eslint-disable-next-line prefer-const
+  let [hour, minute] = dateString.split(':');
+  const suffix = hour >= 12 ? 'PM' : 'AM';
+  hour = ((Number(hour) + 11) % 12) + 1;
+  return `${hour}:${minute} ${suffix}`;
 };
 
 // calculate the attitudinal and academic pre and post average scores
+// returns null if there is not at least pre-scores for other categories
+// otherwise return object with pre and post scores
 export const calculateScores = data => {
+  const scores = {};
   const attitudinalPossible = 80;
   const academicPossible = 93;
   const attitudinal = {
@@ -44,7 +44,6 @@ export const calculateScores = data => {
     post: 0,
     postCount: 0,
   };
-  const scores = {};
 
   // remains false if no students in data has non-null pretest scores
   let hasData = false;
@@ -89,6 +88,20 @@ export const calculateScores = data => {
       academic.postCount ? academic.post / academic.postCount : 0,
     ];
   }
+  return scores;
+};
+
+const average = arr => {
+  return arr.reduce((a, b) => a + b) / arr.length;
+};
+
+// calculates the pre and post average of attitudinal + academic for given site and all other TLP sites
+// returns an object with two arrays (pre and post)
+// assumes that site has both pre and post data
+export const calculateSiteScores = (site, other) => {
+  const scores = {};
+  scores.pre = [average(site.pre), other.pre ? average(other.pre) : 0];
+  scores.post = [average(site.post), other.post ? average(other.post) : 0];
   return scores;
 };
 

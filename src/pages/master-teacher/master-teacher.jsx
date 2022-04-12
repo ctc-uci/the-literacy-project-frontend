@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import styles from './master-teacher.module.css';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import { withCookies, cookieKeys, Cookies } from '../../common/auth/cookie_utils';
-import { TLPBackend, calculateScores } from '../../common/utils';
+import { TLPBackend, calculateScores, calculateSiteScores } from '../../common/utils';
 import Plus from '../../assets/icons/plus.svg';
 import StudentGroup from '../../components/StudentGroup/StudentGroup';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
@@ -46,21 +46,31 @@ const MasterTeacherView = ({ cookies }) => {
     const students = [];
 
     filteredGroups.forEach(studentGroup => {
-      studentGroup.students.forEach(student => {
-        students.push(student);
-      });
+      // in case the student group has no students, the students array will be null
+      if (studentGroups.students) {
+        studentGroup.students.forEach(student => {
+          students.push(student);
+        });
+      }
     });
     setSiteStudents(students);
 
     const scores = calculateScores(students);
-    setCategoricalPre(scores.pre);
-    setCategoricalPost(scores.post);
 
-    // TODO: site vs. other TLP data
     const otherSites = await TLPBackend.get(`/students/other-sites/${siteId}`);
-    otherSites.data.filter(student => student.year === year && student.cycle === cycle);
-    setSitePre([30, 21.5]);
-    setSitePost([54, 66.5]);
+    const otherSiteData = otherSites.data.filter(
+      student => student.year === year && student.cycle === cycle,
+    );
+    const otherSiteScores = calculateScores(otherSiteData);
+
+    if (scores.pre) {
+      setCategoricalPre(scores.pre);
+      setCategoricalPost(scores.post);
+
+      const siteScores = calculateSiteScores(scores, otherSiteScores);
+      setSitePre(siteScores.pre);
+      setSitePost(siteScores.post);
+    }
   };
 
   useEffect(() => {
@@ -70,12 +80,11 @@ const MasterTeacherView = ({ cookies }) => {
       const allStudentData = await TLPBackend.get(`/student-groups/master-teacher/${teacherId}`);
       // all unfiltered data for the MT to user for filtering later
       setAllData(allStudentData.data);
-      console.log(allStudentData.data);
 
       // call fetchSiteData onchange for toggle (set id as value)
       const initialSite = allStudentData.data[0].siteId;
       const initialYear = new Date().getFullYear();
-      const initialCycle = '4';
+      const initialCycle = allStudentData.data[0].cycle;
       setSelectedSiteId(initialSite);
       setSelectedCycle(initialCycle);
       setSelectedSchoolYear(initialYear);
