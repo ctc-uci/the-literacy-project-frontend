@@ -1,12 +1,13 @@
 import { React, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../../common/vars.css';
-import { Button, Container, Card, Form } from 'react-bootstrap';
+import { Button, Container, Form } from 'react-bootstrap';
 import { BsPencil, BsBackspace } from 'react-icons/bs';
-import { TLPBackend, dateStringToTime } from '../../common/utils';
+import { TLPBackend, parseTime, calculateScores } from '../../common/utils';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
-import styles from './StudentGroupView.module.css';
+import Graph from '../../components/Graph/Graph';
+import styles from './student-group-view.module.css';
 
 const StudentGroupView = () => {
   const studentGroupId = useParams().groupId;
@@ -15,6 +16,7 @@ const StudentGroupView = () => {
   const [siteAddress, setSiteAddress] = useState('');
   const [meetingTime, setMeetingTime] = useState('');
   const [studentGroupList, setStudentGroupList] = useState([]);
+  const [testScores, setTestScores] = useState({});
   const [error, setError] = useState(null);
 
   const getStudentFirstNames = students => {
@@ -34,7 +36,7 @@ const StudentGroupView = () => {
     if (studentGroupRes.status === 200) {
       setSiteId(studentGroupRes.data.siteId);
       setMeetingTime(
-        `${studentGroupRes.data.meetingDay} ${dateStringToTime(studentGroupRes.data.meetingTime)}`,
+        `${studentGroupRes.data.meetingDay} ${parseTime(studentGroupRes.data.meetingTime)}`,
       );
       setStudentGroupList(getStudentFirstNames(studentGroupRes.data.students));
     } else {
@@ -54,6 +56,18 @@ const StudentGroupView = () => {
       );
     } else {
       setSiteName('');
+      setError(error);
+    }
+
+    const studentsRes = await TLPBackend.get(`/students/student-group/${studentGroupId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (studentsRes.status === 200) {
+      setTestScores(calculateScores(studentsRes.data));
+    } else {
+      setTestScores({});
       setError(error);
     }
   }, [siteId]);
@@ -123,9 +137,14 @@ const StudentGroupView = () => {
         </div>
         <div id={styles['student-group-data-container']}>
           <h2>Overall Group Data </h2>
-          <p>Average Scores for Student Group {studentGroupId}</p>
-          {/* placeholder for graph */}
-          <Card className={styles['student-group-graph']} />
+          <div id={styles['student-group-chart']}>
+            <Graph
+              title={`Average Scores for Student Group ${studentGroupId}`}
+              xLabels={['Attitudinal', 'Academic']}
+              preData={testScores.pre}
+              postData={testScores.post}
+            />
+          </div>
           <Button className={styles['export-csv-btn']}> Export to CSV </Button>
         </div>
       </div>
