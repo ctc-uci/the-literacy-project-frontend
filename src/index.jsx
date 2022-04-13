@@ -15,6 +15,7 @@ import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessm
 import AreaDetails from './pages/area-details/area-details';
 import PeopleView from './pages/people/people';
 import AccessDeniedView from './pages/access-denied/access-denied';
+import NotFoundView from './pages/not-found/not-found';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
@@ -101,7 +102,7 @@ ReactDOM.render(
           {/* <Route path="/area/:areaId" element={<AreaDetails />} /> */}
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
           <Route exact path="/access-denied" element={<AccessDeniedView />} />
-          <Route exact path="/not-found" element={<AccessDeniedView />} />
+          <Route exact path="/not-found" element={<NotFoundView />} />
           <Route exact path="*" element={<Navigate to="/not-found" />} />
         </Routes>
       </Router>
