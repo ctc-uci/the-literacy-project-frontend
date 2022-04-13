@@ -15,7 +15,7 @@
 
 .logo {
   image-rendering: -moz-crisp-edges;
-  image-rendering: -o-crisp-edges;
+  image-rendering:   -o-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;
@@ -161,67 +161,3 @@ a {
     align-items: center;
   }
 }
-
-/* ORIGINAL COMPONENT CSS, BEFORE STYLING FROM WIREFRAME
-
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@700&display=swap');
-
-h1 {
-  color: white;
-  font-family: 'Source Sans Pro';
-  font-style: normal;
-  font-weight: bold;
-  font-size: 34px;
-  line-height: 41px;
-  text-align: center;
-  letter-spacing: -0.02em;
-  margin-bottom: 30px;
-}
-
-#email,
-#password {
-  background: #ffffff;
-  border: 1px solid #ced4da;
-  box-sizing: border-box;
-  border-radius: 4.8px;
-  margin-bottom: 20px;
-  width: 255px;
-  height: 46px;
-}
-
-.loginFormWrapper {
-  position: absolute;
-  left: 0%;
-  right: 0%;
-  top: 9.25%;
-  bottom: 0%;
-  width: 417px;
-  height: 412px;
-  background-color: #444444;
-  border-radius: 20px;
-  margin: auto;
-  display: flex;
-}
-
-.loginForm {
-  margin: auto;
-}
-
-form #eyeIcon {
-  position: absolute;
-  margin-left: -20px;
-  cursor: pointer;
-}
-
-#forgotPassword {
-  font-family: 'Source Sans Pro';
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12.8px;
-  color: #a5a5a5;
-}
-
-#submitButton {
-  width: 173px;
-  height: 47px;
-} */
