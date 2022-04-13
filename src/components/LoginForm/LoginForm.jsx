@@ -4,6 +4,7 @@ import { instanceOf } from 'prop-types';
 import styles from './LoginForm.module.css';
 import { Cookies, withCookies } from '../../common/auth/cookie_utils';
 import { logInWithEmailAndPassword, useNavigate } from '../../common/auth/auth_utils';
+import Logo from '../../assets/tlp.png';
 
 const LoginForm = ({ cookies }) => {
   const navigate = useNavigate();
@@ -39,6 +40,9 @@ const LoginForm = ({ cookies }) => {
 
   return (
     <div className={styles['login-form-wrapper']}>
+      <div className={styles['logo-wrapper']}>
+        <img className={styles.logo} src={Logo} alt="TLP Logo" />
+      </div>
       {/* body of LoginForm */}
       <div className={styles['form-wrapper']}>
         <h1 className={styles.title}> Log In </h1>
