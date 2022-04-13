@@ -1,4 +1,3 @@
-import './login.module.css';
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -8,7 +7,6 @@ const LoginView = () => {
   return (
     <div>
       <Container fluid className="vh-100">
-        {/* THIS ROW DISPLAYS RECOVER PASSWORD COMPONENT */}
         <Row
           className="h-100"
           style={{
