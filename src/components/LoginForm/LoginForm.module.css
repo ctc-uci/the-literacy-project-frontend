@@ -15,7 +15,7 @@
 
 .logo {
   image-rendering: -moz-crisp-edges;
-  image-rendering:   -o-crisp-edges;
+  image-rendering: -o-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;
@@ -76,7 +76,8 @@ form {
 .remember-me-box {
   width: 60%;
 }
-label {
+
+.logLabel {
   font-weight: normal;
   font-size: 16px;
   line-height: 24px;
@@ -89,9 +90,7 @@ label {
   box-sizing: border-box;
   border-radius: 4.8px;
   height: 32px;
-
-  width: 100%;
-
+  width: 200%;
   font-family: 'Calibri';
 }
 form #eye-icon {
