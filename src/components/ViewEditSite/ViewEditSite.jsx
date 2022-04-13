@@ -38,13 +38,14 @@ const ViewSite = ({ siteId }) => {
     delayError: 750,
   });
 
-  const deleteSite = () => {
-    TLPBackend.delete(`/sites/${siteId}`);
-  };
-
   const siteInfo = JSON.parse(localStorage.getItem('siteInfo'));
   const [edit, setEdit] = useState(false);
   const [areaName, setAreaName] = useState('');
+
+  const deleteSite = async () => {
+    await TLPBackend.delete(`/sites/${siteId}`);
+    window.location.replace(`/area/${siteInfo.areaId}`);
+  };
 
   const changeEdit = () => {
     setEdit(!edit);
@@ -114,7 +115,7 @@ const ViewSite = ({ siteId }) => {
         <NavigationBar />
         <p className="routing">
           <Link to="/area-management" className="link">
-            Area{' '}
+            Areas{' '}
           </Link>
           / {/* filler for now */}
           <Link to={`/area/${siteInfo.areaId}`} className="link">
@@ -350,7 +351,7 @@ const ViewSite = ({ siteId }) => {
       <NavigationBar />
       <p className="routing">
         <Link to="/area-management" className="link">
-          Area{' '}
+          Areas{' '}
         </Link>
         / {/* filler for now */}
         <Link to={`/area/${siteInfo.areaId}`} className="link">
