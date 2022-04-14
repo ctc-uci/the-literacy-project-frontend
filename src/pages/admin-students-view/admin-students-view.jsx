@@ -1,5 +1,5 @@
-import './admin-students-view.css';
 import React, { useState, useEffect } from 'react';
+import styles from './admin-students-view.module.css';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
 import { TLPBackend, capitalize, formatSchoolYear } from '../../common/utils';
 
@@ -75,12 +75,12 @@ const AdminStudentsView = () => {
     const [site, area, schoolYearAndCycle] = formatSiteInfo(siteName, areaName, year, cycle);
     tbodyData.push({
       id: studentObj.userId,
-      items: [`${lastName}, ${firstName}`, site, eth, area, schoolYearAndCycle],
+      items: [`${lastName}, ${firstName}`, site, eth, area, schoolYearAndCycle, 'View Scores'],
     });
   });
 
   return (
-    <div className="student-container">
+    <div className={styles['student-container']}>
       <ManagementDataSection sectionTitle="Students" theadData={theadData} tbodyData={tbodyData} />
     </div>
   );

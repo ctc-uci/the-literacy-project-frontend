@@ -64,6 +64,17 @@ const ManagementDataSection = ({
     return null;
   };
 
+  const displayExportButtonRight = () => {
+    if (sectionTitle === 'Students') {
+      return (
+        <Button className={styles['export-button']} variant="primary">
+          Export to CSV
+        </Button>
+      );
+    }
+    return null;
+  };
+
   const displayFilterButton = () => {
     if (sectionTitle !== 'Admin') {
       return (
@@ -84,8 +95,6 @@ const ManagementDataSection = ({
       >
         <Dropdown.Item>A-Z</Dropdown.Item>
         <Dropdown.Item>Z-A</Dropdown.Item>
-        <Dropdown.Item>OLD TO NEW</Dropdown.Item>
-        <Dropdown.Item>NEW TO OLD</Dropdown.Item>
       </DropdownButton>
     );
   };
@@ -99,6 +108,7 @@ const ManagementDataSection = ({
           <input type="text" placeholder={`Search ${sectionTitle}`} />
         </div>
         <div style={{ float: 'right' }}>
+          <div className={styles['inner-ctrl']}>{displayExportButtonRight()}</div>
           <div className={styles['inner-ctrl']}>{displayFilterButton()}</div>
           <div className={styles['inner-ctrl']}>{displaySortByButton()}</div>
         </div>
