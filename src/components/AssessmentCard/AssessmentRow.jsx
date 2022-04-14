@@ -57,7 +57,7 @@ const AssessmentRow = ({
     <tr className={styles['assessment-row']}>
       <td className={styles['game-name']}>{gameName}</td>
       <td className={styles['skill-test']}>{skillTest}</td>
-      <td className={`${styles['row-notes']} ${note.length === 0 && styles['empty-notes']}`}>
+      <td className={`${styles['row-notes']} ${note.length === 0 ? styles['empty-notes'] : ''}`}>
         {notesInput(note, editState, formName, fieldIndex)}
       </td>
       <td className={styles['passing-score']}>{numQuestions !== 0 ? passingScore : 'N/A'}</td>

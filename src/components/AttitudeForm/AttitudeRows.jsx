@@ -12,6 +12,7 @@ const notesInput = (note, column, editState, formName, testNumber) => {
     return (
       <textarea
         type="text"
+        maxLength="255"
         placeholder="Input Notes Here"
         className={styles['row-note-input']}
         tabIndex={column === 'left' ? 1 : 2}
@@ -20,7 +21,7 @@ const notesInput = (note, column, editState, formName, testNumber) => {
     );
   }
   if (note === '') {
-    return <span className={styles['empty-notes']}>Input Notes Here</span>;
+    return <>Input Notes Here</>;
   }
   return note;
 };
@@ -54,7 +55,9 @@ const AssessmentRow = ({ editState, formName, left, right }) => {
       <td className={styles.question}>
         {left?.testNumber}. {left?.question}
       </td>
-      <td className={styles['row-notes']}>
+      <td
+        className={`${styles['row-notes']} ${left.note.length === 0 ? styles['empty-notes'] : ''}`}
+      >
         {notesInput(left.note, 'left', editState, formName, left.testNumber)}
       </td>
       <td className={styles['player-score']}>
@@ -63,7 +66,9 @@ const AssessmentRow = ({ editState, formName, left, right }) => {
       <td className={styles.question}>
         {right?.testNumber}. {right?.question}
       </td>
-      <td className={styles['row-notes']}>
+      <td
+        className={`${styles['row-notes']} ${right.note.length === 0 ? styles['empty-notes'] : ''}`}
+      >
         {notesInput(right.note, 'right', editState, formName, right.testNumber)}
       </td>
       <td className={styles['player-score']}>

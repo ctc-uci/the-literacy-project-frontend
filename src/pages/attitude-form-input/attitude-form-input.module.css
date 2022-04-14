@@ -8,6 +8,7 @@
 .form-wrapper {
   margin: auto;
   max-width: 1110px;
+  overflow-x: hidden;
 }
 
 .improvement-graph {
