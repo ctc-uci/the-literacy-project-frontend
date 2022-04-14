@@ -24,11 +24,11 @@ const AttitudeFormInput = () => {
       const res = await TLPBackend.get(`./students/${studentID}`);
       setPreTestData({
         scores: res.data.pretestR,
-        notes: [],
+        notes: res.data.pretestRNotes,
       });
       setPostTestData({
         scores: res.data.posttestR,
-        notes: [],
+        notes: res.data.posttestRNotes,
       });
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -39,7 +39,7 @@ const AttitudeFormInput = () => {
   const setStudentData = async (setState, scoreName, data) => {
     const res = await TLPBackend.put(`./students/update-scores/${studentID}`, data);
     setState({
-      notes: data.notes,
+      notes: res.data?.[`${scoreName}Notes`],
       scores: res.data?.[scoreName],
     });
   };

@@ -24,11 +24,11 @@ const AssessmentScorecardInput = () => {
       const res = await TLPBackend.get(`./students/${studentID}`);
       setPreTestData({
         scores: res.data.pretestA,
-        notes: [],
+        notes: res.data.pretestANotes,
       });
       setPostTestData({
         scores: res.data.posttestA,
-        notes: [],
+        notes: res.data.posttestANotes,
       });
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -40,7 +40,7 @@ const AssessmentScorecardInput = () => {
     console.log(data);
     const res = await TLPBackend.put(`./students/update-scores/${studentID}`, data);
     setState({
-      notes: data.notes,
+      notes: res.data?.[`${scoreName}Notes`],
       scores: res.data?.[scoreName],
     });
   };

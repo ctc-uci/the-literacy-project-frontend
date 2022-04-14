@@ -119,7 +119,7 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
 
     const formattedData = {
       [name]: scores,
-      notes,
+      [`${name}Notes`]: notes,
     };
 
     // eslint-disable-next-line no-console
