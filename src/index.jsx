@@ -58,8 +58,8 @@ ReactDOM.render(
               />
             }
           />
-          <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
-          <Route path="/attitude-form-input" element={<AttitudeFormInput />} />
+          <Route path="/assessment-card" element={<AssessmentScorecardInput />} />
+          <Route path="/attitude-survey" element={<AttitudeFormInput />} />
           <Route path="/area-details" element={<AreaDetails />} />
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
         </Routes>
