@@ -12,6 +12,7 @@ import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
 
 const SiteView = () => {
   // const [areaDropdownTitle, setAreaDropdownTitle] = useState('Bellevue SD');
+
   const [modalIsOpen, setModalOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
   // THIS IS ALL STUDENTS - LEAVE A GITHUB COMMENT ON THIS (template for teachers and areas)
@@ -20,18 +21,17 @@ const SiteView = () => {
   const [teachers, setTeachers] = useState([]);
   const [schoolYear, setSchoolYear] = useState(['2020-21']);
 
-  const areaHeaders = [
-    { label: 'Area ID', key: 'areaId' },
-    { label: 'Area Name', key: 'areaName' },
-    { label: 'Is Active?', key: 'active' },
-  ];
-  const areaData = TLPBackend.get('/areas');
-  // console.log(areaData);
+  const areaHeaders = ['Area ID', 'Area Name', 'Active?'];
+  const areaData = areaResponseData.map(area => [area.areaId, area.areaName, area.active]);
+  // const studentData = students.map(student => [student.firstName, student.lastName]);
+  // console.log(studentData, studentData.length);
   const areaCsvReport = {
-    data: `${areaData}`,
+    data: areaData,
     headers: areaHeaders,
-    filename: `Areas_Report.csv`,
+    filename: 'Areas_Report.csv',
   };
+
+  // console.log(`YUH ${students}`);
 
   const addAssociatedSiteToArea = async resData => {
     async function fetchAllSites() {
@@ -41,6 +41,16 @@ const SiteView = () => {
           .then(res => {
             // eslint-disable-next-line no-param-reassign
             resData[ind].area_sites = res.data;
+            // console.log(`RESDATA ${ind} ${resData[ind]}`);
+          })
+          .catch(() => {});
+
+        TLPBackend.get(`/students/area/${resData[ind].areaId}`)
+          .then(res => {
+            setTimeout(() => {
+              // setStudents([...students, res.data]);
+              setStudents([...students, res.data]);
+            }, 1000);
           })
           .catch(() => {});
       }
@@ -86,15 +96,15 @@ const SiteView = () => {
     }
 
     // FIX THIS TOO
-    async function getAllStudentCount() {
-      await TLPBackend.get('/students')
-        .then(res => {
-          setTimeout(() => {
-            setStudents(res.data);
-          }, 1000);
-        })
-        .catch(() => {});
-    }
+    // async function getAllStudentCount() {
+    //   await TLPBackend.get('/students')
+    //     .then(res => {
+    //       setTimeout(() => {
+    //         setStudents(res.data);
+    //       }, 1000);
+    //     })
+    //     .catch(() => {});
+    // }
 
     async function getAllTeacherCount() {
       await TLPBackend.get('/teachers')
@@ -107,7 +117,7 @@ const SiteView = () => {
     }
 
     fetchAreas();
-    getAllStudentCount();
+    // getAllStudentCount();
     getAllTeacherCount();
   }, []);
 
@@ -202,7 +212,7 @@ const SiteView = () => {
           </div>
           <div className="data">
             <Button variant="primary">
-              <CSVLink {...areaCsvReport} class="csvLink">
+              <CSVLink {...areaCsvReport} className="csvLink">
                 Export to CSV
               </CSVLink>
             </Button>
