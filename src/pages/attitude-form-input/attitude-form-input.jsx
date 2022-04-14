@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { TLPBackend, scrollToTop } from '../../common/utils';
 
 import ReturnHeader from '../../common/ReturnHeader/ReturnHeader';
@@ -7,8 +8,7 @@ import ImprovementGraph from '../../components/ImprovementGraph/ImprovementGraph
 import styles from './attitude-form-input.module.css';
 
 const AttitudeFormInput = () => {
-  // TODO: get studentID via props
-  const studentID = 1;
+  const { studentID } = useParams();
 
   const [preTestData, setPreTestData] = useState({
     notes: [],
@@ -49,41 +49,38 @@ const AttitudeFormInput = () => {
   }, []);
 
   return (
-    <>
-      <div>Temporarily reading data from student with ID: {studentID}</div>
-      <div className={styles['form-wrapper']}>
-        <ReturnHeader
-          returnText={`Return to ${'Last, First'}`}
-          returnLink="/"
-          rightText="Reading Attitude Survey"
-        />
-        <hr size="1" className={styles.divider} />
-        <AttitudeScoreCard
-          name="pretestR"
-          headerText="Pre-Test"
-          tableData={preTestData}
-          setTableData={data => setStudentData(setPreTestData, 'pretestR', data)}
-        />
-        <AttitudeScoreCard
-          name="posttestR"
-          headerText="Post-Test"
-          tableData={postTestData}
-          setTableData={data => setStudentData(setPostTestData, 'posttestR', data)}
-        />
-        <div className={styles['improvement-graph']}>
-          <ImprovementGraph data={{ preTestData, postTestData }} />
-        </div>
-        <div
-          onClick={() => scrollToTop()}
-          onKeyDown={() => scrollToTop()}
-          className={styles['top-button']}
-          role="button"
-          tabIndex="0"
-        >
-          Back to Top
-        </div>
+    <div className={styles['form-wrapper']}>
+      <ReturnHeader
+        returnText={`Return to ${'Last, First'}`}
+        returnLink="/"
+        rightText="Reading Attitude Survey"
+      />
+      <hr size="1" className={styles.divider} />
+      <AttitudeScoreCard
+        name="pretestR"
+        headerText="Pre-Test"
+        tableData={preTestData}
+        setTableData={data => setStudentData(setPreTestData, 'pretestR', data)}
+      />
+      <AttitudeScoreCard
+        name="posttestR"
+        headerText="Post-Test"
+        tableData={postTestData}
+        setTableData={data => setStudentData(setPostTestData, 'posttestR', data)}
+      />
+      <div className={styles['improvement-graph']}>
+        <ImprovementGraph data={{ preTestData, postTestData }} />
       </div>
-    </>
+      <div
+        onClick={() => scrollToTop()}
+        onKeyDown={() => scrollToTop()}
+        className={styles['top-button']}
+        role="button"
+        tabIndex="0"
+      >
+        Back to Top
+      </div>
+    </div>
   );
 };
 
