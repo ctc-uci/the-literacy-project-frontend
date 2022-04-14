@@ -1,10 +1,10 @@
 import './admin-students-view.css';
 import React, { useState, useEffect } from 'react';
 import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
-import { TLPBackend } from '../../common/utils';
+import { TLPBackend, capitalize, formatSchoolYear } from '../../common/utils';
 
 const AdminStudentsView = () => {
-  const [studentLst, setStudentLst] = useState([]);
+  const [studentList, setStudentList] = useState([]);
   const [error, setError] = useState(null);
   const theadData = [
     {
@@ -33,6 +33,27 @@ const AdminStudentsView = () => {
     },
   ];
 
+  const formatEthnicity = ethnicity => {
+    let eth = '';
+    if (ethnicity) {
+      ethnicity.forEach(e => {
+        eth += `${capitalize(e)}, `;
+      });
+    } else {
+      eth = 'Non-specified, ';
+    }
+    return eth.slice(0, -2);
+  };
+
+  const formatSiteInfo = (siteName, areaName, year, cycle) => {
+    const site = siteName || 'No assigned site';
+    const area = areaName || 'Np assigned area';
+    let schoolYearAndCycle = year ? formatSchoolYear(year) : 'N/A';
+    schoolYearAndCycle = cycle ? `${schoolYearAndCycle}/Cycle ${cycle}` : 'N/A';
+
+    return [site, area, schoolYearAndCycle];
+  };
+
   useEffect(async () => {
     const res = await TLPBackend.get(`/students`, {
       headers: {
@@ -40,33 +61,23 @@ const AdminStudentsView = () => {
       },
     });
     if (res.status === 200) {
-      setStudentLst(res.data);
+      setStudentList(res.data);
     } else {
-      setStudentLst([]);
+      setStudentList([]);
       setError(error);
     }
   }, []);
 
-  const arr = [];
-  // fill in the array with values (array of dictionaries)
-
-  for (let i = 0; i < studentLst.length; i += 1) {
-    const newDict = { id: i, items: [] };
-    const lst = [];
-    // currently test values but connection is established
-    const first = studentLst[i].firstName.concat(' ');
-    const last = studentLst[i].lastName;
-    lst.push(first.concat(last));
-    lst.push(studentLst[i].contactId);
-    lst.push('Will implement ethnicity');
-    lst.push(studentLst[i].studentGroupId);
-    lst.push(studentLst[i].pretestR);
-    lst.push('insert link to profile');
-    newDict.items = lst;
-    arr.push(newDict);
-  }
-
-  const tbodyData = arr;
+  const tbodyData = [];
+  studentList.forEach(studentObj => {
+    const { firstName, lastName, siteName, ethnicity, areaName, year, cycle } = studentObj;
+    const eth = formatEthnicity(ethnicity);
+    const [site, area, schoolYearAndCycle] = formatSiteInfo(siteName, areaName, year, cycle);
+    tbodyData.push({
+      id: studentObj.userId,
+      items: [`${lastName}, ${firstName}`, site, eth, area, schoolYearAndCycle],
+    });
+  });
 
   return (
     <div className="student-container">

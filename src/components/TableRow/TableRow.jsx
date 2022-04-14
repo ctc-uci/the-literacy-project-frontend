@@ -13,6 +13,23 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     marginLeft: '0.5em',
   };
 
+  const displayPencilAndLink = item => {
+    if (sectionTitle === 'Admin' || sectionTitle === 'Master Teachers')
+      return (
+        <>
+          <Button
+            variant="link"
+            onClick={() => setModalOpen(sectionTitle)}
+            style={{ color: 'black' }}
+          >
+            {item}
+          </Button>
+          <FaPencilAlt cursor="pointer" onClick={() => setModalOpen(sectionTitle)} />
+        </>
+      );
+    return item;
+  };
+
   const styleStatus = val => {
     if (val === 'active' || val === 'inactive') {
       return (
@@ -32,18 +49,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
       <tr>
         {data.map((item, ind) => {
           if (ind === 0) {
-            return (
-              <td key={item}>
-                <Button
-                  variant="link"
-                  onClick={() => setModalOpen(sectionTitle)}
-                  style={{ color: 'black' }}
-                >
-                  {item}
-                </Button>
-                <FaPencilAlt cursor="pointer" onClick={() => setModalOpen(sectionTitle)} />
-              </td>
-            );
+            return <td key={item}>{displayPencilAndLink(item)}</td>;
           }
           if (colIsBadge.includes(ind)) {
             return (
