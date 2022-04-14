@@ -57,6 +57,7 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
     [name]: yup.array().of(
       yup.object({
         playerScore: yup.number().integer().positive().min(0, 'Number must be positive').nullable(),
+        notes: yup.mixed(),
       }),
     ),
   });
@@ -65,8 +66,14 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
     defaultValues: {
       [name]: rowData,
     },
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
     delayError: 750,
+    resolver: async (data, context, options) => {
+      // you can debug your validation schema here
+      console.log('formData', data);
+      console.log('validation result', await yupResolver(schema)(data, context, options));
+      return yupResolver(schema)(data, context, options);
+    },
   });
 
   const { isSubmitting, errors, isDirty } = useFormState({
@@ -85,7 +92,7 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
       rowData.map((row, i) => ({
         ...row,
         playerScore: tableData?.scores?.[i] ?? 0,
-        notes: tableData?.notes?.[i] ?? '',
+        notes: tableData?.notes?.[i] ?? 'tempplaceholder',
       })),
     );
     setEditState(tableData === null ? 'newInput' : 'editExisting');
@@ -102,15 +109,17 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
   }, [isSubmitting]);
 
   const onSubmit = async data => {
+    console.log(data);
     if (!isDirty) {
       setEditState(tableData === null ? 'newInput' : 'editExisting');
       return;
     }
     const scores = data[name].map(row => row.playerScore);
+    const notes = data[name].map(row => row.notes);
 
     const formattedData = {
       [name]: scores,
-      notes: data.notes,
+      notes,
     };
 
     // eslint-disable-next-line no-console
@@ -142,13 +151,16 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
                 <th>Score</th>
               </tr>
               {fields.map((field, index) => (
-                <AssessmentRow
-                  key={field.id}
-                  formName={name}
-                  fieldIndex={index}
-                  editState={editState}
-                  {...field}
-                />
+                <>
+                  <AssessmentRow
+                    key={field.id}
+                    formName={name}
+                    fieldIndex={index}
+                    editState={editState}
+                    {...field}
+                  />
+                  {JSON.stringify(field, null, 2)}
+                </>
               ))}
             </tbody>
           </table>

@@ -24,11 +24,11 @@ const AssessmentScorecardInput = () => {
       const res = await TLPBackend.get(`./students/${studentID}`);
       setPreTestData({
         scores: res.data.pretestA,
-        notes: [],
+        notes: ['', '', '', '', '', '', '', '', '', '', '', '', ''],
       });
       setPostTestData({
         scores: res.data.posttestA,
-        notes: [],
+        notes: ['', '', '', '', '', '', '', '', '', '', '', '', ''],
       });
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -36,10 +36,11 @@ const AssessmentScorecardInput = () => {
     }
   };
 
-  const setStudentScores = async (setState, scoreName, scores) => {
-    const res = await TLPBackend.put(`./students/update-scores/${studentID}`, scores);
+  const setStudentScores = async (setState, scoreName, data) => {
+    console.log(data);
+    const res = await TLPBackend.put(`./students/update-scores/${studentID}`, data);
     setState({
-      notes: [],
+      notes: data.notes,
       scores: res.data?.[scoreName],
     });
   };

@@ -7,11 +7,11 @@ const notesInput = (notes, editState, register, errors, formName, fieldIndex) =>
   if (editState === 'editing') {
     return (
       <textarea
-        type="text"
-        className={styles['row-note-input']}
         placeholder="Input Notes Here"
-        // className={errors?.[formName]?.[fieldIndex]?.playerScore ? styles['input-error'] : ''}
-        // {...register(`${formName}.${fieldIndex}.playerScore`)}
+        className={
+          errors?.[formName]?.[fieldIndex]?.notes ? styles['input-error'] : styles['row-note-input']
+        }
+        {...register(`${formName}.${fieldIndex}.notes`)}
       />
     );
   }
@@ -62,7 +62,9 @@ const AssessmentRow = ({
     <tr className={styles['assessment-row']}>
       <td className={styles['game-name']}>{gameName}</td>
       <td className={styles['skill-test']}>{skillTest}</td>
-      <td className={styles['row-notes']}>{notesInput(notes, editState)}</td>
+      <td className={styles['row-notes']}>
+        {notesInput(notes, editState, register, errors, formName, fieldIndex)}
+      </td>
       <td className={styles['passing-score']}>{numQuestions !== 0 ? passingScore : 'N/A'}</td>
       <td className={styles['player-score']}>
         {scoreInput(playerScore, numQuestions, editState, register, errors, formName, fieldIndex)}
