@@ -5,23 +5,24 @@ import PropTypes from 'prop-types';
 import { useFormContext } from 'react-hook-form';
 import styles from './AttitudeScoreCard.module.css';
 
-const notesInput = (notes, column, editState, register, errors, formName, fieldIndex) => {
+const notesInput = (note, column, editState, formName, testNumber) => {
+  const { register } = useFormContext();
+
   if (editState === 'editing') {
     return (
       <textarea
         type="text"
-        className={styles['row-note-input']}
         placeholder="Input Notes Here"
+        className={styles['row-note-input']}
         tabIndex={column === 'left' ? 1 : 2}
-        // className={errors?.[formName]?.[fieldIndex]?.playerScore ? styles['input-error'] : ''}
-        // {...register(`${formName}.${fieldIndex}.playerScore`)}
+        {...register(`${formName}.${testNumber - 1}.note`)}
       />
     );
   }
-  if (notes === '') {
+  if (note === '') {
     return <span className={styles['empty-notes']}>Input Notes Here</span>;
   }
-  return notes;
+  return note;
 };
 
 const scoreInput = (playerScore, column, editState, formName, testNumber) => {
@@ -53,14 +54,18 @@ const AssessmentRow = ({ editState, formName, left, right }) => {
       <td className={styles.question}>
         {left?.testNumber}. {left?.question}
       </td>
-      <td className={styles['row-notes']}>{notesInput(left.notes, 'left', editState)}</td>
+      <td className={styles['row-notes']}>
+        {notesInput(left.note, 'left', editState, formName, left.testNumber)}
+      </td>
       <td className={styles['player-score']}>
         {scoreInput(left.playerScore, 'left', editState, formName, left.testNumber)}
       </td>
       <td className={styles.question}>
         {right?.testNumber}. {right?.question}
       </td>
-      <td className={styles['row-notes']}>{notesInput(right.notes, 'right', editState)}</td>
+      <td className={styles['row-notes']}>
+        {notesInput(right.note, 'right', editState, formName, right.testNumber)}
+      </td>
       <td className={styles['player-score']}>
         {scoreInput(right.playerScore, 'right', editState, formName, right.testNumber)}
       </td>
@@ -96,11 +101,13 @@ AssessmentRow.propTypes = {
     testNumber: PropTypes.number,
     question: PropTypes.string,
     playerScore: PropTypes.number,
+    note: PropTypes.string,
   }).isRequired,
   right: PropTypes.objectOf({
     testNumber: PropTypes.number,
     question: PropTypes.string,
     playerScore: PropTypes.number,
+    note: PropTypes.string,
   }).isRequired,
 };
 

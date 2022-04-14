@@ -24,11 +24,11 @@ const AssessmentScorecardInput = () => {
       const res = await TLPBackend.get(`./students/${studentID}`);
       setPreTestData({
         scores: res.data.pretestA,
-        notes: ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+        notes: [],
       });
       setPostTestData({
         scores: res.data.posttestA,
-        notes: ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+        notes: [],
       });
     } catch (err) {
       // eslint-disable-next-line no-console

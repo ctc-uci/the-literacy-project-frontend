@@ -37,11 +37,9 @@ const AttitudeFormInput = () => {
   };
 
   const setStudentData = async (setState, scoreName, data) => {
-    // console.log('setting student data');
-    // console.log(data);
     const res = await TLPBackend.put(`./students/update-scores/${studentID}`, data);
     setState({
-      notes: [],
+      notes: data.notes,
       scores: res.data?.[scoreName],
     });
   };

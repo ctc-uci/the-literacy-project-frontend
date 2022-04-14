@@ -59,6 +59,7 @@ const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
     [name]: yup.array().of(
       yup.object({
         playerScore: yup.number().integer().positive().min(0, 'Number must be positive').nullable(),
+        note: yup.mixed().nullable(),
       }),
     ),
   });
@@ -87,10 +88,10 @@ const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
       rowData.map((row, i) => ({
         ...row,
         playerScore: tableData?.scores?.[i] ?? 0,
-        notes: tableData?.notes?.[i] ?? '',
+        note: tableData?.notes?.[i] ?? '',
       })),
     );
-    setEditState(tableData?.scores === null && tableData?.notes ? 'newInput' : 'editExisting');
+    setEditState(tableData === null ? 'newInput' : 'editExisting');
 
     // Calculate score totals
     setRecTotal(
@@ -123,10 +124,11 @@ const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
       return;
     }
     const scores = data[name].map(row => row.playerScore);
+    const notes = data[name].map(row => row.note);
 
     const formattedData = {
       [name]: scores,
-      notes: data.notes,
+      notes,
     };
 
     // eslint-disable-next-line no-console

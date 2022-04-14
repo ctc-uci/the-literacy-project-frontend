@@ -3,33 +3,31 @@ import PropTypes from 'prop-types';
 import { useFormContext } from 'react-hook-form';
 import styles from './AssessmentScoreCard.module.css';
 
-const notesInput = (notes, editState, register, errors, formName, fieldIndex) => {
+const notesInput = (note, editState, formName, fieldIndex) => {
+  const { register } = useFormContext();
+
   if (editState === 'editing') {
     return (
       <textarea
+        type="text"
         placeholder="Input Notes Here"
-        className={
-          errors?.[formName]?.[fieldIndex]?.notes ? styles['input-error'] : styles['row-note-input']
-        }
-        {...register(`${formName}.${fieldIndex}.notes`)}
+        className={styles['row-note-input']}
+        {...register(`${formName}.${fieldIndex}.note`)}
       />
     );
   }
-  if (notes === '') {
+  if (note === '') {
     return <span className={styles['empty-notes']}>Input Notes Here</span>;
   }
-  return notes;
+  return note;
 };
 
-const scoreInput = (
-  playerScore,
-  numQuestions,
-  editState,
-  register,
-  errors,
-  formName,
-  fieldIndex,
-) => {
+const scoreInput = (playerScore, numQuestions, editState, formName, fieldIndex) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+
   if (numQuestions === 0) return '0';
   if (editState === 'editing') {
     return (
@@ -48,26 +46,20 @@ const AssessmentRow = ({
   fieldIndex,
   editState,
   playerScore,
-  notes,
+  note,
   gameName,
   skillTest,
   passingScore,
   numQuestions,
 }) => {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
   return (
     <tr className={styles['assessment-row']}>
       <td className={styles['game-name']}>{gameName}</td>
       <td className={styles['skill-test']}>{skillTest}</td>
-      <td className={styles['row-notes']}>
-        {notesInput(notes, editState, register, errors, formName, fieldIndex)}
-      </td>
+      <td className={styles['row-notes']}>{notesInput(note, editState, formName, fieldIndex)}</td>
       <td className={styles['passing-score']}>{numQuestions !== 0 ? passingScore : 'N/A'}</td>
       <td className={styles['player-score']}>
-        {scoreInput(playerScore, numQuestions, editState, register, errors, formName, fieldIndex)}
+        {scoreInput(playerScore, numQuestions, editState, formName, fieldIndex)}
       </td>
     </tr>
   );
@@ -75,7 +67,7 @@ const AssessmentRow = ({
 
 AssessmentRow.defaultProps = {
   playerScore: 0,
-  notes: '',
+  note: '',
 };
 
 AssessmentRow.propTypes = {
@@ -83,7 +75,7 @@ AssessmentRow.propTypes = {
   fieldIndex: PropTypes.number.isRequired,
   editState: PropTypes.string.isRequired,
   playerScore: PropTypes.number,
-  notes: PropTypes.string,
+  note: PropTypes.string,
   gameName: PropTypes.string.isRequired,
   skillTest: PropTypes.string.isRequired,
   passingScore: PropTypes.string.isRequired,
