@@ -71,12 +71,6 @@
   background: var(--color-gray-blue-muted2);
 }
 
-.row-notes {
-  max-width: 200px;
-  min-width: 200px;
-  /* vertical-align: center; */
-}
-
 .player-score {
   max-width: 90px;
   min-width: 90px;
@@ -84,20 +78,29 @@
   font-weight: bold;
 }
 
+.row-notes {
+  max-width: 200px;
+  min-width: 200px;
+  /* vertical-align: center; */
+}
+
+.empty-notes {
+  color: var(--color-dark-gray);
+}
+
 .row-note-input {
   width: 100%;
-  height: 90%;
+  height: 100%;
   padding: 0;
   border: none !important;
   resize: none;
   vertical-align: middle;
   overflow-y: hidden;
-  line-height: normal;
 }
 
 .row-note-input::-webkit-input-placeholder {
   text-align: center;
-  line-height: 90px;
+  line-height: 86px;
 }
 
 .score-input {

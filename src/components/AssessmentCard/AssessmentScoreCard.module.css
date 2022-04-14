@@ -39,11 +39,6 @@
   color: white;
 }
 
-.notes {
-  width: 100%;
-  height: 200px;
-}
-
 /* Row styles */
 
 .assessment-row td {
@@ -65,6 +60,30 @@
 .skill-test {
   max-width: 240px;
   min-width: 240px;
+}
+
+.row-notes {
+  max-width: 260px;
+  min-width: 260px;
+}
+
+.empty-notes {
+  color: var(--color-dark-gray);
+}
+
+.row-note-input {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none !important;
+  resize: none;
+  vertical-align: middle;
+  overflow-y: hidden;
+}
+
+.row-note-input::-webkit-input-placeholder {
+  text-align: center;
+  line-height: 70px;
 }
 
 .passing-score {

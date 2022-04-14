@@ -137,6 +137,7 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
               <tr>
                 <th>Game Name</th>
                 <th>Phonic Skills</th>
+                <th>Notes</th>
                 <th>Passing Score</th>
                 <th>Score</th>
               </tr>
@@ -151,13 +152,6 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
               ))}
             </tbody>
           </table>
-          <textarea
-            placeholder="Notes"
-            className={styles.notes}
-            rows="3"
-            cols="50"
-            {...methods.register('notes')}
-          />
         </div>
       </form>
       <CommonAlert

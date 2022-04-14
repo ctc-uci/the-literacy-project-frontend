@@ -3,6 +3,24 @@ import PropTypes from 'prop-types';
 import { useFormContext } from 'react-hook-form';
 import styles from './AssessmentScoreCard.module.css';
 
+const notesInput = (notes, editState, register, errors, formName, fieldIndex) => {
+  if (editState === 'editing') {
+    return (
+      <textarea
+        type="text"
+        className={styles['row-note-input']}
+        placeholder="Input Notes Here"
+        // className={errors?.[formName]?.[fieldIndex]?.playerScore ? styles['input-error'] : ''}
+        // {...register(`${formName}.${fieldIndex}.playerScore`)}
+      />
+    );
+  }
+  if (notes === '') {
+    return <span className={styles['empty-notes']}>Input Notes Here</span>;
+  }
+  return notes;
+};
+
 const scoreInput = (
   playerScore,
   numQuestions,
@@ -12,7 +30,7 @@ const scoreInput = (
   formName,
   fieldIndex,
 ) => {
-  if (numQuestions === 0) return '-----';
+  if (numQuestions === 0) return '0';
   if (editState === 'editing') {
     return (
       <input
@@ -30,6 +48,7 @@ const AssessmentRow = ({
   fieldIndex,
   editState,
   playerScore,
+  notes,
   gameName,
   skillTest,
   passingScore,
@@ -43,7 +62,8 @@ const AssessmentRow = ({
     <tr className={styles['assessment-row']}>
       <td className={styles['game-name']}>{gameName}</td>
       <td className={styles['skill-test']}>{skillTest}</td>
-      <td className={styles['passing-score']}>{numQuestions !== 0 ? passingScore : '---'}</td>
+      <td className={styles['row-notes']}>{notesInput(notes, editState)}</td>
+      <td className={styles['passing-score']}>{numQuestions !== 0 ? passingScore : 'N/A'}</td>
       <td className={styles['player-score']}>
         {scoreInput(playerScore, numQuestions, editState, register, errors, formName, fieldIndex)}
       </td>
@@ -53,6 +73,7 @@ const AssessmentRow = ({
 
 AssessmentRow.defaultProps = {
   playerScore: 0,
+  notes: '',
 };
 
 AssessmentRow.propTypes = {
@@ -60,6 +81,7 @@ AssessmentRow.propTypes = {
   fieldIndex: PropTypes.number.isRequired,
   editState: PropTypes.string.isRequired,
   playerScore: PropTypes.number,
+  notes: PropTypes.string,
   gameName: PropTypes.string.isRequired,
   skillTest: PropTypes.string.isRequired,
   passingScore: PropTypes.string.isRequired,
