@@ -10,6 +10,7 @@ const notesInput = (note, editState, formName, fieldIndex) => {
     return (
       <textarea
         type="text"
+        maxLength="255"
         placeholder="Input Notes Here"
         className={styles['row-note-input']}
         {...register(`${formName}.${fieldIndex}.note`)}
@@ -17,7 +18,7 @@ const notesInput = (note, editState, formName, fieldIndex) => {
     );
   }
   if (note === '') {
-    return <span className={styles['empty-notes']}>Input Notes Here</span>;
+    return <>Input Notes Here</>;
   }
   return note;
 };
@@ -56,7 +57,9 @@ const AssessmentRow = ({
     <tr className={styles['assessment-row']}>
       <td className={styles['game-name']}>{gameName}</td>
       <td className={styles['skill-test']}>{skillTest}</td>
-      <td className={styles['row-notes']}>{notesInput(note, editState, formName, fieldIndex)}</td>
+      <td className={`${styles['row-notes']} ${note.length === 0 && styles['empty-notes']}`}>
+        {notesInput(note, editState, formName, fieldIndex)}
+      </td>
       <td className={styles['passing-score']}>{numQuestions !== 0 ? passingScore : 'N/A'}</td>
       <td className={styles['player-score']}>
         {scoreInput(playerScore, numQuestions, editState, formName, fieldIndex)}

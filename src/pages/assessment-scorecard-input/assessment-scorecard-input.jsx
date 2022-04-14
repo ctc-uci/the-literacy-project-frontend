@@ -9,7 +9,7 @@ import styles from './assessment-scorecard-input.module.css';
 
 const AssessmentScorecardInput = () => {
   const { studentID } = useParams();
-
+  const [studentName, setStudentName] = useState('');
   const [preTestData, setPreTestData] = useState({
     notes: [],
     scores: [],
@@ -22,6 +22,7 @@ const AssessmentScorecardInput = () => {
   const fetchStudentScores = async () => {
     try {
       const res = await TLPBackend.get(`./students/${studentID}`);
+      setStudentName(`${res.data.lastName}, ${res.data.firstName}`);
       setPreTestData({
         scores: res.data.pretestA,
         notes: res.data.pretestANotes,
@@ -52,7 +53,7 @@ const AssessmentScorecardInput = () => {
   return (
     <div className={styles['form-wrapper']}>
       <ReturnHeader
-        returnText={`Return to ${'Last, First'}`}
+        returnText={`Return to ${studentName}`}
         returnLink="/"
         rightText="Assessment Score Card"
       />

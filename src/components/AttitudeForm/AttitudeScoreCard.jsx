@@ -91,7 +91,7 @@ const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
         note: tableData?.notes?.[i] ?? '',
       })),
     );
-    setEditState(tableData === null ? 'newInput' : 'editExisting');
+    setEditState(!Object.values(tableData).some(v => v) ? 'newInput' : 'editExisting');
 
     // Calculate score totals
     setRecTotal(
@@ -120,7 +120,7 @@ const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
 
   const onSubmit = async data => {
     if (!isDirty) {
-      setEditState(tableData === null ? 'newInput' : 'editExisting');
+      setEditState(!Object.values(tableData).some(v => v) ? 'newInput' : 'editExisting');
       return;
     }
     const scores = data[name].map(row => row.playerScore);

@@ -95,7 +95,7 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
         note: tableData?.notes?.[i] ?? '',
       })),
     );
-    setEditState(tableData === null ? 'newInput' : 'editExisting');
+    setEditState(!Object.values(tableData).some(v => v) ? 'newInput' : 'editExisting');
   }, [tableData]);
 
   // Show error alert
@@ -111,7 +111,7 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
   const onSubmit = async data => {
     console.log(data);
     if (!isDirty) {
-      setEditState(tableData === null ? 'newInput' : 'editExisting');
+      setEditState(!Object.values(tableData).some(v => v) ? 'newInput' : 'editExisting');
       return;
     }
     const scores = data[name].map(row => row.playerScore);
@@ -140,28 +140,27 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
           <p>{headerText}</p>
           <ScoreCardButton editState={editState} setEditState={setEditState} />
         </div>
-        <div>
-          <table className={styles['scorecard-table']}>
-            <tbody>
-              <tr>
-                <th>Game Name</th>
-                <th>Phonic Skills</th>
-                <th>Notes</th>
-                <th>Passing Score</th>
-                <th>Score</th>
-              </tr>
-              {fields.map((field, index) => (
-                <AssessmentRow
-                  key={field.id}
-                  formName={name}
-                  fieldIndex={index}
-                  editState={editState}
-                  {...field}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
+
+        <table className={styles['scorecard-table']}>
+          <tbody styles={{ overflow: 'hidden' }}>
+            <tr>
+              <th>Game Name</th>
+              <th>Phonic Skills</th>
+              <th>Notes</th>
+              <th>Passing Score</th>
+              <th>Score</th>
+            </tr>
+            {fields.map((field, index) => (
+              <AssessmentRow
+                key={field.id}
+                formName={name}
+                fieldIndex={index}
+                editState={editState}
+                {...field}
+              />
+            ))}
+          </tbody>
+        </table>
       </form>
       <CommonAlert
         variant={alertState.variant}

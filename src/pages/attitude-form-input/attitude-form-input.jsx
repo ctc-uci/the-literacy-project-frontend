@@ -9,7 +9,7 @@ import styles from './attitude-form-input.module.css';
 
 const AttitudeFormInput = () => {
   const { studentID } = useParams();
-
+  const [studentName, setStudentName] = useState('');
   const [preTestData, setPreTestData] = useState({
     notes: [],
     scores: [],
@@ -22,6 +22,7 @@ const AttitudeFormInput = () => {
   const fetchStudentData = async () => {
     try {
       const res = await TLPBackend.get(`./students/${studentID}`);
+      setStudentName(`${res.data.lastName}, ${res.data.firstName}`);
       setPreTestData({
         scores: res.data.pretestR,
         notes: res.data.pretestRNotes,
@@ -51,7 +52,7 @@ const AttitudeFormInput = () => {
   return (
     <div className={styles['form-wrapper']}>
       <ReturnHeader
-        returnText={`Return to ${'Last, First'}`}
+        returnText={`Return to ${studentName}`}
         returnLink="/"
         rightText="Reading Attitude Survey"
       />

@@ -63,12 +63,16 @@
 }
 
 .row-notes {
+  text-align: left !important;
+  vertical-align: top !important;
   max-width: 260px;
   min-width: 260px;
 }
 
 .empty-notes {
   color: var(--color-dark-gray);
+  text-align: center !important;
+  vertical-align: middle !important;
 }
 
 .row-note-input {
