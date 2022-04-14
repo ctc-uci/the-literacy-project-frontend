@@ -7,7 +7,7 @@ import ImprovementGraph from '../../components/ImprovementGraph/ImprovementGraph
 import styles from './attitude-form-input.module.css';
 
 const AttitudeFormInput = () => {
-  // TODO: get studentID
+  // TODO: get studentID via props
   const studentID = 1;
 
   const [preTestData, setPreTestData] = useState({
@@ -37,8 +37,8 @@ const AttitudeFormInput = () => {
   };
 
   const setStudentData = async (setState, scoreName, data) => {
-    console.log('setting student data');
-    console.log(data);
+    // console.log('setting student data');
+    // console.log(data);
     const res = await TLPBackend.put(`./students/update-scores/${studentID}`, data);
     setState({
       notes: [],

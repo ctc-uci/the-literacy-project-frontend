@@ -7,17 +7,29 @@ import ImprovementGraph from '../../components/ImprovementGraph/ImprovementGraph
 import styles from './assessment-scorecard-input.module.css';
 
 const AssessmentScorecardInput = () => {
-  // TODO: get studentID
+  // TODO: get studentID via props
   const studentID = 1;
 
-  const [preTestData, setPreTestData] = useState([]);
-  const [postTestData, setPostTestData] = useState([]);
+  const [preTestData, setPreTestData] = useState({
+    notes: [],
+    scores: [],
+  });
+  const [postTestData, setPostTestData] = useState({
+    notes: [],
+    scores: [],
+  });
 
   const fetchStudentScores = async () => {
     try {
       const res = await TLPBackend.get(`./students/${studentID}`);
-      setPreTestData(res.data.pretestA);
-      setPostTestData(res.data.posttestA);
+      setPreTestData({
+        scores: res.data.pretestA,
+        notes: [],
+      });
+      setPostTestData({
+        scores: res.data.posttestA,
+        notes: [],
+      });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
@@ -26,7 +38,10 @@ const AssessmentScorecardInput = () => {
 
   const setStudentScores = async (setState, scoreName, scores) => {
     const res = await TLPBackend.put(`./students/update-scores/${studentID}`, scores);
-    setState(res.data?.[scoreName]);
+    setState({
+      notes: [],
+      scores: res.data?.[scoreName],
+    });
   };
 
   useEffect(async () => {

@@ -71,7 +71,7 @@ const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
     delayError: 750,
   });
 
-  const { isSubmitting, errors } = useFormState({
+  const { isSubmitting, errors, isDirty } = useFormState({
     control: methods.control,
   });
 
@@ -118,6 +118,10 @@ const AttitudeScoreCard = ({ name, headerText, tableData, setTableData }) => {
   }, [isSubmitting]);
 
   const onSubmit = async data => {
+    if (!isDirty) {
+      setEditState(tableData === null ? 'newInput' : 'editExisting');
+      return;
+    }
     const scores = data[name].map(row => row.playerScore);
 
     const formattedData = {

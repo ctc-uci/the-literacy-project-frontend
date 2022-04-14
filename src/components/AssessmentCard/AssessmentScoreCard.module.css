@@ -57,24 +57,24 @@
 }
 
 .game-name {
-  max-width: 425px;
-  min-width: 425px;
+  max-width: 350px;
+  min-width: 350px;
   background: #FFE79F;
 }
 
 .skill-test {
-  max-width: 425px;
-  min-width: 425px;
+  max-width: 240px;
+  min-width: 240px;
 }
 
 .passing-score {
-  max-width: 130px;
-  min-width: 130px;
+  max-width: 125px;
+  min-width: 125px;
 }
 
 .player-score {
-  max-width: 130px;
-  min-width: 130px;
+  max-width: 125px;
+  min-width: 125px;
   background: var(--color-gray-white);
   font-weight: bold;
 }

@@ -69,7 +69,7 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
     delayError: 750,
   });
 
-  const { isSubmitting, errors } = useFormState({
+  const { isSubmitting, errors, isDirty } = useFormState({
     control: methods.control,
   });
 
@@ -82,7 +82,11 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
   useEffect(() => {
     methods.setValue(
       name,
-      rowData.map((row, i) => ({ ...row, playerScore: tableData?.[i] })),
+      rowData.map((row, i) => ({
+        ...row,
+        playerScore: tableData?.scores?.[i] ?? 0,
+        notes: tableData?.notes?.[i] ?? '',
+      })),
     );
     setEditState(tableData === null ? 'newInput' : 'editExisting');
   }, [tableData]);
@@ -98,6 +102,10 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
   }, [isSubmitting]);
 
   const onSubmit = async data => {
+    if (!isDirty) {
+      setEditState(tableData === null ? 'newInput' : 'editExisting');
+      return;
+    }
     const scores = data[name].map(row => row.playerScore);
 
     const formattedData = {
