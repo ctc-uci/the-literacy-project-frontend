@@ -20,6 +20,7 @@ import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
 import StudentView from './pages/student/student';
+import StudentGroupView from './pages/student-group-view/student-group-view';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
@@ -36,6 +37,7 @@ ReactDOM.render(
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/recover-password" exact element={<LoginRecoverPasswordView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
+          <Route path="/student-groups/:groupId" exact element={<StudentGroupView />} />
           <Route
             path="/settings"
             element={

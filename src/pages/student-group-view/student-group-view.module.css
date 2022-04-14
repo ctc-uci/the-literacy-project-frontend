@@ -1,0 +1,97 @@
+.btn-custom {
+  background-color: var(--color-dark-blue-muted);
+  color: var(--text-color-white);
+}
+
+.grey-text {
+  color: var(--text-color-light-gray);
+}
+
+.header-section {
+  width: 444px;
+}
+
+.student-group-header {
+  display: inline-block;
+  margin-bottom: 0.5em;
+}
+
+.edit-group-btn {
+  margin-left: 1em;
+  float: inline-end;
+}
+
+#page-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 5em 10em 5em 10em;
+}
+
+#student-group-container {
+  display: inline-block;
+  height: 100vh;
+  width: 75vw;
+}
+
+.section-header {
+  margin-bottom: 0.5em;
+}
+
+#site-info-section,
+#meeting-time-section,
+#students-assigned-section {
+  margin-bottom: 3em;
+}
+
+#student-group-data-container {
+  display: inline-block;
+  border-left: 1px solid #c4c4c4;
+  padding-left: 1.5em;
+  height: 100vh;
+  width: 25vw;
+  text-align: center;
+  align-items: center;
+}
+
+.student-group-graph {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  height: 200px;
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.export-csv-btn {
+  background-color: var(--color-baby-blue);
+  color: var(--text-color-white);
+  margin-top: 1em;
+  margin-left: 4em;
+}
+
+#header-container {
+  border-bottom: 1px solid #c4c4c4;
+  padding: 2em 5em 2em 5em;
+}
+
+#backspace-icon {
+  margin-right: 0.5em;
+}
+
+.custom-form-select {
+  margin-left: 0.5em;
+  width: 120px;
+}
+
+.custom-form-label {
+  margin-left: 0.5em;
+}
+
+.float-right-section {
+  margin-left: auto;
+}
+
+#student-group-chart {
+  height: 40vh;
+}
