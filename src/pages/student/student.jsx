@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { BsPencil, BsBackspace, BsCheck2All } from 'react-icons/bs';
-import { Table, Button, DropdownButton, Dropdown, Form } from 'react-bootstrap';
+import { Table, Button, DropdownButton, Dropdown, Form, Alert, CloseButton } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Graph from '../../components/Graph/Graph';
 
@@ -11,10 +11,14 @@ import { TLPBackend } from '../../common/utils';
 
 const StudentView = () => {
   const { studentId } = useParams();
-  // const [editOptions, setEditOptions] = useState({});
-  // const [showEditAlert, setShowEditAlert] = useState(false);
-  // const [alertText, setAlertText] = useState('');
-  // const [isAlertSuccess, setIsAlertSuccess] = useState(true);
+  const [editOptions, setEditOptions] = useState({
+    gradeOptions: {},
+    ethnicityOptions: [],
+    studentGroups: [],
+  });
+  const [showEditAlert, setShowEditAlert] = useState(false);
+  const [alertText, setAlertText] = useState('');
+  const [isAlertSuccess, setIsAlertSuccess] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [editStudentData, setEditStudentData] = useState({
     studentGrade: null,
@@ -24,50 +28,98 @@ const StudentView = () => {
   });
   // const [editOptions, setEditOptions] = useState({});
   const [student, setStudent] = useState({
-    preTestA: [0],
-    postTestA: [],
-    preTestR: [],
-    postTestR: [],
+    grade: null,
+    siteName: null,
+    name: null,
+    ethnicity: [],
+    homeTeacher: null,
+    pretestA: [],
+    posttestA: [],
+    pretestR: [],
+    posttestR: [],
   });
-
-  const dummyGradeData = [
-    { name: '1st Grade', id: 1 },
-    { name: '2nd Grade', id: 2 },
-    { name: '3rd Grade', id: 3 },
-    { name: '4th Grade', id: 4 },
-    { name: '5th Grade', id: 5 },
-    { name: '6th Grade', id: 6 },
-    { name: '7th Grade', id: 7 },
-    { name: '8th Grade', id: 8 },
-  ];
-
-  const dummyEthnicity = ['white', 'black', 'asian', 'latinx', 'american indian or alaska native'];
-  const dummyStudentGroup = ['Group A', 'Group B', 'Group C', 'Group D'];
+  const [siteData, setSiteData] = useState({
+    pre: 0,
+    post: 0,
+  });
+  const [otherSiteData, setOtherSiteData] = useState({
+    pre: 0,
+    post: 0,
+  });
 
   const setStudentEditData = () => {
     const tempStudentData = {};
-    tempStudentData.studentGrade = '7th Grade';
-    tempStudentData.studentGroup = `Group ${student.studentGroupId}`;
+    tempStudentData.studentGrade = student.grade;
+    tempStudentData.studentGroup = {
+      name: student.name,
+      groupId: student.studentGroupId,
+    };
     tempStudentData.studentEthnicity = student.ethnicity;
-    tempStudentData.studentHomeTeacher = 'Sydney Chiang';
+    tempStudentData.studentHomeTeacher = student.homeTeacher;
     setEditStudentData(tempStudentData);
   };
 
-  // const submitStudentEditChanges = () => {
-  //   // TODO: Need to flesh out the edit parameters and how to update them appropriately
-  //   TLPBackend.post(`/student/${student.studentId}}`)
-  //     .then(res => {
-  //       setAlertText('Edits Successfully Saved');
-  //       setShowEditAlert(true);
-  //       setIsAlertSuccess(true);
-  //       setStudent(res.data);
-  //     })
-  //     .catch(() => {
-  //       setAlertText(`[ERROR] unable to update student information`);
-  //       setShowEditAlert(true);
-  //       setIsAlertSuccess(false);
-  //     });
-  // };
+  const submitStudentEditChanges = () => {
+    const editedData = {
+      firstName: student.firstName,
+      lastName: student.lastName,
+      gender: student.gender,
+      grade: editStudentData.studentGrade,
+      homeTeacher: editStudentData.studentHomeTeacher,
+      studentGroupId: editStudentData.studentGroup.groupId,
+      ethnicity: [editStudentData.studentEthnicity],
+    };
+
+    TLPBackend.put(`/students/${studentId}`, editedData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(res => {
+        setAlertText('Edits Successfully Saved');
+        setShowEditAlert(true);
+        setIsAlertSuccess(true);
+        setStudent(res.data);
+      })
+      .catch(() => {
+        setAlertText(`[ERROR] unable to update student information`);
+        setShowEditAlert(true);
+        setIsAlertSuccess(false);
+      });
+  };
+
+  const calculateTotalPrePostData = function (resStudentsData) {
+    // Calculates the total student Pre / Post Data from post the Attitudinal and Academic lists of scores
+    const tempSiteData = {
+      pre: 0,
+      post: 0,
+    };
+
+    ['pretestA', 'posttestA', 'pretestR', 'posttestR'].forEach(siteDataKey => {
+      const totalData =
+        resStudentsData.data
+          .map(studentData => {
+            if (studentData[siteDataKey]) {
+              return (
+                studentData[siteDataKey].reduce((total, amount) => total + amount, 0) /
+                studentData[siteDataKey].length
+              );
+            }
+            return 0;
+          })
+          .reduce((total, amount) => total + amount, 0) / resStudentsData.data.length;
+      if (siteDataKey.includes('pre')) {
+        tempSiteData.pre += totalData;
+      } else {
+        tempSiteData.post += totalData;
+      }
+    });
+
+    tempSiteData.pre = Math.round((tempSiteData.pre / 2) * 100) / 100;
+    tempSiteData.post = Math.round((tempSiteData.post / 2) * 100) / 100;
+
+    return tempSiteData;
+  };
 
   // logic relating to calculating pre/post
   // const specific = arr.filter(site => site.name === specific_site) //this returns the specific site from the sites
@@ -75,21 +127,56 @@ const StudentView = () => {
   // post = specific.post.reduce((total, amount)=> total+amount, 0)/array.length
 
   useEffect(async () => {
-    // if( editOptions == {} ) {
-    //   const resOptions = await TLPBackend.get('')
-    // }
     const res = await TLPBackend.get(`/students/${studentId}`, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
     if (res.status === 200) {
-      // setStudent(res.data); below is for testing
-      setStudent({
-        ...res.data,
-      });
+      setStudent(res.data);
+      // setStudent({
+      //   ...res.data,
+      // });
+      await TLPBackend.get(`/student-groups/site/${res.data.siteId}`)
+        .then(resOptions => {
+          setEditOptions({
+            gradeOptions: {
+              1: '1st Grade',
+              2: '2nd Grade',
+              3: '3rd Grade',
+              4: '4th Grade',
+              5: '5th Grade',
+              6: '6th Grade',
+            },
+            ethnicityOptions: [
+              'white',
+              'black',
+              'asian',
+              'latinx',
+              'american indian or alaska native',
+              'non-specified',
+            ],
+            studentGroups: [...resOptions.data],
+          });
+        })
+        .catch(() => {
+          console.log('ERROR: Cannot load editing options.');
+        });
+      TLPBackend.get(`/students/site/${res.data.siteId}`)
+        .then(resStudentsData => {
+          setSiteData(calculateTotalPrePostData(resStudentsData));
+        })
+        .catch(() => {
+          console.log('ERROR: Cannot load all students from site.');
+        });
+      TLPBackend.get(`/students/other-sites/${res.data.siteId}`)
+        .then(resStudentsData => {
+          setOtherSiteData(calculateTotalPrePostData(resStudentsData));
+        })
+        .catch(() => {
+          console.log('ERROR: Cannot load all students from other sites.');
+        });
     }
-    console.log('student', student);
   }, [studentId]);
 
   return (
@@ -98,9 +185,8 @@ const StudentView = () => {
       <div className={styles['student-view']}>
         <section className={styles['student-return-name-section']}>
           <h2>
-            <a href="/">
-              <BsBackspace />
-              Return to Irvine Site
+            <a href={`/site/${student.siteId}`}>
+              <BsBackspace /> Return to Irvine Site
             </a>
           </h2>
           <h1>
@@ -128,6 +214,7 @@ const StudentView = () => {
                 variant="success"
                 onClick={() => {
                   // Save edits
+                  submitStudentEditChanges();
                   setEditMode(!editMode);
                 }}
               >
@@ -151,52 +238,56 @@ const StudentView = () => {
               <tbody>
                 {!editMode ? (
                   <tr>
-                    <td>7th Grade</td>
-                    <td>Irvine Site</td>
-                    <td>Group {student.studentGroupId}</td>
-                    <td>{student.ethnicity}</td>
-                    <td>Sydney Chiang</td>
+                    <td>{student.grade ? editOptions.gradeOptions[student.grade] : '-'}</td>
+                    <td>{student.siteName ? student.siteName : '-'}</td>
+                    <td>{student.name ? student.name : '-'}</td>
+                    <td>{student.ethnicity !== [] ? student.ethnicity.join(', ') : '-'}</td>
+                    <td>{student.homeTeacher ? student.homeTeacher : '-'}</td>
                   </tr>
                 ) : (
                   <tr>
                     <td>
                       <DropdownButton
                         variant="outline-secondary"
-                        title={editStudentData.studentGrade}
+                        title={
+                          editOptions.gradeOptions[editStudentData.studentGrade]
+                            ? editOptions.gradeOptions[editStudentData.studentGrade]
+                            : ''
+                        }
                       >
-                        {dummyGradeData.map(grade => {
+                        {Object.keys(editOptions.gradeOptions).map(grade => {
                           return (
                             <Dropdown.Item
-                              key={grade.name}
+                              key={grade}
                               onClick={() => {
                                 const tempStudentData = { ...editStudentData };
-                                tempStudentData.studentGrade = grade.name;
+                                tempStudentData.studentGrade = parseInt(grade, 10);
                                 setEditStudentData(tempStudentData);
                               }}
                             >
-                              {grade.name}
+                              {editOptions.gradeOptions[grade]}
                             </Dropdown.Item>
                           );
                         })}
                       </DropdownButton>
                     </td>
-                    <td>Irvine Site</td>
+                    <td>{student.siteName}</td>
                     <td>
                       <DropdownButton
                         variant="outline-secondary"
-                        title={editStudentData.studentGroup}
+                        title={editStudentData.studentGroup.name}
                       >
-                        {dummyStudentGroup.map(group => {
+                        {editOptions.studentGroups.map(group => {
                           return (
                             <Dropdown.Item
-                              key={group}
+                              key={group.groupId}
                               onClick={() => {
                                 const tempStudentData = { ...editStudentData };
-                                tempStudentData.studentGrade = group;
+                                tempStudentData.studentGroup = group;
                                 setEditStudentData(tempStudentData);
                               }}
                             >
-                              {group}
+                              {group.name}
                             </Dropdown.Item>
                           );
                         })}
@@ -207,7 +298,7 @@ const StudentView = () => {
                         variant="outline-secondary"
                         title={editStudentData.studentEthnicity}
                       >
-                        {dummyEthnicity.map(ethnicity => {
+                        {editOptions.ethnicityOptions.map(ethnicity => {
                           return (
                             <Dropdown.Item
                               key={ethnicity}
@@ -227,7 +318,17 @@ const StudentView = () => {
                       <Form.Control
                         size="sm"
                         type="text"
-                        value={editStudentData.studentHomeTeacher}
+                        value={
+                          editStudentData.studentHomeTeacher
+                            ? editStudentData.studentHomeTeacher
+                            : ''
+                        }
+                        placeholder="Sydney Chiang"
+                        onChange={event => {
+                          const tempStudentData = { ...editStudentData };
+                          tempStudentData.studentHomeTeacher = event.target.value;
+                          setEditStudentData(tempStudentData);
+                        }}
                       />
                     </td>
                   </tr>
@@ -247,22 +348,33 @@ const StudentView = () => {
                 xLabels={['Attitudinal', 'Academic']}
                 preData={[
                   student.pretestA
-                    ? student.pretestA.reduce((total, amount) => total + amount, 0) /
-                      student.pretestA.length
+                    ? Math.round(
+                        (student.pretestA.reduce((total, amount) => total + amount, 0) /
+                          student.pretestA.length) *
+                          100,
+                      ) / 100
                     : 0,
                   student.pretestR
-                    ? student.pretestR.reduce((total, amount) => total + amount, 0) /
-                      student.pretestR.length
+                    ? Math.round(
+                        student.pretestR.reduce((total, amount) => total + amount, 0) /
+                          student.pretestR.length,
+                      )
                     : 0,
                 ]}
                 postData={[
                   student.posttestA
-                    ? student.posttestA.reduce((total, amount) => total + amount, 0) /
-                      student.posttestA.length
+                    ? Math.round(
+                        (student.posttestA.reduce((total, amount) => total + amount, 0) /
+                          student.posttestA.length) *
+                          100,
+                      ) / 100
                     : 0,
                   student.posttestR
-                    ? student.posttestR.reduce((total, amount) => total + amount, 0) /
-                      student.posttestR.length
+                    ? Math.round(
+                        (student.posttestR.reduce((total, amount) => total + amount, 0) /
+                          student.posttestR.length) *
+                          100,
+                      ) / 100
                     : 0,
                 ]}
               />
@@ -271,9 +383,9 @@ const StudentView = () => {
               <p>Year: 2021 - 2022</p>
               <Graph
                 title="Irvine Site Average Scores vs Other TLP Sites"
-                xLabels={['Attitudinal', 'Academic']}
-                preData={[30, 54]}
-                postData={[21.5, 66.5]}
+                xLabels={[student.siteName, 'Other TLP']}
+                preData={[siteData.pre, otherSiteData.pre]}
+                postData={[siteData.post, otherSiteData.post]}
               />
             </div>
           </div>
@@ -286,14 +398,14 @@ const StudentView = () => {
               {
                 id: 1,
                 title: 'Reading Attitude Survey',
-                src: 'links-card__assignment-score-card',
-                link: '/student/1/attitude/',
+                src: 'links-card__reading-attitude-survey',
+                link: `/student/${studentId}/attitude-survey/`,
               },
               {
                 id: 2,
                 title: 'Assessment Score Card',
-                src: 'links-card__reading-attitude-survey',
-                link: '/student/1/reading/',
+                src: 'links-card__assessment-score-card',
+                link: `/student/${studentId}/assessment-card/`,
               },
               {
                 id: 3,
@@ -320,14 +432,14 @@ const StudentView = () => {
           </div>
         </section>
       </div>
-      {/* {showEditAlert ? (
+      {showEditAlert ? (
         <div className="center-block">
           <Alert variant={isAlertSuccess ? 'primary' : 'danger'} className="alert-custom">
             {alertText}
             <CloseButton className="alert-close-btn" onClick={() => setShowEditAlert(false)} />
           </Alert>
-      </div>
-      ) : null} */}
+        </div>
+      ) : null}
     </>
   );
 };
