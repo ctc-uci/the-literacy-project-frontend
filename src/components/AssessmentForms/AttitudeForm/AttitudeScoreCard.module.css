@@ -13,7 +13,6 @@
   margin: 0;
   padding: 0;
   align-self: center;
-  color: var(--color-dark-gray);
 }
 
 .form-header button {
@@ -81,13 +80,13 @@
 .row-notes {
   text-align: left !important;
   vertical-align: top !important;
+  word-break: break-all;
   max-width: 200px;
   min-width: 200px;
   padding: 3px;
 }
 
 .empty-notes {
-  color: var(--color-dark-gray);
   text-align: center !important;
   vertical-align: middle !important;
 }

@@ -25,7 +25,7 @@ const ScoreCardButton = ({ editState, setEditState }) => {
     );
   }
   return (
-    <Button as="button" type="button" variant="primary" onClick={e => setAsEditing(e)}>
+    <Button as="button" type="button" variant="warning" onClick={e => setAsEditing(e)}>
       Edit Scores
     </Button>
   );
