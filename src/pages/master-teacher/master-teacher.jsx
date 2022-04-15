@@ -47,7 +47,7 @@ const MasterTeacherView = ({ cookies }) => {
 
     filteredGroups.forEach(studentGroup => {
       // in case the student group has no students, the students array will be null
-      if (studentGroups.students) {
+      if (studentGroup.students.length > 0) {
         studentGroup.students.forEach(student => {
           students.push(student);
         });
@@ -73,7 +73,7 @@ const MasterTeacherView = ({ cookies }) => {
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     const teacherId = cookies.get(cookieKeys.USER_ID);
 
     async function fetchTeacherData() {
@@ -90,7 +90,7 @@ const MasterTeacherView = ({ cookies }) => {
       setSelectedSchoolYear(initialYear);
       filterSiteData(allStudentData.data, initialSite, initialYear, initialCycle);
     }
-    fetchTeacherData();
+    await fetchTeacherData();
   }, []);
 
   return (
