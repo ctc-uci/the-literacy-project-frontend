@@ -15,23 +15,47 @@ const SiteView = () => {
 
   const [modalIsOpen, setModalOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
+  // const [siteResponseData, setSiteResponseData] = useState([]);
   // THIS IS ALL STUDENTS - LEAVE A GITHUB COMMENT ON THIS (template for teachers and areas)
   // filter by area id?? see if student is in site in the area
-  const [students, setStudents] = useState([]);
+  const [studentResponseData, setStudents] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [schoolYear, setSchoolYear] = useState(['2020-21']);
 
   const areaHeaders = ['Area ID', 'Area Name', 'Active?'];
+  // const areaManagementStudentHeaders = ['Student Name', 'Student Pretest R'];
   const areaData = areaResponseData.map(area => [area.areaId, area.areaName, area.active]);
+  // const siteData = siteResponseData.map(site => [site.siteId, site.siteName, site.addressStreet, site.addressCity, site.addressZip, site.addressState, site.areaId]);
+  // const studentData = studentResponseData.map(student => [
+  //   student.studentId,
+  //   student.firstName,
+  //   student.lastName,
+  //   student.homeTeacher,
+  //   student.pretestR,
+  //   student.posttestR,
+  //   student.pretestA,
+  //   student.posttestA,
+  //   student.siteId,
+  // ]);
   // const studentData = students.map(student => [student.firstName, student.lastName]);
   // console.log(studentData, studentData.length);
+  // console.log('site arr:');
+  // console.log(siteData);
+
+  // console.log('student arr:');
+  // console.log(studentData);
+
   const areaCsvReport = {
     data: areaData,
     headers: areaHeaders,
     filename: 'Areas_Report.csv',
   };
 
-  // console.log(`YUH ${students}`);
+  // const studentCSVReport = {
+  //   data: studentData,
+  //   headers: areaManagementStudentHeaders,
+  //   filename: 'student_data.csv',
+  // }
 
   const addAssociatedSiteToArea = async resData => {
     async function fetchAllSites() {
@@ -41,16 +65,18 @@ const SiteView = () => {
           .then(res => {
             // eslint-disable-next-line no-param-reassign
             resData[ind].area_sites = res.data;
-            // console.log(`RESDATA ${ind} ${resData[ind]}`);
+            // console.log(resData[ind]);
+            // console.log(res);
+            // console.log(resData);
           })
           .catch(() => {});
 
         TLPBackend.get(`/students/area/${resData[ind].areaId}`)
+          // eslint-disable-next-line no-loop-func
           .then(res => {
-            setTimeout(() => {
-              // setStudents([...students, res.data]);
-              setStudents([...students, res.data]);
-            }, 1000);
+            // console.log('inside res');
+            // console.log(res.data);
+            setStudents(res.data.concat(studentResponseData));
           })
           .catch(() => {});
       }
@@ -94,13 +120,20 @@ const SiteView = () => {
         })
         .catch(() => {});
     }
+    async function fetchSites() {
+      await TLPBackend.get('/sites').then(res => {
+        setTimeout(() => {
+          console.log(res.data);
+        }, 1000);
+      });
+    }
 
     // FIX THIS TOO
-    // async function getAllStudentCount() {
+    // async function fetchStudents() {
     //   await TLPBackend.get('/students')
     //     .then(res => {
     //       setTimeout(() => {
-    //         setStudents(res.data);
+    //         studentsByArea(res.data);
     //       }, 1000);
     //     })
     //     .catch(() => {});
@@ -117,7 +150,8 @@ const SiteView = () => {
     }
 
     fetchAreas();
-    // getAllStudentCount();
+    fetchSites();
+    // fetchStudents();
     getAllTeacherCount();
   }, []);
 
@@ -212,6 +246,7 @@ const SiteView = () => {
           </div>
           <div className="data">
             <Button variant="primary">
+              {/* <CSVLink {...studentCSVReport} className="csvLink"> */}
               <CSVLink {...areaCsvReport} className="csvLink">
                 Export to CSV
               </CSVLink>
@@ -221,7 +256,7 @@ const SiteView = () => {
             {/* placeholder for graph */}
             <Card className="graph" />
             <Card className="stats">
-              <p>{students.length} Students</p>
+              <p>{studentResponseData.length} Students</p>
               <p>{teachers.length} Teachers</p>
               <p>4 Sites</p>
             </Card>
