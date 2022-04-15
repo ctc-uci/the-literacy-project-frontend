@@ -51,7 +51,7 @@ const StudentView = () => {
     const tempStudentData = {};
     tempStudentData.studentGrade = student.grade;
     tempStudentData.studentGroup = {
-      name: student.name,
+      name: student.studentGroupName,
       groupId: student.studentGroupId,
     };
     tempStudentData.studentEthnicity = student.ethnicity;
@@ -240,7 +240,7 @@ const StudentView = () => {
                   <tr>
                     <td>{student.grade ? editOptions.gradeOptions[student.grade] : '-'}</td>
                     <td>{student.siteName ? student.siteName : '-'}</td>
-                    <td>{student.name ? student.name : '-'}</td>
+                    <td>{student.studentGroupName ? student.studentGroupName : '-'}</td>
                     <td>{student.ethnicity !== [] ? student.ethnicity.join(', ') : '-'}</td>
                     <td>{student.homeTeacher ? student.homeTeacher : '-'}</td>
                   </tr>
@@ -434,7 +434,7 @@ const StudentView = () => {
       </div>
       {showEditAlert ? (
         <div className="center-block">
-          <Alert variant={isAlertSuccess ? 'primary' : 'danger'} className="alert-custom">
+          <Alert variant={isAlertSuccess ? 'success' : 'danger'} className="alert-custom">
             {alertText}
             <CloseButton className="alert-close-btn" onClick={() => setShowEditAlert(false)} />
           </Alert>
