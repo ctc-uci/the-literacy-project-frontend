@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { TLPBackend, scrollToTop } from '../../common/utils';
 
 import ReturnHeader from '../../common/ReturnHeader/ReturnHeader';
@@ -8,6 +8,7 @@ import styles from './attitude-form-input.module.css';
 
 const AttitudeFormInput = () => {
   const { studentID } = useParams();
+  const navigate = useNavigate();
   const [studentData, setStudentData] = useState({
     firstName: '',
     lastName: '',
@@ -28,6 +29,7 @@ const AttitudeFormInput = () => {
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
+      navigate('/');
     }
   };
 
