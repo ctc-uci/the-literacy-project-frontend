@@ -1,8 +1,9 @@
 import { React, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Button, Dropdown, DropdownButton, InputGroup, FormControl } from 'react-bootstrap';
 import { FaPlus, FaFilter } from 'react-icons/fa';
 import '../../custom.scss';
+import '../../common/vars.css';
 import styles from './ManagementDataSection.module.css';
 import Table from '../Table/Table';
 import InformationPopover from '../Popover/InformationPopover';
@@ -105,7 +106,19 @@ const ManagementDataSection = ({
       <div className={styles['ctrl-group']}>
         <div className={styles['inner-ctrl']}>{displayCreateButton()}</div>
         <div className={styles['inner-ctrl']}>
-          <input type="text" placeholder={`Search ${sectionTitle}`} />
+          <div className={styles.search}>
+            <InputGroup>
+              <FormControl
+                className={styles['search-bar']}
+                placeholder="Search"
+                aria-label="Search"
+                aria-describedby="search-icon"
+              />
+            </InputGroup>
+            <Button variant="primary" style={{ color: 'var(--text-color-white)' }}>
+              Search
+            </Button>
+          </div>
         </div>
         <div style={{ float: 'right' }}>
           <div className={styles['inner-ctrl']}>{displayExportButtonRight()}</div>
