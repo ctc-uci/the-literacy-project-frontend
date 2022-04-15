@@ -21,6 +21,7 @@ export const capitalize = s => {
   return s[0].toUpperCase() + s.slice(1);
 };
 
+// formats school year into startYear-endYear where endYear is one year later
 export const formatSchoolYear = startYear => {
   return `${startYear}-${startYear - 1999}`;
 };
