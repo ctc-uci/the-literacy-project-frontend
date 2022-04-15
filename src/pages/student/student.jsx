@@ -186,7 +186,7 @@ const StudentView = () => {
         <section className={styles['student-return-name-section']}>
           <h2>
             <a href={`/site/${student.siteId}`}>
-              <BsBackspace /> Return to Irvine Site
+              <BsBackspace /> Return to {`${student.siteName}`}
             </a>
           </h2>
           <h1>
@@ -434,7 +434,7 @@ const StudentView = () => {
       </div>
       {showEditAlert ? (
         <div className="center-block">
-          <Alert variant={isAlertSuccess ? 'success' : 'danger'} className="alert-custom">
+          <Alert variant={isAlertSuccess ? 'primary' : 'danger'} className="alert-custom">
             {alertText}
             <CloseButton className="alert-close-btn" onClick={() => setShowEditAlert(false)} />
           </Alert>
