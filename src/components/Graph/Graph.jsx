@@ -40,9 +40,7 @@ const Graph = ({ title, xLabels, preData, postData }) => {
         anchor: 'end',
         offset: -20,
         align: 'start',
-        formatter: value => {
-          return `${value.toFixed(2)}%`; // return percentage rounded to 2 decimal places
-        },
+        formatter: value => (value ? `${value?.toFixed(2)}%` : null), // return percentage rounded to 2 decimal places
       },
     },
     scales: {
