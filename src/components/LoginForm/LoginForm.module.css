@@ -1,36 +1,53 @@
-/* UNIVERSAL FONT SETTINGS */
-/* button,
+.button,
 .title,
-.logLabel,
-a {
-  color: white !important;
-  font-family: Calibri;
+.log-label {
+  color: white;
+  font-family: 'Calibri';
   font-style: normal;
-} */
+}
+
+.logo-wrapper {
+  margin-top: -100px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.logo {
+  image-rendering: -moz-crisp-edges;
+  image-rendering:   -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+  width: 40%;
+  height: 40%;
+  padding-bottom: 50px;
+}
 
 /* ADMIN/TEACHER USER TABS */
-.userTabs {
+.user-tabs {
   display: flex;
   justify-content: center;
 }
-button {
+/* button {
   font-weight: normal;
   font-size: 20px;
   line-height: 30px;
   border: none;
   padding: 8px 16px 8px 16px;
-}
-#adminButton {
+} */
+#admin-button {
   background: #1a4767;
   border-radius: 4px 0px 0px 4px;
 }
-#teacherButton {
+#teacher-button {
   background: #6a91bc;
   border-radius: 0px 4px 4px 0px;
 }
 
 /* BODY */
-.formWrapper {
+.form-wrapper {
+  background-color: #003459;
   border-radius: 20px;
 }
 
@@ -40,7 +57,7 @@ button {
   line-height: 67px;
   text-align: center;
   letter-spacing: -0.02em;
-
+  color: #fffafa;
   padding: 45px 0px 15px 0px;
 }
 
@@ -54,12 +71,14 @@ button {
 }
 
 /* LABELS AND INPUTS */
-.emailInput,
-.passwordInput,
-.rememberMeBox {
+.email-input,
+.password-input,
+.remember-me-box {
   width: 60%;
 }
-label {
+
+/* label, */
+.log-label {
   font-weight: normal;
   font-size: 16px;
   line-height: 24px;
@@ -72,9 +91,7 @@ label {
   box-sizing: border-box;
   border-radius: 4.8px;
   height: 32px;
-
   width: 100%;
-
   font-family: 'Calibri';
 }
 .loginForm #eyeIcon {
@@ -86,16 +103,22 @@ label {
 }
 
 /* CHECKBOX */
-.rememberMeBox {
+.remember-me-box {
   padding-bottom: 26px;
 }
-#rememberBox {
-  margin: 0px 4px 0px 0px;
+
+.remember-me-text {
+  position: relative;
+  top: -12px;
+}
+
+#remember-box {
+  margin: 0px 10px 0px 0px;
 }
 
 /* LOGIN BUTTON */
-#submitButton {
-  padding: 8px 16px;
+#submit-button {
+  padding: 5px 16px;
   margin-bottom: 7px;
   width: 40%;
   border-radius: 4.8px;
@@ -115,7 +138,7 @@ label {
 }
 
 /* FORGOT PASSWORD AND NO ACCOUNT LINKS */
-a {
+#forgot-password {
   font-weight: normal;
   font-size: 16px;
   line-height: 24px;
@@ -129,76 +152,13 @@ a {
 
 /* MOBILE VERSION RESIZE */
 @media only screen and (max-width: 575px) {
-  .formWrapper {
+  .form-wrapper {
     width: 80%;
   }
-  .loginFormWrapper {
+  .login-form-wrapper {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
   }
 }
-
-/* ORIGINAL COMPONENT CSS, BEFORE STYLING FROM WIREFRAME
-
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@700&display=swap');
-
-h1 {
-  color: white;
-  font-family: 'Source Sans Pro';
-  font-style: normal;
-  font-weight: bold;
-  font-size: 34px;
-  line-height: 41px;
-  text-align: center;
-  letter-spacing: -0.02em;
-  margin-bottom: 30px;
-}
-
-#email,
-#password {
-  background: #ffffff;
-  border: 1px solid #ced4da;
-  box-sizing: border-box;
-  border-radius: 4.8px;
-  margin-bottom: 20px;
-  width: 255px;
-  height: 46px;
-}
-
-.loginFormWrapper {
-  position: absolute;
-  left: 0%;
-  right: 0%;
-  top: 9.25%;
-  bottom: 0%;
-  width: 417px;
-  height: 412px;
-  background-color: #444444;
-  border-radius: 20px;
-  margin: auto;
-  display: flex;
-}
-
-.loginForm {
-  margin: auto;
-}
-
-form #eyeIcon {
-  position: absolute;
-  margin-left: -20px;
-  cursor: pointer;
-}
-
-#forgotPassword {
-  font-family: 'Source Sans Pro';
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12.8px;
-  color: #a5a5a5;
-}
-
-#submitButton {
-  width: 173px;
-  height: 47px;
-} */

@@ -5,24 +5,28 @@ import PropTypes from 'prop-types';
 import styles from './AreaDropdown.module.css';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
+import EditAreaModal from '../EditAreaModal/EditAreaModal';
 
-function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
+function AreaDropdown({ areaId, areaActive, areaName, areaStats, areaSites }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [editAreaModalIsOpen, setEditAreaModalIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      className={styles['area-dropdown']}
-      onClick={toggleDropdown}
-      onKeyDown={() => {}}
-    >
+    <div className={styles['area-dropdown']}>
       {isOpen ? (
-        <div className={styles['area-dropdown__open-container']}>
+        <div
+          className={styles['area-dropdown__open-container']}
+          onClick={toggleDropdown}
+          role="button"
+          tabIndex={0}
+          onKeyDown={event => {
+            if (event.key === 'Enter') toggleDropdown();
+          }}
+        >
           <div className={styles['area-dropdown__open__area_stats']}>
             <div className={styles['area-dropdown__open__area_stats__section']}>
               <BsPeople className={styles['area-dropdown__open__area_stats__section-icon']} />
@@ -59,8 +63,8 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
                   return (
                     <Link
                       className={styles['area-dropdown__open__site-link']}
-                      to={`/site/${site.site_id}`}
-                      key={`site-${site.site_id}`}
+                      to={`/site/${site.siteId}`}
+                      key={`site-${site.siteId}`}
                     >
                       {site.siteName}
                     </Link>
@@ -70,29 +74,47 @@ function AreaDropdown({ areaId, areaName, areaStats, areaSites }) {
             </div>
           </div>
           <div className={styles['area-dropdown__open__edit-sites-link']}>
-            <Link to={`/site/${areaId}/edit`}>VIEW SITES</Link>
+            <Link to={`/area/${areaId}`}>VIEW ALL</Link>
           </div>
         </div>
       ) : (
         <div className={styles['area-dropdown__closed_container']}>
-          <div className={styles['area-dropdown__closed-area-name-wrapper']}>
+          <BsPencil
+            role="button"
+            onClick={() => setEditAreaModalIsOpen(true)}
+            tabIndex={0}
+            onKeyDown={event => {
+              if (event.key === 'Enter') setEditAreaModalIsOpen(true);
+            }}
+          />
+          <div
+            className={styles['area-dropdown__closed-area-name-wrapper']}
+            onClick={toggleDropdown}
+            role="button"
+            tabIndex={0}
+            onKeyDown={event => {
+              if (event.key === 'Enter') toggleDropdown();
+            }}
+          >
             <p className={styles['area-dropdown__closed-area-name']}>{areaName}</p>
-            <Link
-              to={`/site/${areaId}/edit`}
-              className={styles['area-dropdown__closed-area-edit-icon']}
-            >
-              <BsPencil />
-            </Link>
+            <BsFillCaretRightFill className={styles['area-dropdown__closed-area-caret']} />
           </div>
-          <BsFillCaretRightFill className={styles['area-dropdown__closed-area-caret']} />
         </div>
       )}
+      <EditAreaModal
+        areaId={areaId}
+        areaActive={areaActive}
+        areaName={areaName}
+        isOpen={editAreaModalIsOpen}
+        setIsOpen={setEditAreaModalIsOpen}
+      />
     </div>
   );
 }
 
 AreaDropdown.defaultProps = {
   areaId: null,
+  areaActive: false,
   areaName: '',
   areaStats: {},
   areaSites: [],
@@ -101,6 +123,7 @@ AreaDropdown.defaultProps = {
 AreaDropdown.propTypes = {
   areaId: PropTypes.number,
   areaName: PropTypes.string,
+  areaActive: PropTypes.bool,
   // areaStats: PropTypes.arrayOf(
   //   PropTypes.shape({
   //     student_count: PropTypes.number,
