@@ -4,12 +4,23 @@ import { TLPBackend, scrollToTop } from '../../common/utils';
 
 import ReturnHeader from '../../common/ReturnHeader/ReturnHeader';
 import AssessmentScoreCard from '../../components/AssessmentCard/AssessmentScoreCard';
-import ImprovementGraph from '../../components/ImprovementGraph/ImprovementGraph';
+import Graph from '../../components/Graph/Graph';
 import styles from './assessment-scorecard-input.module.css';
+
+// eslint-disable-next-line react/prop-types, no-unused-vars
+const ImprovementGraph = ({ studentData }) => {
+  // const MAX_SCORE = 93;
+
+  // scoresArray.reduce((tot, a) => tot + a, 0)) / MAX_SCORE) * 100;
+  return <Graph xLabels={['Attitudinal', 'Academic']} preData={[10, 10]} postData={[20, 20]} />;
+};
 
 const AssessmentScorecardInput = () => {
   const { studentID } = useParams();
-  const [studentName, setStudentName] = useState('');
+  const [studentData, setStudentData] = useState({
+    firstName: '',
+    lastName: '',
+  });
   const [preTestData, setPreTestData] = useState({
     notes: [],
     scores: [],
@@ -22,7 +33,7 @@ const AssessmentScorecardInput = () => {
   const fetchStudentScores = async () => {
     try {
       const res = await TLPBackend.get(`./students/${studentID}`);
-      setStudentName(`${res.data.lastName}, ${res.data.firstName}`);
+      setStudentData(res.data);
       setPreTestData({
         scores: res.data.pretestA,
         notes: res.data.pretestANotes,
@@ -53,7 +64,7 @@ const AssessmentScorecardInput = () => {
   return (
     <div className={styles['form-wrapper']}>
       <ReturnHeader
-        returnText={`Return to ${studentName}`}
+        returnText={`Return to ${studentData?.lastName}, ${studentData?.firstName}`}
         returnLink="/"
         rightText="Assessment Score Card"
       />
@@ -70,8 +81,9 @@ const AssessmentScorecardInput = () => {
         tableData={postTestData}
         setTableData={data => setStudentScores(setPostTestData, 'posttestA', data)}
       />
+      <h3 className={styles['graph-header']}>Improvement</h3>
       <div className={styles['improvement-graph']}>
-        <ImprovementGraph data={{ preTestData, postTestData }} />
+        <ImprovementGraph studentData={studentData} />
       </div>
       <div
         onClick={() => scrollToTop()}

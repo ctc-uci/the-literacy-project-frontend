@@ -4,7 +4,6 @@ import { TLPBackend, scrollToTop } from '../../common/utils';
 
 import ReturnHeader from '../../common/ReturnHeader/ReturnHeader';
 import AttitudeScoreCard from '../../components/AttitudeForm/AttitudeScoreCard';
-import ImprovementGraph from '../../components/ImprovementGraph/ImprovementGraph';
 import styles from './attitude-form-input.module.css';
 
 const AttitudeFormInput = () => {
@@ -69,9 +68,6 @@ const AttitudeFormInput = () => {
         tableData={postTestData}
         setTableData={data => setStudentData(setPostTestData, 'posttestR', data)}
       />
-      <div className={styles['improvement-graph']}>
-        <ImprovementGraph data={{ preTestData, postTestData }} />
-      </div>
       <div
         onClick={() => scrollToTop()}
         onKeyDown={() => scrollToTop()}

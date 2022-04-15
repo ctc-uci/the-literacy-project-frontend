@@ -56,7 +56,7 @@ const AssessmentRow = ({ editState, formName, left, right }) => {
         {left?.testNumber}. {left?.question}
       </td>
       <td
-        className={`${styles['row-notes']} ${left.note.length === 0 ? styles['empty-notes'] : ''}`}
+        className={`${styles['row-notes']} ${left.note?.length === 0 ? styles['empty-notes'] : ''}`}
       >
         {notesInput(left.note, 'left', editState, formName, left.testNumber)}
       </td>
@@ -67,7 +67,9 @@ const AssessmentRow = ({ editState, formName, left, right }) => {
         {right?.testNumber}. {right?.question}
       </td>
       <td
-        className={`${styles['row-notes']} ${right.note.length === 0 ? styles['empty-notes'] : ''}`}
+        className={`${styles['row-notes']} ${
+          right.note?.length === 0 ? styles['empty-notes'] : ''
+        }`}
       >
         {notesInput(right.note, 'right', editState, formName, right.testNumber)}
       </td>
