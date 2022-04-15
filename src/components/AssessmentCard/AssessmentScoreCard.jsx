@@ -109,7 +109,6 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
   }, [isSubmitting]);
 
   const onSubmit = async data => {
-    console.log(data);
     if (!isDirty) {
       setEditState(!Object.values(tableData).some(v => v) ? 'newInput' : 'editExisting');
       return;
@@ -142,7 +141,7 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
         </div>
 
         <table className={styles['scorecard-table']}>
-          <tbody styles={{ overflow: 'hidden' }}>
+          <tbody>
             <tr>
               <th>Game Name</th>
               <th>Phonic Skills</th>

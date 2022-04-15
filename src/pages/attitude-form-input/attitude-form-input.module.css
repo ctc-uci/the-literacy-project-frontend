@@ -11,9 +11,17 @@
   overflow-x: hidden;
 }
 
-.improvement-graph {
+.graph-header {
   width: 100%;
-  margin-bottom: 40px;
+  padding-top: 16px;
+  color: var(--color-dark-gray);
+  border-top: 1px solid var(--color-dark-gray);
+}
+
+.improvement-graph {
+  width: 550px;
+  height: 450px;
+  margin: -20px auto 40px auto;
 }
 
 .top-button {

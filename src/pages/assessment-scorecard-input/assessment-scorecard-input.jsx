@@ -8,7 +8,6 @@ import AssessmentScoreCard from '../../components/AssessmentCard/AssessmentScore
 import Graph from '../../components/Graph/Graph';
 import styles from './assessment-scorecard-input.module.css';
 
-// eslint-disable-next-line react/prop-types, no-unused-vars
 const ImprovementGraph = ({ studentData }) => {
   const MAX_ASSESSMENT_SCORE = 93;
   const MAX_ATTITUDE_SCORE = 80;
@@ -46,26 +45,17 @@ const AssessmentScorecardInput = () => {
     posttestRNotes: [],
   });
 
-  const fetchStudentScores = async () => {
+  const fetchStudentData = async () => {
     try {
       const res = await TLPBackend.get(`./students/${studentID}`);
       setStudentData(res?.data);
-      // setPreTestData({
-      //   scores: res.data.pretestA,
-      //   notes: res.data.pretestANotes,
-      // });
-      // setPostTestData({
-      //   scores: res.data.posttestA,
-      //   notes: res.data.posttestANotes,
-      // });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
     }
   };
 
-  const setStudentScores = async (scoreName, data) => {
-    console.log(data);
+  const updateStudentData = async (scoreName, data) => {
     const res = await TLPBackend.put(`./students/update-scores/${studentID}`, data);
     setStudentData({
       ...studentData,
@@ -75,7 +65,7 @@ const AssessmentScorecardInput = () => {
   };
 
   useEffect(async () => {
-    fetchStudentScores();
+    fetchStudentData();
   }, []);
 
   return (
@@ -93,7 +83,7 @@ const AssessmentScorecardInput = () => {
           scores: studentData.pretestA,
           notes: studentData.pretestANotes,
         }}
-        setTableData={data => setStudentScores('pretestA', data)}
+        setTableData={data => updateStudentData('pretestA', data)}
       />
       <AssessmentScoreCard
         name="posttestA"
@@ -102,7 +92,7 @@ const AssessmentScorecardInput = () => {
           scores: studentData.posttestA,
           notes: studentData.posttestANotes,
         }}
-        setTableData={data => setStudentScores('posttestA', data)}
+        setTableData={data => updateStudentData('posttestA', data)}
       />
       <h3 className={styles['graph-header']}>Improvement</h3>
       <div className={styles['improvement-graph']}>
