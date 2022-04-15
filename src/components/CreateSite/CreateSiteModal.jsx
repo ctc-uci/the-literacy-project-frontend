@@ -2,15 +2,43 @@ import { React } from 'react';
 import PropTypes from 'prop-types';
 import './CreateSiteModal.css';
 import { Container, Col, Row } from 'react-bootstrap';
-// Forms
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
+import states from 'states-us';
+import Select from 'react-select';
 import { TLPBackend } from '../../common/utils';
 
 const nameContainsSpace = name => {
   return name.indexOf(' ') !== -1;
+};
+
+const s = states.filter(x => !x.territory).map(x => x.abbreviation);
+const options = s.map(x => ({ label: x, value: x }));
+
+const styles = {
+  control: (provided, state) => ({
+    ...provided,
+    minHeight: '37px',
+    height: '37px',
+    boxShadow: state.isFocused ? null : null,
+  }),
+  valueContainer: provided => ({
+    ...provided,
+    height: '30px',
+    padding: '0 6px',
+  }),
+  input: provided => ({
+    ...provided,
+    margin: '0px',
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+  indicatorsContainer: provided => ({
+    ...provided,
+    height: '30px',
+  }),
 };
 
 const schema = yup
@@ -84,7 +112,6 @@ const CreateSiteModal = ({ areaId }) => {
     }
 
     // send form data to server
-    console.log(formData);
     await TLPBackend.post('/sites', formData, {
       headers: {
         'Content-Type': 'application/json',
@@ -107,38 +134,59 @@ const CreateSiteModal = ({ areaId }) => {
             <div className="input-area">
               <Col md={5}>
                 <label htmlFor="site-name">
-                  Name
+                  Name<span style={{ color: '#e32' }}>*</span>
                   <input
                     type="text"
                     className="form-control"
                     name="siteName"
-                    placeholder="placeholder"
+                    placeholder="i.e. Lakeview Middle School"
                     {...register('siteName')}
                   />
                 </label>
                 <label htmlFor="address-street">
-                  Address Line
+                  Street Address<span style={{ color: '#e32' }}>*</span>
                   <input
                     type="text"
                     className="form-control"
                     name="addressStreet"
-                    placeholder="placeholder"
+                    placeholder="ie 123 Playa Dr"
                     {...register('addressStreet')}
+                  />
+                </label>
+                <label htmlFor="apt-suite-etc">
+                  Apt, suite, etc
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="aptSuiteEtc"
+                    placeholder="Apt 208"
+                    {...register('aptSuiteEtc')}
                   />
                 </label>
                 <div className="input-fields-coalesce-wrapper">
                   <label htmlFor="address-city">
-                    City
+                    City<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="text"
                       className="addr-small-field form-control"
                       name="addressCity"
-                      placeholder="placeholder"
+                      placeholder="Irvine"
                       {...register('addressCity')}
                     />
                   </label>
+                  <label htmlFor="address-city">
+                    State<span style={{ color: '#e32' }}>*</span>
+                    <Select
+                      className="states"
+                      styles={styles}
+                      components={{ IndicatorSeparator: () => null }}
+                      placeholder="State"
+                      options={options}
+                      {...register('state')}
+                    />
+                  </label>
                   <label htmlFor="address-zip">
-                    ZIP Code
+                    Zip Code<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="number"
                       // ZIP Codes are <= 9 digits
@@ -150,26 +198,37 @@ const CreateSiteModal = ({ areaId }) => {
                       maxLength={9}
                       className="form-control addr-small-field"
                       name="address-zip"
-                      placeholder="placeholder"
+                      placeholder="ie 92614"
                       {...register('addressZip')}
                     />
                   </label>
                 </div>
               </Col>
             </div>
-
             <h3 className="required-subtitles">Primary Contact</h3>
             <div className="input-area">
               <Row>
-                <Col lg={5}>
+                <Col lg={3}>
                   <label htmlFor="primary-name">
-                    Name
+                    First Name<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="text"
                       className="form-control"
                       name="primaryName"
-                      placeholder="placeholder"
-                      {...register('primaryName')}
+                      placeholder="First Name"
+                      {...register('primaryFirstName')}
+                    />
+                  </label>
+                </Col>
+                <Col lg={3}>
+                  <label htmlFor="primary-name">
+                    Last Name<span style={{ color: '#e32' }}>*</span>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="primaryName"
+                      placeholder="Last Name"
+                      {...register('primaryLastName')}
                     />
                   </label>
                 </Col>
@@ -180,7 +239,7 @@ const CreateSiteModal = ({ areaId }) => {
                       type="text"
                       className="form-control"
                       name="primaryTitle"
-                      placeholder="placeholder"
+                      placeholder="i.e. Principal, Sir"
                       {...register('primaryTitle')}
                     />
                   </label>
@@ -188,17 +247,17 @@ const CreateSiteModal = ({ areaId }) => {
               </Row>
               <Col md={5}>
                 <label htmlFor="primary-email">
-                  Email
+                  Email<span style={{ color: '#e32' }}>*</span>
                   <input
                     type="text"
                     className="form-control"
                     name="primaryEmail"
-                    placeholder="placeholder"
+                    placeholder="email@gmail.com"
                     {...register('primaryEmail')}
                   />
                 </label>
                 <label htmlFor="primary-phone">
-                  Phone Number
+                  Phone Number<span style={{ color: '#e32' }}>*</span>
                   <input
                     type="number"
                     // Phone #s are <= 10 digits
@@ -210,25 +269,36 @@ const CreateSiteModal = ({ areaId }) => {
                     maxLength={10}
                     className="form-control"
                     name="primaryPhone"
-                    placeholder="placeholder"
+                    placeholder="(123)333241"
                     {...register('primaryPhone')}
                   />
                 </label>
               </Col>
             </div>
-
             <h3 className="optional-subtitles">Secondary Contact</h3>
             <div className="input-area">
               <Row>
-                <Col lg={5}>
+                <Col lg={3}>
                   <label htmlFor="secondary-name">
-                    Name
+                    First Name
                     <input
                       type="text"
                       className="form-control"
                       name="secondaryName"
-                      placeholder="placeholder"
-                      {...register('secondaryName')}
+                      placeholder="First Name"
+                      {...register('secondaryFirstName')}
+                    />
+                  </label>
+                </Col>
+                <Col lg={3}>
+                  <label htmlFor="secondary-name">
+                    Last Name
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="secondaryName"
+                      placeholder="Last Name"
+                      {...register('secondaryLastName')}
                     />
                   </label>
                 </Col>
@@ -239,7 +309,7 @@ const CreateSiteModal = ({ areaId }) => {
                       type="text"
                       className="form-control"
                       name="secondaryTitle"
-                      placeholder="placeholder"
+                      placeholder="i.e. Principal, Sir"
                       {...register('secondaryTitle')}
                     />
                   </label>
@@ -252,7 +322,7 @@ const CreateSiteModal = ({ areaId }) => {
                     type="text"
                     className="form-control"
                     name="secondaryEmail"
-                    placeholder="placeholder"
+                    placeholder="email@gmail.com"
                     {...register('secondaryEmail')}
                   />
                 </label>
@@ -268,23 +338,21 @@ const CreateSiteModal = ({ areaId }) => {
                       }
                     }}
                     name="secondaryPhone"
-                    placeholder="placeholder"
+                    placeholder="(123)333241"
                     {...register('secondaryPhone')}
                   />
                 </label>
               </Col>
             </div>
-
             <h3 className="optional-subtitles">Notes</h3>
             <label htmlFor="notes" className="input-area">
               <textarea
                 className="form-control"
-                placeholder="placeholder"
+                placeholder="notes"
                 name="notes"
                 {...register('notes')}
               />
             </label>
-
             <button type="submit" className="btn save-btn">
               Save
             </button>

@@ -74,10 +74,15 @@ label {
 
 .input-fields-coalesce-wrapper {
   display: flex;
+  width: 470px;
   justify-content: space-between;
 }
 
 .addr-small-field {
   width: 90%;
   margin-right: 10%;
+}
+
+.states {
+  padding-top: 4px;
 }
