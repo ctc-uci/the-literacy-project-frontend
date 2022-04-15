@@ -174,7 +174,7 @@ const CreateSiteModal = ({ areaId }) => {
                       {...register('addressCity')}
                     />
                   </label>
-                  <label htmlFor="address-city">
+                  <label htmlFor="address-state">
                     State<span style={{ color: '#e32' }}>*</span>
                     <Select
                       className="states"
