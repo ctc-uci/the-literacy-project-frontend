@@ -3,47 +3,13 @@ import PropTypes from 'prop-types';
 import { useForm, FormProvider, useFormState, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import Button from 'react-bootstrap/Button';
-import { IoCheckmarkDoneOutline } from 'react-icons/io5';
 
 import AssessmentRow from './AssessmentRow';
-import CommonAlert from '../../common/CommonAlert/CommonAlert';
+import ScoreCardButton from '../ScoreCardButton';
+import CommonAlert from '../../../common/CommonAlert/CommonAlert';
 
 import styles from './AssessmentScoreCard.module.css';
 import rowData from './rowData';
-
-const ScoreCardButton = ({ editState, setEditState }) => {
-  const setAsEditing = e => {
-    e.preventDefault();
-    setEditState('editing');
-  };
-  if (editState === 'newInput') {
-    return (
-      <Button as="button" type="button" variant="warning" onClick={e => setAsEditing(e)}>
-        + Input Scores
-      </Button>
-    );
-  }
-  if (editState === 'editing') {
-    return (
-      <Button as="button" type="submit" variant="success" className={styles['submit-score-button']}>
-        <IoCheckmarkDoneOutline className={styles['checkmark-icon']} />
-        Submit Scores
-      </Button>
-    );
-  }
-  return (
-    <Button
-      as="button"
-      type="button"
-      variant="primary"
-      className={styles['edit-score-button']}
-      onClick={e => setAsEditing(e)}
-    >
-      Edit Scores
-    </Button>
-  );
-};
 
 const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
   // Edit states: newInput, editing, editExisting
@@ -68,12 +34,6 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
     },
     resolver: yupResolver(schema),
     delayError: 750,
-    // resolver: async (data, context, options) => {
-    //   // you can debug your validation schema here
-    //   console.log('formData', data);
-    //   console.log('validation result', await yupResolver(schema)(data, context, options));
-    //   return yupResolver(schema)(data, context, options);
-    // },
   });
 
   const { isSubmitting, errors, isDirty } = useFormState({
@@ -172,11 +132,6 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
       </CommonAlert>
     </FormProvider>
   );
-};
-
-ScoreCardButton.propTypes = {
-  editState: PropTypes.string.isRequired,
-  setEditState: PropTypes.func.isRequired,
 };
 
 AssessmentScoreCard.propTypes = {

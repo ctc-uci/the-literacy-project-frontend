@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useFormContext } from 'react-hook-form';
+
 import styles from './AssessmentScoreCard.module.css';
 
 const notesInput = (note, editState, formName, fieldIndex) => {

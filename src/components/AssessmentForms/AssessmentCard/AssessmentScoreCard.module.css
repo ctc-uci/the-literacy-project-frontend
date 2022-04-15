@@ -1,4 +1,4 @@
-@import '../../common/vars.css';
+@import '../../../common/vars.css';
 .form-header {
   width: 100%;
   display: flex;
