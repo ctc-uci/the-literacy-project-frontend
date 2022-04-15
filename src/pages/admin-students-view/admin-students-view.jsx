@@ -16,7 +16,19 @@ const AdminStudentsView = () => {
       headerPopover: '',
     },
     {
+      headerTitle: 'Home Teacher',
+      headerPopover: '',
+    },
+    {
       headerTitle: 'Ethnicity',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'Gender',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'Grade',
       headerPopover: '',
     },
     {
@@ -70,12 +82,34 @@ const AdminStudentsView = () => {
 
   const tbodyData = [];
   studentList.forEach(studentObj => {
-    const { firstName, lastName, siteName, ethnicity, areaName, year, cycle } = studentObj;
+    const {
+      firstName,
+      lastName,
+      siteName,
+      ethnicity,
+      areaName,
+      year,
+      cycle,
+      homeTeacher,
+      gender,
+      grade,
+    } = studentObj;
     const eth = formatEthnicity(ethnicity);
     const [site, area, schoolYearAndCycle] = formatSiteInfo(siteName, areaName, year, cycle);
+    const ht = homeTeacher || 'Not recorded';
     tbodyData.push({
       id: studentObj.userId,
-      items: [`${lastName}, ${firstName}`, site, eth, area, schoolYearAndCycle, 'View Scores'],
+      items: [
+        `${lastName}, ${firstName}`,
+        site,
+        ht,
+        eth,
+        gender,
+        grade,
+        area,
+        schoolYearAndCycle,
+        'View Scores',
+      ],
     });
   });
 
