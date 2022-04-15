@@ -81,9 +81,6 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
       [`${name}Notes`]: notes,
     };
 
-    // eslint-disable-next-line no-console
-    console.log(formattedData);
-
     setEditState('editExisting');
     setTableData(formattedData);
     setAlertState({
@@ -137,7 +134,10 @@ const AssessmentScoreCard = ({ name, headerText, tableData, setTableData }) => {
 AssessmentScoreCard.propTypes = {
   name: PropTypes.string.isRequired,
   headerText: PropTypes.string.isRequired,
-  tableData: PropTypes.arrayOf(Number).isRequired,
+  tableData: PropTypes.shape({
+    scores: PropTypes.arrayOf(PropTypes.number),
+    notes: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
   setTableData: PropTypes.func.isRequired,
 };
 

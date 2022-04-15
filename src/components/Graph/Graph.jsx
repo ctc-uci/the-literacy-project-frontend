@@ -87,8 +87,12 @@ const Graph = ({ title, xLabels, preData, postData }) => {
   return <Bar options={options} data={data} />;
 };
 
+Graph.defaultProps = {
+  title: '',
+};
+
 Graph.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   xLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
   preData: PropTypes.arrayOf(PropTypes.number).isRequired,
   postData: PropTypes.arrayOf(PropTypes.number).isRequired,

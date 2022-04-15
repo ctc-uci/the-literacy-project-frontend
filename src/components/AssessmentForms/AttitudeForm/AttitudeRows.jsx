@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/tabindex-no-positive */
-/* eslint-disable no-unused-vars */
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useFormContext } from 'react-hook-form';
@@ -47,11 +46,9 @@ const scoreInput = (playerScore, column, editState, formName, testNumber) => {
   return playerScore;
 };
 
-// eslint-disable-next-line react/prop-types
 const AssessmentRow = ({ editState, formName, left, right }) => {
   return (
     <tr className={styles['attitude-row']}>
-      {/* <pre>{JSON.stringify(left, null, 2)}</pre> */}
       <td className={styles.question}>
         {left?.testNumber}. {left?.question}
       </td>
@@ -90,10 +87,9 @@ const zipData = data => {
 const AssessmentRows = ({ formName, formFields, editState }) => {
   const zipped = useMemo(() => zipData(formFields), [formFields]);
 
-  return zipped.map((row, rowIndex) => (
+  return zipped.map(row => (
     <AssessmentRow
-      // eslint-disable-next-line react/no-array-index-key
-      key={rowIndex}
+      key={row.id}
       className={styles['assessment-row']}
       editState={editState}
       formName={formName}
@@ -103,14 +99,15 @@ const AssessmentRows = ({ formName, formFields, editState }) => {
 };
 
 AssessmentRow.propTypes = {
-  editState: PropTypes.func.isRequired,
-  left: PropTypes.objectOf({
+  editState: PropTypes.string.isRequired,
+  formName: PropTypes.string.isRequired,
+  left: PropTypes.shape({
     testNumber: PropTypes.number,
     question: PropTypes.string,
     playerScore: PropTypes.number,
     note: PropTypes.string,
   }).isRequired,
-  right: PropTypes.objectOf({
+  right: PropTypes.shape({
     testNumber: PropTypes.number,
     question: PropTypes.string,
     playerScore: PropTypes.number,
@@ -121,7 +118,7 @@ AssessmentRow.propTypes = {
 AssessmentRows.propTypes = {
   formName: PropTypes.string.isRequired,
   formFields: PropTypes.arrayOf(PropTypes.object).isRequired,
-  editState: PropTypes.bool.isRequired,
+  editState: PropTypes.string.isRequired,
 };
 
 export default AssessmentRows;
