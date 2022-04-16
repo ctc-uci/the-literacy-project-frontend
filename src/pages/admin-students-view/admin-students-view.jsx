@@ -59,7 +59,7 @@ const AdminStudentsView = () => {
 
   const formatSiteInfo = (siteName, areaName, year, cycle) => {
     const site = siteName || 'No assigned site';
-    const area = areaName || 'Np assigned area';
+    const area = areaName || 'No assigned area';
     let schoolYearAndCycle = year ? formatSchoolYear(year) : 'N/A';
     schoolYearAndCycle = cycle ? `${schoolYearAndCycle}/Cycle ${cycle}` : 'N/A';
 
@@ -104,7 +104,7 @@ const AdminStudentsView = () => {
         site,
         ht,
         eth,
-        gender,
+        capitalize(gender),
         grade,
         area,
         schoolYearAndCycle,
