@@ -37,7 +37,6 @@ ReactDOM.render(
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/recover-password" exact element={<LoginRecoverPasswordView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
-          <Route path="/student-groups/:groupId" exact element={<StudentGroupView />} />
           <Route
             path="/settings"
             element={
@@ -100,10 +99,35 @@ ReactDOM.render(
           />
           <Route
             path="/student/:studentID/assessment-card"
-            element={<AssessmentScorecardInput />}
+            element={
+              <ProtectedRoute
+                Component={AssessmentScorecardInput}
+                redirectPath="/access-denied"
+                roles={[USER_ROLE]}
+              />
+            }
           />
-          <Route path="/student/:studentID/attitude-survey" element={<AttitudeFormInput />} />
-          <Route path="/area-details" element={<AreaDetails />} />
+          <Route
+            path="/student/:studentID/attitude-survey"
+            element={
+              <ProtectedRoute
+                Component={AttitudeFormInput}
+                redirectPath="/access-denied"
+                roles={[USER_ROLE]}
+              />
+            }
+          />
+          <Route
+            path="/student-groups/:groupId"
+            exact
+            element={
+              <ProtectedRoute
+                Component={StudentGroupView}
+                redirectPath="/access-denied"
+                roles={[USER_ROLE]}
+              />
+            }
+          />
           {/* <Route path="/area" render={() => Navigate('/area-management')} /> */}
           {/* <Route path="/area/:areaId" element={<AreaDetails />} /> */}
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
