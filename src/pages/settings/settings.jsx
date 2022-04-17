@@ -1,17 +1,18 @@
 import '../../custom.scss';
-import './settings.css';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { instanceOf } from 'prop-types';
+import styles from './settings.module.css';
 import TeacherView from './teacherView';
 import AdminView from './adminView';
 import { logout, useNavigate } from '../../common/auth/auth_utils';
-import { Cookies, withCookies } from '../../common/auth/cookie_utils';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
+import { TLPBackend, formatPhoneNumber, capitalize } from '../../common/utils';
+import { Cookies, withCookies, cookieKeys } from '../../common/auth/cookie_utils';
+import { AUTH_ROLES } from '../../common/config';
 
 const SettingsView = ({ cookies }) => {
-  // Placeholders, replace later with backend call
   const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState({});
   const [errorMessage, setErrorMessage] = useState();
 
   const handleLogOut = async () => {
@@ -22,53 +23,48 @@ const SettingsView = ({ cookies }) => {
     }
   };
 
-  const name = 'LastName FirstName';
-  const email = 'firstname.lastname@gmail.com';
-  const password = '********';
-  const district = 'Irvine';
-  const active = true;
-  const isTeacher = true;
-  // TODO: accessibility toggle
+  const role = cookies.get(cookieKeys.POSITION);
+  const userId = Number(cookies.get(cookieKeys.USER_ID));
+
+  useEffect(async () => {
+    let res;
+    if (role === AUTH_ROLES.ADMIN_ROLE) {
+      res = await TLPBackend.get(`/admins/${Number(userId)}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } else {
+      res = await TLPBackend.get(`/teachers/${Number(userId)}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }
+    if (res.status === 200) {
+      setUserInfo({
+        fullName: `${res.data.firstName} ${res.data.lastName}`,
+        email: res.data.email,
+        phoneNumber: formatPhoneNumber(res.data.phoneNumber),
+        status: capitalize(res.data.active),
+      });
+    } else {
+      setErrorMessage(errorMessage);
+    }
+  }, []);
   return (
     <div>
       <NavigationBar />
-      <div className="setting-view container">
-        <h1 className="title">Settings</h1>
-        <center>
-          <div className="profile-pic">{/* Insert image of profile picture */}</div>
-        </center>
-        <h3 className="offset-md-1 sub-title">Account Information</h3>
-
-        {isTeacher ? (
-          <TeacherView name={name} email={email} active={active} district={district} />
+      <div className={styles['setting-view']}>
+        <h1 id={styles['settings-title']}>Settings</h1>
+        {role === AUTH_ROLES.ADMIN_ROLE ? (
+          <AdminView userInfo={userInfo} />
         ) : (
-          <AdminView name={name} email={email} status={active} />
+          <TeacherView userInfo={userInfo} />
         )}
-
-        <h3 className="offset-md-1 subtitle">Password</h3>
-        <div className="col-md-4 offset-md-2">
-          <div className="row">
-            <p className="col">Current Password</p>
-            <p className="user-data col-3">{password}</p>
-            <div className="col">
-              <Link to="/settings/edit">
-                <input type="button" value="Change Password" className="btn btn-warning btn-sm " />
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* ACCESSIBILITY option */}
-
-        <div className="logout">
-          {errorMessage && <p>{errorMessage}</p>}
-          <input
-            type="button"
-            value="Log Out"
-            className="btn btn-danger btn-sm "
-            onClick={handleLogOut}
-          />
-        </div>
+        <p id={styles.logout} onClick={handleLogOut} aria-hidden="true">
+          Log Out
+        </p>
       </div>
     </div>
   );
