@@ -174,7 +174,8 @@ const CreateSiteModal = ({ areaId }) => {
                       {...register('addressCity')}
                     />
                   </label>
-                  <label htmlFor="address-state">
+                  <label aria-label="address-state" htmlFor="address-state">
+                    <>{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}</>
                     State<span style={{ color: '#e32' }}>*</span>
                     <Select
                       className="states"
