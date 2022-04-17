@@ -15,8 +15,8 @@ import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessm
 import AttitudeFormInput from './pages/attitude-form-input/attitude-form-input';
 import AreaDetails from './pages/area-details/area-details';
 import PeopleView from './pages/people/people';
-import NotFoundView from './pages/not-found/not-found';
 import AccessDeniedView from './pages/access-denied/access-denied';
+import NotFoundView from './pages/not-found/not-found';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
