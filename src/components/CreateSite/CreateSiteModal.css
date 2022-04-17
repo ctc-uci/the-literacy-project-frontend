@@ -65,24 +65,21 @@ label {
   margin-top: 5px;
 }
 
-/* save button */
-.save-btn {
-  width: 160px;
-  background-color: #3288c4;
-  margin: 60px 0px 30px 70px;
-}
-
 .input-fields-coalesce-wrapper {
   display: flex;
-  width: 470px;
+  width: 430px;
   justify-content: space-between;
 }
 
 .addr-small-field {
   width: 90%;
-  margin-right: 10%;
 }
 
-.states {
-  padding-top: 4px;
+.addr-small-field-invalid {
+  border: 1px solid #e53e3e;
+  width: 90%;
+}
+
+.notes {
+  width: auto;
 }

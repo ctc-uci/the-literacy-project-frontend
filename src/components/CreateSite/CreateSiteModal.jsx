@@ -6,59 +6,25 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import states from 'states-us';
-import Select from 'react-select';
 import { TLPBackend } from '../../common/utils';
-
-const nameContainsSpace = name => {
-  return name.indexOf(' ') !== -1;
-};
 
 const s = states.filter(x => !x.territory).map(x => x.abbreviation);
 const options = s.map(x => ({ label: x, value: x }));
-
-const styles = {
-  control: (provided, state) => ({
-    ...provided,
-    minHeight: '37px',
-    height: '37px',
-    boxShadow: state.isFocused ? null : null,
-  }),
-  valueContainer: provided => ({
-    ...provided,
-    height: '30px',
-    padding: '0 6px',
-  }),
-  input: provided => ({
-    ...provided,
-    margin: '0px',
-  }),
-  indicatorSeparator: () => ({
-    display: 'none',
-  }),
-  indicatorsContainer: provided => ({
-    ...provided,
-    height: '30px',
-  }),
-};
 
 const schema = yup
   .object({
     siteName: yup.string().required(),
     addressStreet: yup.string().required(),
-    // addressStreet: yup.string(),
     addressCity: yup.string().required(),
-    // addressCity: yup.string(),
+    addressState: yup.string().required(),
     addressZip: yup.number().required(),
-    // addressZip: yup.number(),
-    primaryName: yup.string().required(),
-    // primaryName: yup.string(),
-    primaryTitle: yup.string().required(),
-    // primaryTitle: yup.string(),
+    primaryFirstName: yup.string().required(),
+    primaryLastName: yup.string().required(),
+    primaryTitle: yup.string(),
     primaryEmail: yup.string().required(),
-    // primaryEmail: yup.string(),
     primaryPhone: yup.string().required(),
-    // primaryPhone: yup.string(),
-    secondaryName: yup.string(),
+    secondaryFirstName: yup.string(),
+    secondaryLastName: yup.string(),
     secondaryTitle: yup.string(),
     secondaryEmail: yup.string(),
     secondaryPhone: yup.string(),
@@ -72,24 +38,24 @@ const CreateSiteModal = ({ areaId }) => {
     delayError: 750,
   });
 
+  const cancel = () => {
+    window.location.replace(`/area/${areaId}`);
+  };
+
   const onSubmit = async data => {
     const formData = {
       siteName: data.siteName,
       addressStreet: data.addressStreet,
+      addressAptSuiteEtc: data.addressAptSuiteEtc,
       addressCity: data.addressCity,
+      addressState: data.addressState,
       addressZip: data.addressZip,
       areaId,
       active: 'true',
       notes: data.notes,
       primaryContactInfo: {
-        // Revisit later: currently only one input field for name,
-        // but we need first + last name differentiation
-        firstName: nameContainsSpace(data.primaryName)
-          ? data.primaryName.slice(0, data.primaryName.indexOf(' '))
-          : data.primaryName,
-        lastName: nameContainsSpace(data.primaryName)
-          ? data.primaryName.slice(data.primaryName.indexOf(' ') + 1)
-          : '',
+        firstName: data.primaryFirstName,
+        lastName: data.primaryLastName,
         title: data.primaryTitle,
         email: data.primaryEmail,
         phoneNumber: data.primaryPhone,
@@ -97,14 +63,10 @@ const CreateSiteModal = ({ areaId }) => {
     };
 
     // Adding secondary contact info, if present
-    if (data.secondaryName !== '') {
+    if (data.secondaryName) {
       formData.secondContactInfo = {
-        firstName: nameContainsSpace(data.secondaryName)
-          ? data.secondaryName.slice(0, data.secondaryName.indexOf(' '))
-          : data.secondaryName,
-        lastName: nameContainsSpace(data.secondaryName)
-          ? data.secondaryName.slice(data.secondaryName.indexOf(' ') + 1)
-          : '',
+        firstName: data.secondaryFirstName,
+        lastName: data.secondaryLastName,
         title: data.secondaryTitle,
         email: data.secondaryEmail,
         phoneNumber: data.secondaryPhone,
@@ -158,9 +120,9 @@ const CreateSiteModal = ({ areaId }) => {
                   <input
                     type="text"
                     className="form-control"
-                    name="aptSuiteEtc"
+                    name="addressAptSuiteEtc"
                     placeholder="Apt 208"
-                    {...register('aptSuiteEtc')}
+                    {...register('addressAptSuiteEtc')}
                   />
                 </label>
                 <div className="input-fields-coalesce-wrapper">
@@ -177,20 +139,18 @@ const CreateSiteModal = ({ areaId }) => {
                   <label aria-label="address-state" htmlFor="address-state">
                     <>{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}</>
                     State<span style={{ color: '#e32' }}>*</span>
-                    <Select
-                      className="states"
-                      styles={styles}
-                      components={{ IndicatorSeparator: () => null }}
-                      placeholder="State"
-                      options={options}
-                      {...register('state')}
-                    />
+                    <select {...register('addressState')} className="form-control">
+                      {options.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.value}
+                        </option>
+                      ))}
+                    </select>
                   </label>
                   <label htmlFor="address-zip">
                     Zip Code<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="number"
-                      // ZIP Codes are <= 9 digits
                       onInput={e => {
                         if (e.target.value.length > 9) {
                           e.target.value = e.target.value.slice(0, 9);
@@ -250,7 +210,7 @@ const CreateSiteModal = ({ areaId }) => {
                 <label htmlFor="primary-email">
                   Email<span style={{ color: '#e32' }}>*</span>
                   <input
-                    type="text"
+                    type="email"
                     className="form-control"
                     name="primaryEmail"
                     placeholder="email@gmail.com"
@@ -270,7 +230,7 @@ const CreateSiteModal = ({ areaId }) => {
                     maxLength={10}
                     className="form-control"
                     name="primaryPhone"
-                    placeholder="(123)333241"
+                    placeholder="123333241"
                     {...register('primaryPhone')}
                   />
                 </label>
@@ -285,7 +245,7 @@ const CreateSiteModal = ({ areaId }) => {
                     <input
                       type="text"
                       className="form-control"
-                      name="secondaryName"
+                      name="secondaryFirstName"
                       placeholder="First Name"
                       {...register('secondaryFirstName')}
                     />
@@ -297,7 +257,7 @@ const CreateSiteModal = ({ areaId }) => {
                     <input
                       type="text"
                       className="form-control"
-                      name="secondaryName"
+                      name="secondaryLastName"
                       placeholder="Last Name"
                       {...register('secondaryLastName')}
                     />
@@ -320,7 +280,7 @@ const CreateSiteModal = ({ areaId }) => {
                 <label htmlFor="secondary-email">
                   Email
                   <input
-                    type="text"
+                    type="email"
                     className="form-control"
                     name="secondaryEmail"
                     placeholder="email@gmail.com"
@@ -339,7 +299,7 @@ const CreateSiteModal = ({ areaId }) => {
                       }
                     }}
                     name="secondaryPhone"
-                    placeholder="(123)333241"
+                    placeholder="123333241"
                     {...register('secondaryPhone')}
                   />
                 </label>
@@ -348,14 +308,26 @@ const CreateSiteModal = ({ areaId }) => {
             <h3 className="optional-subtitles">Notes</h3>
             <label htmlFor="notes" className="input-area">
               <textarea
-                className="form-control"
+                className="notes form-control"
                 placeholder="notes"
                 name="notes"
                 {...register('notes')}
               />
             </label>
-            <button type="submit" className="btn save-btn">
+            <button
+              type="submit"
+              className="btn"
+              style={{ backgroundColor: '#3288c4', width: '160px', margin: '60px 0px 30px 70px' }}
+            >
               Save
+            </button>
+            <button
+              type="button"
+              onClick={cancel}
+              className="btn cancel-btn"
+              style={{ backgroundColor: '#5f758d', width: '160px', margin: '60px 0px 30px 70px' }}
+            >
+              Cancel
             </button>
           </div>
         </form>
