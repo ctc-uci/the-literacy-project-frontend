@@ -1,0 +1,13 @@
+@import '../../../common/vars.css';
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.empty p {
+  color: var(--text-color-dark-gray);
+  font-size: 36px;
+  text-align: center;
+}
