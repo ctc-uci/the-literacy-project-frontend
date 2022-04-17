@@ -3,10 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { TLPBackend, scrollToTop } from '../../common/utils';
 
 import ReturnHeader from '../../common/ReturnHeader/ReturnHeader';
-import { AssessmentScoreCard, ImprovementGraph } from '../../components/AssessmentForms';
-import styles from './assessment-scorecard-input.module.css';
+import { AttitudeScoreCard, ImprovementGraph } from '../../components/AssessmentForms';
+import styles from './attitude-form-input.module.css';
 
-const AssessmentScorecardInput = () => {
+const AttitudeFormInput = () => {
   const { studentID } = useParams();
   const navigate = useNavigate();
   const [studentData, setStudentData] = useState({
@@ -51,26 +51,26 @@ const AssessmentScorecardInput = () => {
       <ReturnHeader
         returnText={`Return to ${studentData?.lastName}, ${studentData?.firstName}`}
         returnLink="/"
-        rightText="Assessment Score Card"
+        rightText="Reading Attitude Survey"
       />
       <hr size="1" className={styles.divider} />
-      <AssessmentScoreCard
-        name="pretestA"
+      <AttitudeScoreCard
+        name="pretestR"
         headerText="Pre-Test"
         tableData={{
-          scores: studentData.pretestA,
-          notes: studentData.pretestANotes,
+          scores: studentData.pretestR,
+          notes: studentData.pretestRNotes,
         }}
-        setTableData={data => updateStudentData('pretestA', data)}
+        setTableData={data => updateStudentData('pretestR', data)}
       />
-      <AssessmentScoreCard
-        name="posttestA"
+      <AttitudeScoreCard
+        name="posttestR"
         headerText="Post-Test"
         tableData={{
-          scores: studentData.posttestA,
-          notes: studentData.posttestANotes,
+          scores: studentData.posttestR,
+          notes: studentData.posttestRNotes,
         }}
-        setTableData={data => updateStudentData('posttestA', data)}
+        setTableData={data => updateStudentData('posttestR', data)}
       />
       <h3 className={styles['graph-header']}>Improvement</h3>
       <div className={styles['improvement-graph']}>
@@ -89,4 +89,4 @@ const AssessmentScorecardInput = () => {
   );
 };
 
-export default AssessmentScorecardInput;
+export default AttitudeFormInput;

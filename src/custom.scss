@@ -9,5 +9,9 @@ $danger:        #E53E3E !default;
 $light:         #F8F9FA !default;
 $dark:          #343A40 !default;
 
-@import "../node_modules/bootstrap/scss/bootstrap"; // must be at the bottom of the file
+.btn-primary, .btn-success, .btn-danger, .btn-info {
+  color: white !important;
+}
+
+@import '~bootstrap/scss/bootstrap.scss'; // must be at the bottom of the file
 
