@@ -1,5 +1,5 @@
 .main {
-  padding: 0 4em;
+  padding: 0 5vw;
   margin-bottom: 10em;
 }
 
@@ -20,12 +20,12 @@
 }
 
 .graph {
-  width: 40vw;
-  height: 40vh;
+  width: 30vw;
+  height: 20vw;
   position: relative;
-}
-
-.arrow {
+  margin: 4vh 0;
+  min-width: 300px;
+  min-height: 300px;
 }
 
 .header > h3 {
@@ -59,4 +59,16 @@
   background-color: var(--color-dark-blue);
   border-color: var(--color-dark-blue);
   color: var(--text-color-white);
+}
+
+.arrow {
+  position: absolute;
+  margin-left: 25em;
+  margin-right: 5em;
+  top: 0;
+  left: 0;
+}
+
+.students-container {
+  position: relative;
 }

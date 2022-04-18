@@ -9,7 +9,7 @@ import Plus from '../../assets/icons/plus.svg';
 import StudentGroup from '../../components/StudentGroup/StudentGroup';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
 import Graph from '../../components/Graph/Graph';
-// import arrow from './arrow.png';
+import arrow from './arrow.png';
 
 const MasterTeacherView = ({ cookies }) => {
   const [selectedSiteName, setSelectedSiteName] = useState();
@@ -79,7 +79,9 @@ const MasterTeacherView = ({ cookies }) => {
     async function fetchTeacherData() {
       const allStudentData = await TLPBackend.get(`/student-groups/master-teacher/${teacherId}`);
       // all unfiltered data for the MT to user for filtering later
-      setAllData(allStudentData.data);
+      const { data } = allStudentData;
+      // const data = [];
+      setAllData(data);
 
       // call fetchSiteData onchange for toggle (set id as value)
       const initialSite = allStudentData.data[0].siteId;
@@ -88,7 +90,7 @@ const MasterTeacherView = ({ cookies }) => {
       setSelectedSiteId(initialSite);
       setSelectedCycle(initialCycle);
       setSelectedSchoolYear(initialYear);
-      filterSiteData(allStudentData.data, initialSite, initialYear, initialCycle);
+      filterSiteData(data, initialSite, initialYear, initialCycle);
     }
     await fetchTeacherData();
   }, []);
@@ -163,7 +165,7 @@ const MasterTeacherView = ({ cookies }) => {
           )}
         </div>
 
-        <div className={styles.section}>
+        <div className={styles[('section', 'students-container')]}>
           <div className={styles.header}>
             <h3>Students</h3>
             <Button variant="warning" className={styles['create-button']}>
@@ -175,11 +177,11 @@ const MasterTeacherView = ({ cookies }) => {
             <div className={styles['empty-view']}>
               <h2>No students have been created for this site yet.</h2>
               <h2>Click here to create.</h2>
-              {/* <img
+              <img
                 className={styles.arrow}
                 src={arrow}
                 alt="arrow pointing to create student button"
-              /> */}
+              />
             </div>
           ) : (
             <div className={styles.content}>
