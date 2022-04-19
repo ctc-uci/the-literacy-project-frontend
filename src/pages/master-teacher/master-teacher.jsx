@@ -24,6 +24,7 @@ const MasterTeacherView = ({ cookies }) => {
   const [categoricalPost, setCategoricalPost] = useState([]); // attitudinal + academic
   const [sitePre, setSitePre] = useState([]); // site vs. other TLP
   const [sitePost, setSitePost] = useState([]); // site vs. other TLP
+  const [viewAll, setViewAll] = useState(true);
 
   // filter site data using the given siteId, school year, cycle
   // default params for first filtering of Site Data, all other times use the useEffect params
@@ -33,10 +34,12 @@ const MasterTeacherView = ({ cookies }) => {
     year = selectedSchoolYear,
     cycle = selectedCycle,
   ) => {
-    const res = await TLPBackend.get(`/sites/${siteId}`);
-    const { siteName, addressStreet, addressCity, addressZip } = res.data;
-    setSelectedSiteName(siteName);
-    setSiteAddress(`${addressStreet}, ${addressCity} ${addressZip}`);
+    if (!viewAll) {
+      const res = await TLPBackend.get(`/sites/${siteId}`);
+      const { siteName, addressStreet, addressCity, addressZip } = res.data;
+      setSelectedSiteName(siteName);
+      setSiteAddress(`${addressStreet}, ${addressCity} ${addressZip}`);
+    }
 
     const filteredGroups = data.filter(
       group => group.siteId === siteId && group.year === year && group.cycle === cycle,
@@ -90,6 +93,7 @@ const MasterTeacherView = ({ cookies }) => {
       setSelectedSiteId(initialSite);
       setSelectedCycle(initialCycle);
       setSelectedSchoolYear(initialYear);
+      setViewAll(true);
       filterSiteData(data, initialSite, initialYear, initialCycle);
     }
     await fetchTeacherData();
@@ -100,10 +104,12 @@ const MasterTeacherView = ({ cookies }) => {
       <NavigationBar />
       <div>{/* toggle bar */}</div>
       <div className={styles.main}>
-        <div className={styles.section}>
-          <h3>{selectedSiteName}</h3>
-          <h3 className={styles['gray-text']}>{siteAddress}</h3>
-        </div>
+        {!viewAll && (
+          <div className={styles.section}>
+            <h3>{selectedSiteName}</h3>
+            <h3 className={styles['gray-text']}>{siteAddress}</h3>
+          </div>
+        )}
 
         <div className={styles.section}>
           <h3>Data</h3>
