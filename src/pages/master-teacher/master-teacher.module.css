@@ -7,6 +7,12 @@
   margin: 3em 0;
 }
 
+.toggle-bar{
+  display: flex;
+  flex-direction: row;
+}
+
+
 .empty-view {
   color: var(--text-color-dark-gray);
   text-align: center;
@@ -59,3 +65,5 @@
   border-color: var(--color-dark-blue);
   color: var(--text-color-white);
 }
+
+

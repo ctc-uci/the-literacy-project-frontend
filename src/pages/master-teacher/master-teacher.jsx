@@ -9,6 +9,8 @@ import Plus from '../../assets/icons/plus.svg';
 import StudentGroup from '../../components/StudentGroup/StudentGroup';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
 import Graph from '../../components/Graph/Graph';
+import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
+import AreaView from '../../components/AreaView/AreaView';
 // import arrow from './arrow.png';
 
 const MasterTeacherView = ({ cookies }) => {
@@ -62,15 +64,33 @@ const MasterTeacherView = ({ cookies }) => {
     fetchTeacherData();
   }, []);
 
+
+
+  const sites = ['Irvine Site'];
+  const schoolYears = ['2021-22'];
+  const cycles = ['Cycle 1'];
+
   return (
     <div>
       <NavigationBar />
-      <div>{/* toggle bar */}</div>
+
+      <div className={styles['toggle-bar']}>
+          <DropdownMenu choices={sites} current={sites} setFn={setSelectedSiteName} />
+          <h3>School Year</h3>
+          <DropdownMenu choices={schoolYears} current={schoolYears} setFn={setSelectedSiteName} />
+          <h3>Cycle</h3>
+          <DropdownMenu choices={cycles} current={cycles} setFn={setSelectedSiteName} />
+      </div>
+
       <div className={styles.main}>
+        
+
+        
         <div className={styles.section}>
           <h3>{selectedSiteName}</h3>
           <h3 className={styles['gray-text']}>{siteAddress}</h3>
         </div>
+        {/* CHANGE CLASS NAME */}
 
         <div className={styles.section}>
           <h3>Data</h3>
