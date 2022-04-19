@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import styles from './master-teacher.module.css';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import { withCookies, cookieKeys, Cookies } from '../../common/auth/cookie_utils';
-import { TLPBackend } from '../../common/utils';
+import { TLPBackend, calculateScores, calculateSiteScores } from '../../common/utils';
 import Plus from '../../assets/icons/plus.svg';
 import StudentGroup from '../../components/StudentGroup/StudentGroup';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
@@ -15,53 +15,84 @@ import AreaView from '../../components/AreaView/AreaView';
 
 const MasterTeacherView = ({ cookies }) => {
   const [selectedSiteName, setSelectedSiteName] = useState();
+  const [selectedSiteId, setSelectedSiteId] = useState();
+  const [selectedSchoolYear, setSelectedSchoolYear] = useState();
+  const [selectedCycle, setSelectedCycle] = useState();
   const [siteAddress, setSiteAddress] = useState();
   const [studentGroups, setStudentGroups] = useState([]);
   const [siteStudents, setSiteStudents] = useState([]);
+  const [allData, setAllData] = useState([]);
   const [categoricalPre, setCategoricalPre] = useState([]); // attitudinal + academic
   const [categoricalPost, setCategoricalPost] = useState([]); // attitudinal + academic
   const [sitePre, setSitePre] = useState([]); // site vs. other TLP
   const [sitePost, setSitePost] = useState([]); // site vs. other TLP
 
-  // const calculateScores = data => {
-  //   const pre = [];
-  //   const post = [];
-  //   data.forEach(student => {
-
-  //   });
-
-  //   return { pre, post };
-  // };
-
-  // fetch all site data given the site id
-  const fetchSiteData = async siteId => {
+  // filter site data using the given siteId, school year, cycle
+  // default params for first filtering of Site Data, all other times use the useEffect params
+  const filterSiteData = async (
+    data = allData,
+    siteId = selectedSiteId,
+    year = selectedSchoolYear,
+    cycle = selectedCycle,
+  ) => {
     const res = await TLPBackend.get(`/sites/${siteId}`);
     const { siteName, addressStreet, addressCity, addressZip } = res.data;
     setSelectedSiteName(siteName);
     setSiteAddress(`${addressStreet}, ${addressCity} ${addressZip}`);
 
-    const groups = await TLPBackend.get(`/student-groups/site/${siteId}`);
-    setStudentGroups(groups.data);
+    const filteredGroups = data.filter(
+      group => group.siteId === siteId && group.year === year && group.cycle === cycle,
+    );
+    setStudentGroups(filteredGroups);
 
-    // TODO: set initial school year and cycle to filter
-    const students = await TLPBackend.get(`/students/site/${siteId}`);
-    setSiteStudents(students.data);
-    console.log(students.data);
-    setCategoricalPre([30, 21.5]);
-    setCategoricalPost([54, 66.5]);
-    setSitePre([30, 21.5]);
-    setSitePost([54, 66.5]);
+    const students = [];
+
+    filteredGroups.forEach(studentGroup => {
+      // in case the student group has no students, the students array will be null
+      if (studentGroup.students.length > 0) {
+        studentGroup.students.forEach(student => {
+          students.push(student);
+        });
+      }
+    });
+    setSiteStudents(students);
+
+    const scores = calculateScores(students);
+
+    const otherSites = await TLPBackend.get(`/students/other-sites/${siteId}`);
+    const otherSiteData = otherSites.data.filter(
+      student => student.year === year && student.cycle === cycle,
+    );
+    const otherSiteScores = calculateScores(otherSiteData);
+
+    if (scores.pre) {
+      setCategoricalPre(scores.pre);
+      setCategoricalPost(scores.post);
+
+      const siteScores = calculateSiteScores(scores, otherSiteScores);
+      setSitePre(siteScores.pre);
+      setSitePost(siteScores.post);
+    }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
+    const teacherId = cookies.get(cookieKeys.USER_ID);
+
     async function fetchTeacherData() {
-      const teacherId = cookies.get(cookieKeys.USER_ID);
-      const res = await TLPBackend.get(`/teachers/${teacherId}`);
-      // TODO: set the initial site and store all other sites in toggle
+      const allStudentData = await TLPBackend.get(`/student-groups/master-teacher/${teacherId}`);
+      // all unfiltered data for the MT to user for filtering later
+      setAllData(allStudentData.data);
+
       // call fetchSiteData onchange for toggle (set id as value)
-      await fetchSiteData(res.data.sites[0]);
+      const initialSite = allStudentData.data[0].siteId;
+      const initialYear = new Date().getFullYear();
+      const initialCycle = allStudentData.data[0].cycle;
+      setSelectedSiteId(initialSite);
+      setSelectedCycle(initialCycle);
+      setSelectedSchoolYear(initialYear);
+      filterSiteData(allStudentData.data, initialSite, initialYear, initialCycle);
     }
-    fetchTeacherData();
+    await fetchTeacherData();
   }, []);
 
 
@@ -102,7 +133,7 @@ const MasterTeacherView = ({ cookies }) => {
             <div className={styles['graph-container']}>
               <div className={styles.graph}>
                 <Graph
-                  title={`Average Scores for ${selectedSiteName} site`}
+                  title={`Average Scores for ${selectedSiteName} Site`}
                   xLabels={['Attitudinal', 'Academic']}
                   preData={categoricalPre}
                   postData={categoricalPost}
@@ -133,25 +164,23 @@ const MasterTeacherView = ({ cookies }) => {
             </div>
           ) : (
             <div className={styles.content}>
-              {studentGroups.map(group => (
-                <StudentGroup
-                  key={group.groupId}
-                  studentList={siteStudents
-                    .sort((a, b) => {
-                      if (a.firstName.toLowerCase() < b.firstName.toLowerCase()) return -1;
-                      if (a.firstName.toLowerCase() > b.firstName.toLowerCase()) return 1;
-                      return 0;
-                    })
-                    .map(s => {
-                      return group.groupId === s.studentGroupId ? s.firstName : '';
-                    })
-                    .filter(t => {
-                      return t !== '';
-                    })}
-                  meetingDay={group.meetingDay}
-                  meetingTime={group.meetingTime}
-                />
-              ))}
+              {studentGroups
+                .sort((a, b) => (a.groupId > b.groupId ? 1 : -1))
+                .map(group => (
+                  <StudentGroup
+                    key={group.groupId}
+                    groupName={group.name}
+                    studentList={
+                      group.students
+                        ? group.students.map(s => {
+                            return s.firstName;
+                          })
+                        : []
+                    }
+                    meetingDay={group.meetingDay}
+                    meetingTime={group.meetingTime}
+                  />
+                ))}
             </div>
           )}
         </div>
@@ -163,6 +192,11 @@ const MasterTeacherView = ({ cookies }) => {
               Create New Student
               <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
             </Button>
+            {siteStudents.length !== 0 && (
+              <Button className={styles['view-all-button']}>
+                <p className={styles['view-all-text']}>View All</p>
+              </Button>
+            )}
           </div>
           {siteStudents.length === 0 ? (
             <div className={styles['empty-view']}>
