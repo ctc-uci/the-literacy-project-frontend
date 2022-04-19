@@ -10,6 +10,8 @@ import StudentGroup from '../../components/StudentGroup/StudentGroup';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
 import Graph from '../../components/Graph/Graph';
 import arrow from './arrow.png';
+import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
+// import AreaView from '../../components/AreaView/AreaView';
 
 const MasterTeacherView = ({ cookies }) => {
   const [selectedSiteName, setSelectedSiteName] = useState();
@@ -99,10 +101,21 @@ const MasterTeacherView = ({ cookies }) => {
     await fetchTeacherData();
   }, []);
 
+  const sites = ['Irvine Site'];
+  const schoolYears = ['2021-22'];
+  const cycles = ['Cycle 1'];
+
   return (
     <div>
       <NavigationBar />
-      <div>{/* toggle bar */}</div>
+      <div className={styles['toggle-bar']}>
+        <DropdownMenu choices={sites} current={sites} setFn={setSelectedSiteName} />
+        <h3>School Year</h3>
+        <DropdownMenu choices={schoolYears} current={schoolYears} setFn={setSelectedSiteName} />
+        <h3>Cycle</h3>
+        <DropdownMenu choices={cycles} current={cycles} setFn={setSelectedSiteName} />
+      </div>
+
       <div className={styles.main}>
         {!viewAll && (
           <div className={styles.section}>
@@ -152,21 +165,23 @@ const MasterTeacherView = ({ cookies }) => {
             </div>
           ) : (
             <div className={styles.content}>
-              {studentGroups.map(group => (
-                <StudentGroup
-                  key={group.groupId}
-                  groupName={group.name}
-                  studentList={
-                    group.students
-                      ? group.students.map(s => {
-                          return s.firstName;
-                        })
-                      : []
-                  }
-                  meetingDay={group.meetingDay}
-                  meetingTime={group.meetingTime}
-                />
-              ))}
+              {studentGroups
+                .sort((a, b) => (a.groupId > b.groupId ? 1 : -1))
+                .map(group => (
+                  <StudentGroup
+                    key={group.groupId}
+                    groupName={group.name}
+                    studentList={
+                      group.students
+                        ? group.students.map(s => {
+                            return s.firstName;
+                          })
+                        : []
+                    }
+                    meetingDay={group.meetingDay}
+                    meetingTime={group.meetingTime}
+                  />
+                ))}
             </div>
           )}
         </div>
@@ -178,6 +193,11 @@ const MasterTeacherView = ({ cookies }) => {
               Create New Student
               <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
             </Button>
+            {siteStudents.length !== 0 && (
+              <Button className={styles['view-all-button']}>
+                <p className={styles['view-all-text']}>View All</p>
+              </Button>
+            )}
           </div>
           {siteStudents.length === 0 ? (
             <div className={styles['empty-view']}>
