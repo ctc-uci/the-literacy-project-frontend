@@ -37,13 +37,14 @@
   border: 1px solid #ced4da;
   color: #767676;
   border-radius: 10px;
-  text-align: center;
+  text-align: left;
   width: 100%;
   border-radius: 10px;
   border: 1px solid #ced4da;
   line-height: 32px;
   font-family: 'SF Compact', Helvetica, Arial, sans-serif;
   font-size: 1em;
+  padding-left: 15px;
 }
 
 .create-student-exit-button {

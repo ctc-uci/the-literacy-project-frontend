@@ -118,4 +118,10 @@ Badge {
   margin-bottom: 0.5em;
   background-color: var(--color-gray-white) !important;
   color: #212529;
+  padding: 10px;
+  padding-right: 15px;
+}
+
+.student-badge-icon {
+  margin-right: 6px;
 }

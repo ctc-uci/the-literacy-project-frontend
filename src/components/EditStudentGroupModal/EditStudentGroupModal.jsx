@@ -1,7 +1,9 @@
 import { React, useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
-import { Form, Badge } from 'react-bootstrap';
+import { Badge } from 'react-bootstrap';
 import { BsX } from 'react-icons/bs';
+import Select from 'react-select';
+
 import styles from './EditStudentGroupModal.module.css';
 import { TLPBackend } from '../../common/utils';
 
@@ -11,6 +13,8 @@ import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 // [] Fix dropdown values
 // [] Make backend call when user saves
 // [] Look into debouncing user input
+// [X] Search
+// [X] Find which students were moved
 
 const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) => {
   const schoolYears = ['2021', '2022'];
@@ -41,14 +45,53 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
   const [possibleStudents, setPossibleStudents] = useState();
   const [possibleStudentsLoaded, setPossibleStudentsLoaded] = useState(false);
 
+  const [originalStudents, setOriginalStudents] = useState([]); // Students that were originally in the group
+  const removedStudents = []; // Students originally in group that were removed
+  const addedStudents = []; // Students not originally in group that were added
+
   // const [error, setError] = useState(null);
 
   // const closeModal = () => {
   //   setIsOpen(false);
   // };
+  const findRemovedAndAddedStudents = () => {
+    // Find students that were removed from the group
+    // console.log("original dict", originalStudents);
+    // const originalKeys = originalStudents.getOwnPropertyNames();
+    // console.log(originalKeys);
+    // console.log("original keys", Object.getOwnPropertyNames(originalStudents));
+    // console.log("current students", currentStudents);
+    // console.log("current prototype", currentStudents.prototype);
+    Object.getOwnPropertyNames(originalStudents).forEach(id => {
+      if (!Object.hasOwnProperty.call(currentStudents, Number(id))) {
+        removedStudents.push(originalStudents[id]);
+      }
+    });
+
+    // Find students that were added to the group
+    Object.getOwnPropertyNames(currentStudents).forEach(id => {
+      if (!Object.hasOwnProperty.call(originalStudents, Number(id))) {
+        addedStudents.push(currentStudents[id]);
+      }
+    });
+
+    // console.log('Removed', removedStudents);
+    // console.log('Added', addedStudents);
+  };
+
+  /*
+  const debounce = (func, delay = 800) => {
+    let timer;
+    return () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func();
+      }, delay);
+    };
+  }; */
 
   const getStudentGroupData = async () => {
-    console.log('line 59');
+    // console.log('line 59');
     try {
       const res = await TLPBackend.get(`/student-groups/${studentGroupId}`, {
         headers: {
@@ -69,12 +112,17 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
         {},
         ...studentGroupData.students.map(student => ({ [student.studentId]: student })),
       );
+      // Students originally in group (initially same as current), stored as object
+      const origStudentsObj = Object.assign(
+        {},
+        ...studentGroupData.students.map(student => ({ [student.studentId]: student })),
+      );
       setCurrentStudents(currStudentsObj);
+      setOriginalStudents(origStudentsObj);
       // Set loaded to true so all students can be filtered
       setCurrentStudentsLoaded(true);
     } catch (err) {
-      console.log('something went wrong');
-      console.error(err);
+      // console.error(err);
       // setError(err);
     }
   };
@@ -172,6 +220,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
         return (
           <Badge bg="secondary" className={styles['student-badge']} id={studentId} key={studentId}>
             <BsX
+              className={styles['student-badge-icon']}
               cursor="pointer"
               id={studentId}
               onClick={() => removeFromCurrentStudents(studentId)}
@@ -183,20 +232,28 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     </>
   );
 
-  const StudentSelect = () => (
-    <>
-      {Object.keys(possibleStudents).map(studentId => {
-        const studentObj = possibleStudents[studentId];
-        return (
-          <option
-            id={studentId}
-            key={studentId}
-            value={studentId}
-          >{`${studentObj.firstName} ${studentObj.lastName}`}</option>
-        );
-      })}
-    </>
-  );
+  // const dummyStudents = [{value: 20, label: "Winnie the Pooh"}];
+  // const studentOptions = () => {
+  // Object.keys(possibleStudents).map(studentId => ({
+  //   value: studentId,
+  //   label: `${possibleStudents[studentId].firstName} ${possibleStudents[studentId].lastName}`,
+  // }));
+  // {
+  // const studentObj = possibleStudents[studentId];
+  // console.log({ value: studentId, label: `${studentObj.firstName} ${studentObj.lastName}` });
+  // return ({
+  //   value: studentId,
+  //   label: `${studentObj.firstName} ${studentObj.lastName}`,
+  // });
+  // return (
+  // <option
+  //   id={studentId}
+  //   key={studentId}
+  //   value={studentId}
+  // >{`${studentObj.firstName} ${studentObj.lastName}`}</option>
+  // );
+  // });
+  // console.log(currentStudents);
 
   const ModalContent = () => (
     <>
@@ -269,12 +326,21 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
           <div className={styles['edit-student-group-badges']}>
             {currentStudentsLoaded ? <StudentBadges /> : null}
           </div>
-          <Form.Group>
+          {possibleStudentsLoaded ? (
+            <Select
+              options={Object.keys(possibleStudents).map(studentId => ({
+                value: studentId,
+                label: `${possibleStudents[studentId].firstName} ${possibleStudents[studentId].lastName}`,
+              }))}
+              onChange={opt => addToCurrentStudents(opt.value)}
+            />
+          ) : null}
+          {/* <Form.Group>
             <Form.Select onChange={e => addToCurrentStudents(e.target.value)}>
               <option value={-1}>Select Students</option>
               {possibleStudentsLoaded ? <StudentSelect /> : null}
             </Form.Select>
-          </Form.Group>
+          </Form.Group> */}
         </div>
         <div className={styles['edit-student-group-modal-bottom-bar']}>
           <button
@@ -287,7 +353,8 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
           <button
             type="button"
             className={styles['edit-save-button']}
-            onClick={() => setIsOpen(false)}
+            // onClick={() => setIsOpen(false)}
+            onClick={() => findRemovedAndAddedStudents()}
           >
             Save
           </button>

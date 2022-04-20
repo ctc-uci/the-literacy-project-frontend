@@ -1,7 +1,6 @@
 import { React, useState } from 'react';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import EditStudentGroupModal from '../../components/EditStudentGroupModal/EditStudentGroupModal';
-import CreateStudentModal from '../../components/CreateStudentModal/CreateStudentModal';
 
 const ViewEditStudentGroupModalView = () => {
   const [isOpen, setIsOpen] = useState(true);
