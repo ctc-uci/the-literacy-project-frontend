@@ -7,12 +7,6 @@
   margin: 3em 0;
 }
 
-.toggle-bar{
-  display: flex;
-  flex-direction: row;
-}
-
-
 .empty-view {
   color: var(--text-color-dark-gray);
   text-align: center;
@@ -29,9 +23,6 @@
   width: 40vw;
   height: 40vh;
   position: relative;
-}
-
-.arrow {
 }
 
 .header > h3 {
@@ -90,4 +81,26 @@
   text-decoration: underline;
 }
 
+.toggle-bar{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 6em;
+  margin: 2.5em 0;
+}
 
+.toggle-bar > div{
+  display: flex;
+  flex-direction: row;
+}
+
+.inner-toggle-bar{
+  display: flex;
+  flex-direction: row;
+  padding: 0 0.5em;
+
+}
+
+.inner-toggle-bar > * {
+  margin: 0 0.3em;
+}

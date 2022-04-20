@@ -19,6 +19,7 @@
   text-align: left;
   padding-left: 2%;
   padding-right: 8%;
+  min-width: 110px;
 }
 
 .dropdown-arrow-up {
