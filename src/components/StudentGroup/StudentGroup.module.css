@@ -22,6 +22,12 @@
 
 .card-body {
   padding: 20px;
+  display: flex;
+}
+
+.body-content {
+  min-width: 0;
+  margin: auto;
 }
 
 .row {
@@ -38,7 +44,7 @@
 }
 
 .num-students {
-  margin-left: 220px;
+  width: 50px;
 }
 
 .student-names {

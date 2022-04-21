@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useState, useEffect } from 'react';
 import { instanceOf } from 'prop-types';
 import { Button } from 'react-bootstrap';
@@ -8,52 +9,65 @@ import { TLPBackend, calculateScores, calculateSiteScores } from '../../common/u
 import Plus from '../../assets/icons/plus.svg';
 import StudentGroup from '../../components/StudentGroup/StudentGroup';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
+import StudentTable from '../../components/StudentTable/StudentTable';
 import Graph from '../../components/Graph/Graph';
 import arrow from './arrow.png';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
-// import AreaView from '../../components/AreaView/AreaView';
 
 const MasterTeacherView = ({ cookies }) => {
+  const [allData, setAllData] = useState([]);
+  const [allSites, setAllSites] = useState({});
   const [selectedSiteName, setSelectedSiteName] = useState();
   const [selectedSiteId, setSelectedSiteId] = useState();
+  const [selectedSiteAddress, setSelectedSiteAddress] = useState();
   const [selectedSchoolYear, setSelectedSchoolYear] = useState();
   const [selectedCycle, setSelectedCycle] = useState();
-  const [siteAddress, setSiteAddress] = useState();
   const [studentGroups, setStudentGroups] = useState([]);
   const [siteStudents, setSiteStudents] = useState([]);
-  const [allData, setAllData] = useState([]);
+  const [schoolYears, setSchoolYears] = useState([]);
+  const [cycles, setCycles] = useState([]);
   const [categoricalPre, setCategoricalPre] = useState([]); // attitudinal + academic
   const [categoricalPost, setCategoricalPost] = useState([]); // attitudinal + academic
   const [sitePre, setSitePre] = useState([]); // site vs. other TLP
   const [sitePost, setSitePost] = useState([]); // site vs. other TLP
-  const [viewAll, setViewAll] = useState(true);
 
   // filter site data using the given siteId, school year, cycle
   // default params for first filtering of Site Data, all other times use the useEffect params
   const filterSiteData = async (
-    data = allData,
+    siteName = selectedSiteName,
     siteId = selectedSiteId,
-    year = selectedSchoolYear,
-    cycle = selectedCycle,
+    data = allData,
   ) => {
-    if (!viewAll) {
-      const res = await TLPBackend.get(`/sites/${siteId}`);
-      const { siteName, addressStreet, addressCity, addressZip } = res.data;
-      setSelectedSiteName(siteName);
-      setSiteAddress(`${addressStreet}, ${addressCity} ${addressZip}`);
+    let siteGroups = data;
+    if (siteName !== 'View All') {
+      // all groups of selected site
+      siteGroups = data.filter(group => group.siteId === siteId);
     }
 
-    const filteredGroups = data.filter(
-      group => group.siteId === siteId && group.year === year && group.cycle === cycle,
+    // get all the possible years and cycle choices for selected site
+    const years = [];
+    const cycleChoices = [];
+    siteGroups.forEach(group => {
+      years.push(group.year);
+      cycleChoices.push(group.cycle);
+    });
+    const year = Math.max(years);
+    setSelectedSchoolYear(year);
+    setSchoolYears(years);
+    const cycle = Math.max(cycleChoices);
+    setSelectedCycle(cycle);
+    setCycles(cycleChoices);
+
+    const filteredGroups = siteGroups.filter(
+      group => group.year === year && parseInt(group.cycle, 10) === cycle,
     );
     setStudentGroups(filteredGroups);
 
     const students = [];
-
-    filteredGroups.forEach(studentGroup => {
+    filteredGroups.forEach(group => {
       // in case the student group has no students, the students array will be null
-      if (studentGroup.students.length > 0) {
-        studentGroup.students.forEach(student => {
+      if (group.students.length > 0) {
+        group.students.forEach(student => {
           students.push(student);
         });
       }
@@ -62,7 +76,13 @@ const MasterTeacherView = ({ cookies }) => {
 
     const scores = calculateScores(students);
 
-    const otherSites = await TLPBackend.get(`/students/other-sites/${siteId}`);
+    let otherSites = [];
+    if (siteName === 'View All') {
+      const teacherId = cookies.get(cookieKeys.USER_ID);
+      otherSites = await TLPBackend.get(`/students/other-teachers/${teacherId}`);
+    } else {
+      otherSites = await TLPBackend.get(`/students/other-sites/${siteId}`);
+    }
     const otherSiteData = otherSites.data.filter(
       student => student.year === year && student.cycle === cycle,
     );
@@ -78,6 +98,13 @@ const MasterTeacherView = ({ cookies }) => {
     }
   };
 
+  const setSiteInfo = async name => {
+    setSelectedSiteName(name);
+    setSelectedSiteId(allSites[name]?.siteId);
+    setSelectedSiteAddress(allSites[name]?.address);
+    await filterSiteData(name, allSites[name]?.siteId);
+  };
+
   useEffect(async () => {
     const teacherId = cookies.get(cookieKeys.USER_ID);
 
@@ -85,42 +112,86 @@ const MasterTeacherView = ({ cookies }) => {
       const allStudentData = await TLPBackend.get(`/student-groups/master-teacher/${teacherId}`);
       // all unfiltered data for the MT to user for filtering later
       const { data } = allStudentData;
-      // const data = [];
       setAllData(data);
+      if (data.length === 0) {
+        return;
+      }
 
-      // call fetchSiteData onchange for toggle (set id as value)
-      const initialSite = allStudentData.data[0].siteId;
-      const initialYear = new Date().getFullYear();
-      const initialCycle = allStudentData.data[0].cycle;
-      setSelectedSiteId(initialSite);
-      setSelectedCycle(initialCycle);
-      setSelectedSchoolYear(initialYear);
-      setViewAll(true);
-      filterSiteData(data, initialSite, initialYear, initialCycle);
+      const initialSite = {
+        siteId: data[0].siteId,
+        siteName: data[0].siteName,
+        address: `${data[0].addressStreet}, ${data[0].addressCity} ${data[0].addressZip}`,
+      };
+
+      // sites object will be key: siteNames, values are siteId and address
+      const teacherSites = {};
+      data.forEach(group => {
+        const address = `${group.addressStreet}, ${group.addressCity} ${group.addressZip}`;
+        teacherSites[group.siteName] = {
+          siteId: group.siteId,
+          address,
+        };
+        // adding site address for each group for View All selection
+        group.siteAddress = address;
+
+        // adding area and site name for each student for View All selection
+        if (group.students.length > 0) {
+          group.students.forEach(student => {
+            student.areaName = group.areaName;
+            student.siteName = group.siteName;
+          });
+        }
+      });
+      teacherSites['View All'] = null;
+
+      setAllSites(teacherSites);
+      setSelectedSiteName(initialSite.siteName);
+      setSelectedSiteId(initialSite.siteId);
+      setSelectedSiteAddress(initialSite.address);
+      filterSiteData(initialSite.siteName, initialSite.siteId, data, teacherSites);
     }
     await fetchTeacherData();
   }, []);
 
-  const sites = ['Irvine Site'];
-  const schoolYears = ['2021-22'];
-  const cycles = ['Cycle 1'];
-
   return (
     <div>
       <NavigationBar />
-      <div className={styles['toggle-bar']}>
-        <DropdownMenu choices={sites} current={sites} setFn={setSelectedSiteName} />
-        <h3>School Year</h3>
-        <DropdownMenu choices={schoolYears} current={schoolYears} setFn={setSelectedSiteName} />
-        <h3>Cycle</h3>
-        <DropdownMenu choices={cycles} current={cycles} setFn={setSelectedSiteName} />
-      </div>
-
       <div className={styles.main}>
-        {!viewAll && (
+        <div className={styles.section}>
+          <div className={styles['toggle-bar']}>
+            {/* only show option to select site if there is more than one site */}
+            {Object.keys(allSites).length > 0 && (
+              <DropdownMenu
+                choices={Object.keys(allSites)}
+                current={selectedSiteName}
+                setFn={setSiteInfo}
+              />
+            )}
+
+            {schoolYears.length > 1 && (
+              <div>
+                <h3>School Year</h3>
+                <DropdownMenu
+                  choices={schoolYears}
+                  current={selectedSchoolYear}
+                  setFn={setSelectedSchoolYear}
+                />
+              </div>
+            )}
+
+            {cycles.length > 1 && (
+              <div>
+                <h3>Cycle</h3>
+                <DropdownMenu choices={cycles} current={selectedCycle} setFn={setSelectedCycle} />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {selectedSiteName !== 'View All' && (
           <div className={styles.section}>
             <h3>{selectedSiteName}</h3>
-            <h3 className={styles['gray-text']}>{siteAddress}</h3>
+            <h3 className={styles['gray-text']}>{selectedSiteAddress}</h3>
           </div>
         )}
 
@@ -180,6 +251,9 @@ const MasterTeacherView = ({ cookies }) => {
                     }
                     meetingDay={group.meetingDay}
                     meetingTime={group.meetingTime}
+                    viewAddress={selectedSiteName === 'View All'}
+                    siteName={group.siteName}
+                    address={group.siteAddress}
                   />
                 ))}
             </div>
@@ -211,9 +285,18 @@ const MasterTeacherView = ({ cookies }) => {
             </div>
           ) : (
             <div className={styles.content}>
-              {siteStudents.slice(0, 6).map(s => (
-                <StudentProfileBox key={s.studentId} studentName={`${s.firstName} ${s.lastName}`} />
-              ))}
+              {selectedSiteName !== 'View All' ? (
+                siteStudents
+                  .slice(0, 6)
+                  .map(s => (
+                    <StudentProfileBox
+                      key={s.studentId}
+                      studentName={`${s.firstName} ${s.lastName}`}
+                    />
+                  ))
+              ) : (
+                <StudentTable data={siteStudents.slice(0, 6)} />
+              )}
             </div>
           )}
         </div>
