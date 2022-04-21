@@ -110,7 +110,7 @@ h4 {
 .view-all-button:hover,
 .view-all-button:focus,
 .view-all-button:active {
-  background-color: #ffffff;
+  background-color: transparent;
   border: none;
   margin-left: auto;
   box-shadow: none;

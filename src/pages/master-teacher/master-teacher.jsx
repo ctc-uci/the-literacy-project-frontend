@@ -11,7 +11,6 @@ import StudentGroup from '../../components/StudentGroup/StudentGroup';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
 import StudentTable from '../../components/StudentTable/StudentTable';
 import Graph from '../../components/Graph/Graph';
-import arrow from './arrow.png';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 
 const MasterTeacherView = ({ cookies }) => {
@@ -22,6 +21,7 @@ const MasterTeacherView = ({ cookies }) => {
   const [selectedSiteAddress, setSelectedSiteAddress] = useState();
   const [selectedSchoolYear, setSelectedSchoolYear] = useState();
   const [selectedCycle, setSelectedCycle] = useState();
+  const [siteGroups, setSiteGroups] = useState([]);
   const [studentGroups, setStudentGroups] = useState([]);
   const [siteStudents, setSiteStudents] = useState([]);
   const [schoolYears, setSchoolYears] = useState([]);
@@ -31,45 +31,27 @@ const MasterTeacherView = ({ cookies }) => {
   const [sitePre, setSitePre] = useState([]); // site vs. other TLP
   const [sitePost, setSitePost] = useState([]); // site vs. other TLP
   const [showToggle, setShowToggle] = useState(true);
+  const DEMO = false;
 
-  // filter site data using the given siteId, school year, cycle
-  // default params for first filtering of Site Data, all other times use the useEffect params
-  const filterSiteData = async (
+  const filterSchoolYearCycle = async (
+    filterOptions,
+    groups = siteGroups,
     siteName = selectedSiteName,
     siteId = selectedSiteId,
-    data = allData,
   ) => {
-    let siteGroups = data;
-    if (siteName !== 'View All') {
-      // all groups of selected site
-      siteGroups = data.filter(group => group.siteId === siteId);
+    let year = selectedSchoolYear;
+    let cycle = selectedCycle;
+
+    // allow for optionally passing in year and cycle to change filter
+    if (filterOptions.year) {
+      year = filterOptions.year;
+    }
+    if (filterOptions.cycle) {
+      cycle = filterOptions.cycle;
     }
 
-    // get all the possible years and cycle choices for selected site
-    const years = [];
-    let year = 0;
-    let cycle = '';
-    const cycleChoices = [];
-    siteGroups.forEach(group => {
-      // get the greatest year and cycle of filtered data
-      if (group.year > year) {
-        year = group.year;
-      }
-      if (group.cycle > cycle) {
-        cycle = group.cycle;
-      }
-      years.push(`${group.year}-${(group.year % 100) + 1}`);
-      cycleChoices.push(group.cycle);
-    });
-    setSelectedSchoolYear(`${year}-${(year % 100) + 1}`);
-    setSchoolYears(Object.values(years).sort().reverse());
-    setSelectedCycle(cycle);
-    setCycles(cycleChoices);
-
-    setShowToggle(Object.keys(allSites).length > 2 && years.length > 1 && cycleChoices.length > 1);
-
-    const filteredGroups = siteGroups.filter(
-      group => group.year === year && parseInt(group.cycle, 10) === cycle,
+    const filteredGroups = groups.filter(
+      group => group.year === parseInt(year, 10) && group.cycle === cycle,
     );
     setStudentGroups(filteredGroups);
 
@@ -83,6 +65,14 @@ const MasterTeacherView = ({ cookies }) => {
       }
     });
     setSiteStudents(students);
+
+    if (students.length === 0) {
+      setCategoricalPre([]);
+      setCategoricalPost([]);
+      setSitePre([]);
+      setSitePost([]);
+      return;
+    }
 
     const scores = calculateScores(students);
 
@@ -108,6 +98,77 @@ const MasterTeacherView = ({ cookies }) => {
     }
   };
 
+  // handlers for changing school year and cycle
+  const filterBySchool = async newYear => {
+    const startYear = newYear.substring(0, 4);
+    setSelectedSchoolYear(`${startYear}-${(startYear % 100) + 1}`);
+    await filterSchoolYearCycle({ year: startYear });
+  };
+
+  const filterByCycle = async newCycle => {
+    setSelectedCycle(newCycle);
+    await filterSchoolYearCycle({ cycle: newCycle });
+  };
+
+  // filter site data using the given siteId, school year, cycle
+  // default params for first filtering of Site Data, all other times use the useEffect params
+  const filterSiteData = async (
+    siteName = selectedSiteName,
+    siteId = selectedSiteId,
+    data = allData,
+  ) => {
+    let groups = data;
+    if (siteName !== 'View All') {
+      // all groups of selected site
+      groups = data.filter(group => group.siteId === siteId);
+    }
+
+    const years = new Set();
+    const cycleChoices = new Set();
+    let filterOpts = {};
+
+    // if there are any groups in given site, get all relevant year and cycle info
+    if (groups.length !== 0) {
+      // get all the possible years and cycle choices for selected site/option
+      let initialYear = groups[0].year;
+      let initialCycle = groups[0].cycle;
+      groups.forEach(group => {
+        // get the most recent year and cycle of filtered data
+        if (group.year > initialYear) {
+          initialYear = group.year;
+        }
+        if (group.cycle > initialCycle) {
+          initialCycle = group.cycle;
+        }
+        years.add(`${group.year}-${(group.year % 100) + 1}`);
+        cycleChoices.add(group.cycle);
+      });
+
+      if (DEMO) {
+        years.add('2020-21');
+        years.add('2021-22');
+        years.add('2019-20');
+        years.add('2020-21');
+
+        cycleChoices.add('1');
+      }
+
+      setSelectedSchoolYear(`${initialYear}-${(initialYear % 100) + 1}`);
+      setSelectedCycle(initialCycle);
+      filterOpts = { year: initialYear, cycle: initialCycle };
+    }
+
+    setSchoolYears(Array.from(new Set(years)).sort().reverse());
+    setCycles(Array.from(new Set(cycleChoices)).sort().reverse());
+
+    // show all sites option if at least 2 sites (View All does not count as a site but is an option)
+    setShowToggle(Object.keys(allSites).length > 2 || years.size > 1 || cycleChoices.size > 1);
+
+    setSiteGroups(groups);
+    await filterSchoolYearCycle(filterOpts, groups, siteName, siteId);
+  };
+
+  // update site info for new selected site
   const setSiteInfo = async name => {
     setSelectedSiteName(name);
     setSelectedSiteId(allSites[name]?.siteId);
@@ -127,6 +188,8 @@ const MasterTeacherView = ({ cookies }) => {
         return;
       }
 
+      // initially selected site is first site that gets returned
+      // there has to be at least one site since only teachers that can login are those that are active in at least one student group/site
       const initialSite = {
         siteId: data[0].siteId,
         siteName: data[0].siteName,
@@ -142,9 +205,11 @@ const MasterTeacherView = ({ cookies }) => {
           address,
         };
         // adding site address for each group for View All selection
+        // displayed in Student Group section
         group.siteAddress = address;
 
         // adding area and site name for each student for View All selection
+        // displayed in Student section table
         if (group.students.length > 0) {
           group.students.forEach(student => {
             student.areaName = group.areaName;
@@ -152,6 +217,11 @@ const MasterTeacherView = ({ cookies }) => {
           });
         }
       });
+
+      if (DEMO) {
+        teacherSites['test Site'] = { siteId: -1, address: 'some address' };
+        teacherSites['Demo Site'] = { siteId: -1, address: 'some other address' };
+      }
       teacherSites['View All'] = null;
 
       setAllSites(teacherSites);
@@ -188,7 +258,7 @@ const MasterTeacherView = ({ cookies }) => {
                     <DropdownMenu
                       choices={schoolYears}
                       current={selectedSchoolYear}
-                      setFn={setSelectedSchoolYear}
+                      setFn={filterBySchool}
                     />
                   </div>
                 )}
@@ -196,11 +266,7 @@ const MasterTeacherView = ({ cookies }) => {
                 {cycles.length > 1 && (
                   <div className={styles['flex-row']}>
                     <h4>Cycle</h4>
-                    <DropdownMenu
-                      choices={cycles}
-                      current={selectedCycle}
-                      setFn={setSelectedCycle}
-                    />
+                    <DropdownMenu choices={cycles} current={selectedCycle} setFn={filterByCycle} />
                   </div>
                 )}
               </div>
@@ -297,12 +363,6 @@ const MasterTeacherView = ({ cookies }) => {
           {siteStudents.length === 0 ? (
             <div className={styles['empty-view']}>
               <h2>No students have been created for this site yet.</h2>
-              <h2>Click here to create.</h2>
-              <img
-                className={styles.arrow}
-                src={arrow}
-                alt="arrow pointing to create student button"
-              />
             </div>
           ) : (
             <div className={styles.content}>
