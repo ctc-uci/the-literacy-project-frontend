@@ -157,34 +157,38 @@ const MasterTeacherView = ({ cookies }) => {
     <div>
       <NavigationBar />
       <div className={styles.main}>
-        <div className={styles.section}>
+        <div className={`${styles.section} ${styles['toggle-container']}`}>
           <div className={styles['toggle-bar']}>
             {/* only show option to select site if there is more than one site */}
-            {Object.keys(allSites).length > 0 && (
-              <DropdownMenu
-                choices={Object.keys(allSites)}
-                current={selectedSiteName}
-                setFn={setSiteInfo}
-              />
-            )}
-
-            {schoolYears.length > 1 && (
-              <div>
-                <h3>School Year</h3>
+            <div>
+              {Object.keys(allSites).length > 2 && (
                 <DropdownMenu
-                  choices={schoolYears}
-                  current={selectedSchoolYear}
-                  setFn={setSelectedSchoolYear}
+                  choices={Object.keys(allSites)}
+                  current={selectedSiteName}
+                  setFn={setSiteInfo}
                 />
-              </div>
-            )}
+              )}
+            </div>
 
-            {cycles.length > 1 && (
-              <div>
-                <h3>Cycle</h3>
-                <DropdownMenu choices={cycles} current={selectedCycle} setFn={setSelectedCycle} />
-              </div>
-            )}
+            <div className={styles['flex-row']}>
+              {schoolYears.length > 0 && (
+                <div className={styles['flex-row']}>
+                  <h4>School Year</h4>
+                  <DropdownMenu
+                    choices={schoolYears}
+                    current={selectedSchoolYear}
+                    setFn={setSelectedSchoolYear}
+                  />
+                </div>
+              )}
+
+              {cycles.length > 0 && (
+                <div className={styles['flex-row']}>
+                  <h4>Cycle</h4>
+                  <DropdownMenu choices={cycles} current={selectedCycle} setFn={setSelectedCycle} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -260,7 +264,7 @@ const MasterTeacherView = ({ cookies }) => {
           )}
         </div>
 
-        <div className={styles[('section', 'students-container')]}>
+        <div className={`${styles.section} ${styles['students-container']}`}>
           <div className={styles.header}>
             <h3>Students</h3>
             <Button variant="warning" className={styles['create-button']}>
