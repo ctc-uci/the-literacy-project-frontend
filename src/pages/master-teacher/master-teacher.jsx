@@ -30,6 +30,7 @@ const MasterTeacherView = ({ cookies }) => {
   const [categoricalPost, setCategoricalPost] = useState([]); // attitudinal + academic
   const [sitePre, setSitePre] = useState([]); // site vs. other TLP
   const [sitePost, setSitePost] = useState([]); // site vs. other TLP
+  const [showToggle, setShowToggle] = useState(true);
 
   // filter site data using the given siteId, school year, cycle
   // default params for first filtering of Site Data, all other times use the useEffect params
@@ -46,17 +47,26 @@ const MasterTeacherView = ({ cookies }) => {
 
     // get all the possible years and cycle choices for selected site
     const years = [];
+    let year = 0;
+    let cycle = '';
     const cycleChoices = [];
     siteGroups.forEach(group => {
-      years.push(group.year);
+      // get the greatest year and cycle of filtered data
+      if (group.year > year) {
+        year = group.year;
+      }
+      if (group.cycle > cycle) {
+        cycle = group.cycle;
+      }
+      years.push(`${group.year}-${(group.year % 100) + 1}`);
       cycleChoices.push(group.cycle);
     });
-    const year = Math.max(years);
-    setSelectedSchoolYear(year);
-    setSchoolYears(years);
-    const cycle = Math.max(cycleChoices);
+    setSelectedSchoolYear(`${year}-${(year % 100) + 1}`);
+    setSchoolYears(Object.values(years).sort().reverse());
     setSelectedCycle(cycle);
     setCycles(cycleChoices);
+
+    setShowToggle(Object.keys(allSites).length > 2 && years.length > 1 && cycleChoices.length > 1);
 
     const filteredGroups = siteGroups.filter(
       group => group.year === year && parseInt(group.cycle, 10) === cycle,
@@ -157,40 +167,46 @@ const MasterTeacherView = ({ cookies }) => {
     <div>
       <NavigationBar />
       <div className={styles.main}>
-        <div className={`${styles.section} ${styles['toggle-container']}`}>
-          <div className={styles['toggle-bar']}>
-            {/* only show option to select site if there is more than one site */}
-            <div>
-              {Object.keys(allSites).length > 2 && (
-                <DropdownMenu
-                  choices={Object.keys(allSites)}
-                  current={selectedSiteName}
-                  setFn={setSiteInfo}
-                />
-              )}
-            </div>
-
-            <div className={styles['flex-row']}>
-              {schoolYears.length > 0 && (
-                <div className={styles['flex-row']}>
-                  <h4>School Year</h4>
+        {showToggle && (
+          <div className={`${styles.section} ${styles['toggle-container']}`}>
+            <div className={styles['toggle-bar']}>
+              {/* only show option to select site if there is more than one site */}
+              <div>
+                {Object.keys(allSites).length > 2 && (
                   <DropdownMenu
-                    choices={schoolYears}
-                    current={selectedSchoolYear}
-                    setFn={setSelectedSchoolYear}
+                    choices={Object.keys(allSites)}
+                    current={selectedSiteName}
+                    setFn={setSiteInfo}
                   />
-                </div>
-              )}
+                )}
+              </div>
 
-              {cycles.length > 0 && (
-                <div className={styles['flex-row']}>
-                  <h4>Cycle</h4>
-                  <DropdownMenu choices={cycles} current={selectedCycle} setFn={setSelectedCycle} />
-                </div>
-              )}
+              <div className={styles['flex-row']}>
+                {schoolYears.length > 1 && (
+                  <div className={styles['flex-row']}>
+                    <h4>School Year</h4>
+                    <DropdownMenu
+                      choices={schoolYears}
+                      current={selectedSchoolYear}
+                      setFn={setSelectedSchoolYear}
+                    />
+                  </div>
+                )}
+
+                {cycles.length > 1 && (
+                  <div className={styles['flex-row']}>
+                    <h4>Cycle</h4>
+                    <DropdownMenu
+                      choices={cycles}
+                      current={selectedCycle}
+                      setFn={setSelectedCycle}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {selectedSiteName !== 'View All' && (
           <div className={styles.section}>
@@ -226,6 +242,7 @@ const MasterTeacherView = ({ cookies }) => {
             </div>
           )}
         </div>
+
         <div className={styles.section}>
           <div className={styles.header}>
             <h3>Student Groups</h3>
