@@ -4,12 +4,12 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import HelpIcon from '../../assets/icons/help-icon.svg';
 
-const InformationPopover = ({ bodyText }) => {
+const InformationPopover = ({ bodyText, header }) => {
   const renderPopover = popoverText => {
     return (
       <Popover id="popover-positioned-right">
         <Popover.Header as="h3">
-          <strong>Help</strong>
+          <strong>{header || 'Help'}</strong>
         </Popover.Header>
         <Popover.Body dangerouslySetInnerHTML={{ __html: popoverText }} />
       </Popover>
@@ -31,10 +31,12 @@ const InformationPopover = ({ bodyText }) => {
 
 InformationPopover.defaultProps = {
   bodyText: '',
+  header: '',
 };
 
 InformationPopover.propTypes = {
   bodyText: PropTypes.string,
+  header: PropTypes.string,
 };
 
 export default InformationPopover;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import styles from './settings.module.css';
 
 const AdminView = ({ userInfo }) => {
@@ -10,7 +11,10 @@ const AdminView = ({ userInfo }) => {
     <div id={styles['admin-settings']}>
       <Container className={styles['container-sect']}>
         <h3>
-          Account Information <Button variant="warning">Edit</Button>
+          Account Information{' '}
+          <Link className="btn btn-warning" to="/settings/edit" state={userInfo}>
+            Edit
+          </Link>
         </h3>
         <Row>
           <Col xs sm md={{ span: 5, offset: 1 }}>
@@ -57,14 +61,20 @@ const AdminView = ({ userInfo }) => {
           <Col md={{ offset: 1 }}>
             <h5>
               Current Password **********
-              <Button variant="warning" id={styles['change-pwd-btn']}>
+              <Link
+                id={styles['change-pwd-btn']}
+                className="btn btn-warning"
+                to="/settings/edit"
+                state={userInfo}
+              >
                 Change Password
-              </Button>
+              </Link>
             </h5>
           </Col>
         </Row>
       </Container>
-      <Container className={styles['container-sect']}>
+      {/* TODO: Accessibility Section */}
+      {/* <Container className={styles['container-sect']}>
         <h3>Accessibility</h3>
         <Row>
           <Col md={{ offset: 1 }}>
@@ -72,7 +82,7 @@ const AdminView = ({ userInfo }) => {
             <p className={styles['section-val']}>Default Text Larger Text</p>
           </Col>
         </Row>
-      </Container>
+      </Container> */}
     </div>
   );
 };

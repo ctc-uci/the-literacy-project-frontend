@@ -1,6 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import styles from './settings.module.css';
 
 const TeacherView = ({ userInfo }) => {
@@ -10,7 +11,10 @@ const TeacherView = ({ userInfo }) => {
     <div id={styles['mt-settings']}>
       <Container className={styles['container-sect']}>
         <h3>
-          Account Information <Button variant="warning">Edit</Button>
+          Account Information{' '}
+          <Link className="btn btn-warning" to="/settings/edit" state={userInfo}>
+            Edit
+          </Link>
         </h3>
         <Row>
           <Col xs sm md={{ span: 5, offset: 1 }}>
@@ -51,7 +55,8 @@ const TeacherView = ({ userInfo }) => {
           </Col>
         </Row>
       </Container>
-      <Container className={styles['container-sect']}>
+      {/* TODO: Accessibility section */}
+      {/* <Container className={styles['container-sect']}>
         <h3>Accessibility</h3>
         <Row>
           <Col md={{ offset: 1 }}>
@@ -59,7 +64,7 @@ const TeacherView = ({ userInfo }) => {
             <p className={styles['section-val']}>Default Text Larger Text</p>
           </Col>
         </Row>
-      </Container>
+      </Container> */}
     </div>
   );
 };

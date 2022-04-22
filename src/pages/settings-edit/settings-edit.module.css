@@ -1,0 +1,78 @@
+.setting-view {
+  font-family: Calibri, sans-serif;
+  color: #003459;
+}
+
+#settings-title {
+  text-align: center;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+#name-info {
+  display: inline-flex;
+}
+
+.name-input {
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+.input-custom {
+  margin-left: 1em;
+  margin-bottom: 1em;
+  width: 359px;
+}
+
+.status-val {
+  font-weight: 700;
+  margin-left: 1em;
+}
+
+.err-msg {
+  margin-left: 1em;
+}
+
+#last-name-err {
+  margin-left: 5em;
+}
+
+#password-rules {
+  height: 2.5vh;
+  margin-left: 0.3em;
+}
+
+.password-input {
+  display: inline-flex;
+  width: 100%;
+}
+
+.eye-icon {
+  position: relative;
+  cursor: pointer;
+  color: #212529 !important;
+  left: -1.5em !important;
+  top: 1em;
+}
+
+#logout {
+  color: #E53E3E;
+  font-weight: 700;
+  text-decoration-line: underline;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 10vh;
+}
+
+#current-password-input {
+  margin-bottom: 0;
+}
+
+#forgot-password-link {
+  color: var(--color-gray-blue-muted);
+  margin-left: 1em;
+}
+
+.save-btn {
+  margin-left: 1.2em;
+}

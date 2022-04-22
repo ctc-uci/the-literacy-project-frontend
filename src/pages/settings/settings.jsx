@@ -1,5 +1,6 @@
 import '../../custom.scss';
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { instanceOf } from 'prop-types';
 import styles from './settings.module.css';
 import TeacherView from './teacherView';
@@ -9,9 +10,17 @@ import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import { TLPBackend, formatPhoneNumber, capitalize } from '../../common/utils';
 import { Cookies, withCookies, cookieKeys } from '../../common/auth/cookie_utils';
 import { AUTH_ROLES } from '../../common/config';
+import CommonAlert from '../../common/CommonAlert/CommonAlert';
 
 const SettingsView = ({ cookies }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const infoUpdateSuccess = location?.state?.infoUpdateSuccess;
+  const [alertState, setAlertState] = useState({
+    variant: 'success',
+    open: true,
+  });
+
   const [userInfo, setUserInfo] = useState({});
   const [errorMessage, setErrorMessage] = useState();
 
@@ -55,6 +64,15 @@ const SettingsView = ({ cookies }) => {
   return (
     <div>
       <NavigationBar />
+      {infoUpdateSuccess && (
+        <CommonAlert
+          variant={alertState.variant}
+          open={alertState.open}
+          setOpen={val => setAlertState({ ...alertState, open: val })}
+        >
+          Successfully saved changes!
+        </CommonAlert>
+      )}
       <div className={styles['setting-view']}>
         <h1 id={styles['settings-title']}>Settings</h1>
         {role === AUTH_ROLES.ADMIN_ROLE ? (
