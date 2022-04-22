@@ -31,7 +31,7 @@ const MasterTeacherView = ({ cookies }) => {
   const [sitePre, setSitePre] = useState([]); // site vs. other TLP
   const [sitePost, setSitePost] = useState([]); // site vs. other TLP
   const [showToggle, setShowToggle] = useState(true);
-  const DEMO = false;
+  const DEMO = true;
 
   const filterSchoolYearCycle = async (
     filterOptions,
@@ -219,7 +219,7 @@ const MasterTeacherView = ({ cookies }) => {
       });
 
       if (DEMO) {
-        teacherSites['test Site'] = { siteId: -1, address: 'some address' };
+        teacherSites['test site that is super long'] = { siteId: -1, address: 'some address' };
         teacherSites['Demo Site'] = { siteId: -1, address: 'some other address' };
       }
       teacherSites['View All'] = null;
@@ -244,6 +244,7 @@ const MasterTeacherView = ({ cookies }) => {
               <div>
                 {Object.keys(allSites).length > 2 && (
                   <DropdownMenu
+                    className={styles['dropdown-btn']}
                     choices={Object.keys(allSites)}
                     current={selectedSiteName}
                     setFn={setSiteInfo}
@@ -251,11 +252,12 @@ const MasterTeacherView = ({ cookies }) => {
                 )}
               </div>
 
-              <div className={styles['flex-row']}>
+              <div>
                 {schoolYears.length > 1 && (
-                  <div className={styles['flex-row']}>
+                  <div className={styles['inner-toggle-bar']}>
                     <h4>School Year</h4>
                     <DropdownMenu
+                      className={styles['dropdown-btn']}
                       choices={schoolYears}
                       current={selectedSchoolYear}
                       setFn={filterBySchool}
@@ -264,9 +266,14 @@ const MasterTeacherView = ({ cookies }) => {
                 )}
 
                 {cycles.length > 1 && (
-                  <div className={styles['flex-row']}>
+                  <div className={styles['inner-toggle-bar']}>
                     <h4>Cycle</h4>
-                    <DropdownMenu choices={cycles} current={selectedCycle} setFn={filterByCycle} />
+                    <DropdownMenu
+                      className={styles['dropdown-btn']}
+                      choices={cycles}
+                      current={selectedCycle}
+                      setFn={filterByCycle}
+                    />
                   </div>
                 )}
               </div>
