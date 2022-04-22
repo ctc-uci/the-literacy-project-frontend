@@ -1,0 +1,46 @@
+/* Global */
+/* Tags */
+.table {
+  border-spacing: 0;
+  border-collapse: separate;
+  border: 1px solid #b9b9b9;
+  border-radius: 5px;
+  margin: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.table th, td {
+  border: 1px solid #b9b9b9;
+  padding: 5px 0;
+}
+.table thead td:first-child {
+  border-top-left-radius: 5px;
+}
+.table thead td:last-child {
+  border-top-right-radius: 5px;
+}
+
+.table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 5px;
+}
+.table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 5px;
+}
+
+/* Classes */
+.table thead {
+  border: 1px solid #b9b9b9;
+  font-weight: bold !important;
+  padding: 5px 0;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.table-head {
+  padding: 5px 0;
+}
+
+.table-body {
+  background: rgba(255, 255, 255, 0.0001);
+}
+
+/* IDs */

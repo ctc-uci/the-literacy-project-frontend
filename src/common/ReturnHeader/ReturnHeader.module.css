@@ -1,0 +1,19 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.right-text {
+  margin: 0;
+  padding: 0;
+}
+
+.return-link {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+  text-decoration: none;
+}

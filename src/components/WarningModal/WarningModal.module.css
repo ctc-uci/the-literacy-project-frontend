@@ -1,0 +1,50 @@
+@import '../../common/vars.css';
+@import '../../common/font.css';
+
+.modal {
+  text-align: center;
+}
+
+.dialog {
+  position: relative;
+  top: 10vw;
+}
+
+.modal-header {
+  display: flex;
+  color: var(--color-red);
+}
+
+.modal-title {
+  flex: 1;
+}
+
+.undo {
+  font-style: italic;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.buttons {
+  color: var(--text-color-white);
+}
+
+.alert-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  max-width: 500px !important;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.alert-close-btn {
+  margin-left: 5em;
+  font-size: 0.5em;
+}

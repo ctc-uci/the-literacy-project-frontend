@@ -28,3 +28,7 @@
 #status-inactive-text {
   color: #3288c4;
 }
+
+.buttons {
+  color: var(--text-color-white);
+}

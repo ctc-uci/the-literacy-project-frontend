@@ -1,0 +1,24 @@
+/* SMALLER SCREEN STUFF (under 800px) */
+
+.mobileView {
+  display: none !important;
+}
+.monitorView {
+  display: flex !important;
+}
+
+.mobileCol {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20%;
+  padding-bottom: 10%;
+}
+
+@media only screen and (max-width: 800px) {
+  .mobileView {
+    display: flex !important;
+  }
+  .monitorView {
+    display: none !important;
+  }
+}

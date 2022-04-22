@@ -1,11 +1,7 @@
 import React from 'react';
-import './login-reset-password.css';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
-
-import RecoverPassword from '../../components/RecoverPassword/RecoverPassword';
-import RecoveryConfirmed from '../../components/RecoveryConfirmed/RecoveryConfirmed';
+import ResetPassword from '../../components/ResetPassword/ResetPassword';
 
 // TEMPORARILY JUST SHOWS THE RECOVER PASSWORD EMAIL SUBMIT COMPONENT
 // AND UNDER IT IS THE RECOVERY CONFIRMED COMPONENT
@@ -26,23 +22,7 @@ const LoginResetPasswordView = () => {
         >
           <Col sm={4}>
             <div>
-              <RecoverPassword />
-            </div>
-          </Col>
-        </Row>
-
-        {/* THIS ROW DISPLAYS RECOVERY CONFIRMED COMPONENT */}
-        <Row
-          className="h-100"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Col sm={5}>
-            <div>
-              <RecoveryConfirmed />
+              <ResetPassword />
             </div>
           </Col>
         </Row>
