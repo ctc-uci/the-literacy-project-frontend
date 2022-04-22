@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BsFillCaretRightFill, BsPencil, BsPeople } from 'react-icons/bs';
+import { BsFillCaretDownFill, BsFillCaretRightFill, BsPencil, BsPeople } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './AreaDropdown.module.css';
@@ -7,7 +7,7 @@ import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
 import EditAreaModal from '../EditAreaModal/EditAreaModal';
 
-function AreaDropdown({ areaId, areaActive, areaName, areaStats, areaSites }) {
+function AreaDropdown({ areaId, areaActive, areaName, areaStats, areaSites, editable }) {
   const [isOpen, setIsOpen] = useState(false);
   const [editAreaModalIsOpen, setEditAreaModalIsOpen] = useState(false);
 
@@ -17,7 +17,35 @@ function AreaDropdown({ areaId, areaActive, areaName, areaStats, areaSites }) {
 
   return (
     <div className={styles['area-dropdown']}>
-      {isOpen ? (
+      <div className={styles['area-dropdown__closed_container']}>
+        {editable && (
+          <BsPencil
+            role="button"
+            onClick={() => setEditAreaModalIsOpen(true)}
+            tabIndex={0}
+            onKeyDown={event => {
+              if (event.key === 'Enter') setEditAreaModalIsOpen(true);
+            }}
+          />
+        )}
+        <div
+          className={styles['area-dropdown__closed-area-name-wrapper']}
+          onClick={toggleDropdown}
+          role="button"
+          tabIndex={0}
+          onKeyDown={event => {
+            if (event.key === 'Enter') toggleDropdown();
+          }}
+        >
+          <p className={styles['area-dropdown__closed-area-name']}>{areaName}</p>
+          {isOpen ? (
+            <BsFillCaretDownFill className={styles['area-dropdown__closed-area-caret']} />
+          ) : (
+            <BsFillCaretRightFill className={styles['area-dropdown__closed-area-caret']} />
+          )}
+        </div>
+      </div>
+      {isOpen && (
         <div
           className={styles['area-dropdown__open-container']}
           onClick={toggleDropdown}
@@ -77,29 +105,6 @@ function AreaDropdown({ areaId, areaActive, areaName, areaStats, areaSites }) {
             <Link to={`/site/${areaId}/edit`}>VIEW SITES</Link>
           </div>
         </div>
-      ) : (
-        <div className={styles['area-dropdown__closed_container']}>
-          <BsPencil
-            role="button"
-            onClick={() => setEditAreaModalIsOpen(true)}
-            tabIndex={0}
-            onKeyDown={event => {
-              if (event.key === 'Enter') setEditAreaModalIsOpen(true);
-            }}
-          />
-          <div
-            className={styles['area-dropdown__closed-area-name-wrapper']}
-            onClick={toggleDropdown}
-            role="button"
-            tabIndex={0}
-            onKeyDown={event => {
-              if (event.key === 'Enter') toggleDropdown();
-            }}
-          >
-            <p className={styles['area-dropdown__closed-area-name']}>{areaName}</p>
-            <BsFillCaretRightFill className={styles['area-dropdown__closed-area-caret']} />
-          </div>
-        </div>
       )}
       <EditAreaModal
         areaId={areaId}
@@ -118,6 +123,7 @@ AreaDropdown.defaultProps = {
   areaName: '',
   areaStats: {},
   areaSites: [],
+  editable: true,
 };
 
 AreaDropdown.propTypes = {
@@ -133,6 +139,7 @@ AreaDropdown.propTypes = {
   // ),
   areaStats: PropTypes.oneOfType([PropTypes.object]),
   areaSites: PropTypes.arrayOf(PropTypes.object),
+  editable: PropTypes.bool,
 };
 
 export default AreaDropdown;
