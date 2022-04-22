@@ -16,6 +16,16 @@ const formatDate = value => {
   return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
 };
 
+// capitalizes first letter of a string
+export const capitalize = s => {
+  return s[0].toUpperCase() + s.slice(1);
+};
+
+// formats school year into startYear-endYear where endYear is one year later
+export const formatSchoolYear = startYear => {
+  return `${startYear}-${startYear - 1999}`;
+};
+
 // turns military time HH:MM:SS into standard time HH:MM AA
 export const parseTime = dateString => {
   // eslint-disable-next-line prefer-const

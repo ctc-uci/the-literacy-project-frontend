@@ -12,16 +12,21 @@ import SettingsView from './pages/settings/settings';
 import SettingsEditView from './pages/settings-edit/settings-edit';
 import DashboardView from './pages/dashboard/dashboard';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
+import AttitudeFormInput from './pages/attitude-form-input/attitude-form-input';
 import AreaDetails from './pages/area-details/area-details';
 import PeopleView from './pages/people/people';
-import NotFoundView from './pages/not-found/not-found';
 import AccessDeniedView from './pages/access-denied/access-denied';
+import NotFoundView from './pages/not-found/not-found';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
+import StudentGroupView from './pages/student-group-view/student-group-view';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
+
+// useNavigate for redirects
+// const navigate = useNavigate();
 
 ReactDOM.render(
   <React.StrictMode>
@@ -82,7 +87,7 @@ ReactDOM.render(
             }
           />
           <Route
-            path="/area-details"
+            path="/area/:areaId"
             element={
               <ProtectedRoute
                 Component={AreaDetails}
@@ -91,7 +96,39 @@ ReactDOM.render(
               />
             }
           />
-          <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
+          <Route
+            path="/student/:studentID/assessment-card"
+            element={
+              <ProtectedRoute
+                Component={AssessmentScorecardInput}
+                redirectPath="/access-denied"
+                roles={[USER_ROLE]}
+              />
+            }
+          />
+          <Route
+            path="/student/:studentID/attitude-survey"
+            element={
+              <ProtectedRoute
+                Component={AttitudeFormInput}
+                redirectPath="/access-denied"
+                roles={[USER_ROLE]}
+              />
+            }
+          />
+          <Route
+            path="/student-groups/:groupId"
+            exact
+            element={
+              <ProtectedRoute
+                Component={StudentGroupView}
+                redirectPath="/access-denied"
+                roles={[USER_ROLE]}
+              />
+            }
+          />
+          {/* <Route path="/area" render={() => Navigate('/area-management')} /> */}
+          {/* <Route path="/area/:areaId" element={<AreaDetails />} /> */}
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/login" />} />
           <Route exact path="/access-denied" element={<AccessDeniedView />} />
           <Route exact path="/not-found" element={<NotFoundView />} />

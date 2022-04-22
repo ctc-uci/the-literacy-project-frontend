@@ -3,11 +3,6 @@ import { PropTypes } from 'prop-types';
 import './MasterTeacherConfirmationModal.css';
 
 const MasterTeacherConfirmationModal = ({ isOpen, setIsOpen }) => {
-  // console.log('isOpen is');
-  // console.log(isOpen);
-  // console.log('setIsOpen is');
-  // console.log(setIsOpen);
-
   return isOpen ? (
     <>
       <div className="master-teacher-confirmation-modal">
