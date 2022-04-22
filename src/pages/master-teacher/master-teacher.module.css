@@ -12,10 +12,11 @@
   padding-bottom: 2em;
 }
 
-.toggle-bar{
+.toggle-bar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .toggle-bar > div {
@@ -26,6 +27,7 @@
 .inner-toggle-bar {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   padding: 0 0.5em;
 }
 

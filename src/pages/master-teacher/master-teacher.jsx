@@ -115,6 +115,7 @@ const MasterTeacherView = ({ cookies }) => {
     siteName = selectedSiteName,
     siteId = selectedSiteId,
     data = allData,
+    sites = allSites,
   ) => {
     let groups = data;
     if (siteName !== 'View All') {
@@ -152,7 +153,7 @@ const MasterTeacherView = ({ cookies }) => {
     setCycles(Array.from(new Set(cycleChoices)).sort().reverse());
 
     // show all sites option if at least 2 sites (View All does not count as a site but is an option)
-    setShowToggle(Object.keys(allSites).length > 2 || years.size > 1 || cycleChoices.size > 1);
+    setShowToggle(Object.keys(sites).length > 2 || years.size > 1 || cycleChoices.size > 1);
 
     setSiteGroups(groups);
     await filterSchoolYearCycle(filterOpts, groups, siteName, siteId);
@@ -238,7 +239,7 @@ const MasterTeacherView = ({ cookies }) => {
                 )}
               </div>
 
-              <div>
+              <div className={styles['inner-toggle-bar']}>
                 {schoolYears.length > 1 && (
                   <div className={styles['inner-toggle-bar']}>
                     <h4>School Year</h4>
