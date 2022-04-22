@@ -31,7 +31,6 @@ const MasterTeacherView = ({ cookies }) => {
   const [sitePre, setSitePre] = useState([]); // site vs. other TLP
   const [sitePost, setSitePost] = useState([]); // site vs. other TLP
   const [showToggle, setShowToggle] = useState(true);
-  const DEMO = true;
 
   const filterSchoolYearCycle = async (
     filterOptions,
@@ -144,15 +143,6 @@ const MasterTeacherView = ({ cookies }) => {
         cycleChoices.add(group.cycle);
       });
 
-      if (DEMO) {
-        years.add('2020-21');
-        years.add('2021-22');
-        years.add('2019-20');
-        years.add('2020-21');
-
-        cycleChoices.add('1');
-      }
-
       setSelectedSchoolYear(`${initialYear}-${(initialYear % 100) + 1}`);
       setSelectedCycle(initialCycle);
       filterOpts = { year: initialYear, cycle: initialCycle };
@@ -218,10 +208,6 @@ const MasterTeacherView = ({ cookies }) => {
         }
       });
 
-      if (DEMO) {
-        teacherSites['test site that is super long'] = { siteId: -1, address: 'some address' };
-        teacherSites['Demo Site'] = { siteId: -1, address: 'some other address' };
-      }
       teacherSites['View All'] = null;
 
       setAllSites(teacherSites);
