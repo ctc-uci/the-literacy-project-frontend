@@ -5,7 +5,12 @@ import { Button } from 'react-bootstrap';
 import styles from './master-teacher.module.css';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import { withCookies, cookieKeys, Cookies } from '../../common/auth/cookie_utils';
-import { TLPBackend, calculateScores, calculateSiteScores } from '../../common/utils';
+import {
+  TLPBackend,
+  calculateScores,
+  calculateSiteScores,
+  formatSchoolYear,
+} from '../../common/utils';
 import Plus from '../../assets/icons/plus.svg';
 import StudentGroup from '../../components/StudentGroup/StudentGroup';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
@@ -100,7 +105,7 @@ const MasterTeacherView = ({ cookies }) => {
   // handlers for changing school year and cycle
   const filterBySchool = async newYear => {
     const startYear = newYear.substring(0, 4);
-    setSelectedSchoolYear(`${startYear}-${(startYear % 100) + 1}`);
+    setSelectedSchoolYear(formatSchoolYear(newYear));
     await filterSchoolYearCycle({ year: startYear });
   };
 
@@ -140,11 +145,11 @@ const MasterTeacherView = ({ cookies }) => {
         if (group.cycle > initialCycle) {
           initialCycle = group.cycle;
         }
-        years.add(`${group.year}-${(group.year % 100) + 1}`);
+        years.add(formatSchoolYear(group.year));
         cycleChoices.add(group.cycle);
       });
 
-      setSelectedSchoolYear(`${initialYear}-${(initialYear % 100) + 1}`);
+      setSelectedSchoolYear(formatSchoolYear(initialYear));
       setSelectedCycle(initialCycle);
       filterOpts = { year: initialYear, cycle: initialCycle };
     }
