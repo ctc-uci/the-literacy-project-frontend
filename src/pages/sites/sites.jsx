@@ -17,24 +17,6 @@ const SiteView = () => {
   const [areaResponseData, setAreaResponseData] = useState([]);
   const [schoolYear, setSchoolYear] = useState('2020-21');
 
-  const addAssociatedSiteToArea = async resData => {
-    async function fetchAllSites() {
-      // eslint-disable-next-line no-plusplus
-      for (let ind = 0; ind < resData.length; ind++) {
-        TLPBackend.get(`/sites/area/${resData[ind].areaId}`)
-          .then(res => {
-            // eslint-disable-next-line no-param-reassign
-            resData[ind].area_sites = res.data;
-          })
-          .catch(() => {});
-      }
-    }
-    await fetchAllSites();
-    setTimeout(() => {
-      setAreaResponseData(resData);
-    }, 2000);
-  };
-
   function mapAreas() {
     return areaResponseData.map(area => {
       return (
@@ -43,15 +25,41 @@ const SiteView = () => {
           areaActive={area.active}
           areaName={area.areaName}
           areaStats={{
-            student_count: 15,
-            master_teacher_count: 2,
-            site_count: 2,
+            student_count: area.numStudents || 0,
+            master_teacher_count: area.numMts || 0,
+            site_count: area.numSites || 0,
           }}
-          areaSites={area.area_sites}
+          areaSites={area.siteInfo || []}
           key={`area-dropdown-${area.areaId}`}
         />
       );
     });
+  }
+
+  function getAllAreaStats() {
+    return areaResponseData.reduce(
+      (acc, area) => {
+        acc.student_count += area.numStudents || 0;
+        acc.master_teacher_count += area.numMts || 0;
+        acc.site_count += area.numSites || 0;
+        return acc;
+      },
+      {
+        student_count: 0,
+        master_teacher_count: 0,
+        site_count: 0,
+      },
+    );
+  }
+
+  function getAllAreaSites() {
+    const temp = areaResponseData.reduce((acc, area) => {
+      if (area.siteInfo) {
+        acc.push(...area.siteInfo);
+      }
+      return acc;
+    }, []);
+    return temp;
   }
 
   const updateSchoolYear = newSchoolYear => {
@@ -59,16 +67,9 @@ const SiteView = () => {
   };
 
   useEffect(() => {
-    async function fetchAreas() {
-      await TLPBackend.get('/areas')
-        .then(res => {
-          setTimeout(() => {
-            addAssociatedSiteToArea(res.data);
-          }, 1000);
-        })
-        .catch(() => {});
-    }
-    fetchAreas();
+    TLPBackend.get('/areas/area-management').then(res => {
+      setAreaResponseData(res.data);
+    });
   }, []);
 
   return (
@@ -158,6 +159,15 @@ const SiteView = () => {
                 </Button>
               </div>
             </div>
+            <AreaDropdown
+              areaId="all"
+              areaActive
+              areaName="All Areas"
+              areaStats={getAllAreaStats()}
+              areaSites={getAllAreaSites()}
+              key="area-dropdown-all"
+              editable={false}
+            />
             {mapAreas()}
           </div>
           <div className={styles['sites-data']}>
