@@ -40,10 +40,15 @@ const ManagementDataSection = ({
   const displaySectionTitle = () => {
     if (sectionTitle !== 'Students') {
       return (
-        <h1 style={{ height: 'calc(1.375rem + 1.5vw)' }}>
-          {sectionTitle}
-          {popover}
-        </h1>
+        <>
+          <h1 className={styles['inner-ctrl']} style={{ height: 'calc(1.375rem + 1.5vw)' }}>
+            {sectionTitle}
+            {popover}
+          </h1>
+          <Button className={styles['export-button']} variant="primary">
+            Export to CSV
+          </Button>
+        </>
       );
     }
     return null;
@@ -74,7 +79,7 @@ const ManagementDataSection = ({
   const displayFilterButton = () => {
     if (sectionTitle !== 'Admin') {
       return (
-        <Button variant="primary">
+        <Button className={styles['filter-button']} variant="primary">
           Filter By <FaFilter cursor="pointer" />
         </Button>
       );
@@ -84,7 +89,11 @@ const ManagementDataSection = ({
 
   const displaySortByButton = () => {
     return (
-      <DropdownButton id="dropdown-basic-button" title="Sort By">
+      <DropdownButton
+        className={styles['dropdown-button']}
+        id="dropdown-basic-button"
+        title="Sort By"
+      >
         <Dropdown.Item>A-Z</Dropdown.Item>
         <Dropdown.Item>Z-A</Dropdown.Item>
       </DropdownButton>
