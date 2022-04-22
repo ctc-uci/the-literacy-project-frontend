@@ -1,3 +1,16 @@
+.export-button {
+  background-color: var(--color-dark-blue-muted);
+  color: var(--text-color-white);
+}
+
+.dropdown-button button {
+  color: var(--text-color-white);
+}
+
+.filter-button {
+  color: var(--text-color-white);
+}
+
 .create-btn {
   margin: 10px;
 }
@@ -16,4 +29,17 @@
 
 .ctrl-margin {
   margin-left: 1em;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+}
+.search-bar {
+  margin: 0 !important;
+  border-right: none !important;
+}
+#search-icon {
+  border-left: none !important;
+  background-color: #fff !important;
 }

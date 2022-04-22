@@ -37,12 +37,12 @@ const AdminView = () => {
   }, []);
 
   const tbodyData = [];
-  adminList.forEach(mtObj => {
-    const { firstName } = mtObj;
-    const { lastName } = mtObj;
+  adminList.forEach(admObj => {
+    const { firstName } = admObj;
+    const { lastName } = admObj;
     tbodyData.push({
-      id: mtObj.userId,
-      items: [`${firstName} ${lastName}`, mtObj.email, mtObj.active],
+      id: admObj.userId,
+      items: [`${firstName} ${lastName}`, admObj.email, admObj.active],
     });
   });
 

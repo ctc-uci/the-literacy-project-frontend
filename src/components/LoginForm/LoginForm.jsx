@@ -46,7 +46,7 @@ const LoginForm = ({ cookies }) => {
       {/* body of LoginForm */}
       <div className={styles['form-wrapper']}>
         <h1 className={styles.title}> Log In </h1>
-        <form className={styles.form}>
+        <form className={styles.loginForm}>
           <div className={styles['email-input']}>
             <label className={styles['log-label']} htmlFor="email">
               Email
@@ -71,7 +71,7 @@ const LoginForm = ({ cookies }) => {
                 placeholder="Password"
                 required
               />
-              <FaEye id={styles['eye-icon']} color="black" onClick={togglePasswordVisibility} />
+              <FaEye id={styles.eyeIcon} color="black" onClick={togglePasswordVisibility} />
             </label>
           </div>
           <div className={styles['remember-me-box']}>

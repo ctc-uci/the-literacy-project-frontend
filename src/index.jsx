@@ -12,10 +12,11 @@ import SettingsView from './pages/settings/settings';
 import SettingsEditView from './pages/settings-edit/settings-edit';
 import AreaManagement from './pages/area-management/area-management';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
+import AttitudeFormInput from './pages/attitude-form-input/attitude-form-input';
 import AreaDetails from './pages/area-details/area-details';
 import PeopleView from './pages/people/people';
-import NotFoundView from './pages/not-found/not-found';
 import AccessDeniedView from './pages/access-denied/access-denied';
+import NotFoundView from './pages/not-found/not-found';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
@@ -37,7 +38,6 @@ ReactDOM.render(
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/recover-password" exact element={<LoginRecoverPasswordView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
-          <Route path="/student-groups/:groupId" exact element={<StudentGroupView />} />
           <Route
             path="/settings"
             element={
@@ -100,6 +100,37 @@ ReactDOM.render(
           />
           <Route path="/student/:studentId" element={<StudentView />} />
           <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
+          <Route
+            path="/student/:studentID/assessment-card"
+            element={
+              <ProtectedRoute
+                Component={AssessmentScorecardInput}
+                redirectPath="/access-denied"
+                roles={[USER_ROLE]}
+              />
+            }
+          />
+          <Route
+            path="/student/:studentID/attitude-survey"
+            element={
+              <ProtectedRoute
+                Component={AttitudeFormInput}
+                redirectPath="/access-denied"
+                roles={[USER_ROLE]}
+              />
+            }
+          />
+          <Route
+            path="/student-groups/:groupId"
+            exact
+            element={
+              <ProtectedRoute
+                Component={StudentGroupView}
+                redirectPath="/access-denied"
+                roles={[USER_ROLE]}
+              />
+            }
+          />
           {/* <Route path="/area" render={() => Navigate('/area-management')} /> */}
           {/* <Route path="/area/:areaId" element={<AreaDetails />} /> */}
           <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
