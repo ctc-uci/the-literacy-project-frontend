@@ -7,7 +7,15 @@ import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
 import EditAreaModal from '../EditAreaModal/EditAreaModal';
 
-function AreaDropdown({ areaId, areaActive, areaName, areaStats, areaSites, editable }) {
+function AreaDropdown({
+  areaId,
+  areaActive,
+  areaName,
+  areaStats,
+  areaSites,
+  editable,
+  hideSitesLink,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [editAreaModalIsOpen, setEditAreaModalIsOpen] = useState(false);
 
@@ -101,9 +109,11 @@ function AreaDropdown({ areaId, areaActive, areaName, areaStats, areaSites, edit
               </div>
             </div>
           </div>
-          <div className={styles['area-dropdown__open__edit-sites-link']}>
-            <Link to={`/area/${areaId}`}>VIEW ALL</Link>
-          </div>
+          {!hideSitesLink && (
+            <div className={styles['area-dropdown__open__edit-sites-link']}>
+              <Link to={`/area/${areaId}`}>VIEW ALL</Link>
+            </div>
+          )}
         </div>
       )}
       <EditAreaModal
@@ -124,6 +134,7 @@ AreaDropdown.defaultProps = {
   areaStats: {},
   areaSites: [],
   editable: true,
+  hideSitesLink: false,
 };
 
 AreaDropdown.propTypes = {
@@ -140,6 +151,7 @@ AreaDropdown.propTypes = {
   areaStats: PropTypes.oneOfType([PropTypes.object]),
   areaSites: PropTypes.arrayOf(PropTypes.object),
   editable: PropTypes.bool,
+  hideSitesLink: PropTypes.bool,
 };
 
 export default AreaDropdown;

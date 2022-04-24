@@ -166,6 +166,7 @@ const AreaManagement = () => {
               areaSites={getAllAreaSites()}
               key="area-dropdown-all"
               editable={false}
+              hideSitesLink
             />
             {mapAreas()}
           </div>
