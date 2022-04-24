@@ -35,7 +35,10 @@ const MasterTeacherView = ({ cookies }) => {
   const [categoricalPost, setCategoricalPost] = useState([]); // attitudinal + academic
   const [sitePre, setSitePre] = useState([]); // site vs. other TLP
   const [sitePost, setSitePost] = useState([]); // site vs. other TLP
-  const [showToggle, setShowToggle] = useState(true);
+  const [siteToggle, setSiteToggle] = useState(true); // true if want to enable toggling options
+  const [yearToggle, setYearToggle] = useState(true);
+  const [cycleToggle, setCycleToggle] = useState(true);
+  const VIEW_ALL = 'All Sites';
 
   const filterSchoolYearCycle = async (
     filterOptions,
@@ -62,7 +65,7 @@ const MasterTeacherView = ({ cookies }) => {
     const students = [];
     filteredGroups.forEach(group => {
       // in case the student group has no students, the students array will be null
-      if (group.students.length > 0) {
+      if (group.students && group.students.length > 0) {
         group.students.forEach(student => {
           students.push(student);
         });
@@ -81,7 +84,7 @@ const MasterTeacherView = ({ cookies }) => {
     const scores = calculateScores(students);
 
     let otherSites = [];
-    if (siteName === 'View All') {
+    if (siteName === VIEW_ALL) {
       const teacherId = cookies.get(cookieKeys.USER_ID);
       otherSites = await TLPBackend.get(`/students/other-teachers/${teacherId}`);
     } else {
@@ -120,10 +123,10 @@ const MasterTeacherView = ({ cookies }) => {
     siteName = selectedSiteName,
     siteId = selectedSiteId,
     data = allData,
-    sites = allSites,
+    // sites = allSites,
   ) => {
     let groups = data;
-    if (siteName !== 'View All') {
+    if (siteName !== VIEW_ALL) {
       // all groups of selected site
       groups = data.filter(group => group.siteId === siteId);
     }
@@ -155,10 +158,9 @@ const MasterTeacherView = ({ cookies }) => {
     }
 
     setSchoolYears(Array.from(new Set(years)).sort().reverse());
+    setYearToggle(years.length > 1);
     setCycles(Array.from(new Set(cycleChoices)).sort().reverse());
-
-    // show all sites option if at least 2 sites (View All does not count as a site but is an option)
-    setShowToggle(Object.keys(sites).length > 2 || years.size > 1 || cycleChoices.size > 1);
+    setCycleToggle(cycleChoices.length > 1);
 
     setSiteGroups(groups);
     await filterSchoolYearCycle(filterOpts, groups, siteName, siteId);
@@ -203,10 +205,9 @@ const MasterTeacherView = ({ cookies }) => {
         // adding site address for each group for View All selection
         // displayed in Student Group section
         group.siteAddress = address;
-
         // adding area and site name for each student for View All selection
         // displayed in Student section table
-        if (group.students.length > 0) {
+        if (group.students && group.students.length > 0) {
           group.students.forEach(student => {
             student.areaName = group.areaName;
             student.siteName = group.siteName;
@@ -214,13 +215,14 @@ const MasterTeacherView = ({ cookies }) => {
         }
       });
 
-      teacherSites['View All'] = null;
+      teacherSites[VIEW_ALL] = null;
 
       setAllSites(teacherSites);
       setSelectedSiteName(initialSite.siteName);
       setSelectedSiteId(initialSite.siteId);
       setSelectedSiteAddress(initialSite.address);
-      filterSiteData(initialSite.siteName, initialSite.siteId, data, teacherSites);
+      setSiteToggle(Object.keys(teacherSites).length > 2);
+      await filterSiteData(initialSite.siteName, initialSite.siteId, data, teacherSites);
     }
     await fetchTeacherData();
   }, []);
@@ -229,51 +231,46 @@ const MasterTeacherView = ({ cookies }) => {
     <div>
       <NavigationBar />
       <div className={styles.main}>
-        {showToggle && (
-          <div className={`${styles.section} ${styles['toggle-container']}`}>
-            <div className={styles['toggle-bar']}>
-              {/* only show option to select site if there is more than one site */}
-              <div>
-                {Object.keys(allSites).length > 2 && (
-                  <DropdownMenu
-                    className={styles['dropdown-btn']}
-                    choices={Object.keys(allSites)}
-                    current={selectedSiteName}
-                    setFn={setSiteInfo}
-                  />
-                )}
+        <div className={`${styles.section} ${styles['toggle-container']}`}>
+          <div className={styles['toggle-bar']}>
+            {/* only show option to select site if there is more than one site */}
+            <div>
+              <DropdownMenu
+                className={styles['dropdown-btn']}
+                choices={Object.keys(allSites)}
+                current={selectedSiteName}
+                setFn={setSiteInfo}
+                disabled={!siteToggle}
+              />
+            </div>
+
+            <div className={styles['inner-toggle-bar']}>
+              <div className={styles['inner-toggle-bar']}>
+                <h4>School Year</h4>
+                <DropdownMenu
+                  className={styles['dropdown-btn']}
+                  choices={schoolYears}
+                  current={selectedSchoolYear}
+                  setFn={filterBySchool}
+                  disabled={!yearToggle}
+                />
               </div>
 
               <div className={styles['inner-toggle-bar']}>
-                {schoolYears.length > 1 && (
-                  <div className={styles['inner-toggle-bar']}>
-                    <h4>School Year</h4>
-                    <DropdownMenu
-                      className={styles['dropdown-btn']}
-                      choices={schoolYears}
-                      current={selectedSchoolYear}
-                      setFn={filterBySchool}
-                    />
-                  </div>
-                )}
-
-                {cycles.length > 1 && (
-                  <div className={styles['inner-toggle-bar']}>
-                    <h4>Cycle</h4>
-                    <DropdownMenu
-                      className={styles['dropdown-btn']}
-                      choices={cycles}
-                      current={selectedCycle}
-                      setFn={filterByCycle}
-                    />
-                  </div>
-                )}
+                <h4>Cycle</h4>
+                <DropdownMenu
+                  className={styles['dropdown-btn']}
+                  choices={cycles}
+                  current={selectedCycle}
+                  setFn={filterByCycle}
+                  disabled={!cycleToggle}
+                />
               </div>
             </div>
           </div>
-        )}
+        </div>
 
-        {selectedSiteName !== 'View All' && (
+        {selectedSiteName !== VIEW_ALL && (
           <div className={styles.section}>
             <h3>{selectedSiteName}</h3>
             <h3 className={styles['gray-text']}>{selectedSiteAddress}</h3>
@@ -284,7 +281,7 @@ const MasterTeacherView = ({ cookies }) => {
           <h3>Data</h3>
           {categoricalPre.length === 0 ? (
             <div className={styles['empty-view']}>
-              <h2>No data is available for this site yet.</h2>
+              <h2>No data is available for this selected time.</h2>
             </div>
           ) : (
             <div className={styles['graph-container']}>
@@ -318,7 +315,7 @@ const MasterTeacherView = ({ cookies }) => {
           </div>
           {studentGroups.length === 0 ? (
             <div className={styles['empty-view']}>
-              <h2>No Student Groups is available for this site yet.</h2>
+              <h2>No student group is available for this selected time.</h2>
             </div>
           ) : (
             <div className={styles.content}>
@@ -337,7 +334,7 @@ const MasterTeacherView = ({ cookies }) => {
                     }
                     meetingDay={group.meetingDay}
                     meetingTime={group.meetingTime}
-                    viewAddress={selectedSiteName === 'View All'}
+                    viewAddress={selectedSiteName === VIEW_ALL}
                     siteName={group.siteName}
                     address={group.siteAddress}
                   />
@@ -361,11 +358,11 @@ const MasterTeacherView = ({ cookies }) => {
           </div>
           {siteStudents.length === 0 ? (
             <div className={styles['empty-view']}>
-              <h2>No students have been created for this site yet.</h2>
+              <h2>No students have been created for this selected time.</h2>
             </div>
           ) : (
             <div className={styles.content}>
-              {selectedSiteName !== 'View All' ? (
+              {selectedSiteName !== VIEW_ALL ? (
                 siteStudents
                   .slice(0, 6)
                   .map(s => (

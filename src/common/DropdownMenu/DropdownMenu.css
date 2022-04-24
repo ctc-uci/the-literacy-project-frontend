@@ -12,6 +12,7 @@
   cursor: pointer;
   width: 100%;
   padding: 0 0.5em;
+  min-height: 32px;
 }
 
 .dropdown-button {
@@ -58,4 +59,9 @@
 
 .dropdown-choice:hover {
   text-decoration: underline;
+}
+
+.dropdown-disabled {
+  background-color: #ced4da;
+  cursor: default;
 }
