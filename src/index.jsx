@@ -99,7 +99,6 @@ ReactDOM.render(
             }
           />
           <Route path="/student/:studentId" element={<StudentView />} />
-          <Route path="/assessment-scorecard-input" element={<AssessmentScorecardInput />} />
           <Route
             path="/student/:studentID/assessment-card"
             element={

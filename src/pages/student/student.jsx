@@ -134,9 +134,6 @@ const StudentView = () => {
     });
     if (res.status === 200) {
       setStudent(res.data);
-      // setStudent({
-      //   ...res.data,
-      // });
       await TLPBackend.get(`/student-groups/site/${res.data.siteId}`)
         .then(resOptions => {
           setEditOptions({
