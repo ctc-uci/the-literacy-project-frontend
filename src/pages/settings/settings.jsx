@@ -9,8 +9,6 @@ import { logout, useNavigate } from '../../common/auth/auth_utils';
 import { Cookies, withCookies } from '../../common/auth/cookie_utils';
 import NavigationBar from '../../components/NavigationBar/NavigationBar';
 
-// import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-
 const SettingsView = ({ cookies }) => {
   // Placeholders, replace later with backend call
   const navigate = useNavigate();
