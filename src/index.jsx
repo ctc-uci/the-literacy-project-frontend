@@ -98,7 +98,16 @@ ReactDOM.render(
               />
             }
           />
-          <Route path="/student/:studentId" element={<StudentView />} />
+          <Route
+            path="/student/:studentId"
+            element={
+              <ProtectedRoute
+                Component={StudentView}
+                redirectPath="/access-denied"
+                roles={[USER_ROLE]}
+              />
+            }
+          />
           <Route
             path="/student/:studentID/assessment-card"
             element={
