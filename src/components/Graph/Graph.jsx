@@ -40,9 +40,7 @@ const Graph = ({ title, xLabels, preData, postData }) => {
         anchor: 'end',
         offset: -20,
         align: 'start',
-        formatter: value => {
-          return `${value.toFixed(2)}%`; // return percentage rounded to 2 decimal places
-        },
+        formatter: value => (value ? `${value?.toFixed(2)}%` : null), // return percentage rounded to 2 decimal places
       },
     },
     scales: {
@@ -89,8 +87,12 @@ const Graph = ({ title, xLabels, preData, postData }) => {
   return <Bar options={options} data={data} />;
 };
 
+Graph.defaultProps = {
+  title: '',
+};
+
 Graph.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   xLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
   preData: PropTypes.arrayOf(PropTypes.number).isRequired,
   postData: PropTypes.arrayOf(PropTypes.number).isRequired,
