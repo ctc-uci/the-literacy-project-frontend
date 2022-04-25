@@ -27,6 +27,7 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "firebase": "^9.6.8",
     "lint-staged": "^11.2.6",
+    "mdbreact": "^5.2.0",
     "nanoid": "^3.3.1",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
