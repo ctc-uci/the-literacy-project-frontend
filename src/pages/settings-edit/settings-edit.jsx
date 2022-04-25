@@ -12,7 +12,7 @@ import TeacherSettingsEditView from './teacherSettingsEditView';
 const SettingsEditView = ({ cookies }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const userInfo = location.state;
+  const { editAccountInfoDisplay, editPasswordDisplay, userInfo } = location.state;
   // eslint-disable-next-line no-unused-vars
   const [errorMessage, setErrorMessage] = useState();
 
@@ -33,9 +33,15 @@ const SettingsEditView = ({ cookies }) => {
       <div className={styles['setting-view']}>
         <h1 id={styles['settings-title']}>Settings</h1>
         {role === AUTH_ROLES.ADMIN_ROLE ? (
-          <AdminSettingsEditView userInfo={userInfo} userId={userId} />
+          <AdminSettingsEditView
+            userInfo={userInfo}
+            userId={userId}
+            role={role}
+            editAccountInfoDisplay={editAccountInfoDisplay}
+            editPasswordDisplay={editPasswordDisplay}
+          />
         ) : (
-          <TeacherSettingsEditView userInfo={userInfo} userId={userId} />
+          <TeacherSettingsEditView userInfo={userInfo} userId={userId} role={role} />
         )}
         <p id={styles.logout} onClick={handleLogOut} aria-hidden="true">
           Log Out

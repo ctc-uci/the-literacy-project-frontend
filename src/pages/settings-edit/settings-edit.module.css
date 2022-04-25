@@ -76,3 +76,9 @@
 .save-btn {
   margin-left: 1.2em;
 }
+
+#cancel-btn {
+  margin-left: 1.2em;
+  background-color: var(--color-gray-blue-muted);
+  border-color: var(--color-gray-blue-muted);
+}
