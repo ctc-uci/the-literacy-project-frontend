@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 import styles from './not-found.module.css';
 import error from '../../assets/404.PNG';
 import childGlass from '../../assets/personGlasses.PNG';
-import NavigationBar from '../../components/NavigationBar/NavigationBar';
 
 const NotFoundView = () => {
   return (
     <div>
-      <NavigationBar />
       <img src={error} alt="404 warning" className={styles.error} />
 
       <div className={styles.content}>

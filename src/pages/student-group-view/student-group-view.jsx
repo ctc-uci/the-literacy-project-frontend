@@ -4,7 +4,6 @@ import '../../common/vars.css';
 import { Button, Container, Form } from 'react-bootstrap';
 import { BsPencil, BsBackspace } from 'react-icons/bs';
 import { TLPBackend, parseTime, calculateScores } from '../../common/utils';
-import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
 import Graph from '../../components/Graph/Graph';
 import styles from './student-group-view.module.css';
@@ -74,7 +73,6 @@ const StudentGroupView = () => {
 
   return (
     <div>
-      <NavigationBar />
       <div id={styles['header-container']}>
         <div className="d-flex">
           <div>

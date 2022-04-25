@@ -5,7 +5,6 @@ import { TLPBackend } from '../../common/utils';
 import styles from './area-management.module.css';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
-import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
@@ -73,7 +72,6 @@ const AreaManagement = () => {
 
   return (
     <div>
-      <NavigationBar />
       <div className={styles['site-container']}>
         <h1>Areas</h1>
         <div className={styles['area-content']}>

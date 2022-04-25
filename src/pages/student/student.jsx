@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import Graph from '../../components/Graph/Graph';
 
 import styles from './student.module.css';
-import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import { TLPBackend } from '../../common/utils';
 
 const StudentView = () => {
@@ -178,7 +177,6 @@ const StudentView = () => {
 
   return (
     <>
-      <NavigationBar />
       <div className={styles['student-view']}>
         <section className={styles['student-return-name-section']}>
           <h2>
