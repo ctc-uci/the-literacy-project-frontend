@@ -15,11 +15,12 @@ import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessm
 import AttitudeFormInput from './pages/attitude-form-input/attitude-form-input';
 import AreaDetails from './pages/area-details/area-details';
 import PeopleView from './pages/people/people';
-import NotFoundView from './pages/not-found/not-found';
 import AccessDeniedView from './pages/access-denied/access-denied';
+import NotFoundView from './pages/not-found/not-found';
 import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
+import StudentView from './pages/student/student';
 import StudentGroupView from './pages/student-group-view/student-group-view';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
 
@@ -94,6 +95,16 @@ ReactDOM.render(
                 Component={AreaDetails}
                 redirectPath="/access-denied"
                 roles={[ADMIN_ROLE]}
+              />
+            }
+          />
+          <Route
+            path="/student/:studentId"
+            element={
+              <ProtectedRoute
+                Component={StudentView}
+                redirectPath="/access-denied"
+                roles={[USER_ROLE]}
               />
             }
           />

@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { PropTypes, instanceOf } from 'prop-types';
 import { withCookies, cookieKeys, Cookies, clearCookies } from './auth/cookie_utils';
 import { TLPBackend, refreshToken } from './utils';
+import LoadingScreen from '../components/LoadingScreen/LoadingScreen';
 
 const userIsAuthenticated = async (roles, cookies) => {
   try {
@@ -39,7 +40,7 @@ const ProtectedRoute = ({ Component, redirectPath, roles, cookies }) => {
     setIsLoading(false);
   }, []);
   if (isLoading) {
-    return <h1>LOADING...</h1>;
+    return <LoadingScreen />;
   }
   if (isAuthenticated) {
     return <Component />;
