@@ -4633,9 +4633,9 @@ async-limiter@~1.0.0:
   integrity sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
 
 async@^2.6.2:
-  version "2.6.3"
-  resolved "https://registry.npmjs.org/async/-/async-2.6.3.tgz"
-  integrity sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg==
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.6.4.tgz#706b7ff6084664cd7eae713f6f965433b5504221"
+  integrity sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==
   dependencies:
     lodash "^4.17.14"
 
@@ -13293,15 +13293,6 @@ react-event-listener@^0.6.2, react-event-listener@^0.6.6:
     prop-types "^15.6.0"
     warning "^4.0.1"
 
-react-expanding-textarea@^2.3.4:
-  version "2.3.4"
-  resolved "https://registry.npmjs.org/react-expanding-textarea/-/react-expanding-textarea-2.3.4.tgz"
-  integrity sha512-zg/14CyPrIbjPgjfQGxcCmSv9nCrSNpmYpnqyOnNwaOJb8zxWD/GXN8Dgnp5jx8CPU6uIfZVhxs7h2hiOXiSHQ==
-  dependencies:
-    fast-shallow-equal "^1.0.0"
-    react-with-forwarded-ref "^0.3.3"
-    tslib "^2.0.3"
-
 react-fast-compare@^3.0.1, react-fast-compare@^3.2.0:
   version "3.2.0"
   resolved "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-3.2.0.tgz"
@@ -13611,13 +13602,6 @@ react-transition-group@^4, react-transition-group@^4.4.1:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
-
-react-with-forwarded-ref@^0.3.3:
-  version "0.3.4"
-  resolved "https://registry.npmjs.org/react-with-forwarded-ref/-/react-with-forwarded-ref-0.3.4.tgz"
-  integrity sha512-SRq/uTdTh+02JDwYzEEhY2aNNWl/CP2EKP2nQtXzhJw06w6PgYnJt2ObrebvFJu6+wGzX3vDHU3H/ux9hxyZUQ==
-  dependencies:
-    tslib "^2.0.3"
 
 react@17.0.1:
   version "17.0.1"
