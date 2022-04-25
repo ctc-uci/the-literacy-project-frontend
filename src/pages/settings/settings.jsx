@@ -7,7 +7,6 @@ import TeacherView from './teacherView';
 import AdminView from './adminView';
 import { logout, useNavigate } from '../../common/auth/auth_utils';
 import { Cookies, withCookies } from '../../common/auth/cookie_utils';
-import NavigationBar from '../../components/NavigationBar/NavigationBar';
 
 const SettingsView = ({ cookies }) => {
   // Placeholders, replace later with backend call
@@ -31,7 +30,6 @@ const SettingsView = ({ cookies }) => {
   // TODO: accessibility toggle
   return (
     <div>
-      <NavigationBar />
       <div className="setting-view container">
         <h1 className="title">Settings</h1>
         <center>
