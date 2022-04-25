@@ -47,6 +47,8 @@
   border-radius: 5px;
   background: #fdfdfd;
   padding: 0 0.5em;
+  max-height: 140px;
+  overflow-y: auto;
 }
 
 .dropdown-choice {
@@ -63,5 +65,5 @@
 
 .dropdown-disabled {
   background-color: #ced4da;
-  cursor: default;
+  cursor: not-allowed;
 }

@@ -19,26 +19,25 @@ import Graph from '../../components/Graph/Graph';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 
 const MasterTeacherView = ({ cookies }) => {
-  const [allData, setAllData] = useState([]);
-  const [allSites, setAllSites] = useState({});
+  const [allData, setAllData] = useState([]); // all student group data
+  const [allSites, setAllSites] = useState({}); // list of sites with associated site id and address
   const [selectedSiteName, setSelectedSiteName] = useState();
   const [selectedSiteId, setSelectedSiteId] = useState();
   const [selectedSiteAddress, setSelectedSiteAddress] = useState();
   const [selectedSchoolYear, setSelectedSchoolYear] = useState();
-  const [selectedCycle, setSelectedCycle] = useState();
-  const [siteGroups, setSiteGroups] = useState([]);
-  const [studentGroups, setStudentGroups] = useState([]);
-  const [siteStudents, setSiteStudents] = useState([]);
-  const [schoolYears, setSchoolYears] = useState([]);
-  const [cycles, setCycles] = useState([]);
+  const [selectedCycle, setSelectedCycle] = useState('1');
+  const [siteGroups, setSiteGroups] = useState([]); // filtered student groups for site id
+  const [studentGroups, setStudentGroups] = useState([]); // filtered student groups additionally on year and cycle
+  const [siteStudents, setSiteStudents] = useState([]); // filtered students additionally on year and cycle
+  const [schoolYears, setSchoolYears] = useState([]); // all past school years from student groups + current year
   const [categoricalPre, setCategoricalPre] = useState([]); // attitudinal + academic
   const [categoricalPost, setCategoricalPost] = useState([]); // attitudinal + academic
   const [sitePre, setSitePre] = useState([]); // site vs. other TLP
   const [sitePost, setSitePost] = useState([]); // site vs. other TLP
   const [siteToggle, setSiteToggle] = useState(true); // true if want to enable toggling options
   const [yearToggle, setYearToggle] = useState(true);
-  const [cycleToggle, setCycleToggle] = useState(true);
   const VIEW_ALL = 'All Sites';
+  const cycles = ['1', '2', '3', '4'];
 
   const filterSchoolYearCycle = async (
     filterOptions,
@@ -123,7 +122,6 @@ const MasterTeacherView = ({ cookies }) => {
     siteName = selectedSiteName,
     siteId = selectedSiteId,
     data = allData,
-    // sites = allSites,
   ) => {
     let groups = data;
     if (siteName !== VIEW_ALL) {
@@ -132,35 +130,35 @@ const MasterTeacherView = ({ cookies }) => {
     }
 
     const years = new Set();
-    const cycleChoices = new Set();
+    const currDay = new Date();
     let filterOpts = {};
 
     // if there are any groups in given site, get all relevant year and cycle info
-    if (groups.length !== 0) {
-      // get all the possible years and cycle choices for selected site/option
-      let initialYear = groups[0].year;
-      let initialCycle = groups[0].cycle;
-      groups.forEach(group => {
-        // get the most recent year and cycle of filtered data
-        if (group.year > initialYear) {
-          initialYear = group.year;
-        }
-        if (group.cycle > initialCycle) {
-          initialCycle = group.cycle;
-        }
-        years.add(formatSchoolYear(group.year));
-        cycleChoices.add(group.cycle);
-      });
+    if (groups.length === 0) {
+      return;
+    }
+    let recentYear = groups[0].year;
+    // get all the possible years for selected site/option
+    groups.forEach(group => {
+      if (group.year > recentYear) {
+        recentYear = group.year;
+      }
+      years.add(formatSchoolYear(group.year));
+    });
 
-      setSelectedSchoolYear(formatSchoolYear(initialYear));
-      setSelectedCycle(initialCycle);
-      filterOpts = { year: initialYear, cycle: initialCycle };
+    let currYear = null;
+    if (currDay.getMonth() >= 6) {
+      currYear = currDay.getFullYear();
+      years.add(formatSchoolYear(currYear));
+    } else {
+      currYear = formatSchoolYear(recentYear);
     }
 
-    setSchoolYears(Array.from(new Set(years)).sort().reverse());
-    setYearToggle(years.length > 1);
-    setCycles(Array.from(new Set(cycleChoices)).sort().reverse());
-    setCycleToggle(cycleChoices.length > 1);
+    setSelectedSchoolYear(currYear);
+    filterOpts = { year: currYear, cycle: selectedCycle };
+
+    setSchoolYears(Array.from(years).sort().reverse());
+    setYearToggle(years.size > 1);
 
     setSiteGroups(groups);
     await filterSchoolYearCycle(filterOpts, groups, siteName, siteId);
@@ -263,7 +261,6 @@ const MasterTeacherView = ({ cookies }) => {
                   choices={cycles}
                   current={selectedCycle}
                   setFn={filterByCycle}
-                  disabled={!cycleToggle}
                 />
               </div>
             </div>
