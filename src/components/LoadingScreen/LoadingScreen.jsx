@@ -1,13 +1,11 @@
 import React from 'react';
 import Spinner from 'react-bootstrap/Spinner';
-import NavigationBar from '../NavigationBar/NavigationBar';
 import styles from './LoadingScreen.module.css';
 import loadingImage from '../../assets/LoadingPageGraphic.png';
 
 const LoadingScreen = () => {
   return (
     <div>
-      <NavigationBar />
       <img src={loadingImage} alt="404 warning" className={styles.image} />
 
       <div className={styles.content}>
