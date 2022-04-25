@@ -63,7 +63,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
       setFirstName(mtData.firstName);
       setLastName(mtData.lastName);
       setPhoneNumber(mtData.phoneNumber);
-      setStatus(mtData.status);
+      setStatus(mtData.active);
     } else {
       setError(error);
     }
