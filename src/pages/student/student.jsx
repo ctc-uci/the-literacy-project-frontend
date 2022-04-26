@@ -23,6 +23,7 @@ const StudentView = () => {
     studentGrade: null,
     studentGroup: null,
     studentEthnicity: null,
+    studentGender: null,
     studentHomeTeacher: null,
   });
   // const [editOptions, setEditOptions] = useState({});
@@ -54,6 +55,7 @@ const StudentView = () => {
       groupId: student.studentGroupId,
     };
     tempStudentData.studentEthnicity = student.ethnicity;
+    tempStudentData.studentGender = student.gender;
     tempStudentData.studentHomeTeacher = student.homeTeacher;
     setEditStudentData(tempStudentData);
   };
@@ -62,11 +64,11 @@ const StudentView = () => {
     const editedData = {
       firstName: student.firstName,
       lastName: student.lastName,
-      gender: student.gender,
+      gender: editStudentData.studentGender,
       grade: editStudentData.studentGrade,
       homeTeacher: editStudentData.studentHomeTeacher,
       studentGroupId: editStudentData.studentGroup.groupId,
-      ethnicity: [editStudentData.studentEthnicity],
+      ethnicity: editStudentData.studentEthnicity,
     };
 
     TLPBackend.put(`/students/${studentId}`, editedData, {
@@ -152,6 +154,7 @@ const StudentView = () => {
               'american indian or alaska native',
               'non-specified',
             ],
+            genderOptions: ['male', 'female', 'non-specified'],
             studentGroups: [...resOptions.data],
           });
         })
@@ -227,6 +230,7 @@ const StudentView = () => {
                   <th>Site</th>
                   <th>Student Group</th>
                   <th>Ethnicity</th>
+                  <th>Gender</th>
                   <th>Home Teacher</th>
                 </tr>
               </thead>
@@ -237,6 +241,7 @@ const StudentView = () => {
                     <td>{student.siteName ? student.siteName : '-'}</td>
                     <td>{student.studentGroupName ? student.studentGroupName : '-'}</td>
                     <td>{student.ethnicity !== [] ? student.ethnicity.join(', ') : '-'}</td>
+                    <td>{student.gender ? student.gender : '-'}</td>
                     <td>{student.homeTeacher ? student.homeTeacher : '-'}</td>
                   </tr>
                 ) : (
@@ -289,9 +294,10 @@ const StudentView = () => {
                       </DropdownButton>
                     </td>
                     <td>
-                      <DropdownButton
+                      {/* <DropdownButton
                         variant="outline-secondary"
                         title={editStudentData.studentEthnicity}
+                        multiple
                       >
                         {editOptions.ethnicityOptions.map(ethnicity => {
                           return (
@@ -304,6 +310,48 @@ const StudentView = () => {
                               }}
                             >
                               {ethnicity}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </DropdownButton> */}
+                      <Form.Control
+                        as="select"
+                        value={editStudentData.studentEthnicity}
+                        multiple
+                        onChange={e => {
+                          const tempStudentData = { ...editStudentData };
+                          tempStudentData.studentEthnicity = [].slice
+                            .call(e.target.selectedOptions)
+                            .map(item => item.value);
+                          setEditStudentData(tempStudentData);
+                        }}
+                      >
+                        {editOptions.ethnicityOptions.map(ethnicity => {
+                          return <option key={ethnicity}>{ethnicity}</option>;
+                        })}
+                      </Form.Control>
+                      {/* <Multiselect
+                        onChange={console.log('dafsdf')}
+                        data={editStudentData.ethnicityOptions}
+                        multiple
+                      /> */}
+                    </td>
+                    <td>
+                      <DropdownButton
+                        variant="outline-secondary"
+                        title={editStudentData.studentGender}
+                      >
+                        {editOptions.genderOptions.map(gender => {
+                          return (
+                            <Dropdown.Item
+                              key={gender}
+                              onClick={() => {
+                                const tempStudentData = { ...editStudentData };
+                                tempStudentData.studentGender = gender;
+                                setEditStudentData(tempStudentData);
+                              }}
+                            >
+                              {gender}
                             </Dropdown.Item>
                           );
                         })}
@@ -406,7 +454,7 @@ const StudentView = () => {
                 id: 3,
                 title: 'Go to Student Group',
                 src: 'links-card__student-group',
-                link: `/student-group/${student.studentGroupId}`,
+                link: `/student-groups/${student.studentGroupId}`,
               },
             ].map(linkObject => {
               return (
