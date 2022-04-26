@@ -72,17 +72,20 @@ const AreaManagement = () => {
     }
     fetchAreas();
 
-    const studentScoresRes = TLPBackend.get(`/students`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (studentScoresRes.status === 200) {
-      setTestScores(calculateScores(studentScoresRes.data));
-    } else {
-      setTestScores('');
-      setError(error);
+    async function fetchStudents() {
+      const studentScoresRes = await TLPBackend.get(`/students`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (studentScoresRes.status === 200) {
+        setTestScores(calculateScores(studentScoresRes.data));
+      } else {
+        setTestScores('');
+        setError(error);
+      }
     }
+    fetchStudents();
   }, []);
 
   return (

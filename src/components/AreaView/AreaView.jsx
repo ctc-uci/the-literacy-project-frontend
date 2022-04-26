@@ -43,34 +43,20 @@ const AreaView = () => {
       BackToAllAreas();
     }
 
-    // const areaStudentScores = () => {
-    //   fetch(TLPBackend.get(`/students`),
-    //   {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Accept': 'application/json'
-    //     }
-    //   })
-    //     .then(function(response){
-    //       console.log(response)
-    //       return response.json();
-    //     })
-    //     .then(function(myJson) {
-    //       console.log(myJson);
-    //       setTestScores(myJson)
-    //     });
-    // }
-    const areaStudentScores = TLPBackend.get(`/students`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (areaStudentScores.status === 200) {
-      setTestScores(calculateScores(areaStudentScores.data));
-    } else {
-      setTestScores('');
-      setError(error);
+    async function fetchStudents() {
+      const studentScoresRes = await TLPBackend.get(`/students/area/${areaId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (studentScoresRes.status === 200) {
+        setTestScores(calculateScores(studentScoresRes.data));
+      } else {
+        setTestScores('');
+        setError(error);
+      }
     }
+    fetchStudents();
   }, []);
 
   const [schoolYear, setSchoolYear] = useState('2020-21');
