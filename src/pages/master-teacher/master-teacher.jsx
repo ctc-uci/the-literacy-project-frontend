@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { instanceOf } from 'prop-types';
 import { Button } from 'react-bootstrap';
 import styles from './master-teacher.module.css';
-import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import { withCookies, cookieKeys, Cookies } from '../../common/auth/cookie_utils';
 import {
   TLPBackend,
@@ -34,7 +33,7 @@ const MasterTeacherView = ({ cookies }) => {
   const [categoricalPost, setCategoricalPost] = useState([]); // attitudinal + academic
   const [sitePre, setSitePre] = useState([]); // site vs. other TLP
   const [sitePost, setSitePost] = useState([]); // site vs. other TLP
-  const [siteToggle, setSiteToggle] = useState(true); // true if want to enable toggling options
+  const [siteToggle, setSiteToggle] = useState(true); // true if want to there are enough options to toggle between
   const [yearToggle, setYearToggle] = useState(true);
   const VIEW_ALL = 'All Sites';
   const cycles = ['1', '2', '3', '4'];
@@ -227,7 +226,6 @@ const MasterTeacherView = ({ cookies }) => {
 
   return (
     <div>
-      <NavigationBar />
       <div className={styles.main}>
         <div className={`${styles.section} ${styles['toggle-container']}`}>
           <div className={styles['toggle-bar']}>
