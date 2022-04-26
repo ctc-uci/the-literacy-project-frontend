@@ -6,7 +6,6 @@ import styles from './settings.module.css';
 import TeacherView from './teacherView';
 import AdminView from './adminView';
 import { logout, useNavigate } from '../../common/auth/auth_utils';
-import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import { TLPBackend, formatPhoneNumber, capitalize } from '../../common/utils';
 import { Cookies, withCookies, cookieKeys } from '../../common/auth/cookie_utils';
 import { AUTH_ROLES } from '../../common/config';
@@ -63,7 +62,6 @@ const SettingsView = ({ cookies }) => {
   }, []);
   return (
     <div>
-      <NavigationBar />
       {infoUpdateSuccess && (
         <CommonAlert
           variant={alertState.variant}

@@ -5,7 +5,6 @@ import { logout } from '../../common/auth/auth_utils';
 import { Cookies, withCookies, cookieKeys } from '../../common/auth/cookie_utils';
 import { AUTH_ROLES } from '../../common/config';
 import styles from './settings-edit.module.css';
-import NavigationBar from '../../components/NavigationBar/NavigationBar';
 import AdminSettingsEditView from './adminSettingsEditView';
 import TeacherSettingsEditView from './teacherSettingsEditView';
 
@@ -29,7 +28,6 @@ const SettingsEditView = ({ cookies }) => {
 
   return (
     <div>
-      <NavigationBar />
       <div className={styles['setting-view']}>
         <h1 id={styles['settings-title']}>Settings</h1>
         {role === AUTH_ROLES.ADMIN_ROLE ? (
