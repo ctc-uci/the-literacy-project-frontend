@@ -24,7 +24,7 @@ const MasterTeacherView = ({ cookies }) => {
   const [selectedSiteId, setSelectedSiteId] = useState();
   const [selectedSiteAddress, setSelectedSiteAddress] = useState();
   const [selectedSchoolYear, setSelectedSchoolYear] = useState();
-  const [selectedCycle, setSelectedCycle] = useState('1');
+  const [selectedCycle, setSelectedCycle] = useState();
   const [siteGroups, setSiteGroups] = useState([]); // filtered student groups for site id
   const [studentGroups, setStudentGroups] = useState([]); // filtered student groups additionally on year and cycle
   const [siteStudents, setSiteStudents] = useState([]); // filtered students additionally on year and cycle
@@ -48,19 +48,28 @@ const MasterTeacherView = ({ cookies }) => {
     let cycle = selectedCycle;
 
     // allow for optionally passing in year and cycle to change filter
+    // if a year is specified, set the initial cycle to the most recent cycle in that year if available
+    // if just cycle is specified, update the cycle
     if (filterOptions.year) {
-      year = filterOptions.year;
+      year = filterOptions.year.substring(0, 4);
+      const yearGroups = groups.filter(group => group.year === parseInt(year, 10));
+      cycle = '1';
+      yearGroups.forEach(group => {
+        if (group.cycle > cycle) {
+          cycle = group.cycle;
+        }
+      });
+    } else {
+      cycle = filterOptions?.cycle;
     }
-    if (filterOptions.cycle) {
-      cycle = filterOptions.cycle;
-    }
-
+    setSelectedCycle(cycle);
     const filteredGroups = groups.filter(
       group => group.year === parseInt(year, 10) && group.cycle === cycle,
     );
     setStudentGroups(filteredGroups);
 
     const students = [];
+
     filteredGroups.forEach(group => {
       // in case the student group has no students, the students array will be null
       if (group.students && group.students.length > 0) {
@@ -105,13 +114,11 @@ const MasterTeacherView = ({ cookies }) => {
 
   // handlers for changing school year and cycle
   const filterBySchool = async newYear => {
-    const startYear = newYear.substring(0, 4);
-    setSelectedSchoolYear(formatSchoolYear(newYear));
-    await filterSchoolYearCycle({ year: startYear });
+    setSelectedSchoolYear(newYear);
+    await filterSchoolYearCycle({ year: newYear });
   };
 
   const filterByCycle = async newCycle => {
-    setSelectedCycle(newCycle);
     await filterSchoolYearCycle({ cycle: newCycle });
   };
 
@@ -138,6 +145,7 @@ const MasterTeacherView = ({ cookies }) => {
     }
     let recentYear = groups[0].year;
     // get all the possible years for selected site/option
+    // get the most recent cycle for the most recent year
     groups.forEach(group => {
       if (group.year > recentYear) {
         recentYear = group.year;
@@ -146,15 +154,15 @@ const MasterTeacherView = ({ cookies }) => {
     });
 
     let currYear = null;
-    if (currDay.getMonth() >= 6) {
+    if (currDay.getMonth() >= 1) {
       currYear = currDay.getFullYear();
       years.add(formatSchoolYear(currYear));
     } else {
-      currYear = formatSchoolYear(recentYear);
+      currYear = recentYear;
     }
-
-    setSelectedSchoolYear(currYear);
-    filterOpts = { year: currYear, cycle: selectedCycle };
+    const formattedYear = formatSchoolYear(currYear);
+    setSelectedSchoolYear(formattedYear);
+    filterOpts = { year: formattedYear };
 
     setSchoolYears(Array.from(years).sort().reverse());
     setYearToggle(years.size > 1);
