@@ -24,12 +24,41 @@ const Footer = () => {
           </div>
         </Col>
         <Col sm={4}>
-          <div>https://literacyproj.org/</div>
+          <div>
+            <a
+              href="https://literacyproj.org"
+              target="_blank"
+              rel="noreferrer"
+              className={styles['footer-link']}
+            >
+              https://literacyproj.org
+            </a>
+          </div>
           <div>124 Tustin Avenue, Suite 103 | Newport Beach, CA 92663</div>
         </Col>
         <Col md="auto">
-          <div>Help Documentation | Contact Administration</div>
-          <div>TEL 949.721.1319 | Privacy Policy</div>
+          <div>
+            Help Documentation |{' '}
+            <a
+              href="https://literacyproj.org/contact-us"
+              target="_blank"
+              rel="noreferrer"
+              className={styles['footer-link']}
+            >
+              Contact Administration
+            </a>
+          </div>
+          <div>
+            TEL 949.721.1319 |{' '}
+            <a
+              href="https://literacyproj.org/privacy-policy"
+              target="_blank"
+              rel="noreferrer"
+              className={styles['footer-link']}
+            >
+              Privacy Policy
+            </a>
+          </div>
         </Col>
       </Row>
       <Row>

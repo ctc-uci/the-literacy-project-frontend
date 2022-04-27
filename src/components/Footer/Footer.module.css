@@ -32,3 +32,11 @@
   color: black;
   font-weight: 400;
 }
+
+.footer-link {
+  all: unset;
+}
+
+.footer-link:hover {
+  all: unset;
+}

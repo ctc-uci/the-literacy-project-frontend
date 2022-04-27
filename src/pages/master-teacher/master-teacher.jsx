@@ -16,6 +16,7 @@ import StudentProfileBox from '../../components/StudentProfileBox/StudentProfile
 import StudentTable from '../../components/StudentTable/StudentTable';
 import Graph from '../../components/Graph/Graph';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
+import Footer from '../../components/Footer/Footer';
 
 const MasterTeacherView = ({ cookies }) => {
   const [allData, setAllData] = useState([]); // all student group data
@@ -381,6 +382,7 @@ const MasterTeacherView = ({ cookies }) => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
