@@ -5,10 +5,9 @@ import { TLPBackend } from '../../common/utils';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import SitesTable from './sitesTable';
 import styles from './AreaView.module.css';
-import NavigationBar from '../NavigationBar/NavigationBar';
 
 const BackToAllAreas = () => {
-  Navigate('/area-management');
+  Navigate('/');
 };
 
 const AreaView = () => {
@@ -48,11 +47,10 @@ const AreaView = () => {
 
   return (
     <div>
-      <NavigationBar />
       <div className={styles.site_container}>
         <div className={styles.main_content}>
           <div className={styles.areas_breadcrumb}>
-            <Link to="/area-management" className={styles.all_areas_link}>
+            <Link to="/" className={styles.all_areas_link}>
               Areas{' '}
             </Link>
             / {areaName}

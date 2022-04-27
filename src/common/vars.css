@@ -36,12 +36,12 @@
   --color-yellow-fade: #ffe79f;
 
   /* Muted Blue Theme */
-  --color-blue-muted: #6A91BC;
-  --color-gray-blue-muted: #5F758D;
-  --color-gray-blue-muted2: #BBCBE2;
-  --color-dark-blue-muted: #224C7A;
-  --color-light-blue-muted: #95B7DE;
-  --color-fade-blue-muted: #A8C1DE;
+  --color-blue-muted: #6a91bc;
+  --color-gray-blue-muted: #5f758d;
+  --color-gray-blue-muted2: #bbcbe2;
+  --color-dark-blue-muted: #224c7a;
+  --color-light-blue-muted: #95b7de;
+  --color-fade-blue-muted: #a8c1de;
 
   /* Red/danger */
   --color-red-fade: #fed7d7;
