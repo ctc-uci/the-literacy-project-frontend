@@ -8,13 +8,17 @@ import * as yup from 'yup';
 import states from 'states-us';
 import { TLPBackend } from '../../common/utils';
 
-const s = states.filter(x => !x.territory).map(x => x.abbreviation);
-const options = s.map(x => ({ label: x, value: x }));
+const s = states.filter(x => !x.territory);
+const abbrev = s.map(x => x.name);
+// remove district of columbia
+abbrev.splice(8, 1);
+const options = abbrev.map(x => ({ label: x, value: x }));
 
 const schema = yup
   .object({
     siteName: yup.string().required(),
     addressStreet: yup.string().required(),
+    addressApt: yup.string(),
     addressCity: yup.string().required(),
     addressState: yup.string().required(),
     addressZip: yup.number().required(),
@@ -46,30 +50,30 @@ const CreateSiteModal = ({ areaId }) => {
     const formData = {
       siteName: data.siteName,
       addressStreet: data.addressStreet,
-      addressAptSuiteEtc: data.addressAptSuiteEtc,
+      addressApt: data.addressApt,
       addressCity: data.addressCity,
       addressState: data.addressState,
       addressZip: data.addressZip,
       areaId,
-      active: 'true',
+      active: true,
       notes: data.notes,
       primaryContactInfo: {
         firstName: data.primaryFirstName,
         lastName: data.primaryLastName,
         title: data.primaryTitle,
         email: data.primaryEmail,
-        phoneNumber: data.primaryPhone,
+        phone: data.primaryPhone,
       },
     };
 
     // Adding secondary contact info, if present
-    if (data.secondaryName) {
+    if (data.secondaryFirstName) {
       formData.secondContactInfo = {
         firstName: data.secondaryFirstName,
         lastName: data.secondaryLastName,
         title: data.secondaryTitle,
         email: data.secondaryEmail,
-        phoneNumber: data.secondaryPhone,
+        phone: data.secondaryPhone,
       };
     }
 
@@ -79,7 +83,6 @@ const CreateSiteModal = ({ areaId }) => {
         'Content-Type': 'application/json',
       },
     });
-    // console.log('Submit success');
     // Send the user back to all sites; TODO add success status notif
     window.location.replace(`/area/${areaId}`);
   };
@@ -98,6 +101,7 @@ const CreateSiteModal = ({ areaId }) => {
                 <label htmlFor="site-name">
                   Name<span style={{ color: '#e32' }}>*</span>
                   <input
+                    style={{ width: '255px' }}
                     type="text"
                     className="form-control"
                     name="siteName"
@@ -108,8 +112,9 @@ const CreateSiteModal = ({ areaId }) => {
                 <label htmlFor="address-street">
                   Street Address<span style={{ color: '#e32' }}>*</span>
                   <input
+                    style={{ width: '255px' }}
                     type="text"
-                    className="form-control"
+                    className="form-control page-inputs"
                     name="addressStreet"
                     placeholder="ie 123 Playa Dr"
                     {...register('addressStreet')}
@@ -118,11 +123,12 @@ const CreateSiteModal = ({ areaId }) => {
                 <label htmlFor="apt-suite-etc">
                   Apt, suite, etc
                   <input
+                    style={{ width: '255px' }}
                     type="text"
                     className="form-control"
-                    name="addressAptSuiteEtc"
+                    name="addressApt"
                     placeholder="Apt 208"
-                    {...register('addressAptSuiteEtc')}
+                    {...register('addressApt')}
                   />
                 </label>
                 <div className="input-fields-coalesce-wrapper">
@@ -197,6 +203,7 @@ const CreateSiteModal = ({ areaId }) => {
                   <label htmlFor="primary-title">
                     Title
                     <input
+                      style={{ width: '255px' }}
                       type="text"
                       className="form-control"
                       name="primaryTitle"
@@ -210,6 +217,7 @@ const CreateSiteModal = ({ areaId }) => {
                 <label htmlFor="primary-email">
                   Email<span style={{ color: '#e32' }}>*</span>
                   <input
+                    style={{ width: '255px' }}
                     type="email"
                     className="form-control"
                     name="primaryEmail"
@@ -220,6 +228,7 @@ const CreateSiteModal = ({ areaId }) => {
                 <label htmlFor="primary-phone">
                   Phone Number<span style={{ color: '#e32' }}>*</span>
                   <input
+                    style={{ width: '255px' }}
                     type="number"
                     // Phone #s are <= 10 digits
                     onInput={e => {
@@ -267,6 +276,7 @@ const CreateSiteModal = ({ areaId }) => {
                   <label htmlFor="secondary-title">
                     Title
                     <input
+                      style={{ width: '255px' }}
                       type="text"
                       className="form-control"
                       name="secondaryTitle"
@@ -280,6 +290,7 @@ const CreateSiteModal = ({ areaId }) => {
                 <label htmlFor="secondary-email">
                   Email
                   <input
+                    style={{ width: '255px' }}
                     type="email"
                     className="form-control"
                     name="secondaryEmail"
@@ -290,6 +301,7 @@ const CreateSiteModal = ({ areaId }) => {
                 <label htmlFor="secondary-phone">
                   Phone Number
                   <input
+                    style={{ width: '255px' }}
                     className="form-control"
                     type="number"
                     // Phone #s are <= 10 digits
@@ -306,14 +318,17 @@ const CreateSiteModal = ({ areaId }) => {
               </Col>
             </div>
             <h3 className="optional-subtitles">Notes</h3>
-            <label htmlFor="notes" className="input-area">
-              <textarea
-                className="notes form-control"
-                placeholder="notes"
-                name="notes"
-                {...register('notes')}
-              />
-            </label>
+            <Col>
+              <label htmlFor="notes" className="input-area">
+                <textarea
+                  style={{ width: '700px' }}
+                  className="form-control"
+                  placeholder="notes"
+                  name="notes"
+                  {...register('notes')}
+                />
+              </label>
+            </Col>
             <button
               type="submit"
               className="btn"

@@ -67,7 +67,7 @@ label {
 
 .input-fields-coalesce-wrapper {
   display: flex;
-  width: 430px;
+  width: 520px;
   justify-content: space-between;
 }
 
@@ -78,8 +78,4 @@ label {
 .addr-small-field-invalid {
   border: 1px solid #e53e3e;
   width: 90%;
-}
-
-.notes {
-  width: auto;
 }
