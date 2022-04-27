@@ -1,0 +1,30 @@
+.divider {
+  color: var(--color-dark-gray);
+  background-color: var(--color-dark-gray);
+  height: 3px;
+  margin: 0;
+}
+
+.form-wrapper {
+  margin: auto;
+  max-width: 1110px;
+  overflow-x: hidden;
+}
+
+.graph-header {
+  width: 100%;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-dark-gray);
+}
+
+.improvement-graph {
+  width: 550px;
+  height: 450px;
+  margin: -20px auto 40px auto;
+}
+
+.top-button {
+  max-width: fit-content;
+  font-weight: bold;
+  font-style: italic;
+}

@@ -1,0 +1,121 @@
+@import '../../../common/vars.css';
+.form-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  margin: 24px 0;
+}
+
+.form-header p {
+  font-size: 28px;
+  margin: 0;
+  padding: 0;
+  align-self: center;
+}
+
+.form-header button {
+  margin: 0 4px;
+}
+
+.scorecard-table {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+
+.scorecard-table th,
+td {
+  border: 1px solid #b9b9b9;
+}
+
+.scorecard-table th {
+  text-align: center;
+  vertical-align: middle;
+  padding: 5px 0;
+  background: var(--color-dark-gray);
+  color: white;
+}
+.indiv-score-table th {
+  max-width: 550px;
+  min-width: 550px;
+}
+
+.combined-score-table {
+  width: 50%;
+  margin-left: 50%;
+}
+
+.indiv-score-table td,
+.combined-score-table td {
+  height: 70px;
+  background: var(--color-gray-white);
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Row styles */
+
+.attitude-row td {
+  text-align: center;
+  vertical-align: middle;
+  height: 90px;
+}
+
+.question {
+  max-width: 265px;
+  min-width: 265px;
+  padding: 0 8px;
+  background: var(--color-gray-blue-muted2);
+}
+
+.player-score {
+  max-width: 90px;
+  min-width: 90px;
+  background: var(--color-gray-white);
+  font-weight: bold;
+}
+
+.row-notes {
+  text-align: left !important;
+  vertical-align: top !important;
+  word-break: break-all;
+  max-width: 200px;
+  min-width: 200px;
+  padding: 3px;
+}
+
+.empty-notes {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.row-note-input {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none !important;
+  resize: none;
+  vertical-align: middle;
+  overflow-y: hidden;
+}
+
+.row-note-input::-webkit-input-placeholder {
+  text-align: center;
+  line-height: 86px;
+}
+
+.score-input {
+  max-width: 48px;
+}
+
+.input-error {
+  border: 1px solid red;
+}
+.input-error:focus {
+  outline: none !important;
+  border: 1px solid red;
+}

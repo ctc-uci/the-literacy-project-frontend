@@ -2,19 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TableRow from '../TableRow/TableRow';
 import TableHead from '../TableHead/TableHead';
-import './Table.css';
+import styles from './Table.module.css';
 
 const Table = ({ theadData, tbodyData, tbodyColIsBadge, sectionTitle, statusCol }) => {
   return (
-    <table className="table">
-      <thead className="table-head">
-        <tr className="table-head">
+    <table className={styles.table}>
+      <thead className={styles['table-head']}>
+        <tr className={styles['table-head']}>
           {theadData.map(h => {
             return <TableHead key={h} item={h} />;
           })}
         </tr>
       </thead>
-      <tbody className="table-body">
+      <tbody className={styles['table-body']}>
         {tbodyData.map(item => {
           return (
             <TableRow
