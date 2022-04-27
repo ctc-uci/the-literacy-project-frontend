@@ -1,0 +1,58 @@
+.card {
+  text-align: left;
+  width: 350px;
+  min-width: 350px;
+}
+
+.card-section {
+  margin-bottom: 10px;
+}
+
+.card-header {
+  width: 348px;
+  display: flex;
+  background-color: #00000008;
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.group-name {
+  align-items: left;
+  margin: 12px 0px 12px 20px;
+}
+
+.card-body {
+  padding: 20px;
+  display: flex;
+}
+
+.body-content {
+  min-width: 0;
+  margin: auto;
+}
+
+.row {
+  padding-left: 0 !important;
+}
+
+.students-section {
+  width: 308px;
+  display: flex;
+}
+
+.students-header {
+  margin-right: 0;
+}
+
+.num-students {
+  width: 50px;
+}
+
+.student-names {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.view-group-btn {
+  color: #ffffff;
+}
