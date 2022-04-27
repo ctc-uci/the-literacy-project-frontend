@@ -1,108 +1,39 @@
-.create-student-modal {
-  background-color: #fdfdfd;
-  color: #000;
-  font-family: 'SF Compact', Helvetica, Arial, sans-serif;
-  font-size: 1.2em;
-  width: 50%;
-  height: 1000px;
-  border: 1.5px solid #ced4da;
-  border-radius: 10px;
-  position: absolute;
-  top: 10%;
-  left: 25%;
+.form-body {
+  margin-left: 100px;
+  margin-right: 100px;
 }
 
-.create-student-modal-top-bar {
-  padding: 15px 10px 15px 10px;
-  display: flex;
-  justify-content: center;
-  border-bottom: 1.5px solid #ced4da;
-}
-
-.create-student-modal-top-bar-title {
-  font-size: 20px;
-  font: Calibri;
-  text-align: center;
-}
-
-.create-student-modal-body {
-  padding: 10px 15%;
-}
-
-.create-student-modal-field-desc {
-  padding: 30px 10px 15px 10px;
-}
-
-.modal-text-input {
-  border: 1px solid #ced4da;
-  color: #767676;
-  border-radius: 10px;
-  text-align: left;
+.input-area {
   width: 100%;
-  border-radius: 10px;
-  border: 1px solid #ced4da;
-  line-height: 32px;
-  font-family: 'SF Compact', Helvetica, Arial, sans-serif;
-  font-size: 1em;
-  padding-left: 15px;
+  padding-bottom: 20px;
 }
 
-.create-student-exit-button {
-  position: absolute;
-  top: 15px;
-  right: 10px;
-  background-color: #fdfdfd;
-  /* border: 1px dotted black; */
-  border: 0px;
-  font-weight: 800;
-  cursor: pointer;
+.input-area p {
+  margin-bottom: 5px;
+  width: 100%;
+  text-align: left;
 }
 
-.create-delete-button {
-  background-color: #e53e3e;
-  color: #fdfdfd;
-  width: 80px;
-  height: 36px;
-  border-radius: 4px;
-  size: 16px;
-  text-align: center;
-  border-width: 1px;
-  border-color: #fdfdfd;
-  padding: 6px, 12px, 6px, 12px;
-  position: absolute;
-  bottom: 20px;
-  right: 335px;
-  cursor: pointer;
+.required:after {
+  content: '*';
+  color: red;
 }
 
-.create-add-button {
-  background-color: #17a2b8;
-  color: #fdfdfd;
-  width: 188px;
-  height: 36px;
-  border-radius: 4px;
-  size: 16px;
-  text-align: center;
-  border-width: 1px;
-  border-color: #fdfdfd;
-  padding: 6px, 12px, 6px, 12px;
-  position: absolute;
-  bottom: 20px;
-  right: 130px;
-  cursor: pointer;
+.ethnicity-badge {
+  background-color: #e9ecef !important;
+  margin-right: 1em;
+  margin-bottom: 0.5em;
+
+  line-height: 1.5;
+  font-size: 14px;
+  font-family: 'Calibri';
+  font-weight: 400;
 }
 
-.create-save-button {
-  background-color: #3288c4;
-  color: #fdfdfd;
-  width: 96px;
-  height: 36px;
-  border-radius: 4px;
-  padding: 6px, 12px, 6px, 12px;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  border-width: 1px;
-  border-color: #fdfdfd;
-  cursor: pointer;
+.cancel-button {
+  background-color: #868e96;
+}
+
+.save-button {
+  color: white;
 }

@@ -20,6 +20,7 @@ import EmailAction from './components/EmailAction/EmailAction';
 import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
 import ViewEditStudentGroupModalView from './pages/people/view-edit-student-group-modal'; // Remove later & path;
+import ViewCreateStudentModal from './pages/people/view-create-student-modal';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
 
@@ -29,6 +30,7 @@ ReactDOM.render(
       <Router>
         <Routes>
           <Route path="/edit-student-group" exact element={<ViewEditStudentGroupModalView />} />
+          <Route path="/create-student" exact element={<ViewCreateStudentModal />} />
           <Route path="/" exact element={<LoginView />} />
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
