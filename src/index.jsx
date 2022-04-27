@@ -21,6 +21,7 @@ import ProtectedRoute from './common/ProtectedRoute';
 import { AUTH_ROLES } from './common/config';
 import ViewEditStudentGroupModalView from './pages/people/viewEditStudentGroupModal'; // Remove later & path;
 import ViewCreateStudentGroupModalView from './pages/people/viewCreateStudentGroupModal';
+import ViewCreateStudentModal from './pages/people/view-create-student-modal';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
 
@@ -31,6 +32,7 @@ ReactDOM.render(
         <Routes>
           <Route path="/edit-student-group" exact element={<ViewEditStudentGroupModalView />} />
           <Route path="/create-student-group" exact element={<ViewCreateStudentGroupModalView />} />
+          <Route path="/create-student" exact element={<ViewCreateStudentModal />} />
           <Route path="/" exact element={<LoginView />} />
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
