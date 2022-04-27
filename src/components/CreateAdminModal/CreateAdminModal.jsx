@@ -2,8 +2,23 @@ import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import './CreateAdminModal.css';
 import { Modal, Button, Form, Alert, CloseButton } from 'react-bootstrap';
+
+// Forms
+// import { useForm } from 'react-hook-form';
+// import { yupResolver } from '@hookform/resolvers/yup';
+// import * as yup from 'yup';
+
 import { AUTH_ROLES } from '../../common/config';
 import { sendInviteLink } from '../../common/auth/auth_utils';
+
+// const schema = yup
+//   .object({
+//     email: yup.string().email().required(),
+//     firstName: yup.string().required(),
+//     lastName: yup.string().required(),
+//     phoneNumber: yup.string().required(),
+//   })
+//   .required();
 
 const CreateAdminModal = ({ isOpen, setIsOpen }) => {
   const [showAlert, setShowAlert] = useState(false);
@@ -13,16 +28,28 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
   const [errorMessage, setErrorMessage] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
 
+  // const { register, handleSubmit } = useForm({
+  //   resolver: yupResolver(schema),
+  //   delayError: 750,
+  // });
+
   const closeModal = () => {
     setIsOpen(false);
     setShowAlert(true);
   };
+
   const closeModalNoAlert = () => {
     setIsOpen(false);
     setShowAlert(false);
     setErrorMessage('');
   };
 
+  // const newOnSubmit = async data => {
+  //   const formData = {};
+  //   closeModal();
+  // };
+
+  // const onSubmit = async e => {
   const handleSubmit = async e => {
     try {
       e.preventDefault();
