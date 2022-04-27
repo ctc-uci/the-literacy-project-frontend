@@ -10,7 +10,7 @@ import LoginView from './pages/login/login';
 import LoginRecoverPasswordView from './pages/login-recover-password/login-recover-password';
 import SettingsView from './pages/settings/settings';
 import SettingsEditView from './pages/settings-edit/settings-edit';
-import AreaManagement from './pages/area-management/area-management';
+import DashboardView from './pages/dashboard/dashboard';
 import AssessmentScorecardInput from './pages/assessment-scorecard-input/assessment-scorecard-input';
 import AttitudeFormInput from './pages/attitude-form-input/attitude-form-input';
 import AreaDetails from './pages/area-details/area-details';
@@ -33,7 +33,7 @@ const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
 function NavBarWrapper() {
   return (
     <>
-      <NavigationBar roles={AUTH_ROLES} />
+      <NavigationBar />
       <Outlet />
     </>
   );
@@ -44,11 +44,20 @@ ReactDOM.render(
     <CookiesProvider>
       <Router>
         <Routes>
-          <Route path="/" exact element={<LoginView />} />
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/recover-password" exact element={<LoginRecoverPasswordView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
           <Route element={<NavBarWrapper />}>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute
+                  Component={DashboardView}
+                  redirectPath="/login"
+                  roles={[ADMIN_ROLE, USER_ROLE]}
+                />
+              }
+            />
             <Route
               path="/settings"
               element={
@@ -74,16 +83,6 @@ ReactDOM.render(
               element={
                 <ProtectedRoute
                   Component={PeopleView}
-                  redirectPath="/access-denied"
-                  roles={[ADMIN_ROLE]}
-                />
-              }
-            />
-            <Route
-              path="/area-management"
-              element={
-                <ProtectedRoute
-                  Component={AreaManagement}
                   redirectPath="/access-denied"
                   roles={[ADMIN_ROLE]}
                 />

@@ -32,7 +32,7 @@ const LoginForm = ({ cookies }) => {
   const handleSubmit = async e => {
     try {
       e.preventDefault();
-      await logInWithEmailAndPassword(email, password, '/settings', navigate, cookies);
+      await logInWithEmailAndPassword(email, password, '/', navigate, cookies);
     } catch (err) {
       setErrorMessage(err.message);
     }
