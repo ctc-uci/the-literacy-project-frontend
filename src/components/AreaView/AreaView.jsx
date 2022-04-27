@@ -11,8 +11,9 @@ import Graph from '../Graph/Graph';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
 
+
 const BackToAllAreas = () => {
-  Navigate('/area-management');
+  Navigate('/');
 };
 
 const AreaView = () => {
@@ -69,11 +70,10 @@ const AreaView = () => {
 
   return (
     <div>
-      <NavigationBar />
       <div className={styles.site_container}>
         <div className={styles.main_content}>
           <div className={styles.areas_breadcrumb}>
-            <Link to="/area-management" className={styles.all_areas_link}>
+            <Link to="/" className={styles.all_areas_link}>
               Areas{' '}
             </Link>
             / {areaName}

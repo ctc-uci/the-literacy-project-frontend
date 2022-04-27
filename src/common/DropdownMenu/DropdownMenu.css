@@ -11,6 +11,8 @@
   line-height: 32px;
   cursor: pointer;
   width: 100%;
+  padding: 0 0.5em;
+  min-height: 32px;
 }
 
 .dropdown-button {
@@ -19,6 +21,10 @@
   text-align: left;
   padding-left: 2%;
   padding-right: 8%;
+  min-width: 110px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .dropdown-arrow-up {
@@ -40,6 +46,9 @@
   border: 1px solid #ced4da;
   border-radius: 5px;
   background: #fdfdfd;
+  padding: 0 0.5em;
+  max-height: 140px;
+  overflow-y: auto;
 }
 
 .dropdown-choice {
@@ -47,8 +56,14 @@
   padding-top: 5px;
   padding-bottom: 5px;
   cursor: pointer;
+  width: 110px;
 }
 
 .dropdown-choice:hover {
   text-decoration: underline;
+}
+
+.dropdown-disabled {
+  background-color: #ced4da;
+  cursor: not-allowed;
 }

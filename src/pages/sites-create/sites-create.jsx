@@ -35,7 +35,7 @@ const SitesCreateView = () => {
   return (
     <div>
       <p className="routing offset-1">
-        <Link to="/area-management" className="link">
+        <Link to="/" className="link">
           Area{' '}
         </Link>
         / {/* filler for now */}

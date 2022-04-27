@@ -9,7 +9,8 @@
   width: 100%;
   box-sizing: border-box;
 }
-.table th, td {
+.table th,
+td {
   border: 1px solid #b9b9b9;
   padding: 5px 0;
 }

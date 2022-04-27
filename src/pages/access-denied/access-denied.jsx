@@ -2,12 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './access-denied.module.css';
 import error from '../../assets/access-denied.png';
-import NavigationBar from '../../components/NavigationBar/NavigationBar';
 
 const AccessDeniedView = () => {
   return (
     <div>
-      <NavigationBar />
       <img src={error} alt="404 warning" className={styles.error} />
 
       <div className={styles.content}>
