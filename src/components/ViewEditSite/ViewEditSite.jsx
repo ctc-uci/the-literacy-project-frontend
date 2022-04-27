@@ -6,25 +6,30 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link } from 'react-router-dom';
+import states from 'states-us';
 import { TLPBackend } from '../../common/utils';
-import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
-import NavigationBar from '../NavigationBar/NavigationBar';
 
-const nameContainsSpace = name => {
-  return name.indexOf(' ') !== -1;
-};
+const s = states.filter(x => !x.territory);
+const abbrev = s.map(x => x.name);
+// remove district of columbia
+abbrev.splice(8, 1);
+const options = abbrev.map(x => ({ label: x, value: x }));
 
 const schema = yup
   .object({
     siteName: yup.string().required(),
     addressStreet: yup.string().required(),
+    addressApt: yup.string(),
     addressCity: yup.string().required(),
+    addressState: yup.string().required(),
     addressZip: yup.number().required(),
-    primaryName: yup.string().required(),
-    primaryTitle: yup.string().required(),
+    primaryFirstName: yup.string().required(),
+    primaryLastName: yup.string().required(),
+    primaryTitle: yup.string(),
     primaryEmail: yup.string().required(),
     primaryPhone: yup.string().required(),
-    secondaryName: yup.string(),
+    secondaryFirstName: yup.string(),
+    secondaryLastName: yup.string(),
     secondaryTitle: yup.string(),
     secondaryEmail: yup.string(),
     secondaryPhone: yup.string(),
@@ -42,6 +47,10 @@ const ViewSite = ({ siteId }) => {
   const [edit, setEdit] = useState(false);
   const [areaName, setAreaName] = useState('');
 
+  const abbrevState = s.filter(x => x.name === siteInfo.addressState)[0].abbreviation;
+
+  const [apt, setApt] = useState('');
+
   const deleteSite = async () => {
     await TLPBackend.delete(`/sites/${siteId}`);
     window.location.replace(`/area/${siteInfo.areaId}`);
@@ -58,61 +67,62 @@ const ViewSite = ({ siteId }) => {
     }
   };
 
-  useEffect(async () => {
+  const getSiteInfo = async () => {
     const res = await TLPBackend.get(`/sites/${siteId}`);
     if (res.status === 200) {
       localStorage.setItem('siteInfo', JSON.stringify(res.data));
     }
+  };
+
+  useEffect(async () => {
+    getSiteInfo();
     getArea();
-  }, [siteInfo]);
+    if (siteInfo.addressApt != null) {
+      setApt(` ${siteInfo.addressApt}`);
+    }
+  }, []);
 
   const onSubmit = async data => {
     const formData = {
       siteName: data.siteName,
       addressStreet: data.addressStreet,
+      addressApt: data.addressApt,
       addressCity: data.addressCity,
+      addressState: data.addressState,
       addressZip: data.addressZip,
       areaId: siteInfo.areaId,
-      active: 'true',
+      active: data.active === 'true',
       notes: data.notes,
       primaryContactInfo: {
-        // Revisit later: currently only one input field for name,
-        // but we need first + last name differentiation
-        firstName: nameContainsSpace(data.primaryName)
-          ? data.primaryName.slice(0, data.primaryName.indexOf(' '))
-          : data.primaryName,
-        lastName: nameContainsSpace(data.primaryName)
-          ? data.primaryName.slice(data.primaryName.indexOf(' ') + 1)
-          : '',
+        firstName: data.primaryFirstName,
+        lastName: data.primaryLastName,
         title: data.primaryTitle,
         email: data.primaryEmail,
-        phoneNumber: data.primaryPhone,
+        phone: data.primaryPhone,
       },
     };
 
     // Adding secondary contact info, if present
-    if (data.secondaryName !== '') {
+    if (data.secondaryName) {
       formData.secondContactInfo = {
-        firstName: nameContainsSpace(data.secondaryName)
-          ? data.secondaryName.slice(0, data.secondaryName.indexOf(' '))
-          : data.secondaryName,
-        lastName: nameContainsSpace(data.secondaryName)
-          ? data.secondaryName.slice(data.secondaryName.indexOf(' ') + 1)
-          : '',
+        firstName: data.secondaryFirstName,
+        lastName: data.secondaryLastName,
         title: data.secondaryTitle,
         email: data.secondaryEmail,
-        phoneNumber: data.secondaryPhone,
+        phone: data.secondaryPhone,
       };
     }
 
     // send form data to server
     await TLPBackend.put(`/sites/${siteId}`, formData);
+    getSiteInfo();
+    window.location.reload();
+    changeEdit();
   };
 
   if (edit) {
     return (
       <div>
-        <NavigationBar />
         <p className="routing">
           <Link to="/area-management" className="link">
             Areas{' '}
@@ -133,39 +143,54 @@ const ViewSite = ({ siteId }) => {
                 <h3 className="optional-subtitles">Site Status</h3>
                 <div className="input-area">
                   <Col md={5}>
-                    <DropdownMenu
-                      innerClass="site_dropdown_inner"
-                      current={siteInfo.active ? 'Active' : 'Inactive'}
-                      choices={['Active', 'Inactive']}
-                      buttonClass={siteInfo.active ? 'active_site_dd' : 'inactive_site_dd'}
-                    />
+                    <>{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}</>
+                    <select
+                      className="form control status"
+                      {...register('active')}
+                      defaultValue={siteInfo.active ? 'Active' : 'Inactive'}
+                    >
+                      <option value="true">Active</option>
+                      <option value="false">Inactive</option>
+                    </select>
                   </Col>
                 </div>
                 <h3 className="optional-subtitles">Basic Information</h3>
                 <div className="input-area">
                   <Col md={5}>
                     <label htmlFor="site-name">
+                      Name<span style={{ color: '#e32' }}>*</span>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control page-inputs"
                         name="siteName"
                         defaultValue={siteInfo.siteName}
                         {...register('siteName')}
                       />
                     </label>
                     <label htmlFor="address-street">
-                      Address Line
+                      Address Line<span style={{ color: '#e32' }}>*</span>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control page-inputs"
                         name="addressStreet"
                         defaultValue={siteInfo.addressStreet}
                         {...register('addressStreet')}
                       />
                     </label>
+                    <label htmlFor="apt-suite-etc">
+                      Apt, suite, etc
+                      <input
+                        type="text"
+                        className="form-control page-inputs"
+                        name="addressApt"
+                        placeholder="Apt 208"
+                        defaultValue={siteInfo.addressApt}
+                        {...register('addressApt')}
+                      />
+                    </label>
                     <div className="input-fields-coalesce-wrapper">
                       <label htmlFor="address-city">
-                        City
+                        City<span style={{ color: '#e32' }}>*</span>
                         <input
                           type="text"
                           className="addr-small-field form-control"
@@ -174,8 +199,23 @@ const ViewSite = ({ siteId }) => {
                           {...register('addressCity')}
                         />
                       </label>
+                      <label aria-label="address-state" htmlFor="address-state">
+                        <>{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}</>
+                        State<span style={{ color: '#e32' }}>*</span>
+                        <select
+                          {...register('addressState')}
+                          className="form-control"
+                          defaultValue={siteInfo.addressState}
+                        >
+                          {options.map(option => (
+                            <option key={option.value} value={option.value}>
+                              {option.value}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
                       <label htmlFor="address-zip">
-                        ZIP Code
+                        ZIP Code<span style={{ color: '#e32' }}>*</span>
                         <input
                           type="number"
                           // ZIP Codes are <= 9 digits
@@ -194,19 +234,32 @@ const ViewSite = ({ siteId }) => {
                     </div>
                   </Col>
                 </div>
-
                 <h3 className="optional-subtitles">Primary Contact</h3>
                 <div className="input-area">
                   <Row>
-                    <Col lg={5}>
+                    <Col lg={3}>
                       <label htmlFor="primary-name">
-                        Name
+                        First Name<span style={{ color: '#e32' }}>*</span>
                         <input
                           type="text"
                           className="form-control"
                           name="primaryName"
-                          defaultValue={`${siteInfo.primaryContactInfo.firstName} ${siteInfo.primaryContactInfo.lastName}`}
-                          {...register('primaryName')}
+                          placeholder="First Name"
+                          defaultValue={siteInfo.primaryContactInfo.firstName}
+                          {...register('primaryFirstName')}
+                        />
+                      </label>
+                    </Col>
+                    <Col lg={3}>
+                      <label htmlFor="primary-name">
+                        Last Name<span style={{ color: '#e32' }}>*</span>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="primaryName"
+                          placeholder="Last Name"
+                          defaultValue={siteInfo.primaryContactInfo.lastName}
+                          {...register('primaryLastName')}
                         />
                       </label>
                     </Col>
@@ -215,7 +268,7 @@ const ViewSite = ({ siteId }) => {
                         Title
                         <input
                           type="text"
-                          className="form-control"
+                          className="form-control page-inputs"
                           name="primaryTitle"
                           defaultValue={siteInfo.primaryContactInfo.title}
                           {...register('primaryTitle')}
@@ -225,17 +278,17 @@ const ViewSite = ({ siteId }) => {
                   </Row>
                   <Col md={5}>
                     <label htmlFor="primary-email">
-                      Email
+                      Email<span style={{ color: '#e32' }}>*</span>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control page-inputs"
                         name="primaryEmail"
                         defaultValue={siteInfo.primaryContactInfo.email}
                         {...register('primaryEmail')}
                       />
                     </label>
                     <label htmlFor="primary-phone">
-                      Phone Number
+                      Phone Number<span style={{ color: '#e32' }}>*</span>
                       <input
                         type="number"
                         // Phone #s are <= 10 digits
@@ -245,30 +298,41 @@ const ViewSite = ({ siteId }) => {
                           }
                         }}
                         maxLength={10}
-                        className="form-control"
+                        className="form-control page-inputs"
                         name="primaryPhone"
-                        defaultValue={siteInfo.primaryContactInfo.phoneNumber}
+                        placeholder="(123)1231234"
+                        defaultValue={siteInfo.primaryContactInfo.phone}
                         {...register('primaryPhone')}
                       />
                     </label>
                   </Col>
                 </div>
-
                 <h3 className="optional-subtitles">Secondary Contact</h3>
                 <div className="input-area">
                   <Row>
-                    <Col lg={5}>
+                    <Col lg={3}>
                       <label htmlFor="secondary-name">
-                        Name
+                        First Name
                         <input
                           type="text"
                           className="form-control"
-                          name="secondaryName"
-                          defaultValue={
-                            siteInfo.secondContactInfo &&
-                            `${siteInfo.secondContactInfo.firstName} ${siteInfo.secondContactInfo.lastName}`
-                          }
-                          {...register('secondaryName')}
+                          name="secondaryFirstName"
+                          placeholder="First Name"
+                          defaultValue={siteInfo.secondContactInfo.firstName}
+                          {...register('secondaryFirstName')}
+                        />
+                      </label>
+                    </Col>
+                    <Col lg={3}>
+                      <label htmlFor="secondary-name">
+                        Last Name
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="secondaryLastName"
+                          placeholder="Last Name"
+                          defaultValue={siteInfo.secondContactInfo.lastName}
+                          {...register('secondaryLastName')}
                         />
                       </label>
                     </Col>
@@ -277,11 +341,9 @@ const ViewSite = ({ siteId }) => {
                         Title
                         <input
                           type="text"
-                          className="form-control"
+                          className="form-control page-inputs"
                           name="secondaryTitle"
-                          defaultValue={
-                            siteInfo.secondContactInfo && siteInfo.secondContactInfo.title
-                          }
+                          defaultValue={siteInfo.secondContactInfo.title}
                           {...register('secondaryTitle')}
                         />
                       </label>
@@ -292,18 +354,16 @@ const ViewSite = ({ siteId }) => {
                       Email
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control page-inputs"
                         name="secondaryEmail"
-                        defaultValue={
-                          siteInfo.secondContactInfo && siteInfo.secondContactInfo.email
-                        }
+                        defaultValue={siteInfo.secondContactInfo.email}
                         {...register('secondaryEmail')}
                       />
                     </label>
                     <label htmlFor="secondary-phone">
                       Phone Number
                       <input
-                        className="form-control"
+                        className="form-control page-inputs"
                         type="number"
                         // Phone #s are <= 10 digits
                         onInput={e => {
@@ -312,24 +372,24 @@ const ViewSite = ({ siteId }) => {
                           }
                         }}
                         name="secondaryPhone"
-                        defaultValue={
-                          siteInfo.secondContactInfo && siteInfo.secondContactInfo.phoneNumber
-                        }
+                        placeholder="(123)1231234"
+                        defaultValue={siteInfo.secondContactInfo.phone}
                         {...register('secondaryPhone')}
                       />
                     </label>
                   </Col>
                 </div>
-
-                <h3 className="optional-subtitles">Notes</h3>
-                <label htmlFor="notes" className="input-area">
-                  <textarea
-                    className="form-control"
-                    defaultValue={siteInfo.notes}
-                    name="notes"
-                    {...register('notes')}
-                  />
-                </label>
+                <Col>
+                  <h3 className="optional-subtitles">Notes</h3>
+                  <label htmlFor="notes" className="input-area">
+                    <textarea
+                      className="form-control notes"
+                      defaultValue={siteInfo.notes}
+                      name="notes"
+                      {...register('notes')}
+                    />
+                  </label>
+                </Col>
                 <button type="submit" className="btn save-btn">
                   Save
                 </button>
@@ -348,7 +408,6 @@ const ViewSite = ({ siteId }) => {
   }
   return (
     <div>
-      <NavigationBar />
       <p className="routing">
         <Link to="/area-management" className="link">
           Areas{' '}
@@ -384,20 +443,14 @@ const ViewSite = ({ siteId }) => {
                   <b>Name</b>
                   <p className="text">{siteInfo.siteName}</p>
                 </label>
+              </Col>
+              <Col md={5}>
                 <label htmlFor="address-street">
-                  <b>Address Line</b>
-                  <p className="text">{siteInfo.addressStreet}</p>
+                  <b>Address</b>
+                  <p className="text">
+                    {`${siteInfo.addressStreet}${apt}, ${siteInfo.addressCity}, ${abbrevState} ${siteInfo.addressZip}`}
+                  </p>
                 </label>
-                <div className="input-fields-coalesce-wrapper">
-                  <label htmlFor="address-city">
-                    <b>City</b>
-                    <p className="text">{siteInfo.addressCity}</p>
-                  </label>
-                  <label htmlFor="address-zip">
-                    <b>ZIP Code</b>
-                    <p className="text">{siteInfo.addressZip}</p>
-                  </label>
-                </div>
               </Col>
             </div>
 
@@ -422,9 +475,11 @@ const ViewSite = ({ siteId }) => {
                   <b>Email</b>
                   <p className="text">{siteInfo.primaryContactInfo.email}</p>
                 </label>
+              </Col>
+              <Col md={5}>
                 <label htmlFor="primary-phone">
                   <b>Phone Number</b>
-                  <p className="text">{siteInfo.primaryContactInfo.phoneNumber}</p>
+                  <p className="text">{siteInfo.primaryContactInfo.phone}</p>
                 </label>
               </Col>
             </div>
@@ -443,29 +498,25 @@ const ViewSite = ({ siteId }) => {
                 <Col lg={5}>
                   <label htmlFor="secondary-title">
                     <b>Title</b>
-                    <p className="text">
-                      {siteInfo.secondContactInfo && siteInfo.secondContactInfo.title}
-                    </p>
+                    <p className="text">{siteInfo.secondContactInfo.title}</p>
                   </label>
                 </Col>
               </Row>
               <Col md={5}>
                 <label htmlFor="secondary-email">
                   <b>Email</b>
-                  <p className="text">
-                    {siteInfo.secondContactInfo && siteInfo.secondContactInfo.email}
-                  </p>
+                  <p className="text">{siteInfo.secondContactInfo.email}</p>
                 </label>
+              </Col>
+              <Col md={5}>
                 <label htmlFor="secondary-phone">
                   <b>Phone Number</b>
-                  <p className="text">
-                    {siteInfo.secondContactInfo && siteInfo.secondContactInfo.phoneNumber}
-                  </p>
+                  <p className="text">{siteInfo.secondContactInfo.phone}</p>
                 </label>
               </Col>
             </div>
             <h3 className="optional-subtitles">Notes</h3>
-            <label htmlFor="notes" className="input-area">
+            <label htmlFor="notes" className="input-area notes">
               <p className="text">{siteInfo.notes}</p>
             </label>
             <button type="button" onClick={changeEdit} className="btn edit-btn">

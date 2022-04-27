@@ -123,10 +123,26 @@ label {
 
 .input-fields-coalesce-wrapper {
   display: flex;
+  width: 520px;
   justify-content: space-between;
 }
 
 .addr-small-field {
   width: 90%;
   margin-right: 10%;
+}
+
+.page-inputs {
+  width: 255px;
+}
+
+.notes {
+  width: 700px;
+}
+
+.status {
+  width: 255px;
+  height: 36px;
+  border-radius: 5px;
+  border-color: #ced4da;
 }
