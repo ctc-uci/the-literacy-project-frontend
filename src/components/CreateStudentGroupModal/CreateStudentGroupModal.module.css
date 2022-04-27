@@ -1,6 +1,6 @@
 @import '../../common/vars.css';
 
-.edit-student-group-modal {
+.create-student-group-modal {
   background-color: #fdfdfd;
   color: #000;
   font-family: var(font-family), Helvetica, Arial, sans-serif;
@@ -15,41 +15,41 @@
   left: 25%;
 }
 
-.edit-student-group-modal-top-bar {
+.create-student-group-modal-top-bar {
   padding: 15px 10px 15px 10px;
   display: flex;
   justify-content: center;
   border-bottom: 1.5px solid #ced4da;
 }
 
-.edit-student-group-modal-top-bar-title {
+.create-student-group-modal-top-bar-title {
   font-size: 25px;
   font: Calibri;
   text-align: center;
 }
 
-.edit-student-group-modal-body {
+.create-student-group-modal-body {
   padding: 10px 15%;
 }
 
-.edit-student-group-school-cycle {
+.create-student-group-school-cycle {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   justify-content: space-between;
 }
 
-.edit-student-group-meeting {
+.create-student-group-meeting {
   display: flex;
   flex-direction: row;
 }
 
-.edit-student-group-modal-field-desc {
+.create-student-group-modal-field-desc {
   padding: 30px 10px 10px 5px;
   font-size: 20px;
 }
 
-.edit-student-group-badges {
+.create-student-group-badges {
   display: flex;
   flex-wrap: wrap;
 }
@@ -68,7 +68,7 @@
   font-size: 1em;
 }
 
-.edit-student-group-exit-button {
+.create-student-group-exit-button {
   position: absolute;
   top: 15px;
   right: 10px;
@@ -79,7 +79,7 @@
   cursor: pointer;
 }
 
-.edit-student-group-cancel-button {
+.create-student-group-cancel-button {
   background-color: var(--color-dark-gray);
   color: #fdfdfd;
   width: 96px;
@@ -96,7 +96,7 @@
   cursor: pointer;
 }
 
-.edit-student-group-save-button {
+.create-student-group-save-button {
   background-color: var(--color-baby-blue);
   color: #fdfdfd;
   width: 96px;
