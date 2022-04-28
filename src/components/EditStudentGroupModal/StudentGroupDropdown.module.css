@@ -1,0 +1,65 @@
+.dropdown-toggle-button {
+  padding: 15px;
+  color: red;
+}
+
+.dropdown-toggle {
+  text-align: left;
+  width: 95%;
+  background-color: white;
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  color: #6C757D;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.dropdown-toggle-icon {
+  position: absolute;
+  right: 15%;
+  top: 27%;
+  background-color: white;
+}
+
+.bs-dropdown-item:hover {
+  font-weight: bold;
+  background-color: white;
+}
+
+.meeting-day-dropdown {
+  width: 50%;
+}
+
+.dropdown-option-checkmark {
+  position: absolute;
+  right: 10px;
+  margin-top: 5px;
+}
+
+.bs-dropdown-selected-item {
+  color: black;
+  font-size: 19px;
+}
+
+.bs-dropdown-selected-item:active {
+  background-color: #B2D4FF;
+  color: black;
+  font-size: 19px;
+}
+
+.bs-dropdown-unselected-item {
+  color: #6C757D;
+  font-size: 19px;
+}
+
+.bs-dropdown-unselected-item:active {
+  background-color: #B2D4FF;
+  color: black;
+  font-size: 19px;
+}
+
+.dropdown-menu {
+  width: 95%;
+}
