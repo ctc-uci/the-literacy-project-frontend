@@ -37,6 +37,7 @@ const Footer = () => {
           <div>124 Tustin Avenue, Suite 103 | Newport Beach, CA 92663</div>
         </Col>
         <Col md="auto">
+          {/* TODO: HELP DOCUMENTATION LINK */}
           <div>
             Help Documentation |{' '}
             <a
