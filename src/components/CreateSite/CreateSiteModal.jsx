@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import states from 'states-us';
 import { TLPBackend } from '../../common/utils';
+import '../../common/vars.css';
 
 const s = states.filter(x => !x.territory);
 const abbrev = s.map(x => x.name);
@@ -16,8 +17,8 @@ const options = abbrev.map(x => ({ label: x, value: x }));
 
 const schema = yup
   .object({
-    siteName: yup.string().required(),
-    addressStreet: yup.string().required(),
+    siteName: yup.string().required('Please enter a site name.'),
+    addressStreet: yup.string().required('Address street is required.'),
     addressApt: yup.string(),
     addressCity: yup.string().required(),
     addressState: yup.string().required(),
@@ -239,7 +240,7 @@ const CreateSiteModal = ({ areaId }) => {
                     maxLength={10}
                     className="form-control"
                     name="primaryPhone"
-                    placeholder="123333241"
+                    placeholder="1233332410"
                     {...register('primaryPhone')}
                   />
                 </label>
@@ -311,7 +312,7 @@ const CreateSiteModal = ({ areaId }) => {
                       }
                     }}
                     name="secondaryPhone"
-                    placeholder="123333241"
+                    placeholder="1233332401"
                     {...register('secondaryPhone')}
                   />
                 </label>
@@ -332,7 +333,12 @@ const CreateSiteModal = ({ areaId }) => {
             <button
               type="submit"
               className="btn"
-              style={{ backgroundColor: '#3288c4', width: '160px', margin: '60px 0px 30px 70px' }}
+              style={{
+                backgroundColor: '#3288c4',
+                color: 'var(--text-color-white)',
+                width: '160px',
+                margin: '60px 0px 30px 70px',
+              }}
             >
               Save
             </button>
@@ -340,7 +346,12 @@ const CreateSiteModal = ({ areaId }) => {
               type="button"
               onClick={cancel}
               className="btn cancel-btn"
-              style={{ backgroundColor: '#5f758d', width: '160px', margin: '60px 0px 30px 70px' }}
+              style={{
+                backgroundColor: '#5f758d',
+                color: 'var(--text-color-white)',
+                width: '160px',
+                margin: '60px 0px 30px 70px',
+              }}
             >
               Cancel
             </button>
