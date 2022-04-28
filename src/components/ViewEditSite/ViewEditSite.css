@@ -83,18 +83,21 @@
 .save-btn {
   width: 160px;
   background-color: #3288c4;
+  color: var(--text-color-white);
   margin: 60px 0px 30px 70px;
 }
 
 .edit-btn {
   width: 160px;
   background-color: #ffd350;
+  color: var(--text-color-dark);
   margin: 60px 0px 30px 70px;
 }
 
 .delete-btn {
   width: 160px;
   background-color: #e53e3e;
+  color: var(--text-color-white);
   margin: 60px 0px 30px 70px;
 }
 
@@ -103,6 +106,7 @@
   left: 70px;
   width: 160px;
   background-color: #5f758d;
+  color: var(--text-color-white);
   margin: 60px 0px 30px 70px;
 }
 

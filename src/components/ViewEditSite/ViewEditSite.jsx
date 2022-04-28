@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import { Link } from 'react-router-dom';
 import states from 'states-us';
 import { TLPBackend } from '../../common/utils';
+import '../../common/vars.css';
 
 const s = states.filter(x => !x.territory);
 const abbrev = s.map(x => x.name);
@@ -45,7 +46,7 @@ const ViewSite = ({ siteId }) => {
 
   const [siteInfo, setSiteInfo] = useState({});
   const [edit, setEdit] = useState(false);
-  const [seconName, setSeconName] = useState('');
+  const [secondName, setSecondName] = useState('');
   const [abbrevState, setAbbrevState] = useState('');
 
   const [apt, setApt] = useState('');
@@ -67,7 +68,7 @@ const ViewSite = ({ siteId }) => {
       setApt(` ${res.data.addressApt}`);
     }
     if (res.data.secondContactInfo.firstName != null) {
-      setSeconName(
+      setSecondName(
         `${res.data.secondContactInfo.firstName} ${res.data.secondContactInfo.lastName}}`,
       );
     }
@@ -117,7 +118,7 @@ const ViewSite = ({ siteId }) => {
     return (
       <div>
         <p className="routing">
-          <Link to="/area-management" className="link">
+          <Link to="/" className="link">
             Areas{' '}
           </Link>
           / {/* filler for now */}
@@ -444,7 +445,7 @@ const ViewSite = ({ siteId }) => {
                 <label htmlFor="address-street">
                   <b>Address</b>
                   <p className="text">
-                    {`${siteInfo.addressStreet}${apt}, ${siteInfo.addressCity}, ${abbrevState} ${siteInfo.addressZip}`}
+                    {`${siteInfo.addressStreet}${apt}, ${siteInfo.addressCity}, ${abbrevState}, ${siteInfo.addressZip}`}
                   </p>
                 </label>
               </Col>
@@ -494,7 +495,7 @@ const ViewSite = ({ siteId }) => {
                 <Col lg={5}>
                   <label htmlFor="secondary-name">
                     <b>Name</b>
-                    <p className="text">{siteInfo.secondContactInfo && seconName}</p>
+                    <p className="text">{siteInfo.secondContactInfo && secondName}</p>
                   </label>
                 </Col>
                 <Col lg={5}>
