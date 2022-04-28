@@ -43,11 +43,9 @@ const ViewSite = ({ siteId }) => {
     delayError: 750,
   });
 
-  const siteInfo = JSON.parse(localStorage.getItem('siteInfo'));
+  const [siteInfo, setSiteInfo] = useState({});
   const [edit, setEdit] = useState(false);
-  const [areaName, setAreaName] = useState('');
-
-  const abbrevState = s.filter(x => x.name === siteInfo.addressState)[0].abbreviation;
+  const [abbrevState, setAbbrevState] = useState('');
 
   const [apt, setApt] = useState('');
 
@@ -60,26 +58,17 @@ const ViewSite = ({ siteId }) => {
     setEdit(!edit);
   };
 
-  const getArea = async () => {
-    const res = await TLPBackend.get(`/areas/${siteInfo.areaId}`);
-    if (res.status === 200) {
-      setAreaName(res.data.areaName);
-    }
-  };
-
   const getSiteInfo = async () => {
     const res = await TLPBackend.get(`/sites/${siteId}`);
-    if (res.status === 200) {
-      localStorage.setItem('siteInfo', JSON.stringify(res.data));
+    setSiteInfo(res.data);
+    setAbbrevState(s.filter(x => x.name === res.data.addressState)[0].abbreviation);
+    if (res.data.addressApt != null) {
+      setApt(` ${res.data.addressApt}`);
     }
   };
 
   useEffect(async () => {
     getSiteInfo();
-    getArea();
-    if (siteInfo.addressApt != null) {
-      setApt(` ${siteInfo.addressApt}`);
-    }
   }, []);
 
   const onSubmit = async data => {
@@ -115,7 +104,6 @@ const ViewSite = ({ siteId }) => {
 
     // send form data to server
     await TLPBackend.put(`/sites/${siteId}`, formData);
-    getSiteInfo();
     window.location.reload();
     changeEdit();
   };
@@ -129,7 +117,7 @@ const ViewSite = ({ siteId }) => {
           </Link>
           / {/* filler for now */}
           <Link to={`/area/${siteInfo.areaId}`} className="link">
-            {areaName}{' '}
+            {siteInfo.areaName}{' '}
           </Link>
           / {siteInfo.siteName}
         </p>
@@ -271,6 +259,7 @@ const ViewSite = ({ siteId }) => {
                           className="form-control page-inputs"
                           name="primaryTitle"
                           defaultValue={siteInfo.primaryContactInfo.title}
+                          placeholder="i.e. Principal, Sir"
                           {...register('primaryTitle')}
                         />
                       </label>
@@ -343,6 +332,7 @@ const ViewSite = ({ siteId }) => {
                           type="text"
                           className="form-control page-inputs"
                           name="secondaryTitle"
+                          placeholder="i.e. Principal, Sir"
                           defaultValue={siteInfo.secondContactInfo.title}
                           {...register('secondaryTitle')}
                         />
@@ -357,6 +347,7 @@ const ViewSite = ({ siteId }) => {
                         className="form-control page-inputs"
                         name="secondaryEmail"
                         defaultValue={siteInfo.secondContactInfo.email}
+                        placeholder="email@gmail.com"
                         {...register('secondaryEmail')}
                       />
                     </label>
@@ -409,12 +400,12 @@ const ViewSite = ({ siteId }) => {
   return (
     <div>
       <p className="routing">
-        <Link to="/area-management" className="link">
+        <Link to="/" className="link">
           Areas{' '}
         </Link>
         / {/* filler for now */}
         <Link to={`/area/${siteInfo.areaId}`} className="link">
-          {areaName}{' '}
+          {siteInfo.areaName}{' '}
         </Link>
         / {siteInfo.siteName}
       </p>
@@ -460,26 +451,35 @@ const ViewSite = ({ siteId }) => {
                 <Col lg={5}>
                   <label htmlFor="primary-name">
                     <b>Name</b>
-                    <p className="text">{`${siteInfo.primaryContactInfo.firstName} ${siteInfo.primaryContactInfo.lastName}`}</p>
+                    <p className="text">
+                      {siteInfo.primaryContactInfo &&
+                        `${siteInfo.primaryContactInfo.firstName} ${siteInfo.primaryContactInfo.lastName}`}
+                    </p>
                   </label>
                 </Col>
                 <Col lg={5}>
                   <label htmlFor="primary-title">
                     <b>Title</b>
-                    <p className="text">{siteInfo.primaryContactInfo.title}</p>
+                    <p className="text">
+                      {siteInfo.primaryContactInfo && siteInfo.primaryContactInfo.title}
+                    </p>
                   </label>
                 </Col>
               </Row>
               <Col md={5}>
                 <label htmlFor="primary-email">
                   <b>Email</b>
-                  <p className="text">{siteInfo.primaryContactInfo.email}</p>
+                  <p className="text">
+                    {siteInfo.primaryContactInfo && siteInfo.primaryContactInfo.email}
+                  </p>
                 </label>
               </Col>
               <Col md={5}>
                 <label htmlFor="primary-phone">
                   <b>Phone Number</b>
-                  <p className="text">{siteInfo.primaryContactInfo.phone}</p>
+                  <p className="text">
+                    {siteInfo.primaryContactInfo && siteInfo.primaryContactInfo.phone}
+                  </p>
                 </label>
               </Col>
             </div>
@@ -498,20 +498,26 @@ const ViewSite = ({ siteId }) => {
                 <Col lg={5}>
                   <label htmlFor="secondary-title">
                     <b>Title</b>
-                    <p className="text">{siteInfo.secondContactInfo.title}</p>
+                    <p className="text">
+                      {siteInfo.secondContactInfo && siteInfo.secondContactInfo.title}
+                    </p>
                   </label>
                 </Col>
               </Row>
               <Col md={5}>
                 <label htmlFor="secondary-email">
                   <b>Email</b>
-                  <p className="text">{siteInfo.secondContactInfo.email}</p>
+                  <p className="text">
+                    {siteInfo.secondContactInfo && siteInfo.secondContactInfo.email}
+                  </p>
                 </label>
               </Col>
               <Col md={5}>
                 <label htmlFor="secondary-phone">
                   <b>Phone Number</b>
-                  <p className="text">{siteInfo.secondContactInfo.phone}</p>
+                  <p className="text">
+                    {siteInfo.secondContactInfo && siteInfo.secondContactInfo.phone}
+                  </p>
                 </label>
               </Col>
             </div>
