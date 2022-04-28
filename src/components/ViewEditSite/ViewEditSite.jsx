@@ -75,7 +75,7 @@ const ViewSite = ({ siteId }) => {
 
   useEffect(async () => {
     getSiteInfo();
-  }, []);
+  }, [siteInfo]);
 
   const onSubmit = async data => {
     const formData = {
@@ -110,7 +110,6 @@ const ViewSite = ({ siteId }) => {
 
     // send form data to server
     await TLPBackend.put(`/sites/${siteId}`, formData);
-    window.location.reload();
     changeEdit();
   };
 
