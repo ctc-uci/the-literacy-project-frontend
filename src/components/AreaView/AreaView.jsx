@@ -6,11 +6,9 @@ import { TLPBackend, calculateScores } from '../../common/utils';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import SitesTable from './sitesTable';
 import styles from './AreaView.module.css';
-import NavigationBar from '../NavigationBar/NavigationBar';
 import Graph from '../Graph/Graph';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
-
 
 const BackToAllAreas = () => {
   Navigate('/');

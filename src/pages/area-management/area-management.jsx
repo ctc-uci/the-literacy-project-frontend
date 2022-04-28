@@ -68,16 +68,9 @@ const AreaManagement = () => {
   };
 
   useEffect(() => {
-    async function fetchAreas() {
-      await TLPBackend.get('/areas')
-        .then(res => {
-          setTimeout(() => {
-            addAssociatedSiteToArea(res.data);
-          }, 1000);
-        })
-        .catch(() => {});
-    }
-    fetchAreas();
+    TLPBackend.get('/areas/area-management').then(res => {
+      setAreaResponseData(res.data);
+    });
 
     async function fetchStudents() {
       const studentScoresRes = await TLPBackend.get(`/students`, {
