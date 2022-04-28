@@ -9,7 +9,6 @@ import styles from './AreaView.module.css';
 import Graph from '../Graph/Graph';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
-import CSVButton from '../CSVButton/CSVButton';
 
 const BackToAllAreas = () => {
   Navigate('/');
@@ -122,7 +121,9 @@ const AreaView = () => {
             <div>
               <h2>{areaName} Data</h2>
             </div>
-            <CSVButton />
+            <Button className={`btn btn-primary ${styles.export_stats_to_csv_btn}`}>
+              Export to CSV
+            </Button>
           </div>
           <Card className={styles.stats}>
             <p>

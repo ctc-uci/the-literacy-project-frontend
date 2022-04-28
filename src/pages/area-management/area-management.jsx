@@ -10,7 +10,6 @@ import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
 import Graph from '../../components/Graph/Graph';
-import CSVButton from '../../components/CSVButton/CSVButton';
 
 const AreaManagement = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
@@ -191,7 +190,12 @@ const AreaManagement = () => {
             <p>
               <strong>All Area Data</strong>
             </p>
-            <CSVButton />
+            <Button
+              variant="primary"
+              className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
+            >
+              Export to CSV
+            </Button>
             <Card className={styles['area-data-stats']}>
               <p>
                 <BsPeople /> 40 Students
