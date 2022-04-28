@@ -490,7 +490,7 @@ const ViewSite = ({ siteId }) => {
                   <label htmlFor="secondary-name">
                     <b>Name</b>
                     <p className="text">
-                      {siteInfo.secondContactInfo &&
+                      {siteInfo.secondContactInfo.firstName &&
                         `${siteInfo.secondContactInfo.firstName} ${siteInfo.secondContactInfo.lastName}`}
                     </p>
                   </label>
