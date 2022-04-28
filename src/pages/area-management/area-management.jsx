@@ -188,6 +188,7 @@ const AreaManagement = () => {
             {mapAreas()}
           </div>
           <div className={styles['sites-data']}>
+            s{' '}
             <p>
               <strong>All Area Data</strong>
             </p>
