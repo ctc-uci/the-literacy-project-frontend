@@ -45,6 +45,7 @@ const ViewSite = ({ siteId }) => {
 
   const [siteInfo, setSiteInfo] = useState({});
   const [edit, setEdit] = useState(false);
+  const [seconName, setSeconName] = useState('');
   const [abbrevState, setAbbrevState] = useState('');
 
   const [apt, setApt] = useState('');
@@ -64,6 +65,11 @@ const ViewSite = ({ siteId }) => {
     setAbbrevState(s.filter(x => x.name === res.data.addressState)[0].abbreviation);
     if (res.data.addressApt != null) {
       setApt(` ${res.data.addressApt}`);
+    }
+    if (res.data.secondContactInfo.firstName != null) {
+      setSeconName(
+        `${res.data.secondContactInfo.firstName} ${res.data.secondContactInfo.lastName}}`,
+      );
     }
   };
 
@@ -489,10 +495,7 @@ const ViewSite = ({ siteId }) => {
                 <Col lg={5}>
                   <label htmlFor="secondary-name">
                     <b>Name</b>
-                    <p className="text">
-                      {siteInfo.secondContactInfo.firstName &&
-                        `${siteInfo.secondContactInfo.firstName} ${siteInfo.secondContactInfo.lastName}`}
-                    </p>
+                    <p className="text">{siteInfo.secondContactInfo && seconName}</p>
                   </label>
                 </Col>
                 <Col lg={5}>
