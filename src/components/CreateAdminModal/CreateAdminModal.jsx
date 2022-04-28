@@ -1,37 +1,37 @@
 import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
-import './CreateAdminModal.css';
-import { Modal, Button, Form, Alert, CloseButton } from 'react-bootstrap';
+import { Modal, Button, Alert, CloseButton } from 'react-bootstrap';
 
 // Forms
-// import { useForm } from 'react-hook-form';
-// import { yupResolver } from '@hookform/resolvers/yup';
-// import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
-import { AUTH_ROLES } from '../../common/config';
-import { sendInviteLink } from '../../common/auth/auth_utils';
+import styles from './CreateAdminModal.module.css';
+// import { AUTH_ROLES } from '../../common/config';
+// import { sendInviteLink } from '../../common/auth/auth_utils';
 
-// const schema = yup
-//   .object({
-//     email: yup.string().email().required(),
-//     firstName: yup.string().required(),
-//     lastName: yup.string().required(),
-//     phoneNumber: yup.string().required(),
-//   })
-//   .required();
+const schema = yup
+  .object({
+    email: yup.string().email().required(),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
+    phoneNumber: yup.string().required(),
+  })
+  .required();
 
 const CreateAdminModal = ({ isOpen, setIsOpen }) => {
   const [showAlert, setShowAlert] = useState(false);
-  const [email, setEmail] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
+  // const [email, setEmail] = useState();
+  // const [firstName, setFirstName] = useState();
+  // const [lastName, setLastName] = useState();
   const [errorMessage, setErrorMessage] = useState();
-  const [phoneNumber, setPhoneNumber] = useState();
+  // const [phoneNumber, setPhoneNumber] = useState();
 
-  // const { register, handleSubmit } = useForm({
-  //   resolver: yupResolver(schema),
-  //   delayError: 750,
-  // });
+  const { register, handleSubmit } = useForm({
+    resolver: yupResolver(schema),
+    delayError: 750,
+  });
 
   const closeModal = () => {
     setIsOpen(false);
@@ -44,27 +44,27 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
     setErrorMessage('');
   };
 
-  // const newOnSubmit = async data => {
-  //   const formData = {};
-  //   closeModal();
-  // };
-
-  // const onSubmit = async e => {
-  const handleSubmit = async e => {
-    try {
-      e.preventDefault();
-      setErrorMessage('');
-      await sendInviteLink(AUTH_ROLES.ADMIN_ROLE, email, firstName, lastName, phoneNumber);
-      setErrorMessage('');
-      setEmail('');
-      closeModal();
-    } catch (err) {
-      setErrorMessage(err.message);
-    }
+  const onSubmit = async data => {
+    // const formData = {};
+    console.log(data);
+    closeModal();
   };
 
+  // const handleSubmit = async e => {
+  //   try {
+  //     e.preventDefault();
+  //     setErrorMessage('');
+  //     await sendInviteLink(AUTH_ROLES.ADMIN_ROLE, email, firstName, lastName, phoneNumber);
+  //     setErrorMessage('');
+  //     setEmail('');
+  //     closeModal();
+  //   } catch (err) {
+  //     setErrorMessage(err.message);
+  //   }
+  // };
+
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Modal
         aria-labelledby="contained-modal-title-vcenter"
         centered
@@ -77,45 +77,53 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
 
         <Modal.Body>
           <div>
-            <Form.Group className="mb-5" controlId="createAdmin.firstName">
-              <Form.Label>First Name</Form.Label>
-              <Form.Control
+            <label htmlFor="first-name">
+              First Name
+              <input
+                type="text"
+                className="form-control"
+                name="firstName"
                 placeholder="First Name"
-                onChange={({ target }) => setFirstName(target.value)}
+                {...register('firstName')}
               />
-            </Form.Group>
-            <Form.Group className="mb-5" controlId="createAdmin.lastName">
-              <Form.Label>Last Name</Form.Label>
-              <Form.Control
+            </label>
+            <label htmlFor="last-name">
+              Last Name
+              <input
+                type="text"
+                className="form-control"
+                name="lastName"
                 placeholder="Last Name"
-                onChange={({ target }) => setLastName(target.value)}
+                {...register('lastName')}
               />
-            </Form.Group>
-            <Form.Group className="mb-5" controlId="createAdmin.phoneNumber">
-              <Form.Label>Phone Number</Form.Label>
-              <Form.Control
+            </label>
+          </div>
+          <label htmlFor="email">
+            Email
+            <input
+              type="email"
+              className="form-control"
+              name="email"
+              placeholder="Email"
+              {...register('email')}
+            />
+          </label>
+          <div>
+            <label htmlFor="phone-number">
+              Phone Number
+              <input
+                type="text"
+                className="form-control"
+                name="phoneNumber"
                 placeholder="Phone Number"
-                onChange={({ target }) => setPhoneNumber(target.value)}
+                {...register('phoneNumber')}
               />
-            </Form.Group>
-            <Form.Group className="mb-5" controlId="createAdminAccount.email" required>
-              <Form.Label>
-                <>
-                  Email
-                  <span id="asterisk">*</span>
-                </>
-              </Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="example@gmail.com"
-                onChange={({ target }) => setEmail(target.value)}
-              />
-            </Form.Group>
+            </label>
           </div>
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="primary" className="modalSave" onClick={handleSubmit}>
+          <Button variant="primary" className={styles.modalSave} type="submit">
             Send Email
           </Button>
           {errorMessage && <p>{errorMessage}</p>}
@@ -129,7 +137,7 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
           </Alert>
         </div>
       ) : null}
-    </>
+    </form>
   );
 
   // return isOpen ? (
