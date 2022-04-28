@@ -9,6 +9,7 @@ import Table from '../Table/Table';
 import InformationPopover from '../Popover/InformationPopover';
 import CreateMasterTeacherModal from '../CreateMasterTeacherModal/CreateMasterTeacherModal';
 import CreateAdminModal from '../CreateAdminModal/CreateAdminModal';
+import CSVButton from '../CSVButton/CSVButton';
 
 const ManagementDataSection = ({
   sectionTitle,
@@ -45,9 +46,7 @@ const ManagementDataSection = ({
             {sectionTitle}
             {popover}
           </h1>
-          <Button className={styles['export-button']} variant="primary">
-            Export to CSV
-          </Button>
+          <CSVButton />
         </>
       );
     }
@@ -67,11 +66,7 @@ const ManagementDataSection = ({
 
   const displayExportButtonRight = () => {
     if (sectionTitle === 'Students') {
-      return (
-        <Button className={styles['export-button']} variant="primary">
-          Export to CSV
-        </Button>
-      );
+      return <CSVButton />;
     }
     return null;
   };
@@ -161,7 +156,9 @@ ManagementDataSection.defaultProps = {
 
 ManagementDataSection.propTypes = {
   sectionTitle: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
   theadData: PropTypes.arrayOf(PropTypes.object),
+  // eslint-disable-next-line react/forbid-prop-types
   tbodyData: PropTypes.arrayOf(PropTypes.object),
   hasHeader: PropTypes.bool,
   headerText: PropTypes.string,

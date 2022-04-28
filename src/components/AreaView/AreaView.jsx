@@ -5,6 +5,7 @@ import { TLPBackend } from '../../common/utils';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import SitesTable from './sitesTable';
 import styles from './AreaView.module.css';
+import CSVButton from '../CSVButton/CSVButton';
 
 const BackToAllAreas = () => {
   Navigate('/');
@@ -99,9 +100,7 @@ const AreaView = () => {
           <div>
             <h2>{areaName} Data</h2>
           </div>
-          <Button className={`btn btn-primary ${styles.export_stats_to_csv_btn}`}>
-            Export to CSV
-          </Button>
+          <CSVButton />
           <h2>Data</h2>
           <h3>Average Scores</h3>
           {/* placeholder for graph */}
