@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { CSVLink } from 'react-csv';
 import { TLPBackend } from '../../common/utils';
+import './CSVButton.module.css';
 // GET RID OF THIS EVENTUALLY
 import styles from '../ManagementDataSection/ManagementDataSection.module.css';
 
@@ -9,6 +10,7 @@ const CSVButton = () => {
   const [studentResponseData, setStudentResponseData] = useState([]);
 
   const studentAreaHeaders = [
+    'Area ID',
     'Student ID',
     'First Name',
     'Last Name',
@@ -29,6 +31,7 @@ const CSVButton = () => {
 
   function mapStudents() {
     return studentResponseData.map(student => [
+      student.areaId,
       student.studentId,
       student.firstName,
       student.lastName,
@@ -60,7 +63,13 @@ const CSVButton = () => {
       for (const element of resData) {
         TLPBackend.get(`/students/area/${element.areaId}`)
           .then(res => {
-            studentResponseData.push(...res.data);
+            res.data.forEach(student => {
+              // eslint-disable-next-line no-param-reassign
+              student.areaId = element.areaId;
+            });
+            if (res.data.length !== 0) {
+              studentResponseData.push(...res.data);
+            }
           })
           .catch(() => {
             /* TODO document why this arrow function is empty */
