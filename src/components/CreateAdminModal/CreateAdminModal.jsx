@@ -8,27 +8,30 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import styles from './CreateAdminModal.module.css';
-// import { AUTH_ROLES } from '../../common/config';
-// import { sendInviteLink } from '../../common/auth/auth_utils';
-
-const schema = yup
-  .object({
-    email: yup.string().email().required(),
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
-    phoneNumber: yup.string().required(),
-  })
-  .required();
+import { AUTH_ROLES } from '../../common/config';
+import { sendInviteLink } from '../../common/auth/auth_utils';
 
 const CreateAdminModal = ({ isOpen, setIsOpen }) => {
   const [showAlert, setShowAlert] = useState(false);
-  // const [email, setEmail] = useState();
-  // const [firstName, setFirstName] = useState();
-  // const [lastName, setLastName] = useState();
-  const [errorMessage, setErrorMessage] = useState();
-  // const [phoneNumber, setPhoneNumber] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const { register, handleSubmit } = useForm({
+  const schema = yup
+    .object({
+      email: yup
+        .string()
+        .email('Email must be a valid email address')
+        .required('Email is required'),
+      firstName: yup.string().required('First name is required'),
+      lastName: yup.string().required('Last name is required'),
+      phoneNumber: yup.string().required('Phone number is required'),
+    })
+    .required();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
     delayError: 750,
   });
@@ -45,89 +48,100 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
   };
 
   const onSubmit = async data => {
-    // const formData = {};
-    console.log(data);
-    closeModal();
+    try {
+      console.log(data);
+      await sendInviteLink(
+        AUTH_ROLES.ADMIN_ROLE,
+        data.email,
+        data.firstName,
+        data.lastName,
+        data.phoneNumber,
+      );
+      setErrorMessage('');
+      closeModal();
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
   };
 
-  // const handleSubmit = async e => {
-  //   try {
-  //     e.preventDefault();
-  //     setErrorMessage('');
-  //     await sendInviteLink(AUTH_ROLES.ADMIN_ROLE, email, firstName, lastName, phoneNumber);
-  //     setErrorMessage('');
-  //     setEmail('');
-  //     closeModal();
-  //   } catch (err) {
-  //     setErrorMessage(err.message);
-  //   }
-  // };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <>
       <Modal
         aria-labelledby="contained-modal-title-vcenter"
         centered
         show={isOpen}
         onHide={closeModalNoAlert}
       >
-        <Modal.Header closeButton>
-          <Modal.Title className={styles.modalTitle}>Create Admin Account</Modal.Title>
-        </Modal.Header>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Modal.Header closeButton>
+            <Modal.Title className={styles.modalTitle}>Create Admin Account</Modal.Title>
+          </Modal.Header>
 
-        <Modal.Body>
-          <div>
-            <label htmlFor="first-name" className={styles.fNameField}>
-              First Name
+          <Modal.Body>
+            <div>
+              <label htmlFor="first-name" className={styles.fNameField}>
+                <h3 className={styles.requiredSubtitles}>First Name</h3>
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="First Name"
+                  className={`form-control ${errors.firstName ? `is-invalid` : ''}`}
+                  {...register('firstName')}
+                />
+                <div className={`text-danger ${styles['err-msg']}`}>
+                  {errors.firstName?.message}
+                </div>
+              </label>
+              <label htmlFor="last-name" className={styles.lNameField}>
+                <h3 className={styles.requiredSubtitles}>Last Name</h3>
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Last Name"
+                  className={`form-control ${errors.lastName ? `is-invalid` : ''}`}
+                  {...register('lastName')}
+                />
+                <div className={`text-danger ${styles['err-msg']}`}>{errors.lastName?.message}</div>
+              </label>
+            </div>
+            <label htmlFor="email" className={styles.emailField}>
+              <h3 className={styles.requiredSubtitles}>Email</h3>
               <input
-                type="text"
-                className="form-control"
-                name="firstName"
-                placeholder="First Name"
-                {...register('firstName')}
+                type="email"
+                name="email"
+                placeholder="Email"
+                className={`form-control ${errors.email ? `is-invalid` : ''}`}
+                {...register('email')}
               />
+              <div className={`text-danger ${styles['err-msg']}`}>
+                {errors.email?.message || errorMessage}
+              </div>
             </label>
-            <label htmlFor="last-name" className={styles.lNameField}>
-              Last Name
-              <input
-                type="text"
-                className="form-control"
-                name="lastName"
-                placeholder="Last Name"
-                {...register('lastName')}
-              />
-            </label>
-          </div>
-          <label htmlFor="email" className={styles.emailField}>
-            Email
-            <input
-              type="email"
-              className="form-control"
-              name="email"
-              placeholder="Email"
-              {...register('email')}
-            />
-          </label>
-          <div>
-            <label htmlFor="phone-number" className={styles.phoneNumField}>
-              Phone Number
-              <input
-                type="text"
-                className="form-control"
-                name="phoneNumber"
-                placeholder="Phone Number"
-                {...register('phoneNumber')}
-              />
-            </label>
-          </div>
-        </Modal.Body>
+            <div>
+              <label htmlFor="phone-number" className={styles.phoneNumField}>
+                <h3 className={styles.requiredSubtitles}>Phone Number</h3>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  placeholder="Phone Number"
+                  className={`form-control ${errors.phoneNumber ? `is-invalid` : ''}`}
+                  {...register('phoneNumber')}
+                />
+              </label>
+              <div className={`text-danger ${styles['err-msg']}`}>
+                {errors.phoneNumber?.message}
+              </div>
+              {/* {JSON.stringify(errors)} */}
+            </div>
+          </Modal.Body>
 
-        <Modal.Footer>
-          <Button variant="primary" className={styles.modalSave} type="submit">
-            Send Email
-          </Button>
-          {errorMessage && <p>{errorMessage}</p>}
-        </Modal.Footer>
+          <Modal.Footer>
+            <Button variant="primary" className={styles.modalSave} type="submit">
+              Send Email
+            </Button>
+            {errorMessage && <p>{errorMessage}</p>}
+          </Modal.Footer>
+        </form>
       </Modal>
       {showAlert ? (
         <div className="center-block">
@@ -137,7 +151,7 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
           </Alert>
         </div>
       ) : null}
-    </form>
+    </>
   );
 
   // return isOpen ? (
