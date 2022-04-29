@@ -72,12 +72,12 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
         onHide={closeModalNoAlert}
       >
         <Modal.Header closeButton>
-          <Modal.Title className="modalTitle">Create Admin Account</Modal.Title>
+          <Modal.Title className={styles.modalTitle}>Create Admin Account</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <div>
-            <label htmlFor="first-name">
+            <label htmlFor="first-name" className={styles.fNameField}>
               First Name
               <input
                 type="text"
@@ -87,7 +87,7 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
                 {...register('firstName')}
               />
             </label>
-            <label htmlFor="last-name">
+            <label htmlFor="last-name" className={styles.lNameField}>
               Last Name
               <input
                 type="text"
@@ -98,7 +98,7 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
               />
             </label>
           </div>
-          <label htmlFor="email">
+          <label htmlFor="email" className={styles.emailField}>
             Email
             <input
               type="email"
@@ -109,7 +109,7 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
             />
           </label>
           <div>
-            <label htmlFor="phone-number">
+            <label htmlFor="phone-number" className={styles.phoneNumField}>
               Phone Number
               <input
                 type="text"

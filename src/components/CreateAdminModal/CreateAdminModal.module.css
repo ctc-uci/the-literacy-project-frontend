@@ -75,3 +75,19 @@
   background-color: #3288c4;
   color: #fdfdfd;
 }
+
+.phoneNumField, .emailField{
+  width: 100%;
+}
+
+.fNameField, .lNameField {
+  width: 42.5%;
+}
+
+.fNameField {
+  margin-right: 15%;
+}
+
+.modalTitle {
+  margin-left: 27.5%;
+}
