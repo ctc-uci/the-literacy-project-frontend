@@ -27,27 +27,29 @@ const CSVButton = () => {
     'Pre-Test R Notes',
   ];
 
-  const studentAreaData = studentResponseData.map(student => [
-    student.studentId,
-    student.firstName,
-    student.lastName,
-    student.grade,
-    student.homeTeacher,
-    student.gender,
-    student.ethnicity,
-    student.studentGroupId,
-    student.posttestA,
-    student.posttestANotes,
-    student.posttestR,
-    student.posttestRNotes,
-    student.pretestA,
-    student.pretestANotes,
-    student.pretestR,
-    student.pretestRNotes,
-  ]);
+  function mapStudents() {
+    return studentResponseData.map(student => [
+      student.studentId,
+      student.firstName,
+      student.lastName,
+      student.grade,
+      student.homeTeacher,
+      student.gender,
+      student.ethnicity,
+      student.studentGroupId,
+      student.posttestA,
+      student.posttestANotes,
+      student.posttestR,
+      student.posttestRNotes,
+      student.pretestA,
+      student.pretestANotes,
+      student.pretestR,
+      student.pretestRNotes,
+    ]);
+  }
 
   const studentAreaCSVReport = {
-    data: studentAreaData,
+    data: studentResponseData,
     headers: studentAreaHeaders,
     filename: 'Areas_Report.csv',
   };
@@ -59,8 +61,6 @@ const CSVButton = () => {
         TLPBackend.get(`/students/area/${element.areaId}`)
           .then(res => {
             studentResponseData.push(...res.data);
-            console.log(res.data);
-            setStudentResponseData(studentResponseData);
           })
           .catch(() => {
             /* TODO document why this arrow function is empty */
@@ -69,7 +69,9 @@ const CSVButton = () => {
     }
 
     await fetchAllSites();
-    setTimeout(() => {}, 2000);
+    setTimeout(() => {
+      setStudentResponseData(mapStudents());
+    }, 2000);
   };
 
   useEffect(() => {
