@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link } from 'react-router-dom';
 import states from 'states-us';
+import WarningModal from '../WarningModal/WarningModal';
 import { TLPBackend } from '../../common/utils';
 import '../../common/vars.css';
 
@@ -48,6 +49,7 @@ const ViewSite = ({ siteId }) => {
   const [edit, setEdit] = useState(false);
   const [secondName, setSecondName] = useState('');
   const [abbrevState, setAbbrevState] = useState('');
+  const [warningOpen, setWarningOpen] = useState(false);
 
   const [apt, setApt] = useState('');
 
@@ -58,6 +60,10 @@ const ViewSite = ({ siteId }) => {
 
   const changeEdit = () => {
     setEdit(!edit);
+  };
+
+  const openWarningModal = () => {
+    setWarningOpen(!warningOpen);
   };
 
   const getSiteInfo = async () => {
@@ -110,7 +116,7 @@ const ViewSite = ({ siteId }) => {
     }
 
     // send form data to server
-    console.log(formData);
+
     await TLPBackend.put(`/sites/${siteId}`, formData);
     window.location.reload();
     changeEdit();
@@ -119,6 +125,13 @@ const ViewSite = ({ siteId }) => {
   if (edit) {
     return (
       <div>
+        <WarningModal
+          isOpen={warningOpen}
+          setIsOpen={setWarningOpen}
+          body="site"
+          name={siteInfo.siteName}
+          deleteFunc={deleteSite}
+        />
         <p className="routing">
           <Link to="/" className="link">
             Areas{' '}
@@ -392,7 +405,7 @@ const ViewSite = ({ siteId }) => {
                 <button type="submit" className="btn save-btn">
                   Save
                 </button>
-                <button type="button" onClick={deleteSite} className="btn delete-btn">
+                <button type="button" onClick={openWarningModal} className="btn delete-btn">
                   Delete
                 </button>
                 <button type="button" onClick={changeEdit} className="btn cancel-btn">
@@ -407,6 +420,13 @@ const ViewSite = ({ siteId }) => {
   }
   return (
     <div>
+      <WarningModal
+        isOpen={warningOpen}
+        setIsOpen={setWarningOpen}
+        body="site"
+        name={siteInfo.siteName}
+        deleteFunc={deleteSite}
+      />
       <p className="routing">
         <Link to="/" className="link">
           Areas{' '}
@@ -533,7 +553,7 @@ const ViewSite = ({ siteId }) => {
             <button type="button" onClick={changeEdit} className="btn edit-btn">
               Edit
             </button>
-            <button type="button" onClick={deleteSite} className="btn delete-btn">
+            <button type="button" onClick={openWarningModal} className="btn delete-btn">
               Delete
             </button>
           </div>
