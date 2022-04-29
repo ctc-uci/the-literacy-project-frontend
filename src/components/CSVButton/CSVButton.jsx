@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { CSVLink } from 'react-csv';
 import { TLPBackend } from '../../common/utils';
-import './CSVButton.module.css';
-// GET RID OF THIS EVENTUALLY
-import styles from '../ManagementDataSection/ManagementDataSection.module.css';
+import styles from './CSVButton.module.css';
 
 const CSVButton = () => {
   const [studentResponseData, setStudentResponseData] = useState([]);
@@ -99,7 +97,7 @@ const CSVButton = () => {
 
   return (
     <Button className={styles['export-button']} variant="primary">
-      <CSVLink {...studentAreaCSVReport} className="csvLink">
+      <CSVLink {...studentAreaCSVReport} className={styles.csvLink}>
         Export to CSV
       </CSVLink>
     </Button>
