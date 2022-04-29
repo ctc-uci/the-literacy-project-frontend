@@ -76,7 +76,7 @@ const ViewSite = ({ siteId }) => {
 
   useEffect(async () => {
     getSiteInfo();
-  }, [siteInfo]);
+  }, []);
 
   const onSubmit = async data => {
     const formData = {
