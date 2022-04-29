@@ -138,6 +138,9 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
                 onChange={e => setStudentFirstName(e.target.value)}
                 required
               />
+              {studentFirstName === '' && formSubmitted ? (
+                <p className={styles['error-message']}>This field is required</p>
+              ) : null}
             </div>
             <div className={styles['input-area']}>
               <p className={styles.required}>Last Name</p>
@@ -151,6 +154,9 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
                 onChange={e => setStudentLastName(e.target.value)}
                 required
               />
+              {studentLastName === '' && formSubmitted ? (
+                <p className={styles['error-message']}>This field is required</p>
+              ) : null}
             </div>
 
             <div className={styles['input-area']}>
@@ -178,6 +184,9 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
                   studentGender === 'Select Gender' && formSubmitted ? styles['input-empty'] : ''
                 }
               />
+              {studentGender === 'Select Gender' && formSubmitted ? (
+                <p className={styles['error-message']}>This field is required</p>
+              ) : null}
             </div>
             <div className={styles['input-area']}>
               <p className={styles.required}>Grade</p>
@@ -190,6 +199,9 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
                   studentGrade === 'Select Grade' && formSubmitted ? styles['input-empty'] : ''
                 }
               />
+              {studentGrade === 'Select Grade' && formSubmitted ? (
+                <p className={styles['error-message']}>This field is required</p>
+              ) : null}
             </div>
             <div className={styles['input-area']}>
               <p>Home Teacher</p>
@@ -213,6 +225,9 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
                   studentGroup === 'Select Group' && formSubmitted ? styles['input-empty'] : ''
                 }
               />
+              {studentGroup === 'Select Group' && formSubmitted ? (
+                <p className={styles['error-message']}>This field is required</p>
+              ) : null}
             </div>
           </form>
         </Modal.Body>

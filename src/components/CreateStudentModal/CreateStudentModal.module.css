@@ -1,8 +1,6 @@
 .modalTitle {
-  align-content: center;
+  width: 100%;
   text-align: center;
-  align-items: center;
-  align-self: center;
 }
 
 .form-body {
@@ -23,7 +21,7 @@
 
 .required:after {
   content: '*';
-  color: red;
+  color: #ff0000;
 }
 
 .ethnicity-badge {
@@ -60,4 +58,18 @@
   max-width: 300px;
   display: inline-block;
   vertical-align: middle;
+}
+
+.error-message {
+  margin-top: 3px;
+  margin-bottom: 0px !important;
+  font-size: 13px;
+  color: #ff0000;
+}
+
+@media only screen and (max-width: 500px) {
+  .form-body {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
 }
