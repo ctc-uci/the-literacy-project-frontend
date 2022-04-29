@@ -69,7 +69,7 @@ const ViewSite = ({ siteId }) => {
     }
     if (res.data.secondContactInfo.firstName != null) {
       setSecondName(
-        `${res.data.secondContactInfo.firstName} ${res.data.secondContactInfo.lastName}}`,
+        `${res.data.secondContactInfo.firstName} ${res.data.secondContactInfo.lastName}`,
       );
     }
   };
@@ -99,7 +99,7 @@ const ViewSite = ({ siteId }) => {
     };
 
     // Adding secondary contact info, if present
-    if (data.secondaryName) {
+    if (data.secondaryFirstName) {
       formData.secondContactInfo = {
         firstName: data.secondaryFirstName,
         lastName: data.secondaryLastName,
@@ -110,6 +110,7 @@ const ViewSite = ({ siteId }) => {
     }
 
     // send form data to server
+    console.log(formData);
     await TLPBackend.put(`/sites/${siteId}`, formData);
     window.location.reload();
     changeEdit();
