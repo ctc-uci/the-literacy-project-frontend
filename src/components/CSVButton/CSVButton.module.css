@@ -1,5 +1,10 @@
 
+.export-button {
+  background-color: var(--color-dark-blue-muted);
+  color: var(--text-color-white);
+}
 
 .csvLink{
   color: white;
+  text-decoration: none;
 }
