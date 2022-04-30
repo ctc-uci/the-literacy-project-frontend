@@ -1,0 +1,18 @@
+.checkboxes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.state-label-row {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;   
+}
+
+.button-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+}

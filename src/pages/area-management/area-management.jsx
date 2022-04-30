@@ -10,9 +10,11 @@ import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
 import Graph from '../../components/Graph/Graph';
+import AreaManagementFilter from '../../components/AreaManagementFilter/AreaManagementFilter';
 
 const AreaManagement = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
+  const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
   const [schoolYear, setSchoolYear] = useState('2020-21');
   const [testScores, setTestScores] = useState({});
@@ -161,10 +163,15 @@ const AreaManagement = () => {
                 <Button
                   variant="primary"
                   className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
-                  onClick={() => {}}
+                  onClick={() => setFilterModalIsOpen(true)}
                 >
                   Filter By <BsFilter />
                 </Button>
+                <AreaManagementFilter
+                  isOpen={filterModalIsOpen}
+                  setIsOpen={setFilterModalIsOpen}
+                  states={['California', 'Utah']}
+                />
                 <Button
                   variant="primary"
                   className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
