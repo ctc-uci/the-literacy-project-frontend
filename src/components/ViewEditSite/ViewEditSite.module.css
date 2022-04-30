@@ -1,20 +1,8 @@
-.active_site_dd {
-  color: var(--color-light-green);
-}
-
-.inactive_site_dd {
-  color: var(--color-red);
-}
-
-.site_dropdown_inner {
-  padding: 2px;
-}
-
 .site-form {
   display: block;
 }
 
-.formwrapper {
+.form-wrapper {
   border: 1px solid #b3b3b3;
   border-radius: 5px;
   align-items: left;
@@ -29,20 +17,6 @@
   font-size: 28px;
   padding-left: 20px;
   padding-top: 25px;
-}
-
-.required-subtitles::after {
-  color: #e32;
-  content: ' *';
-  display: inline;
-}
-
-/* all the text areas */
-.required-subtitles {
-  font-family: Calibri, 'sans-serif';
-  font-size: 24px;
-  padding-top: 20px;
-  padding-left: 30px;
 }
 
 .routing {
