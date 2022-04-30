@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 // import { useParams } from 'react-router-dom';
-import { Button, Card, DropdownButton, Dropdown, InputGroup, FormControl } from 'react-bootstrap';
+import {
+  Button,
+  Card,
+  DropdownButton,
+  Dropdown,
+  InputGroup,
+  FormControl,
+  Form,
+} from 'react-bootstrap';
 import { BsFillCaretDownFill, BsPeople, BsFilterRight, BsFilter } from 'react-icons/bs';
 import { TLPBackend, calculateScores } from '../../common/utils';
 import styles from './area-management.module.css';
@@ -15,13 +23,14 @@ import AreaManagementFilter from '../../components/AreaManagementFilter/AreaMana
 const AreaManagement = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
+  const [filteredAreas, setFilteredAreas] = useState([]);
   const [areaResponseData, setAreaResponseData] = useState([]);
   const [schoolYear, setSchoolYear] = useState('2020-21');
   const [testScores, setTestScores] = useState({});
   const [error, setError] = useState(null);
 
   function mapAreas() {
-    return areaResponseData.map(area => {
+    return filteredAreas.map(area => {
       return (
         <AreaDropdown
           areaId={area.areaId}
@@ -69,9 +78,20 @@ const AreaManagement = () => {
     setSchoolYear(newSchoolYear);
   };
 
+  const filterSearch = event => {
+    event.preventDefault();
+    const search = event.target[0].value;
+    setFilteredAreas(
+      areaResponseData.filter(area => {
+        return area.areaName.toLowerCase().includes(search.toLowerCase());
+      }),
+    );
+  };
+
   useEffect(() => {
     TLPBackend.get('/areas/area-management').then(res => {
       setAreaResponseData(res.data);
+      setFilteredAreas(res.data);
     });
 
     async function fetchStudents() {
@@ -127,25 +147,31 @@ const AreaManagement = () => {
                   </Dropdown.Item>
                 </DropdownButton>
               </div>
-              <div className={styles['search-school']}>
-                <InputGroup>
-                  <FormControl
-                    className={styles['search-school-search-bar']}
-                    placeholder="Search"
-                    aria-label="Search"
-                    aria-describedby="search-school-search-icon"
-                  />
-                  <InputGroup.Text id={styles['search-school-search-icon']}>
-                    <BsFilterRight />
-                  </InputGroup.Text>
-                </InputGroup>
-                <Button
-                  variant="primary"
-                  className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
-                >
-                  Search
-                </Button>
-              </div>
+              <Form onSubmit={filterSearch}>
+                <div className={styles['search-school']}>
+                  <InputGroup>
+                    <FormControl
+                      className={styles['search-school-search-bar']}
+                      placeholder="Search"
+                      aria-label="Search"
+                      aria-describedby="search-school-search-icon"
+                    />
+                    <InputGroup.Text
+                      id={styles['search-school-search-icon']}
+                      onChange={filterSearch}
+                    >
+                      <BsFilterRight />
+                    </InputGroup.Text>
+                  </InputGroup>
+                  <Button
+                    variant="primary"
+                    className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
+                    type="submit"
+                  >
+                    Search
+                  </Button>
+                </div>
+              </Form>
             </div>
             <div className={styles['area-button-options-container']}>
               <Button
