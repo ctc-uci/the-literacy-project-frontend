@@ -13,7 +13,7 @@ input[type='number'] {
   display: block;
 }
 
-.formwrapper {
+.form-wrapper {
   border: 1px solid #b3b3b3;
   border-radius: 5px;
   align-items: left;

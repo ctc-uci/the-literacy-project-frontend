@@ -1,12 +1,12 @@
 import { React, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import './ViewEditSite.css';
 import { Container, Col, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link } from 'react-router-dom';
 import states from 'states-us';
+import styles from './ViewEditSite.module.css';
 import WarningModal from '../WarningModal/WarningModal';
 import { TLPBackend } from '../../common/utils';
 import '../../common/vars.css';
@@ -132,29 +132,29 @@ const ViewSite = ({ siteId }) => {
           name={siteInfo.siteName}
           deleteFunc={deleteSite}
         />
-        <p className="routing">
-          <Link to="/" className="link">
+        <p className={styles.routing}>
+          <Link to="/" className={styles.link}>
             Areas{' '}
           </Link>
           / {/* filler for now */}
-          <Link to={`/area/${siteInfo.areaId}`} className="link">
+          <Link to={`/area/${siteInfo.areaId}`} className={styles.link}>
             {siteInfo.areaName}{' '}
           </Link>
           / {siteInfo.siteName}
         </p>
         <Container>
           <Col md={{ span: 8, offset: 2 }}>
-            <form className="form-group site-form" onSubmit={handleSubmit(onSubmit)}>
-              <div className="formwrapper">
-                <div className="form-header">
-                  <h2 className="form-title">{siteInfo.siteName}</h2>
+            <form className={`form-group ${styles['site-form']}`} onSubmit={handleSubmit(onSubmit)}>
+              <div className={styles['form-wrapper']}>
+                <div className={styles['form-header']}>
+                  <h2 className={styles['form-title']}>{siteInfo.siteName}</h2>
                 </div>
-                <h3 className="optional-subtitles">Site Status</h3>
-                <div className="input-area">
+                <h3 className={styles['optional-subtitles']}>Site Status</h3>
+                <div className={styles['input-area']}>
                   <Col md={5}>
                     <>{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}</>
                     <select
-                      className="form control status"
+                      className={`form-control ${styles.status}`}
                       {...register('active')}
                       defaultValue={siteInfo.active ? 'Active' : 'Inactive'}
                     >
@@ -163,14 +163,14 @@ const ViewSite = ({ siteId }) => {
                     </select>
                   </Col>
                 </div>
-                <h3 className="optional-subtitles">Basic Information</h3>
-                <div className="input-area">
+                <h3 className={styles['optional-subtitles']}>Basic Information</h3>
+                <div className={styles['input-area']}>
                   <Col md={5}>
                     <label htmlFor="site-name">
                       Name<span style={{ color: '#e32' }}>*</span>
                       <input
                         type="text"
-                        className="form-control page-inputs"
+                        className={`form-control ${styles['page-inputs']}`}
                         name="siteName"
                         defaultValue={siteInfo.siteName}
                         {...register('siteName')}
@@ -180,7 +180,7 @@ const ViewSite = ({ siteId }) => {
                       Address Line<span style={{ color: '#e32' }}>*</span>
                       <input
                         type="text"
-                        className="form-control page-inputs"
+                        className={`form-control ${styles['page-inputs']}`}
                         name="addressStreet"
                         defaultValue={siteInfo.addressStreet}
                         {...register('addressStreet')}
@@ -190,19 +190,19 @@ const ViewSite = ({ siteId }) => {
                       Apt, suite, etc
                       <input
                         type="text"
-                        className="form-control page-inputs"
+                        className={`form-control ${styles['page-inputs']}`}
                         name="addressApt"
                         placeholder="Apt 208"
                         defaultValue={siteInfo.addressApt}
                         {...register('addressApt')}
                       />
                     </label>
-                    <div className="input-fields-coalesce-wrapper">
+                    <div className={styles['input-fields-coalesce-wrapper']}>
                       <label htmlFor="address-city">
                         City<span style={{ color: '#e32' }}>*</span>
                         <input
                           type="text"
-                          className="addr-small-field form-control"
+                          className={`form-control ${styles['addr-small-field']}`}
                           name="addressCity"
                           defaultValue={siteInfo.addressCity}
                           {...register('addressCity')}
@@ -234,7 +234,7 @@ const ViewSite = ({ siteId }) => {
                             }
                           }}
                           maxLength={9}
-                          className="form-control addr-small-field"
+                          className={`${styles['addr-small-field']} form-control`}
                           name="address-zip"
                           defaultValue={siteInfo.addressZip}
                           {...register('addressZip')}
@@ -243,8 +243,8 @@ const ViewSite = ({ siteId }) => {
                     </div>
                   </Col>
                 </div>
-                <h3 className="optional-subtitles">Primary Contact</h3>
-                <div className="input-area">
+                <h3 className={styles['optional-subtitles']}>Primary Contact</h3>
+                <div className={styles['input-area']}>
                   <Row>
                     <Col lg={3}>
                       <label htmlFor="primary-name">
@@ -277,7 +277,7 @@ const ViewSite = ({ siteId }) => {
                         Title
                         <input
                           type="text"
-                          className="form-control page-inputs"
+                          className={`form-control ${styles['page-inputs']}`}
                           name="primaryTitle"
                           defaultValue={siteInfo.primaryContactInfo.title}
                           placeholder="i.e. Principal, Sir"
@@ -291,7 +291,7 @@ const ViewSite = ({ siteId }) => {
                       Email<span style={{ color: '#e32' }}>*</span>
                       <input
                         type="text"
-                        className="form-control page-inputs"
+                        className={`form-control ${styles['page-inputs']}`}
                         name="primaryEmail"
                         defaultValue={siteInfo.primaryContactInfo.email}
                         {...register('primaryEmail')}
@@ -308,7 +308,7 @@ const ViewSite = ({ siteId }) => {
                           }
                         }}
                         maxLength={10}
-                        className="form-control page-inputs"
+                        className={`form-control ${styles['page-inputs']}`}
                         name="primaryPhone"
                         placeholder="(123)1231234"
                         defaultValue={siteInfo.primaryContactInfo.phone}
@@ -317,8 +317,8 @@ const ViewSite = ({ siteId }) => {
                     </label>
                   </Col>
                 </div>
-                <h3 className="optional-subtitles">Secondary Contact</h3>
-                <div className="input-area">
+                <h3 className={styles['optional-subtitles']}>Secondary Contact</h3>
+                <div className={styles['input-area']}>
                   <Row>
                     <Col lg={3}>
                       <label htmlFor="secondary-name">
@@ -351,7 +351,7 @@ const ViewSite = ({ siteId }) => {
                         Title
                         <input
                           type="text"
-                          className="form-control page-inputs"
+                          className={`form-control ${styles['page-inputs']}`}
                           name="secondaryTitle"
                           placeholder="i.e. Principal, Sir"
                           defaultValue={siteInfo.secondContactInfo.title}
@@ -365,7 +365,7 @@ const ViewSite = ({ siteId }) => {
                       Email
                       <input
                         type="text"
-                        className="form-control page-inputs"
+                        className={`form-control ${styles['page-inputs']}`}
                         name="secondaryEmail"
                         defaultValue={siteInfo.secondContactInfo.email}
                         placeholder="email@gmail.com"
@@ -375,7 +375,7 @@ const ViewSite = ({ siteId }) => {
                     <label htmlFor="secondary-phone">
                       Phone Number
                       <input
-                        className="form-control page-inputs"
+                        className={`form-control ${styles['page-inputs']}`}
                         type="number"
                         // Phone #s are <= 10 digits
                         onInput={e => {
@@ -392,23 +392,31 @@ const ViewSite = ({ siteId }) => {
                   </Col>
                 </div>
                 <Col>
-                  <h3 className="optional-subtitles">Notes</h3>
-                  <label htmlFor="notes" className="input-area">
+                  <h3 className={styles['optional-subtitles']}>Notes</h3>
+                  <label htmlFor="notes" className={styles['input-area']}>
                     <textarea
-                      className="form-control notes"
+                      className={`form-control ${styles.notes}`}
                       defaultValue={siteInfo.notes}
                       name="notes"
                       {...register('notes')}
                     />
                   </label>
                 </Col>
-                <button type="submit" className="btn save-btn">
+                <button type="submit" className={`btn ${styles['save-btn']}`}>
                   Save
                 </button>
-                <button type="button" onClick={openWarningModal} className="btn delete-btn">
+                <button
+                  type="button"
+                  onClick={openWarningModal}
+                  className={`btn ${styles['delete-btn']}`}
+                >
                   Delete
                 </button>
-                <button type="button" onClick={changeEdit} className="btn cancel-btn">
+                <button
+                  type="button"
+                  onClick={changeEdit}
+                  className={`btn ${styles['cancel-btn']}`}
+                >
                   Cancel
                 </button>
               </div>
@@ -427,24 +435,24 @@ const ViewSite = ({ siteId }) => {
         name={siteInfo.siteName}
         deleteFunc={deleteSite}
       />
-      <p className="routing">
-        <Link to="/" className="link">
+      <p className={styles.routing}>
+        <Link to="/" className={styles.link}>
           Areas{' '}
         </Link>
         / {/* filler for now */}
-        <Link to={`/area/${siteInfo.areaId}`} className="link">
+        <Link to={`/area/${siteInfo.areaId}`} className={styles.link}>
           {siteInfo.areaName}{' '}
         </Link>
         / {siteInfo.siteName}
       </p>
       <Container>
         <Col md={{ span: 8, offset: 2 }}>
-          <div className="formwrapper">
-            <div className="form-header">
-              <h2 className="form-title">{siteInfo.siteName}</h2>
+          <div className={styles['form-wrapper']}>
+            <div className={styles['form-header']}>
+              <h2 className={styles['form-title']}>{siteInfo.siteName}</h2>
             </div>
-            <h3 className="optional-subtitles">Site Status</h3>
-            <div className="input-area">
+            <h3 className={styles['optional-subtitles']}>Site Status</h3>
+            <div className={styles['input-area']}>
               <Col md={5}>
                 <p>
                   {siteInfo.active ? (
@@ -455,31 +463,31 @@ const ViewSite = ({ siteId }) => {
                 </p>
               </Col>
             </div>
-            <h3 className="optional-subtitles">Basic Information</h3>
-            <div className="input-area">
+            <h3 className={styles['optional-subtitles']}>Basic Information</h3>
+            <div className={styles['input-area']}>
               <Col md={5}>
                 <label htmlFor="site-name">
                   <b>Name</b>
-                  <p className="text">{siteInfo.siteName}</p>
+                  <p className={styles.text}>{siteInfo.siteName}</p>
                 </label>
               </Col>
               <Col md={5}>
                 <label htmlFor="address-street">
                   <b>Address</b>
-                  <p className="text">
+                  <p className={styles.text}>
                     {`${siteInfo.addressStreet}${apt}, ${siteInfo.addressCity}, ${abbrevState}, ${siteInfo.addressZip}`}
                   </p>
                 </label>
               </Col>
             </div>
 
-            <h3 className="optional-subtitles">Primary Contact</h3>
-            <div className="input-area">
+            <h3 className={styles['optional-subtitles']}>Primary Contact</h3>
+            <div className={styles['input-area']}>
               <Row>
                 <Col lg={5}>
                   <label htmlFor="primary-name">
                     <b>Name</b>
-                    <p className="text">
+                    <p className={styles.text}>
                       {siteInfo.primaryContactInfo &&
                         `${siteInfo.primaryContactInfo.firstName} ${siteInfo.primaryContactInfo.lastName}`}
                     </p>
@@ -488,7 +496,7 @@ const ViewSite = ({ siteId }) => {
                 <Col lg={5}>
                   <label htmlFor="primary-title">
                     <b>Title</b>
-                    <p className="text">
+                    <p className={styles.text}>
                       {siteInfo.primaryContactInfo && siteInfo.primaryContactInfo.title}
                     </p>
                   </label>
@@ -497,7 +505,7 @@ const ViewSite = ({ siteId }) => {
               <Col md={5}>
                 <label htmlFor="primary-email">
                   <b>Email</b>
-                  <p className="text">
+                  <p className={styles.text}>
                     {siteInfo.primaryContactInfo && siteInfo.primaryContactInfo.email}
                   </p>
                 </label>
@@ -505,25 +513,25 @@ const ViewSite = ({ siteId }) => {
               <Col md={5}>
                 <label htmlFor="primary-phone">
                   <b>Phone Number</b>
-                  <p className="text">
+                  <p className={styles.text}>
                     {siteInfo.primaryContactInfo && siteInfo.primaryContactInfo.phone}
                   </p>
                 </label>
               </Col>
             </div>
-            <h3 className="optional-subtitles">Secondary Contact</h3>
-            <div className="input-area">
+            <h3 className={styles['optional-subtitles']}>Secondary Contact</h3>
+            <div className={styles['input-area']}>
               <Row>
                 <Col lg={5}>
                   <label htmlFor="secondary-name">
                     <b>Name</b>
-                    <p className="text">{siteInfo.secondContactInfo && secondName}</p>
+                    <p className={styles.text}>{siteInfo.secondContactInfo && secondName}</p>
                   </label>
                 </Col>
                 <Col lg={5}>
                   <label htmlFor="secondary-title">
                     <b>Title</b>
-                    <p className="text">
+                    <p className={styles.text}>
                       {siteInfo.secondContactInfo && siteInfo.secondContactInfo.title}
                     </p>
                   </label>
@@ -532,7 +540,7 @@ const ViewSite = ({ siteId }) => {
               <Col md={5}>
                 <label htmlFor="secondary-email">
                   <b>Email</b>
-                  <p className="text">
+                  <p className={styles.text}>
                     {siteInfo.secondContactInfo && siteInfo.secondContactInfo.email}
                   </p>
                 </label>
@@ -540,20 +548,24 @@ const ViewSite = ({ siteId }) => {
               <Col md={5}>
                 <label htmlFor="secondary-phone">
                   <b>Phone Number</b>
-                  <p className="text">
+                  <p className={styles.text}>
                     {siteInfo.secondContactInfo && siteInfo.secondContactInfo.phone}
                   </p>
                 </label>
               </Col>
             </div>
-            <h3 className="optional-subtitles">Notes</h3>
-            <label htmlFor="notes" className="input-area notes">
-              <p className="text">{siteInfo.notes}</p>
+            <h3 className={styles['optional-subtitles']}>Notes</h3>
+            <label htmlFor="notes" className={`${styles['input-area']} ${styles.notes}`}>
+              <p className={styles.text}>{siteInfo.notes}</p>
             </label>
-            <button type="button" onClick={changeEdit} className="btn edit-btn">
+            <button type="button" onClick={changeEdit} className={`btn ${styles['edit-btn']}`}>
               Edit
             </button>
-            <button type="button" onClick={openWarningModal} className="btn delete-btn">
+            <button
+              type="button"
+              onClick={openWarningModal}
+              className={`btn ${styles['delete-btn']}`}
+            >
               Delete
             </button>
           </div>
