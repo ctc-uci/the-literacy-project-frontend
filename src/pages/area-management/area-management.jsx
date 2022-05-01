@@ -25,7 +25,7 @@ const AreaManagement = () => {
   const [filters, setFilters] = useState({});
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
-  const [schoolYear, setSchoolYear] = useState('2020-21');
+  const [schoolYear, setSchoolYear] = useState('All');
   const [testScores, setTestScores] = useState({});
   const [error, setError] = useState(null);
 
@@ -87,8 +87,30 @@ const AreaManagement = () => {
     return temp;
   }
 
+  function getSchoolYears() {
+    return areaResponseData
+      .reduce(
+        (acc, area) => {
+          if (area.year && !acc.includes(area.year)) {
+            acc.push(area.year);
+          }
+          return acc;
+        },
+        ['All'],
+      )
+      .sort()
+      .reverse();
+  }
+
   const updateSchoolYear = newSchoolYear => {
     setSchoolYear(newSchoolYear);
+
+    const schoolYearFilter = newSchoolYear === 'All' ? null : area => area.year === newSchoolYear;
+
+    setFilters({
+      ...filters,
+      year: schoolYearFilter,
+    });
   };
 
   const filterSearch = event => {
@@ -139,27 +161,16 @@ const AreaManagement = () => {
                   title={schoolYear}
                   className={styles['school-year-dropdown']}
                 >
-                  <Dropdown.Item
-                    onClick={() => {
-                      updateSchoolYear('2021-22');
-                    }}
-                  >
-                    2021-22
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={() => {
-                      updateSchoolYear('2020-21');
-                    }}
-                  >
-                    2020-21
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={() => {
-                      updateSchoolYear('2019-20');
-                    }}
-                  >
-                    2019-20
-                  </Dropdown.Item>
+                  {getSchoolYears().map(year => (
+                    <Dropdown.Item
+                      onClick={() => {
+                        updateSchoolYear(year);
+                      }}
+                      key={year}
+                    >
+                      {year}
+                    </Dropdown.Item>
+                  ))}
                 </DropdownButton>
               </div>
               <Form onSubmit={filterSearch}>
