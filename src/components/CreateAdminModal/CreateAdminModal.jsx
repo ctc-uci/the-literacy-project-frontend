@@ -89,7 +89,7 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
                   {...register('firstName')}
                 />
                 <div className={`text-danger ${styles['err-msg']}`}>
-                  {errors.firstName?.message}
+                  {errors.firstName?.message ?? <>{'\u00A0'}</>}
                 </div>
               </label>
               <label htmlFor="last-name" className={styles.lNameField}>
@@ -101,7 +101,9 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
                   className={`form-control ${errors.lastName ? `is-invalid` : ''}`}
                   {...register('lastName')}
                 />
-                <div className={`text-danger ${styles['err-msg']}`}>{errors.lastName?.message}</div>
+                <div className={`text-danger ${styles['err-msg']}`}>
+                  {errors.lastName?.message ?? <>{'\u00A0'}</>}
+                </div>
               </label>
             </div>
             <label htmlFor="email" className={styles.emailField}>
@@ -114,7 +116,7 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
                 {...register('email')}
               />
               <div className={`text-danger ${styles['err-msg']}`}>
-                {errors.email?.message || errorMessage}
+                {errors.email?.message ?? <>{'\u00A0'}</>}
               </div>
             </label>
             <div>
@@ -129,7 +131,7 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
                 />
               </label>
               <div className={`text-danger ${styles['err-msg']}`}>
-                {errors.phoneNumber?.message}
+                {errors.phoneNumber?.message ?? <>{'\u00A0'}</>}
               </div>
               {/* {JSON.stringify(errors)} */}
             </div>
