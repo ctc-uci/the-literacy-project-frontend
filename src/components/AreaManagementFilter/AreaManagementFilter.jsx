@@ -4,7 +4,9 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import styles from './AreaManagementFilter.module.css';
 
 function AreaManagementFilter(props) {
-  const { isOpen, setIsOpen, states } = props;
+  const { isOpen, setIsOpen, states, filters, setFilters } = props;
+  const [showActive, setShowActive] = useState(!filters.active);
+  const [showInactive, setShowInactive] = useState(!filters.inactive);
 
   /**
    * Create a map of states with their checked status.
@@ -43,6 +45,34 @@ function AreaManagementFilter(props) {
       // Set every state to true
       setStatesStatus(statesStatusMap(true));
     }
+  };
+
+  // Reset all filters
+  // This sets each value back to checked
+  const resetFilters = () => {
+    setShowActive(true);
+    setShowInactive(true);
+    setStatesStatus(statesStatusMap(true));
+  };
+
+  const applyFilters = () => {
+    // For each value (states, active, inactive), check if it is checked
+    // If it is checked, we don't need to filter
+    // If it is not checked, we need to provide a function to filter it out
+    const statesFilter = areAllStatesChecked() ? null : null;
+    const activeFilter = showActive ? null : area => !area.active;
+    const inactiveFilter = showInactive ? null : area => area.active;
+
+    // Update the filters
+    setFilters({
+      ...filters,
+      states: statesFilter,
+      active: activeFilter,
+      inactive: inactiveFilter,
+    });
+
+    // Close the modal
+    setIsOpen(false);
   };
 
   return (
@@ -85,14 +115,26 @@ function AreaManagementFilter(props) {
             <b>Area Status</b>
           </Form.Label>
           <div className={styles.checkboxes}>
-            <Form.Check type="checkbox" label="Active" checked />
-            <Form.Check type="checkbox" label="Inactive" checked />
+            <Form.Check
+              type="checkbox"
+              label="Active"
+              checked={showActive}
+              onChange={() => setShowActive(!showActive)}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Inactive"
+              checked={showInactive}
+              onChange={() => setShowInactive(!showInactive)}
+            />
           </div>
         </Form.Group>
       </Modal.Body>
       <Modal.Footer className={styles['button-row']}>
-        <Button>Reset Filters</Button>
-        <Button variant="success">Apply Filters</Button>
+        <Button onClick={resetFilters}>Reset Filters</Button>
+        <Button variant="success" onClick={applyFilters}>
+          Apply Filters
+        </Button>
       </Modal.Footer>
     </Modal>
   );
@@ -102,6 +144,8 @@ AreaManagementFilter.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   states: PropTypes.arrayOf(PropTypes.string).isRequired,
+  filters: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  setFilters: PropTypes.func.isRequired,
 };
 
 export default AreaManagementFilter;

@@ -22,30 +22,43 @@ import AreaManagementFilter from '../../components/AreaManagementFilter/AreaMana
 
 const AreaManagement = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
+  const [filters, setFilters] = useState({});
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
-  const [filteredAreas, setFilteredAreas] = useState([]);
   const [areaResponseData, setAreaResponseData] = useState([]);
   const [schoolYear, setSchoolYear] = useState('2020-21');
   const [testScores, setTestScores] = useState({});
   const [error, setError] = useState(null);
 
-  function mapAreas() {
-    return filteredAreas.map(area => {
-      return (
-        <AreaDropdown
-          areaId={area.areaId}
-          areaActive={area.active}
-          areaName={area.areaName}
-          areaStats={{
-            student_count: area.numStudents || 0,
-            master_teacher_count: area.numMts || 0,
-            site_count: area.numSites || 0,
-          }}
-          areaSites={area.siteInfo || []}
-          key={`area-dropdown-${area.areaId}`}
-        />
-      );
-    });
+  function getFilters() {
+    return Object.entries(filters).reduce((acc, [, filter]) => {
+      if (filter) {
+        acc.push(filter);
+      }
+      return acc;
+    }, []);
+  }
+
+  function displayAreas() {
+    return areaResponseData
+      .filter(area => {
+        return getFilters().every(filter => filter(area));
+      })
+      .map(area => {
+        return (
+          <AreaDropdown
+            areaId={area.areaId}
+            areaActive={area.active}
+            areaName={area.areaName}
+            areaStats={{
+              student_count: area.numStudents || 0,
+              master_teacher_count: area.numMts || 0,
+              site_count: area.numSites || 0,
+            }}
+            areaSites={area.siteInfo || []}
+            key={`area-dropdown-${area.areaId}`}
+          />
+        );
+      });
   }
 
   function getAllAreaStats() {
@@ -81,17 +94,19 @@ const AreaManagement = () => {
   const filterSearch = event => {
     event.preventDefault();
     const search = event.target[0].value;
-    setFilteredAreas(
-      areaResponseData.filter(area => {
-        return area.areaName.toLowerCase().includes(search.toLowerCase());
-      }),
-    );
+
+    const searchFilter =
+      search === '' ? null : area => area.areaName.toLowerCase().includes(search.toLowerCase());
+
+    setFilters({
+      ...filters,
+      search: searchFilter,
+    });
   };
 
   useEffect(() => {
     TLPBackend.get('/areas/area-management').then(res => {
       setAreaResponseData(res.data);
-      setFilteredAreas(res.data);
     });
 
     async function fetchStudents() {
@@ -197,6 +212,8 @@ const AreaManagement = () => {
                   isOpen={filterModalIsOpen}
                   setIsOpen={setFilterModalIsOpen}
                   states={['California', 'Utah']}
+                  filters={filters}
+                  setFilters={setFilters}
                 />
                 <Button
                   variant="primary"
@@ -217,7 +234,7 @@ const AreaManagement = () => {
               editable={false}
               hideSitesLink
             />
-            {mapAreas()}
+            {displayAreas()}
           </div>
           <div className={styles['sites-data']}>
             <p>
