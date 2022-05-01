@@ -9,7 +9,7 @@ import {
   FormControl,
   Form,
 } from 'react-bootstrap';
-import { BsFillCaretDownFill, BsPeople, BsFilterRight, BsFilter } from 'react-icons/bs';
+import { BsPeople, BsFilterRight, BsFilter } from 'react-icons/bs';
 import { TLPBackend, calculateScores } from '../../common/utils';
 import styles from './area-management.module.css';
 import Plus from '../../assets/icons/plus.svg';
@@ -26,8 +26,11 @@ const AreaManagement = () => {
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
   const [schoolYear, setSchoolYear] = useState('All');
+  const [sortBy, setSortBy] = useState('A-Z');
   const [testScores, setTestScores] = useState({});
   const [error, setError] = useState(null);
+
+  const sorts = ['A-Z', 'Z-A'];
 
   function getFilters() {
     return Object.entries(filters).reduce((acc, [, filter]) => {
@@ -38,11 +41,29 @@ const AreaManagement = () => {
     }, []);
   }
 
+  // Sorting function for areas
+  function compareAreas(area1, area2) {
+    const a1 = area1.areaName.toLowerCase();
+    const a2 = area2.areaName.toLowerCase();
+
+    switch (sortBy) {
+      case 'A-Z':
+        return a1 < a2 ? -1 : 1;
+      case 'Z-A':
+        return a1 < a2 ? 1 : -1;
+      default:
+        return a1 < a2 ? -1 : 1;
+    }
+  }
+
   function displayAreas() {
+    const filterFunctions = getFilters();
+
     return areaResponseData
       .filter(area => {
-        return getFilters().every(filter => filter(area));
+        return filterFunctions.every(filter => filter(area));
       })
+      .sort(compareAreas)
       .map(area => {
         return (
           <AreaDropdown
@@ -226,13 +247,22 @@ const AreaManagement = () => {
                   filters={filters}
                   setFilters={setFilters}
                 />
-                <Button
+                <DropdownButton
                   variant="primary"
-                  className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
-                  onClick={() => {}}
+                  title={`Sort By: ${sortBy}`}
+                  className={styles['tlp-button']}
                 >
-                  Sort By: A-Z <BsFillCaretDownFill />
-                </Button>
+                  {sorts.map(sort => (
+                    <Dropdown.Item
+                      onClick={() => {
+                        setSortBy(sort);
+                      }}
+                      key={sort}
+                    >
+                      {sort}
+                    </Dropdown.Item>
+                  ))}
+                </DropdownButton>
               </div>
             </div>
             <AreaDropdown
