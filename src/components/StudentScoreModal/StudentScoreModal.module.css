@@ -1,3 +1,25 @@
 .modalTitle {
   margin-left: auto;
 }
+
+.modalCloseButton {
+  padding: 20px;
+}
+
+.graphWrapper {
+  height: 400px;
+  padding: 0 95px 60px;
+}
+
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.empty p {
+  color: var(--text-color-dark-gray);
+  font-size: 24px;
+  text-align: center;
+}

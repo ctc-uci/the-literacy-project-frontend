@@ -1,31 +1,58 @@
 import { React, useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
-import { Modal, CloseButton } from 'react-bootstrap';
-import { TLPBackend } from '../../common/utils';
-
+import { Modal } from 'react-bootstrap';
+import { TLPBackend, calculateSingleStudentScores } from '../../common/utils';
+import Graph from '../Graph/Graph';
 import styles from './StudentScoreModal.module.css';
 
+const EmptyText = () => (
+  <div className={styles.empty}>
+    <p>No score data for this student</p>
+  </div>
+);
+
 const StudentScoreModal = ({ isOpen, setIsOpen, studentId }) => {
-  // await TLPBackend.get(`/admins/${adminId}`, {
-  // });
-  const [studentData, setStudentData] = useState({});
+  const [studentScores, setStudentScores] = useState();
+  const [studentName, setStudentName] = useState('');
 
   useEffect(async () => {
-    const res = await TLPBackend.get(`/students/${studentId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    setStudentData(res);
-  }, []);
+    if (isOpen) {
+      console.log('fetching data');
+      const res = await TLPBackend.get(`/students/${studentId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setStudentName(`${res?.data.firstName} ${res?.data.lastName}`);
+
+      const missingScores =
+        res?.data.pretestR === null &&
+        res?.data.posttestR === null &&
+        res?.data.pretestA === null &&
+        res?.data.posttestA === null;
+      setStudentScores(missingScores ? null : calculateSingleStudentScores(res?.data));
+    }
+  }, [isOpen]);
 
   return (
     <Modal show={isOpen} size="lg" centered onHide={() => setIsOpen(false)}>
-      <Modal.Header>
-        <Modal.Title className={styles.modalTitle}>First Last Scores</Modal.Title>
-        <CloseButton onClick={() => setIsOpen(false)} />
+      <Modal.Header closeButton>
+        <Modal.Title className={styles.modalTitle}>{studentName} Scores</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{JSON.stringify(studentData, null, 2)}</Modal.Body>
+      <Modal.Body>
+        <div className={styles.graphWrapper}>
+          {/* {JSON.stringify(studentScores, null, 2)} */}
+          {studentScores ? (
+            <Graph
+              xLabels={['Attitudinal', 'Academic']}
+              preData={[studentScores.preAttitude, studentScores.preAssessment]}
+              postData={[studentScores.postAttitude, studentScores.postAssessment]}
+            />
+          ) : (
+            <EmptyText />
+          )}
+        </div>
+      </Modal.Body>
     </Modal>
   );
 };
