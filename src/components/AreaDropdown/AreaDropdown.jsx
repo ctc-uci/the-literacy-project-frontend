@@ -99,7 +99,7 @@ function AreaDropdown({
                   return (
                     <Link
                       className={styles['area-dropdown__open__site-link']}
-                      to={`/site/${site.siteId}`}
+                      to={`/sites/${site.siteId}`}
                       key={`site-${site.siteId}`}
                     >
                       {site.siteName}

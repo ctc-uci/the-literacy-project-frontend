@@ -1,11 +1,11 @@
 import { React } from 'react';
 import PropTypes from 'prop-types';
-import './CreateSiteModal.css';
 import { Container, Col, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import states from 'states-us';
+import styles from './CreateSiteModal.module.css';
 import { TLPBackend } from '../../common/utils';
 import '../../common/vars.css';
 
@@ -91,13 +91,13 @@ const CreateSiteModal = ({ areaId }) => {
   return (
     <Container>
       <Col md={{ span: 8, offset: 2 }}>
-        <form className="form-group site-form" onSubmit={handleSubmit(onSubmit)}>
-          <div className="formwrapper">
-            <div className="form-header">
-              <h2 className="form-title">CREATE NEW SITE</h2>
+        <form className={`form-group ${styles['site-form']}`} onSubmit={handleSubmit(onSubmit)}>
+          <div className={styles['form-wrapper']}>
+            <div className={styles['form-header']}>
+              <h2 className={styles['form-title']}>CREATE NEW SITE</h2>
             </div>
-            <h3 className="required-subtitles">Basic Information</h3>
-            <div className="input-area">
+            <h3 className={styles['required-subtitles']}>Basic Information</h3>
+            <div className={styles['input-area']}>
               <Col md={5}>
                 <label htmlFor="site-name">
                   Name<span style={{ color: '#e32' }}>*</span>
@@ -115,7 +115,7 @@ const CreateSiteModal = ({ areaId }) => {
                   <input
                     style={{ width: '255px' }}
                     type="text"
-                    className="form-control page-inputs"
+                    className={`form-control ${styles['page-inputs']}`}
                     name="addressStreet"
                     placeholder="ie 123 Playa Dr"
                     {...register('addressStreet')}
@@ -132,12 +132,12 @@ const CreateSiteModal = ({ areaId }) => {
                     {...register('addressApt')}
                   />
                 </label>
-                <div className="input-fields-coalesce-wrapper">
+                <div className={styles['input-fields-coalesce-wrapper']}>
                   <label htmlFor="address-city">
                     City<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="text"
-                      className="addr-small-field form-control"
+                      className={`form-control ${styles['addr-small-field']}`}
                       name="addressCity"
                       placeholder="Irvine"
                       {...register('addressCity')}
@@ -164,7 +164,7 @@ const CreateSiteModal = ({ areaId }) => {
                         }
                       }}
                       maxLength={9}
-                      className="form-control addr-small-field"
+                      className={`form-control ${styles['addr-small-field']}`}
                       name="address-zip"
                       placeholder="ie 92614"
                       {...register('addressZip')}
@@ -173,8 +173,8 @@ const CreateSiteModal = ({ areaId }) => {
                 </div>
               </Col>
             </div>
-            <h3 className="required-subtitles">Primary Contact</h3>
-            <div className="input-area">
+            <h3 className={styles['required-subtitles']}>Primary Contact</h3>
+            <div className={styles['input-area']}>
               <Row>
                 <Col lg={3}>
                   <label htmlFor="primary-name">
@@ -246,8 +246,8 @@ const CreateSiteModal = ({ areaId }) => {
                 </label>
               </Col>
             </div>
-            <h3 className="optional-subtitles">Secondary Contact</h3>
-            <div className="input-area">
+            <h3 className={styles['optional-subtitles']}>Secondary Contact</h3>
+            <div className={styles['input-area']}>
               <Row>
                 <Col lg={3}>
                   <label htmlFor="secondary-name">
@@ -318,9 +318,9 @@ const CreateSiteModal = ({ areaId }) => {
                 </label>
               </Col>
             </div>
-            <h3 className="optional-subtitles">Notes</h3>
+            <h3 className={styles['optional-subtitles']}>Notes</h3>
             <Col>
-              <label htmlFor="notes" className="input-area">
+              <label htmlFor="notes" className={styles['input-area']}>
                 <textarea
                   style={{ width: '700px' }}
                   className="form-control"
@@ -345,7 +345,7 @@ const CreateSiteModal = ({ areaId }) => {
             <button
               type="button"
               onClick={cancel}
-              className="btn cancel-btn"
+              className={`btn ${styles['cancel-btn']}`}
               style={{
                 backgroundColor: '#5f758d',
                 color: 'var(--text-color-white)',

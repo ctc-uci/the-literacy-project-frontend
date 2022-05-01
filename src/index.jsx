@@ -23,6 +23,7 @@ import { AUTH_ROLES } from './common/config';
 import StudentView from './pages/student/student';
 import StudentGroupView from './pages/student-group-view/student-group-view';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
+import ViewEditSite from './pages/ViewEditSite/ViewEditSitePage';
 import NavigationBar from './components/NavigationBar/NavigationBar';
 
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
@@ -83,6 +84,16 @@ ReactDOM.render(
               element={
                 <ProtectedRoute
                   Component={PeopleView}
+                  redirectPath="/access-denied"
+                  roles={[ADMIN_ROLE]}
+                />
+              }
+            />
+            <Route
+              path="/sites/:siteId"
+              element={
+                <ProtectedRoute
+                  Component={ViewEditSite}
                   redirectPath="/access-denied"
                   roles={[ADMIN_ROLE]}
                 />
