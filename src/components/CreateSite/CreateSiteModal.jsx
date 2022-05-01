@@ -99,7 +99,7 @@ const CreateSiteModal = ({ areaId }) => {
             <h3 className={styles['required-subtitles']}>Basic Information</h3>
             <div className={styles['input-area']}>
               <Col md={5}>
-                <label htmlFor="site-name">
+                <label className={styles.label} htmlFor="site-name">
                   Name<span style={{ color: '#e32' }}>*</span>
                   <input
                     style={{ width: '255px' }}
@@ -110,7 +110,7 @@ const CreateSiteModal = ({ areaId }) => {
                     {...register('siteName')}
                   />
                 </label>
-                <label htmlFor="address-street">
+                <label className={styles.label} htmlFor="address-street">
                   Street Address<span style={{ color: '#e32' }}>*</span>
                   <input
                     style={{ width: '255px' }}
@@ -121,7 +121,7 @@ const CreateSiteModal = ({ areaId }) => {
                     {...register('addressStreet')}
                   />
                 </label>
-                <label htmlFor="apt-suite-etc">
+                <label className={styles.label} htmlFor="apt-suite-etc">
                   Apt, suite, etc
                   <input
                     style={{ width: '255px' }}
@@ -133,7 +133,7 @@ const CreateSiteModal = ({ areaId }) => {
                   />
                 </label>
                 <div className={styles['input-fields-coalesce-wrapper']}>
-                  <label htmlFor="address-city">
+                  <label className={styles.label} htmlFor="address-city">
                     City<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="text"
@@ -143,7 +143,11 @@ const CreateSiteModal = ({ areaId }) => {
                       {...register('addressCity')}
                     />
                   </label>
-                  <label aria-label="address-state" htmlFor="address-state">
+                  <label
+                    className={styles.label}
+                    aria-label="address-state"
+                    htmlFor="address-state"
+                  >
                     <>{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}</>
                     State<span style={{ color: '#e32' }}>*</span>
                     <select {...register('addressState')} className="form-control">
@@ -154,7 +158,7 @@ const CreateSiteModal = ({ areaId }) => {
                       ))}
                     </select>
                   </label>
-                  <label htmlFor="address-zip">
+                  <label className={styles.label} htmlFor="address-zip">
                     Zip Code<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="number"
@@ -177,7 +181,7 @@ const CreateSiteModal = ({ areaId }) => {
             <div className={styles['input-area']}>
               <Row>
                 <Col lg={3}>
-                  <label htmlFor="primary-name">
+                  <label className={styles.label} htmlFor="primary-name">
                     First Name<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="text"
@@ -189,7 +193,7 @@ const CreateSiteModal = ({ areaId }) => {
                   </label>
                 </Col>
                 <Col lg={3}>
-                  <label htmlFor="primary-name">
+                  <label className={styles.label} htmlFor="primary-name">
                     Last Name<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="text"
@@ -201,7 +205,7 @@ const CreateSiteModal = ({ areaId }) => {
                   </label>
                 </Col>
                 <Col lg={5}>
-                  <label htmlFor="primary-title">
+                  <label className={styles.label} htmlFor="primary-title">
                     Title
                     <input
                       style={{ width: '255px' }}
@@ -215,7 +219,7 @@ const CreateSiteModal = ({ areaId }) => {
                 </Col>
               </Row>
               <Col md={5}>
-                <label htmlFor="primary-email">
+                <label className={styles.label} htmlFor="primary-email">
                   Email<span style={{ color: '#e32' }}>*</span>
                   <input
                     style={{ width: '255px' }}
@@ -226,7 +230,7 @@ const CreateSiteModal = ({ areaId }) => {
                     {...register('primaryEmail')}
                   />
                 </label>
-                <label htmlFor="primary-phone">
+                <label className={styles.label} htmlFor="primary-phone">
                   Phone Number<span style={{ color: '#e32' }}>*</span>
                   <input
                     style={{ width: '255px' }}
@@ -250,7 +254,7 @@ const CreateSiteModal = ({ areaId }) => {
             <div className={styles['input-area']}>
               <Row>
                 <Col lg={3}>
-                  <label htmlFor="secondary-name">
+                  <label className={styles.label} htmlFor="secondary-name">
                     First Name
                     <input
                       type="text"
@@ -262,7 +266,7 @@ const CreateSiteModal = ({ areaId }) => {
                   </label>
                 </Col>
                 <Col lg={3}>
-                  <label htmlFor="secondary-name">
+                  <label className={styles.label} htmlFor="secondary-name">
                     Last Name
                     <input
                       type="text"
@@ -274,7 +278,7 @@ const CreateSiteModal = ({ areaId }) => {
                   </label>
                 </Col>
                 <Col lg={5}>
-                  <label htmlFor="secondary-title">
+                  <label className={styles.label} htmlFor="secondary-title">
                     Title
                     <input
                       style={{ width: '255px' }}
@@ -288,7 +292,7 @@ const CreateSiteModal = ({ areaId }) => {
                 </Col>
               </Row>
               <Col md={5}>
-                <label htmlFor="secondary-email">
+                <label className={styles.label} htmlFor="secondary-email">
                   Email
                   <input
                     style={{ width: '255px' }}
@@ -299,7 +303,7 @@ const CreateSiteModal = ({ areaId }) => {
                     {...register('secondaryEmail')}
                   />
                 </label>
-                <label htmlFor="secondary-phone">
+                <label className={styles.label} htmlFor="secondary-phone">
                   Phone Number
                   <input
                     style={{ width: '255px' }}
@@ -320,7 +324,7 @@ const CreateSiteModal = ({ areaId }) => {
             </div>
             <h3 className={styles['optional-subtitles']}>Notes</h3>
             <Col>
-              <label htmlFor="notes" className={styles['input-area']}>
+              <label htmlFor="notes" className={`${styles['input-area']} ${styles.label}`}>
                 <textarea
                   style={{ width: '700px' }}
                   className="form-control"
