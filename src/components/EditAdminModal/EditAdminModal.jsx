@@ -8,9 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import styles from './EditAdminModal.module.css';
-import { AUTH_ROLES } from '../../common/config';
 import { TLPBackend, reloadPage } from '../../common/utils';
-import { sendInviteLink } from '../../common/auth/auth_utils';
 import WarningModal from '../WarningModal/WarningModal';
 
 const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
@@ -18,15 +16,16 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [error, setError] = useState(null);
 
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [adminData, setAdminData] = useState({
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    email: '',
+  });
   const [status, setStatus] = useState('');
   const [warningOpen, setWarningOpen] = useState(false);
-  const adminName = `${firstName} ${lastName}`;
+  const adminName = `${adminData.firstName} ${adminData.lastName}`;
 
-  // Email is disabled, so no need for verification?
   const schema = yup
     .object({
       firstName: yup.string().required('First name is required'),
@@ -55,34 +54,23 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
     setErrorMessage('');
   };
 
-  // Dont need this anymore
-  const updateAdminData = async () => {
-    await TLPBackend.put(`/admins/${adminId}`, {
-      firstName,
-      lastName,
-      phoneNumber,
-      email,
-      active: status.toLowerCase(),
-    });
-    reloadPage();
-    closeModal();
-  };
-
-  // ?
   const openWarningModal = () => {
     setWarningOpen(!warningOpen);
   };
 
   const onSubmit = async data => {
     try {
-      await sendInviteLink(
-        AUTH_ROLES.ADMIN_ROLE,
-        data.email,
-        data.firstName,
-        data.lastName,
-        data.phoneNumber,
-      );
+      const { firstName, lastName, phoneNumber, email } = data;
+      await TLPBackend.put(`/admins/${adminId}`, {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        active: status.toLowerCase(),
+      });
+      setAdminData({ firstName, lastName, email, phoneNumber });
       setErrorMessage('');
+      reloadPage();
       closeModal();
     } catch (err) {
       setErrorMessage(err.message);
@@ -91,12 +79,15 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
 
   const deleteAdmin = async () => {
     // TODO: What to do if it fails ??? Need an error message
-    await TLPBackend.delete(`/admins/${adminId}`);
-    reloadPage();
-    setIsOpen(false);
+    try {
+      await TLPBackend.delete(`/admins/${adminId}`);
+      reloadPage();
+      setIsOpen(false);
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
   };
 
-  // Pre load data, is there another way of doing it?
   useEffect(async () => {
     const res = await TLPBackend.get(`/admins/${adminId}`, {
       headers: {
@@ -104,12 +95,9 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
       },
     });
     if (res.status === 200) {
-      const adminData = res.data;
-      setEmail(adminData.email);
-      setFirstName(adminData.firstName);
-      setLastName(adminData.lastName);
-      setPhoneNumber(adminData.phoneNumber);
-      setStatus(adminData.active);
+      const { firstName, lastName, email, phoneNumber, active } = res.data;
+      setAdminData({ firstName, lastName, email, phoneNumber });
+      setStatus(active);
     } else {
       setError(error);
     }
@@ -117,7 +105,7 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
 
   return (
     <>
-      {/* Is this warning modal still needed */}
+      {/* Warning modal for deleting admin */}
       <WarningModal
         isOpen={warningOpen}
         setIsOpen={setWarningOpen}
@@ -125,6 +113,7 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
         body="admin"
         deleteFunc={deleteAdmin}
       />
+      {/* Actual modal for editing admin */}
       <Modal
         aria-labelledby="contained-modal-title-vcenter"
         centered
@@ -143,13 +132,13 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
                 <input
                   type="text"
                   name="firstName"
-                  placeholder="First Name"
-                  defaultValue={firstName}
+                  key={adminData.firstName}
+                  defaultValue={adminData.firstName}
                   className={`form-control ${errors.firstName ? `is-invalid` : ''}`}
                   {...register('firstName')}
                 />
                 <div className={`text-danger ${styles['err-msg']}`}>
-                  {errors.firstName?.message}
+                  {errors.firstName?.message ?? <>{'\u00A0'}</>}
                 </div>
               </label>
               <label htmlFor="last-name" className={styles.lNameField}>
@@ -157,12 +146,14 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
                 <input
                   type="text"
                   name="lastName"
-                  placeholder="Last Name"
-                  defaultValue={lastName}
+                  key={adminData.lastName}
+                  defaultValue={adminData.lastName}
                   className={`form-control ${errors.lastName ? `is-invalid` : ''}`}
                   {...register('lastName')}
                 />
-                <div className={`text-danger ${styles['err-msg']}`}>{errors.lastName?.message}</div>
+                <div className={`text-danger ${styles['err-msg']}`}>
+                  {errors.lastName?.message ?? <>{'\u00A0'}</>}
+                </div>
               </label>
             </div>
             <label htmlFor="email" className={styles.emailField}>
@@ -172,7 +163,7 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
                 type="email"
                 name="email"
                 placeholder="Email"
-                defaultValue={email}
+                value={adminData.email}
                 className="form-control"
               />
             </label>
@@ -183,13 +174,14 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
                   type="text"
                   name="phoneNumber"
                   placeholder="Phone Number"
-                  defaultValue={phoneNumber}
+                  key={adminData.phoneNumber}
+                  defaultValue={adminData.phoneNumber}
                   className={`form-control ${errors.phoneNumber ? `is-invalid` : ''}`}
                   {...register('phoneNumber')}
                 />
               </label>
               <div className={`text-danger ${styles['err-msg']}`}>
-                {errors.phoneNumber?.message}
+                {errors.phoneNumber?.message ?? <>{'\u00A0'}</>}
               </div>
               {/* {JSON.stringify(errors)} */}
             </div>
@@ -208,7 +200,7 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
             <Button variant="danger" onClick={openWarningModal}>
               Delete
             </Button>
-            <Button variant="primary" onClick={updateAdminData}>
+            <Button variant="primary" type="submit">
               Save Changes
             </Button>
             {errorMessage && <p>{errorMessage}</p>}
@@ -218,7 +210,7 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
 
       {showEditAdminAlert ? (
         <Alert variant="primary" className="alert-custom">
-          {`Updated ${firstName} ${lastName}'s information.`}{' '}
+          {`Updated ${adminData.firstName} ${adminData.lastName}'s information.`}{' '}
           <Alert.Link href="/" className="alert-link-custom">
             UNDO
           </Alert.Link>
