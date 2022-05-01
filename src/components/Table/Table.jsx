@@ -9,8 +9,9 @@ const Table = ({ theadData, tbodyData, tbodyColIsBadge, sectionTitle, statusCol 
     <table className={styles.table}>
       <thead className={styles['table-head']}>
         <tr className={styles['table-head']}>
-          {theadData.map(h => {
-            return <TableHead key={h} item={h} />;
+          {theadData.map((h, ind) => {
+            // eslint-disable-next-line react/no-array-index-key
+            return <TableHead key={ind} item={h} />;
           })}
         </tr>
       </thead>
