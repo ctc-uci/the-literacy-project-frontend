@@ -9,7 +9,7 @@
   background-color: white;
   border: 1px solid #ced4da;
   border-radius: 10px;
-  color: #6C757D;
+  color: #6c757d;
 }
 
 .dropdown-toggle-error {
@@ -59,18 +59,18 @@
 }
 
 .bs-dropdown-selected-item:active {
-  background-color: #B2D4FF;
+  background-color: #b2d4ff;
   color: black;
   font-size: 19px;
 }
 
 .bs-dropdown-unselected-item {
-  color: #6C757D;
+  color: #6c757d;
   font-size: 19px;
 }
 
 .bs-dropdown-unselected-item:active {
-  background-color: #B2D4FF;
+  background-color: #b2d4ff;
   color: black;
   font-size: 19px;
 }

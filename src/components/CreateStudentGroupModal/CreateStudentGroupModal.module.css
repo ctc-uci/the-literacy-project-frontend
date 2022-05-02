@@ -159,7 +159,7 @@
   border-radius: 10px;
   border: 1px solid #ced4da;
   padding: 0px 15px 0px 15px;
-  color: #6C757D;
+  color: #6c757d;
 }
 
 .time-input-error {
@@ -172,7 +172,7 @@
 }
 
 .students-select:active {
-  margin: 3px red,
+  margin: 3px red;
 }
 
 .dropdown-outer-class {
@@ -200,13 +200,13 @@
 
 .dropdown-choice-selected:active {
   color: black;
-  background-color: #B2D4FF;
+  background-color: #b2d4ff;
   font-size: 19px;
   padding-left: 5px;
 }
 
 .dropdown-choice-unselected {
-  color: #6C757D;
+  color: #6c757d;
   font-size: 19px;
   padding-left: 5px;
 }
@@ -219,7 +219,7 @@
 
 .dropdown-choice-unselected:active {
   color: black;
-  background-color: #B2D4FF;
+  background-color: #b2d4ff;
   font-size: 19px;
   padding-left: 5px;
 }
