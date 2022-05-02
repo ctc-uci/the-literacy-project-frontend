@@ -266,7 +266,7 @@ const CreateStudentGroupModal = ({ siteId, isOpen, teacherId, setIsOpen }) => {
             // }
           />
           <div className={styles['meeting-day-err-message']}>
-            {validName ? null : 'Invalid Group Name'}
+            {validName ? '' : 'Invalid Group Name'}
           </div>
           <div className={styles['create-student-group-modal-field-desc']}>School Cycle</div>
           <div className={styles['create-student-group-school-cycle']}>
