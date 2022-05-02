@@ -12,7 +12,7 @@ import { TLPBackend } from '../../common/utils';
 import StudentGroupDropdown from '../EditStudentGroupModal/StudentGroupDropdown';
 
 // TODO:
-// [] Make sure values for categories are not default
+// [] Select focus styling
 
 const CreateStudentGroupModal = ({ siteId, isOpen, teacherId, setIsOpen }) => {
   const schoolYears = ['2021-2022', '2022-2023', '2023-2024'];
@@ -41,6 +41,9 @@ const CreateStudentGroupModal = ({ siteId, isOpen, teacherId, setIsOpen }) => {
   const [validCycle, setValidCycle] = useState(true);
   const [validDay, setValidDay] = useState(true);
   const [validTime, setValidTime] = useState(true);
+
+  // const [showStudentOptions, setShowStudentOptions] = useState(false);
+  // const [search, setSearch] = useState('');
 
   // Students in group
   const [currentStudents, setCurrentStudents] = useState([]);
@@ -211,7 +214,14 @@ const CreateStudentGroupModal = ({ siteId, isOpen, teacherId, setIsOpen }) => {
     setValidName(true);
   };
 
+  // const updateSearch = searchInput => {
+  //   // console.log(studentGroupInfo);
+  //   setSearch(searchInput);
+  //   setValidName(true);
+  // };
+
   const debouncedUpdateName = debounce(updateName, 800);
+  // const debouncedUpdateSearch = debounce(updateSearch, 800);
 
   const selectDropdownIndicator = props => {
     return (
@@ -238,7 +248,8 @@ const CreateStudentGroupModal = ({ siteId, isOpen, teacherId, setIsOpen }) => {
     }),
     container: (provided, state) => ({
       ...provided,
-      margin: state.isSelected ? 'red' : 'blue',
+      border: state.isFocused ? 'red' : 'blue',
+      padding: 5,
     }),
   };
 
@@ -341,19 +352,51 @@ const CreateStudentGroupModal = ({ siteId, isOpen, teacherId, setIsOpen }) => {
             {/* {currentStudentsLoaded ? <StudentBadges /> : null} */}
             <StudentBadges />
           </div>
-          {possibleStudentsLoaded ? (
-            <Select
-              options={Object.keys(possibleStudents).map(studentId => ({
-                value: studentId,
-                label: `${possibleStudents[studentId].firstName} ${possibleStudents[studentId].lastName}`,
-              }))}
-              onChange={opt => addToCurrentStudents(opt.value)}
-              placeholder="Select Students"
-              components={{ selectDropdownIndicator }}
-              styles={selectStyles}
-              className={styles['students-select']}
+          <div className={styles['students-select']}>
+            {possibleStudentsLoaded ? (
+              <Select
+                options={Object.keys(possibleStudents).map(studentId => ({
+                  value: studentId,
+                  label: `${possibleStudents[studentId].firstName} ${possibleStudents[studentId].lastName}`,
+                }))}
+                onChange={opt => addToCurrentStudents(opt.value)}
+                placeholder="Select Students"
+                components={{ selectDropdownIndicator }}
+                styles={selectStyles}
+                onFocus={console.log('focus')}
+                // className={styles['students-select']}
+              />
+            ) : null}
+          </div>
+          {/* <div className={styles['students-select']}>
+            <input
+              type="text"
+              placeholder="Select students"
+              className={styles['modal-text-input']}
+              // onFocus={debouncedUpdateSearch}
+              onFocus={() => {
+                setShowStudentOptions(true);
+                console.log('show');
+              }}
+              onBlur={() => {
+                setShowStudentOptions(false);
+                console.log('hide');
+              }}
             />
-          ) : null}
+            <div className={styles['students-select-options']}>
+              {possibleStudentsLoaded && showStudentOptions
+                ? Object.keys(possibleStudents).map(studentId => (
+                    <button
+                      type="button"
+                      key={studentId}
+                      className={styles['students-select-option']}
+                    >
+                      {`${possibleStudents[studentId].firstName} ${possibleStudents[studentId].lastName}`}
+                    </button>
+                  ))
+                : null}
+            </div>
+          </div> */}
           {/* <Form.Group>
             <Form.Select onChange={e => addToCurrentStudents(e.target.value)}>
               <option value={-1}>Select Students</option>

@@ -70,13 +70,15 @@
   font-size: 1em;
 }
 
-.modal-text-input:focused {
-  color: red;
+.modal-text-input:focus {
+  color: #767676;
   border-radius: 10px;
   text-align: left;
   padding: 22px 0px 22px 17px;
   width: 98%;
-  border: 5px solid #80BDFF;
+  border: 1px solid #80BDFF;
+  box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
+  outline: none;
   line-height: 32px;
   font-family: var(font-family), Helvetica, Arial, sans-serif;
   font-size: 1em;
@@ -162,6 +164,18 @@
   color: #6c757d;
 }
 
+.time-input:focus {
+  width: 50%;
+  height: 49px;
+  border-radius: 10px;
+  border: 1px solid #80BDFF;
+  box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
+  outline: none;
+  padding: 0px 15px 0px 15px;
+  color: #6c757d;
+}
+
+
 .time-input-error {
   width: 50%;
   height: 49px;
@@ -171,8 +185,15 @@
   color: #6C757D;
 }
 
-.students-select:active {
-  margin: 3px red;
+/* .students-select {
+  margin: 10px red;
+  border: solid 10px red;
+} */
+
+.students-select:focus {
+  border: 1px solid #80BDFF;
+  box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
+  outline: none;
 }
 
 .dropdown-outer-class {
@@ -247,3 +268,41 @@
   font-size: 0.8em;
   padding: 0.25em 2em 0 0;
 }
+
+/* .students-select {
+  border: solid 10px orange;
+}
+
+.students-select:focus {
+  border: 10px solid purple;
+} */
+
+/* .students-select-options {
+  display: flex;
+  flex-direction: column;
+  /* flex-wrap: wrap;
+  width: 98%;
+  margin: 10px 0 0 0;
+  height: 200px;
+  overflow: scroll;
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+}
+
+.students-select-option {
+  font-family: var(font-family), Helvetica, Arial, sans-serif;
+  font-size: 1em;
+  font-weight: 400;
+  text-align: left;
+  background-color: white;
+  color: #6c757d;
+}
+
+.students-select-option:hover {
+  font-family: var(font-family), Helvetica, Arial, sans-serif;
+  font-size: 1em;
+  font-weight: 400;
+  text-align: left;
+  background-color: #EAECEF;
+  color: black;
+} */

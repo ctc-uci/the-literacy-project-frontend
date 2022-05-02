@@ -68,6 +68,20 @@
   font-size: 1em;
 }
 
+.modal-text-input:focus {
+  color: #767676;
+  border-radius: 10px;
+  text-align: left;
+  padding: 22px 0px 22px 17px;
+  width: 98%;
+  border: 1px solid #80BDFF;
+  box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
+  outline: none;
+  line-height: 32px;
+  font-family: var(font-family), Helvetica, Arial, sans-serif;
+  font-size: 1em;
+}
+
 .edit-student-group-exit-button {
   position: absolute;
   top: 15px;
@@ -126,7 +140,7 @@
 }
 
 .time-input {
-  width: 190px;
+  width: 50%;
   height: 49px;
   border-radius: 10px;
   border: 1px solid #ced4da;
@@ -134,8 +148,15 @@
   color: #6c757d;
 }
 
-.students-select:active {
-  margin: 3px red;
+.time-input:focus {
+  width: 50%;
+  height: 49px;
+  border-radius: 10px;
+  border: 1px solid #80BDFF;
+  box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
+  outline: none;
+  padding: 0px 15px 0px 15px;
+  color: #6c757d;
 }
 
 .dropdown-outer-class {
