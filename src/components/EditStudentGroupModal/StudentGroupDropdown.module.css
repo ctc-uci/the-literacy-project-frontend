@@ -12,14 +12,29 @@
   color: #6C757D;
 }
 
+.dropdown-toggle-error {
+  text-align: left;
+  width: 95%;
+  background-color: white;
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  color: #6C757D;
+  border: solid 1px #E53E3E;
+}
+
+
 .dropdown-toggle::after {
+  display: none !important;
+}
+
+.dropdown-toggle-error::after {
   display: none !important;
 }
 
 .dropdown-toggle-icon {
   position: absolute;
   right: 15%;
-  top: 27%;
+  top: 23%;
   background-color: white;
 }
 
@@ -63,3 +78,10 @@
 .dropdown-menu {
   width: 95%;
 }
+
+/* .error-message {
+  position: relative;
+  top: 50px;
+  right: 155px;
+  color: #E53E3E;
+} */

@@ -10,12 +10,7 @@ const ViewCreateStudentGroupModalView = () => {
   return (
     <div>
       <NavigationBar />
-      <CreateStudentGroupModal
-        siteId={20}
-        studentGroupId={27}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
+      <CreateStudentGroupModal siteId={57} teacherId={106} isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

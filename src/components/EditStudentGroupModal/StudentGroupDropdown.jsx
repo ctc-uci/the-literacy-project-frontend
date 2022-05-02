@@ -5,7 +5,7 @@ import { BsCheck, BsCaretDownFill } from 'react-icons/bs';
 
 import styles from './StudentGroupDropdown.module.css';
 
-const StudentGroupDropdown = ({ choices, current, setFn }) => {
+const StudentGroupDropdown = ({ choices, current, setFn, errorState }) => {
   const DropdownOptions = () => (
     <>
       {choices.map(choice => {
@@ -48,7 +48,11 @@ const StudentGroupDropdown = ({ choices, current, setFn }) => {
   return (
     <>
       <Dropdown onSelect={setFn} className={styles['meeting-day-dropdown']}>
-        <Dropdown.Toggle as="button" className={styles['dropdown-toggle']}>
+        {/* <Dropdown.Toggle as="button" className={styles['dropdown-toggle']}> */}
+        <Dropdown.Toggle
+          as="button"
+          className={errorState ? styles['dropdown-toggle'] : styles['dropdown-toggle-error']}
+        >
           {current}
           <BsCaretDownFill className={styles['dropdown-toggle-icon']} />
         </Dropdown.Toggle>
@@ -64,6 +68,7 @@ StudentGroupDropdown.propTypes = {
   choices: PropTypes.arrayOf(PropTypes.string).isRequired,
   current: PropTypes.string.isRequired,
   setFn: PropTypes.func.isRequired,
+  errorState: PropTypes.bool.isRequired,
 };
 
 export default StudentGroupDropdown;

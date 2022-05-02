@@ -230,7 +230,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     });
   };
 
-  const debouncedUpdateName = debounce(updateName, 500);
+  const debouncedUpdateName = debounce(updateName, 800);
 
   const StudentBadges = () => (
     <>
