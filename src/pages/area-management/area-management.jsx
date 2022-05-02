@@ -70,6 +70,7 @@ const AreaManagement = () => {
             areaId={area.areaId}
             areaActive={area.active}
             areaName={area.areaName}
+            areaState={area.areaState}
             areaStats={{
               student_count: area.numStudents || 0,
               master_teacher_count: area.numMts || 0,
