@@ -123,6 +123,17 @@ const AreaManagement = () => {
       .reverse();
   }
 
+  function getStates() {
+    return areaResponseData
+      .reduce((acc, area) => {
+        if (area.areaState && !acc.includes(area.areaState)) {
+          acc.push(area.areaState);
+        }
+        return acc;
+      }, [])
+      .sort();
+  }
+
   const updateSchoolYear = newSchoolYear => {
     setSchoolYear(newSchoolYear);
 
@@ -243,7 +254,7 @@ const AreaManagement = () => {
                 <AreaManagementFilter
                   isOpen={filterModalIsOpen}
                   setIsOpen={setFilterModalIsOpen}
-                  states={['California', 'Utah']}
+                  states={getStates()}
                   filters={filters}
                   setFilters={setFilters}
                 />

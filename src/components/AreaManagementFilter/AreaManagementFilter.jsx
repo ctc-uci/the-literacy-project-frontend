@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Form } from 'react-bootstrap';
 import styles from './AreaManagementFilter.module.css';
@@ -7,43 +7,34 @@ function AreaManagementFilter(props) {
   const { isOpen, setIsOpen, states, filters, setFilters } = props;
   const [showActive, setShowActive] = useState(!filters.active);
   const [showInactive, setShowInactive] = useState(!filters.inactive);
+  const [showStates, setShowStates] = useState([]);
 
-  /**
-   * Create a map of states with their checked status.
-   * @param {boolean} status
-   * @returns Map of the states with their value as status
-   * @example {'California': true, 'Utah': true}
-   */
-  const statesStatusMap = status => {
-    return states.reduce((acc, state) => {
-      acc[state] = status;
-      return acc;
-    }, {});
-  };
-
-  const [statesStatus, setStatesStatus] = useState(statesStatusMap(true));
+  useEffect(() => {
+    setShowStates(filters.states ? states.filter(filters.states) : [...states]);
+  }, [states]);
 
   /**
    * @returns true if all states are checked
    */
   const areAllStatesChecked = () => {
-    return Object.entries(statesStatus).every(([, value]) => value);
+    return states.length === showStates.length;
   };
 
-  const toggleState = (state, status) => {
-    setStatesStatus({
-      ...statesStatus,
-      [`${state}`]: !status,
-    });
+  const toggleState = state => {
+    if (showStates.includes(state)) {
+      setShowStates(showStates.filter(s => s !== state));
+    } else {
+      setShowStates([...showStates, state]);
+    }
   };
 
   const toggleAllStates = () => {
     if (areAllStatesChecked()) {
-      // Set every state to false
-      setStatesStatus(statesStatusMap(false));
+      // Remove all states
+      setShowStates([]);
     } else {
-      // Set every state to true
-      setStatesStatus(statesStatusMap(true));
+      // Add all states
+      setShowStates(states);
     }
   };
 
@@ -52,14 +43,14 @@ function AreaManagementFilter(props) {
   const resetFilters = () => {
     setShowActive(true);
     setShowInactive(true);
-    setStatesStatus(statesStatusMap(true));
+    setShowStates(states);
   };
 
   const applyFilters = () => {
     // For each value (states, active, inactive), check if it is checked
     // If it is checked, we don't need to filter
     // If it is not checked, we need to provide a function to filter it out
-    const statesFilter = areAllStatesChecked() ? null : null;
+    const statesFilter = areAllStatesChecked() ? null : area => showStates.includes(area.areaState);
     const activeFilter = showActive ? null : area => !area.active;
     const inactiveFilter = showInactive ? null : area => area.active;
 
@@ -95,15 +86,15 @@ function AreaManagementFilter(props) {
           </div>
           <div className={styles.checkboxes}>
             {states.map(state => {
-              const status = statesStatus[state];
+              const check = showStates.includes(state);
               return (
                 <Form.Check
                   type="checkbox"
                   label={state}
                   key={state}
-                  checked={status}
+                  checked={check}
                   onChange={() => {
-                    toggleState(state, status);
+                    toggleState(state);
                   }}
                 />
               );
