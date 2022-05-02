@@ -49,7 +49,6 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
 
   const onSubmit = async data => {
     try {
-      console.log(data);
       await sendInviteLink(
         AUTH_ROLES.ADMIN_ROLE,
         data.email,
