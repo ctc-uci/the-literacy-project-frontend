@@ -16,15 +16,58 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [error, setError] = useState(null);
 
+  // This admin data will be populated, but may be changed using the form
   const [adminData, setAdminData] = useState({
     firstName: '',
     lastName: '',
     phoneNumber: '',
     email: '',
   });
+  // Copy of initial admin data for undo functionality
+  const [initialAdminData, setInitialAdminData] = useState({
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    email: '',
+    active: '',
+  });
   const [status, setStatus] = useState('');
   const [warningOpen, setWarningOpen] = useState(false);
   const adminName = `${adminData.firstName} ${adminData.lastName}`;
+
+  const closeModal = () => {
+    setIsOpen(false);
+    setShowEditAdminAlert(true);
+  };
+
+  const closeModalNoAlert = () => {
+    setIsOpen(false);
+    setShowEditAdminAlert(false);
+    setErrorMessage('');
+  };
+
+  const openWarningModal = () => {
+    setWarningOpen(!warningOpen);
+  };
+
+  const undoChanges = async () => {
+    try {
+      const { firstName, lastName, phoneNumber, email, active } = initialAdminData;
+      await TLPBackend.put(`/admins/${adminId}`, {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        active,
+      });
+      setAdminData({ firstName, lastName, email, phoneNumber });
+      setStatus(active);
+      setErrorMessage('');
+      setShowEditAdminAlert(false);
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
+  };
 
   const schema = yup
     .object({
@@ -44,21 +87,6 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
     delayError: 750,
   });
 
-  const closeModal = () => {
-    setIsOpen(false);
-    setShowEditAdminAlert(true);
-  };
-
-  const closeModalNoAlert = () => {
-    setIsOpen(false);
-    setShowEditAdminAlert(false);
-    setErrorMessage('');
-  };
-
-  const openWarningModal = () => {
-    setWarningOpen(!warningOpen);
-  };
-
   const onSubmit = async data => {
     try {
       const { firstName, lastName, phoneNumber, email } = data;
@@ -71,7 +99,6 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
       });
       setAdminData({ firstName, lastName, email, phoneNumber });
       setErrorMessage('');
-      reloadPage();
       closeModal();
     } catch (err) {
       setErrorMessage(err.message);
@@ -99,9 +126,10 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
       });
       if (res.status === 200) {
         const { firstName, lastName, email, phoneNumber, active } = res.data;
+        setInitialAdminData({ firstName, lastName, email, phoneNumber, active });
         setAdminData({ firstName, lastName, email, phoneNumber });
-        reset({ firstName, lastName, email, phoneNumber });
         setStatus(active);
+        reset({ firstName, lastName, email, phoneNumber });
       } else {
         setError(error);
       }
@@ -194,11 +222,17 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
             </div>
             <label htmlFor="active" className={styles.emailField}>
               <h3 className={styles.requiredSubtitles}>Status</h3>
-              <select name="active" className="form-control">
-                <option selected value="Active">
+              <select
+                name="active"
+                className="form-control"
+                onChange={e => setStatus(e.target.value)}
+              >
+                <option selected={status === 'active'} value="Active">
                   Active
                 </option>
-                <option value="Inactive">Inactive</option>
+                <option selected={status === 'inactive'} value="Inactive">
+                  Inactive
+                </option>
               </select>
             </label>
           </Modal.Body>
@@ -218,9 +252,13 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
       {showEditAdminAlert ? (
         <Alert variant="primary" className="alert-custom">
           {`Updated ${adminData.firstName} ${adminData.lastName}'s information.`}{' '}
-          <Alert.Link href="/" className="alert-link-custom">
+          <span
+            aria-hidden
+            className={`alert-link-custom underline ${styles.undoChanges}`}
+            onClick={undoChanges}
+          >
             UNDO
-          </Alert.Link>
+          </span>
           <CloseButton className="alert-close-btn" onClick={() => setShowEditAdminAlert(false)} />
         </Alert>
       ) : null}
