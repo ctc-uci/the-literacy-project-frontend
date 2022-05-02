@@ -22,7 +22,7 @@ import AreaManagementFilter from '../../components/AreaManagementFilter/AreaMana
 
 const AreaManagement = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({ inactive: area => area.active });
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
   const [schoolYear, setSchoolYear] = useState('All');

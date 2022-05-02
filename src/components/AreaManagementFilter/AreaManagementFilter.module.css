@@ -1,13 +1,18 @@
 .checkboxes {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    gap: 1rem;
+    margin-left: 1rem;
+}
+
+.form-check {
+    min-width: 100px;
 }
 
 .state-label-row {
     display: flex;
     flex-direction: row;
-    gap: 1rem;   
+    gap: 1rem;
 }
 
 .button-row {
