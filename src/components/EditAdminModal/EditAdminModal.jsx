@@ -37,6 +37,7 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -99,6 +100,7 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
       if (res.status === 200) {
         const { firstName, lastName, email, phoneNumber, active } = res.data;
         setAdminData({ firstName, lastName, email, phoneNumber });
+        reset({ firstName, lastName, email, phoneNumber });
         setStatus(active);
       } else {
         setError(error);
