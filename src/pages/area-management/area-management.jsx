@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
+// import { useParams } from 'react-router-dom';
 import { Button, Card, DropdownButton, Dropdown, InputGroup, FormControl } from 'react-bootstrap';
 import { BsFillCaretDownFill, BsPeople, BsFilterRight, BsFilter } from 'react-icons/bs';
-import { TLPBackend } from '../../common/utils';
+import { TLPBackend, calculateScores } from '../../common/utils';
 import styles from './area-management.module.css';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
 import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
+import Graph from '../../components/Graph/Graph';
 
 const AreaManagement = () => {
-  // const [areaDropdownTitle, setAreaDropdownTitle] = useState('Bellevue SD');
   const [modalIsOpen, setModalOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
   const [schoolYear, setSchoolYear] = useState('2020-21');
+  const [testScores, setTestScores] = useState({});
+  const [error, setError] = useState(null);
 
   function mapAreas() {
     return areaResponseData.map(area => {
@@ -68,6 +71,21 @@ const AreaManagement = () => {
     TLPBackend.get('/areas/area-management').then(res => {
       setAreaResponseData(res.data);
     });
+
+    async function fetchStudents() {
+      const studentScoresRes = await TLPBackend.get(`/students`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (studentScoresRes.status === 200) {
+        setTestScores(calculateScores(studentScoresRes.data));
+      } else {
+        setTestScores('');
+        setError(error);
+      }
+    }
+    fetchStudents();
   }, []);
 
   return (
@@ -169,19 +187,15 @@ const AreaManagement = () => {
             {mapAreas()}
           </div>
           <div className={styles['sites-data']}>
+            <p>
+              <strong>All Area Data</strong>
+            </p>
             <Button
               variant="primary"
               className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
             >
               Export to CSV
             </Button>
-            <p>All Areas</p>
-            <p>Year: 2021-22 Cycle: 1</p>
-            <p>
-              <strong>Average Growth in Reading</strong>
-            </p>
-            {/* placeholder for graph */}
-            <Card className={styles['sites-graph']} />
             <Card className={styles['area-data-stats']}>
               <p>
                 <BsPeople /> 40 Students
@@ -202,6 +216,20 @@ const AreaManagement = () => {
                 />
                 4 Sites
               </p>
+            </Card>
+            <p>All Areas</p>
+            <p>Year: 2021-22 Cycle: 1</p>
+            <p>
+              <strong>Average Growth in Reading</strong>
+            </p>
+            {/* placeholder for graph */}
+            <Card className={styles['sites-graph']}>
+              <Graph
+                // title={`Average Growth in Reading`}
+                xLabels={['Attitudinal', 'Academic']}
+                preData={testScores.pre}
+                postData={testScores.post}
+              />
             </Card>
           </div>
         </div>

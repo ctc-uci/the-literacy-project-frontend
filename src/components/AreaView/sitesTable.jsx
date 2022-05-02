@@ -48,10 +48,12 @@ const SitesTable = ({ areaId }) => {
   const [currSite, setCurrSite] = useState(0);
 
   // additionalInfo + siteNotes are static buttons to be put per row. TODO - make this dynamic
-  const additionalInfo = (
-    <button type="button" className={`btn btn-primary ${styles.view_site_info_btn}`}>
-      View Info
-    </button>
+  const additionalInfo = siteId => (
+    <Link to={`/sites/${siteId}`}>
+      <button type="button" className={`btn btn-primary ${styles.view_site_info_btn}`}>
+        View Info
+      </button>
+    </Link>
   );
 
   const showNote = site => {
@@ -105,7 +107,7 @@ const SitesTable = ({ areaId }) => {
               onClick={() => showNote(site.siteId)}
               className={styles.notes_icon}
             />,
-            additionalInfo,
+            additionalInfo(site.siteId),
           ],
         };
       }),
@@ -153,7 +155,6 @@ const SitesTable = ({ areaId }) => {
           </Col>
         </div>
       )}
-
       <NotesModal isOpen={modalShow} setIsOpen={setModalShow} siteId={currSite} />
     </div>
   );

@@ -10,7 +10,7 @@ import DownwardChevron from '../../assets/downward-chevron.svg';
  * This dropdown menu plugs and plays options as part of dynamic state to allow for easy changing. Choices, current, and setFn are all required.
  *
  * @param {[string]} choices - array of choices to be displayed in the dropdown menu
- * @param {string} current - initial value of dropdown (usually, a first half of useState)
+ * @param {string} current - initial value of dropdown (first half of useState)
  * @param {callable} setFn - function to set the current value (usually second half of useState)
  *
  * You can also optionally pass in custom CSS classnames to change how the dropdown menu looks. Use double-select in your implementing component's .module.css to override (ex. .custom-class.custom-class {})
@@ -22,6 +22,7 @@ import DownwardChevron from '../../assets/downward-chevron.svg';
  * @param {string} arrowClass - The dropdown arrow style. Change if you need to modify the arrow next to the current option
  * @param {string} choiceWrapperClass - The div wrapper for the entire expanded dropdown; change to modify size of the entire expanded dropdown
  * @param {string} choiceClass - The div wrapper for each individual choice in the expanded dropdown
+ * @param {boolean} disabled - Removes the dropdown arrow and disabled the function to click on the button to show option, background is darked, and cursor is not allowed
  */
 const DropdownMenu = ({
   choices,
@@ -33,29 +34,33 @@ const DropdownMenu = ({
   arrowClass,
   choiceWrapperClass,
   choiceClass,
+  disabled,
 }) => {
   const [showChoices, setShowChoices] = useState(false);
-  const [currentChoice, setCurrentChoice] = useState(current);
   return (
     <div className={`${outerClass != null ? `${outerClass}${' '}` : ''}dropdown-super-wrapper`}>
       <div
         role="button"
         tabIndex={0}
-        className={`${innerClass != null ? `${innerClass}${' '}` : ''}dropdown-wrapper`}
-        onClick={() => setShowChoices(!showChoices)}
+        className={`${innerClass != null ? `${innerClass}${' '}` : ''}dropdown-wrapper ${
+          disabled ? ' dropdown-disabled' : ''
+        }`}
+        onClick={!disabled ? () => setShowChoices(!showChoices) : null}
       >
         <div className={`${buttonClass != null ? `${buttonClass}${' '}` : ''}dropdown-button`}>
-          {currentChoice}
+          {current}
         </div>
-        <img
-          alt="arrow"
-          src={DownwardChevron}
-          className={
-            showChoices
-              ? `${arrowClass != null ? `${arrowClass}${' '}` : ''}dropdown-arrow-up`
-              : `${arrowClass != null ? `${arrowClass}${' '}` : ''}dropdown-arrow-down`
-          }
-        />
+        {!disabled && (
+          <img
+            alt="arrow"
+            src={DownwardChevron}
+            className={
+              showChoices
+                ? `${arrowClass != null ? `${arrowClass}${' '}` : ''}dropdown-arrow-up`
+                : `${arrowClass != null ? `${arrowClass}${' '}` : ''}dropdown-arrow-down`
+            }
+          />
+        )}
       </div>
       <div>
         {showChoices ? (
@@ -74,7 +79,6 @@ const DropdownMenu = ({
                 value={choice}
                 onClick={e => {
                   setFn(e.target.innerText);
-                  setCurrentChoice(e.target.innerText);
                   setShowChoices(false);
                 }}
               >
@@ -98,6 +102,7 @@ DropdownMenu.propTypes = {
   arrowClass: PropTypes.string,
   choiceWrapperClass: PropTypes.string,
   choiceClass: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 DropdownMenu.defaultProps = {
@@ -107,6 +112,7 @@ DropdownMenu.defaultProps = {
   arrowClass: null,
   choiceWrapperClass: null,
   choiceClass: null,
+  disabled: false,
 };
 
 export default DropdownMenu;

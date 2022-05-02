@@ -18,7 +18,18 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
     setIsOpen(false);
     setShowAlert(false);
   };
-  const submitNewArea = () => {
+  const submitNewArea = async () => {
+    const areas = await TLPBackend.get('/areas');
+    const areaNames = areas.data.map(area => area.areaName);
+
+    if (areaNames.indexOf(areaName) > -1) {
+      // same area name as existing one
+      setAlertText(`[ERROR] area name ${areaName} already exists`);
+      setIsAlertSuccess(false);
+      closeModal();
+      return;
+    }
+
     TLPBackend.post('/areas', {
       areaName,
       active: 'true',
@@ -63,9 +74,6 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeModal}>
-            Create and Add Another
-          </Button>
           <Button variant="primary" onClick={submitNewArea}>
             Create
           </Button>

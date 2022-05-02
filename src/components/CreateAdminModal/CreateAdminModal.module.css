@@ -76,7 +76,8 @@
   color: #fdfdfd;
 }
 
-.phoneNumField, .emailField{
+.phoneNumField,
+.emailField {
   width: 100%;
 }
 

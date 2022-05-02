@@ -99,3 +99,7 @@
 .active_site_dd {
   color: var(--color-light-green);
 }
+
+.inactive_site_dd {
+  color: var(--color-red);
+}

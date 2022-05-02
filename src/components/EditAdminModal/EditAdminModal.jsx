@@ -89,19 +89,24 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
   };
 
   useEffect(async () => {
-    const res = await TLPBackend.get(`/admins/${adminId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (res.status === 200) {
-      const { firstName, lastName, email, phoneNumber, active } = res.data;
-      setAdminData({ firstName, lastName, email, phoneNumber });
-      setStatus(active);
-    } else {
-      setError(error);
+    if (!isOpen) return;
+    try {
+      const res = await TLPBackend.get(`/admins/${adminId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (res.status === 200) {
+        const { firstName, lastName, email, phoneNumber, active } = res.data;
+        setAdminData({ firstName, lastName, email, phoneNumber });
+        setStatus(active);
+      } else {
+        setError(error);
+      }
+    } catch (err) {
+      setError(err);
     }
-  }, []);
+  }, [isOpen]);
 
   return (
     <>

@@ -13,7 +13,7 @@ input[type='number'] {
   display: block;
 }
 
-.formwrapper {
+.form-wrapper {
   border: 1px solid #b3b3b3;
   border-radius: 5px;
   align-items: left;
@@ -65,19 +65,17 @@ label {
   margin-top: 5px;
 }
 
-/* save button */
-.save-btn {
-  width: 160px;
-  background-color: #3288c4;
-  margin: 60px 0px 30px 70px;
-}
-
 .input-fields-coalesce-wrapper {
   display: flex;
+  width: 520px;
   justify-content: space-between;
 }
 
 .addr-small-field {
   width: 90%;
-  margin-right: 10%;
+}
+
+.addr-small-field-invalid {
+  border: 1px solid #e53e3e;
+  width: 90%;
 }
