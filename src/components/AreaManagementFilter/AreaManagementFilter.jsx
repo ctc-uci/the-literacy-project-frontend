@@ -10,7 +10,21 @@ function AreaManagementFilter(props) {
   const [showStates, setShowStates] = useState([]);
 
   useEffect(() => {
-    setShowStates(filters.states ? states.filter(filters.states) : [...states]);
+    if (filters.states) {
+      // There is a filter for the states
+      setShowStates(
+        states
+          .map(state => {
+            return { areaState: state };
+          }) // Convert stats to a mocked list of area objects
+          .filter(filters.states) // Apply the states filter to the list
+          .map(area => area.areaState), // Convert the areas back to a list of strings
+      );
+    } else {
+      // There is no filter for the states
+      // setShowStates to the full list of states
+      setShowStates(states);
+    }
   }, [states]);
 
   /**
@@ -42,7 +56,7 @@ function AreaManagementFilter(props) {
   // This sets each value back to checked
   const resetFilters = () => {
     setShowActive(true);
-    setShowInactive(true);
+    setShowInactive(false);
     setShowStates(states);
   };
 
@@ -91,6 +105,7 @@ function AreaManagementFilter(props) {
                 <Form.Check
                   type="checkbox"
                   label={state}
+                  className={styles['form-check']}
                   key={state}
                   checked={check}
                   onChange={() => {
@@ -109,12 +124,14 @@ function AreaManagementFilter(props) {
             <Form.Check
               type="checkbox"
               label="Active"
+              className={styles['form-check']}
               checked={showActive}
               onChange={() => setShowActive(!showActive)}
             />
             <Form.Check
               type="checkbox"
               label="Inactive"
+              className={styles['form-check']}
               checked={showInactive}
               onChange={() => setShowInactive(!showInactive)}
             />
