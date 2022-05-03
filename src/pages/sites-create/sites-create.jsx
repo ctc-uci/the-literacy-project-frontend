@@ -39,7 +39,7 @@ const SitesCreateView = () => {
           Area{' '}
         </Link>
         / {/* filler for now */}
-        <Link to="/sites" className="link">
+        <Link to={`/area/${areaId}`} className="link">
           {areaName}{' '}
         </Link>
         / Create New Site

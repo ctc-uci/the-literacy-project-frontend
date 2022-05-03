@@ -116,9 +116,8 @@ const ViewSite = ({ siteId }) => {
     }
 
     // send form data to server
-
+    console.log(formData);
     await TLPBackend.put(`/sites/${siteId}`, formData);
-    window.location.reload();
     changeEdit();
   };
 
@@ -212,6 +211,7 @@ const ViewSite = ({ siteId }) => {
                         <>{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}</>
                         State<span style={{ color: '#e32' }}>*</span>
                         <select
+                          disabled="true"
                           {...register('addressState')}
                           className="form-control"
                           defaultValue={siteInfo.addressState}
