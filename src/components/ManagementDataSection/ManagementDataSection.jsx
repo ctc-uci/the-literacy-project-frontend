@@ -138,8 +138,7 @@ const ManagementDataSection = ({
   };
 
   const displayData = data => {
-    const sortData = data.sort(compareNames);
-    return search(sortData);
+    return search(data).sort(compareNames);
   };
 
   return (
