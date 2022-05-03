@@ -99,7 +99,7 @@ const AdminStudentsView = () => {
     const [site, area, schoolYearAndCycle] = formatSiteInfo(siteName, areaName, year, cycle);
     const ht = homeTeacher || 'Not recorded';
     tbodyData.push({
-      id: studentObj.userId,
+      id: studentObj.studentId,
       items: [
         `${lastName}, ${firstName}`,
         site,
