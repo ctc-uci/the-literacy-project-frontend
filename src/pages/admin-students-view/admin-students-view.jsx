@@ -47,6 +47,7 @@ const AdminStudentsView = () => {
 
   const formatEthnicity = ethnicity => {
     let eth = '';
+    console.log(ethnicity);
     if (ethnicity) {
       ethnicity.forEach(e => {
         eth += `${capitalize(e)}, `;

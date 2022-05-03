@@ -26,6 +26,8 @@ const ManagementDataSection = ({
     popover = null;
   }
   const [modalIsOpen, setModalOpen] = useState('');
+  const [sortBy, setSortBy] = useState('A-Z');
+  const sorts = ['A-Z', 'Z-A'];
 
   const pageRedirect = () => {
     if (sectionTitle === 'Sites') {
@@ -87,15 +89,42 @@ const ManagementDataSection = ({
     return null;
   };
 
+  // Compares two fields alphabetically
+  const compareNames = (field1, field2) => {
+    const f1 = field1.items[0].toLowerCase(); // items[0] gives the Name
+    const f2 = field2.items[0].toLowerCase();
+
+    switch (sortBy) {
+      case 'A-Z':
+        return f1 < f2 ? -1 : 1;
+      case 'Z-A':
+        return f1 < f2 ? 1 : -1;
+      default:
+        return f1 < f2 ? -1 : 1;
+    }
+  };
+
+  const displayData = data => {
+    return data.sort(compareNames);
+  };
+
   const displaySortByButton = () => {
     return (
       <DropdownButton
         className={styles['dropdown-button']}
         id="dropdown-basic-button"
-        title="Sort By"
+        title={`Sort By: ${sortBy}`}
       >
-        <Dropdown.Item>A-Z</Dropdown.Item>
-        <Dropdown.Item>Z-A</Dropdown.Item>
+        {sorts.map(sort => (
+          <Dropdown.Item
+            onClick={() => {
+              setSortBy(sort);
+            }}
+            key={sort}
+          >
+            {sort}
+          </Dropdown.Item>
+        ))}
       </DropdownButton>
     );
   };
@@ -128,7 +157,7 @@ const ManagementDataSection = ({
       </div>
       <Table
         theadData={theadData}
-        tbodyData={tbodyData}
+        tbodyData={displayData(tbodyData)}
         tbodyColIsBadge={tbodyColIsBadge}
         sectionTitle={sectionTitle}
         statusCol={statusCol}
