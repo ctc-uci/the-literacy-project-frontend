@@ -61,7 +61,12 @@ const StateFormSelect = props => {
   ];
 
   return (
-    <Form.Select defaultValue={defaultValue} onChange={onChange}>
+    <Form.Select defaultValue={defaultValue} onChange={onChange} required>
+      {defaultValue === '' && (
+        <option value="" selected disabled>
+          Select a state
+        </option>
+      )}
       {states.map(state => (
         <option value={state} key={state}>
           {state}

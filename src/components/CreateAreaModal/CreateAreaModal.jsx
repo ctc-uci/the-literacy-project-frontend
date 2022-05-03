@@ -86,7 +86,11 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="primary" onClick={submitNewArea}>
+          <Button
+            variant="primary"
+            onClick={submitNewArea}
+            disabled={areaName === '' || areaState === ''}
+          >
             Create
           </Button>
         </Modal.Footer>
