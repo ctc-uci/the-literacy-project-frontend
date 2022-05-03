@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { Button, Dropdown, DropdownButton, InputGroup, FormControl } from 'react-bootstrap';
+import { FaFilter } from 'react-icons/fa';
+import '../../custom.scss';
+import '../../common/vars.css';
 import styles from './admin-students-view.module.css';
-import ManagementDataSection from '../../components/ManagementDataSection/ManagementDataSection';
+import Table from '../../components/Table/Table';
 import { TLPBackend, capitalize, formatSchoolYear } from '../../common/utils';
 
 const AdminStudentsView = () => {
   const [studentList, setStudentList] = useState([]);
   const [error, setError] = useState(null);
+  const [sortBy, setSortBy] = useState('A-Z');
+  const [searchText, setSearchText] = useState('');
+
+  const sorts = ['A-Z', 'Z-A'];
+
   const theadData = [
     {
       headerTitle: 'Name',
@@ -44,6 +53,10 @@ const AdminStudentsView = () => {
       headerPopover: '',
     },
   ];
+
+  const inputHandler = e => {
+    setSearchText(e.target.value.toLowerCase());
+  };
 
   const formatEthnicity = ethnicity => {
     let eth = '';
@@ -109,9 +122,80 @@ const AdminStudentsView = () => {
     });
   });
 
+  // Compares two names alphabetically
+  const compareNames = (field1, field2) => {
+    const f1 = field1.items[0].toLowerCase(); // items[0] gives the Name
+    const f2 = field2.items[0].toLowerCase();
+
+    switch (sortBy) {
+      case 'A-Z':
+        return f1 < f2 ? -1 : 1;
+      case 'Z-A':
+        return f1 < f2 ? 1 : -1;
+      default:
+        return f1 < f2 ? -1 : 1;
+    }
+  };
+
+  const search = data => {
+    return data.filter(row => {
+      const name = row.items[0].toLowerCase();
+      return name.includes(searchText);
+    });
+  };
+
+  const displayData = data => {
+    return search(data).sort(compareNames);
+  };
+
   return (
     <div className={styles['student-container']}>
-      <ManagementDataSection sectionTitle="Students" theadData={theadData} tbodyData={tbodyData} />
+      <div className={styles['ctrl-group']}>
+        <div className={styles['inner-ctrl']} />
+        <div className={styles['inner-ctrl']}>
+          <div className={styles.search}>
+            <InputGroup input={searchText} onChange={inputHandler}>
+              <FormControl
+                className={styles['search-bar']}
+                placeholder="Search"
+                aria-label="Search"
+                aria-describedby="search-icon"
+              />
+            </InputGroup>
+          </div>
+        </div>
+        <div style={{ float: 'right' }}>
+          <div className={styles['inner-ctrl']}>
+            <Button className={styles['export-button']} variant="primary">
+              Export to CSV
+            </Button>
+          </div>
+          <div className={styles['inner-ctrl']}>
+            <Button className={styles['filter-button']} variant="primary">
+              Filter By <FaFilter cursor="pointer" />
+            </Button>
+          </div>
+          <div className={styles['inner-ctrl']}>
+            <DropdownButton
+              className={styles['dropdown-button']}
+              id="dropdown-basic-button"
+              title={`Sort By: ${sortBy}`}
+            >
+              {sorts.map(sort => (
+                <Dropdown.Item
+                  onClick={() => {
+                    setSortBy(sort);
+                  }}
+                  key={sort}
+                >
+                  {sort}
+                </Dropdown.Item>
+              ))}
+            </DropdownButton>
+          </div>
+        </div>
+      </div>
+      <Table theadData={theadData} tbodyData={displayData(tbodyData)} sectionTitle="Students" />
     </div>
   );
 };
