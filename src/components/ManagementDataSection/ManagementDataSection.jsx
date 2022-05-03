@@ -27,6 +27,8 @@ const ManagementDataSection = ({
   }
   const [modalIsOpen, setModalOpen] = useState('');
   const [sortBy, setSortBy] = useState('A-Z');
+  const [searchText, setSearchText] = useState('');
+
   const sorts = ['A-Z', 'Z-A'];
 
   const pageRedirect = () => {
@@ -37,6 +39,9 @@ const ManagementDataSection = ({
   const clickManager = () => {
     setModalOpen(sectionTitle);
     pageRedirect();
+  };
+  const inputHandler = e => {
+    setSearchText(e.target.value.toLowerCase());
   };
 
   const displaySectionTitle = () => {
@@ -104,10 +109,6 @@ const ManagementDataSection = ({
     }
   };
 
-  const displayData = data => {
-    return data.sort(compareNames);
-  };
-
   const displaySortByButton = () => {
     return (
       <DropdownButton
@@ -129,6 +130,18 @@ const ManagementDataSection = ({
     );
   };
 
+  const search = data => {
+    return data.filter(row => {
+      const name = row.items[0].toLowerCase();
+      return name.includes(searchText);
+    });
+  };
+
+  const displayData = data => {
+    const sortData = data.sort(compareNames);
+    return search(sortData);
+  };
+
   return (
     <div>
       {displaySectionTitle()}
@@ -136,7 +149,7 @@ const ManagementDataSection = ({
         <div className={styles['inner-ctrl']}>{displayCreateButton()}</div>
         <div className={styles['inner-ctrl']}>
           <div className={styles.search}>
-            <InputGroup>
+            <InputGroup input={searchText} onChange={inputHandler}>
               <FormControl
                 className={styles['search-bar']}
                 placeholder="Search"
@@ -144,9 +157,6 @@ const ManagementDataSection = ({
                 aria-describedby="search-icon"
               />
             </InputGroup>
-            <Button variant="primary" style={{ color: 'var(--text-color-white)' }}>
-              Search
-            </Button>
           </div>
         </div>
         <div style={{ float: 'right' }}>
