@@ -17,6 +17,7 @@ import StudentTable from '../../components/StudentTable/StudentTable';
 import Graph from '../../components/Graph/Graph';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import Footer from '../../components/Footer/Footer';
+import CreateStudentGroupModal from '../../components/CreateStudentGroupModal/CreateStudentGroupModal';
 
 const MasterTeacherView = ({ cookies }) => {
   const [allData, setAllData] = useState([]); // all student group data
@@ -38,6 +39,8 @@ const MasterTeacherView = ({ cookies }) => {
   const [yearToggle, setYearToggle] = useState(true);
   const VIEW_ALL = 'All Sites';
   const cycles = ['1', '2', '3', '4'];
+  const [createStudentGroupIsOpen, setCreateStudentGroupIsOpen] = useState(false);
+  const [masterTeacherId, setMasterTeacherId] = useState();
 
   const filterSchoolYearCycle = async (
     filterOptions,
@@ -181,7 +184,8 @@ const MasterTeacherView = ({ cookies }) => {
   };
 
   useEffect(async () => {
-    const teacherId = cookies.get(cookieKeys.USER_ID);
+    const teacherId = await cookies.get(cookieKeys.USER_ID);
+    setMasterTeacherId(Number(teacherId));
 
     async function fetchTeacherData() {
       const allStudentData = await TLPBackend.get(`/student-groups/master-teacher/${teacherId}`);
@@ -312,7 +316,11 @@ const MasterTeacherView = ({ cookies }) => {
         <div className={styles.section}>
           <div className={styles.header}>
             <h3>Student Groups</h3>
-            <Button variant="warning" className={styles['create-button']}>
+            <Button
+              variant="warning"
+              className={styles['create-button']}
+              onClick={() => setCreateStudentGroupIsOpen(true)}
+            >
               Create Student Group
               <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
             </Button>
@@ -346,7 +354,14 @@ const MasterTeacherView = ({ cookies }) => {
             </div>
           )}
         </div>
-
+        {typeof masterTeacherId === 'number' ? (
+          <CreateStudentGroupModal
+            siteId={selectedSiteId}
+            teacherId={masterTeacherId}
+            isOpen={createStudentGroupIsOpen}
+            setIsOpen={setCreateStudentGroupIsOpen}
+          />
+        ) : null}
         <div className={`${styles.section} ${styles['students-container']}`}>
           <div className={styles.header}>
             <h3>Students</h3>
