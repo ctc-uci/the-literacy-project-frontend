@@ -1,57 +1,67 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { CSVLink } from 'react-csv';
 import { TLPBackend } from '../../common/utils';
 import styles from './CSVButton.module.css';
 
-const CSVButton = () => {
+const CSVButton = props => {
   const [studentResponseData, setStudentResponseData] = useState([]);
 
-  const studentAreaHeaders = [
-    'Area ID',
-    'Student ID',
-    'First Name',
-    'Last Name',
-    'Grade',
-    'Home Teacher',
-    'Gender',
-    'Ethnicity',
-    'Student Group ID',
-    'Post-Test A',
-    'Post-Test A Notes',
-    'Post-Test R',
-    'Post-Test R Notes',
-    'Pre-Test A',
-    'Pre-Test A Notes',
-    'Pre-Test R',
-    'Pre-Test R Notes',
-  ];
-
-  function mapStudents() {
-    return studentResponseData.map(student => [
-      student.areaId,
-      student.studentId,
-      student.firstName,
-      student.lastName,
-      student.grade,
-      student.homeTeacher,
-      student.gender,
-      student.ethnicity,
-      student.studentGroupId,
-      student.posttestA,
-      student.posttestANotes,
-      student.posttestR,
-      student.posttestRNotes,
-      student.pretestA,
-      student.pretestANotes,
-      student.pretestR,
-      student.pretestRNotes,
-    ]);
+  function createHeaders() {
+    // Student Area Data
+    if (props.type === 'area') {
+      return [
+        'Area ID',
+        'Student ID',
+        'First Name',
+        'Last Name',
+        'Grade',
+        'Home Teacher',
+        'Gender',
+        'Ethnicity',
+        'Student Group ID',
+        'Post-Test A',
+        'Post-Test A Notes',
+        'Post-Test R',
+        'Post-Test R Notes',
+        'Pre-Test A',
+        'Pre-Test A Notes',
+        'Pre-Test R',
+        'Pre-Test R Notes',
+      ];
+    }
+    return [];
   }
 
-  const studentAreaCSVReport = {
+  // eslint-disable-next-line consistent-return
+  function mapResponse() {
+    if (props.type === 'area') {
+      return studentResponseData.map(student => [
+        student.areaId,
+        student.studentId,
+        student.firstName,
+        student.lastName,
+        student.grade,
+        student.homeTeacher,
+        student.gender,
+        student.ethnicity,
+        student.studentGroupId,
+        student.posttestA,
+        student.posttestANotes,
+        student.posttestR,
+        student.posttestRNotes,
+        student.pretestA,
+        student.pretestANotes,
+        student.pretestR,
+        student.pretestRNotes,
+      ]);
+    }
+  }
+
+  const CSVReport = {
     data: studentResponseData,
-    headers: studentAreaHeaders,
+    headers: createHeaders(),
     filename: 'Areas_Report.csv',
   };
 
@@ -77,7 +87,7 @@ const CSVButton = () => {
 
     await fetchAllSites();
     setTimeout(() => {
-      setStudentResponseData(mapStudents());
+      setStudentResponseData(mapResponse());
     }, 2000);
   };
 
@@ -97,11 +107,15 @@ const CSVButton = () => {
 
   return (
     <Button className={styles['export-button']} variant="primary">
-      <CSVLink {...studentAreaCSVReport} className={styles.csvLink}>
+      <CSVLink {...CSVReport} className={styles.csvLink}>
         Export to CSV
       </CSVLink>
     </Button>
   );
+};
+
+CSVButton.propTypes = {
+  type: PropTypes.string.isRequired,
 };
 
 export default CSVButton;

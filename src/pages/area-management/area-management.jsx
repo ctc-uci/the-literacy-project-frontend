@@ -187,12 +187,11 @@ const AreaManagement = () => {
             />
             {mapAreas()}
           </div>
-          <CSVButton />
           <div className={styles['sites-data']}>
             <p>
               <strong>All Area Data</strong>
             </p>
-            <CSVButton />
+            <CSVButton type="area" />
             <Card className={styles['area-data-stats']}>
               <p>
                 <BsPeople /> 40 Students

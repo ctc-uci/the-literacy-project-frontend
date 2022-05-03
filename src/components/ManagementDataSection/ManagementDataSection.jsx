@@ -46,7 +46,7 @@ const ManagementDataSection = ({
             {sectionTitle}
             {popover}
           </h1>
-          <CSVButton />
+          <CSVButton type="site" />
         </>
       );
     }
@@ -66,7 +66,7 @@ const ManagementDataSection = ({
 
   const displayExportButtonRight = () => {
     if (sectionTitle === 'Students') {
-      return <CSVButton />;
+      return <CSVButton type="site" />;
     }
     return null;
   };
