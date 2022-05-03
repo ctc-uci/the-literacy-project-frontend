@@ -31,14 +31,8 @@ const ManagementDataSection = ({
 
   const sorts = ['A-Z', 'Z-A'];
 
-  const pageRedirect = () => {
-    if (sectionTitle === 'Sites') {
-      window.location.href = '/sites/create';
-    }
-  };
   const clickManager = () => {
     setModalOpen(sectionTitle);
-    pageRedirect();
   };
   const inputHandler = e => {
     setSearchText(e.target.value.toLowerCase());
