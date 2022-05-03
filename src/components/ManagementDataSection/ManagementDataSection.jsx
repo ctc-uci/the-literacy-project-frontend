@@ -27,8 +27,14 @@ const ManagementDataSection = ({
   }
   const [modalIsOpen, setModalOpen] = useState('');
 
+  const pageRedirect = () => {
+    if (sectionTitle === 'Sites') {
+      window.location.href = '/sites/create';
+    }
+  };
   const clickManager = () => {
     setModalOpen(sectionTitle);
+    pageRedirect();
   };
 
   const displaySectionTitle = () => {
@@ -109,6 +115,9 @@ const ManagementDataSection = ({
                 aria-describedby="search-icon"
               />
             </InputGroup>
+            <Button variant="primary" style={{ color: 'var(--text-color-white)' }}>
+              Search
+            </Button>
           </div>
         </div>
         <div style={{ float: 'right' }}>
