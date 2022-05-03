@@ -152,6 +152,7 @@ const AreaView = () => {
               <strong>Average Growth in Reading</strong>
             </p>
           </div>
+          <CSVButton />
           <Card className={styles.graph}>
             <Graph
               xLabels={['Attitudinal', 'Academic']}

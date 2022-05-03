@@ -187,6 +187,7 @@ const AreaManagement = () => {
             />
             {mapAreas()}
           </div>
+          <CSVButton />
           <div className={styles['sites-data']}>
             <p>
               <strong>All Area Data</strong>
