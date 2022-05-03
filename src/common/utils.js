@@ -6,6 +6,137 @@ import { cookieKeys, cookieConfig } from './auth/cookie_utils';
 
 const baseURL = `${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`;
 
+const TLPBackend = axios.create({
+  baseURL,
+  withCredentials: true,
+});
+
+// Converts JS Date object into string, formatted MM/DD/YYYY
+const formatDate = value => {
+  return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+};
+
+// capitalizes first letter of a string
+export const capitalize = s => {
+  return s[0].toUpperCase() + s.slice(1);
+};
+
+// formats school year into startYear-endYear where endYear is one year later
+export const formatSchoolYear = startYear => {
+  return `${startYear}-${startYear - 1999}`;
+};
+
+export const formatPhoneNumber = phoneNumber => {
+  if (phoneNumber.length === 10) {
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6)}`;
+  }
+  return phoneNumber;
+};
+
+// turns military time HH:MM:SS into standard time HH:MM AA
+export const parseTime = dateString => {
+  // eslint-disable-next-line prefer-const
+  let [hour, minute] = dateString.split(':');
+  const suffix = hour >= 12 ? 'PM' : 'AM';
+  hour = ((Number(hour) + 11) % 12) + 1;
+  return `${hour}:${minute} ${suffix}`;
+};
+
+// calculate the attitudinal and academic pre and post average scores
+// returns null if there is not at least pre-scores for other categories
+// otherwise return object with pre and post scores
+export const calculateScores = data => {
+  const scores = {};
+  const attitudinalPossible = 80;
+  const academicPossible = 93;
+  const attitudinal = {
+    pre: 0,
+    preCount: 0,
+    post: 0,
+    postCount: 0,
+  };
+  const academic = {
+    pre: 0,
+    preCount: 0,
+    post: 0,
+    postCount: 0,
+  };
+
+  // remains false if no students in data has non-null pretest scores
+  let hasData = false;
+
+  data.forEach(student => {
+    // if array is not null, get sum and divide by corresponding total possible
+    if (student.pretestR !== null) {
+      hasData = true;
+      attitudinal.pre +=
+        student.pretestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible;
+      attitudinal.preCount += 1;
+
+      // only get student's post score if they have pre-scores
+      if (student.posttestR !== null) {
+        academic.post +=
+          student.posttestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible;
+        academic.postCount += 1;
+      }
+    }
+
+    if (student.pretestA !== null) {
+      hasData = true;
+      academic.pre += student.pretestA.reduce((prev, curr) => prev + curr, 0) / academicPossible;
+      academic.preCount += 1;
+
+      if (student.posttestA !== null) {
+        academic.post +=
+          student.posttestA.reduce((prev, curr) => prev + curr, 0) / academicPossible;
+        academic.postCount += 1;
+      }
+    }
+  });
+
+  if (hasData) {
+    // if counts are 0, return scores of 0. otherwise, calculate average
+    scores.pre = [
+      attitudinal.preCount ? attitudinal.pre / attitudinal.preCount : 0,
+      academic.preCount ? academic.pre / academic.preCount : 0,
+    ];
+    scores.post = [
+      attitudinal.postCount ? attitudinal.post / attitudinal.postCount : 0,
+      academic.postCount ? academic.post / academic.postCount : 0,
+    ];
+  }
+  return scores;
+};
+
+const average = arr => {
+  return arr.reduce((a, b) => a + b) / arr.length;
+};
+
+// calculates the pre and post average of attitudinal + academic for given site and all other TLP sites
+// returns an object with two arrays (pre and post)
+// assumes that site has both pre and post data
+export const calculateSiteScores = (site, other) => {
+  const scores = {};
+  scores.pre = [average(site.pre), other.pre ? average(other.pre) : 0];
+  scores.post = [average(site.post), other.post ? average(other.post) : 0];
+  return scores;
+};
+
+export const sendEmail = async (email, htmlMessage) => {
+  try {
+    await TLPBackend.post('/send-email', { email, htmlMessage: renderEmail(htmlMessage) });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
+
 // Using Firebase Web version 9
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
@@ -19,25 +150,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const TLPBackend = axios.create({
-  baseURL,
-  withCredentials: true,
-});
-
 const refreshUrl = `https://securetoken.googleapis.com/v1/token?key=${process.env.REACT_APP_FIREBASE_APIKEY}`;
-
-// Converts JS Date object into string, formatted MM/DD/YYYY
-const formatDate = value => {
-  return value.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-};
-
-export const sendEmail = async (email, htmlMessage) => {
-  try {
-    await TLPBackend.post('/send-email', { email, htmlMessage: renderEmail(htmlMessage) });
-  } catch (err) {
-    throw new Error(err.message);
-  }
-};
 
 /**
  * Sets a cookie in the browser
@@ -153,4 +266,4 @@ const reloadPage = () => window.location.reload();
 
 addAuthInterceptor(TLPBackend);
 
-export { auth, TLPBackend, formatDate, reloadPage };
+export { auth, TLPBackend, formatDate, reloadPage, scrollToTop };

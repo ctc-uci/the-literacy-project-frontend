@@ -1,3 +1,12 @@
 .mr-auto {
   text-decoration-color: black;
 }
+.student-search-bar {
+  margin: 0 !important;
+  border-right: none !important;
+  height: 100%;
+}
+#student-search-icon {
+  border-left: none !important;
+  background-color: #fff !important;
+}

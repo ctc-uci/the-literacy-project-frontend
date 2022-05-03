@@ -1,35 +1,62 @@
 import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
-import './CreateAdminModal.css';
-import { Modal, Button, Form, Alert, CloseButton } from 'react-bootstrap';
+import { Modal, Button, Alert, CloseButton } from 'react-bootstrap';
+
+// Forms
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+import styles from './CreateAdminModal.module.css';
 import { AUTH_ROLES } from '../../common/config';
 import { sendInviteLink } from '../../common/auth/auth_utils';
 
 const CreateAdminModal = ({ isOpen, setIsOpen }) => {
   const [showAlert, setShowAlert] = useState(false);
-  const [email, setEmail] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [errorMessage, setErrorMessage] = useState();
-  const [phoneNumber, setPhoneNumber] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const schema = yup
+    .object({
+      email: yup
+        .string()
+        .email('Email must be a valid email address')
+        .required('Email is required'),
+      firstName: yup.string().required('First name is required'),
+      lastName: yup.string().required('Last name is required'),
+      phoneNumber: yup.string().required('Phone number is required'),
+    })
+    .required();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    delayError: 750,
+  });
 
   const closeModal = () => {
     setIsOpen(false);
     setShowAlert(true);
   };
+
   const closeModalNoAlert = () => {
     setIsOpen(false);
     setShowAlert(false);
     setErrorMessage('');
   };
 
-  const handleSubmit = async e => {
+  const onSubmit = async data => {
     try {
-      e.preventDefault();
+      await sendInviteLink(
+        AUTH_ROLES.ADMIN_ROLE,
+        data.email,
+        data.firstName,
+        data.lastName,
+        data.phoneNumber,
+      );
       setErrorMessage('');
-      await sendInviteLink(AUTH_ROLES.ADMIN_ROLE, email, firstName, lastName, phoneNumber);
-      setErrorMessage('');
-      setEmail('');
       closeModal();
     } catch (err) {
       setErrorMessage(err.message);
@@ -44,55 +71,78 @@ const CreateAdminModal = ({ isOpen, setIsOpen }) => {
         show={isOpen}
         onHide={closeModalNoAlert}
       >
-        <Modal.Header closeButton>
-          <Modal.Title className="modalTitle">Create Admin Account</Modal.Title>
-        </Modal.Header>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Modal.Header closeButton>
+            <Modal.Title className={styles.modalTitle}>Create Admin Account</Modal.Title>
+          </Modal.Header>
 
-        <Modal.Body>
-          <div>
-            <Form.Group className="mb-5" controlId="createAdmin.firstName">
-              <Form.Label>First Name</Form.Label>
-              <Form.Control
-                placeholder="First Name"
-                onChange={({ target }) => setFirstName(target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-5" controlId="createAdmin.lastName">
-              <Form.Label>Last Name</Form.Label>
-              <Form.Control
-                placeholder="Last Name"
-                onChange={({ target }) => setLastName(target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-5" controlId="createAdmin.phoneNumber">
-              <Form.Label>Phone Number</Form.Label>
-              <Form.Control
-                placeholder="Phone Number"
-                onChange={({ target }) => setPhoneNumber(target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-5" controlId="createAdminAccount.email" required>
-              <Form.Label>
-                <>
-                  Email
-                  <span id="asterisk">*</span>
-                </>
-              </Form.Label>
-              <Form.Control
+          <Modal.Body>
+            <div>
+              <label htmlFor="first-name" className={styles.fNameField}>
+                <h3 className={styles.requiredSubtitles}>First Name</h3>
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="First Name"
+                  className={`form-control ${errors.firstName ? `is-invalid` : ''}`}
+                  {...register('firstName')}
+                />
+                <div className={`text-danger ${styles['err-msg']}`}>
+                  {errors.firstName?.message ?? <>{'\u00A0'}</>}
+                </div>
+              </label>
+              <label htmlFor="last-name" className={styles.lNameField}>
+                <h3 className={styles.requiredSubtitles}>Last Name</h3>
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Last Name"
+                  className={`form-control ${errors.lastName ? `is-invalid` : ''}`}
+                  {...register('lastName')}
+                />
+                <div className={`text-danger ${styles['err-msg']}`}>
+                  {errors.lastName?.message ?? <>{'\u00A0'}</>}
+                </div>
+              </label>
+            </div>
+            <label htmlFor="email" className={styles.emailField}>
+              <h3 className={styles.requiredSubtitles}>Email</h3>
+              <input
                 type="email"
-                placeholder="example@gmail.com"
-                onChange={({ target }) => setEmail(target.value)}
+                name="email"
+                placeholder="Email"
+                className={`form-control ${errors.email ? `is-invalid` : ''}`}
+                {...register('email')}
               />
-            </Form.Group>
-          </div>
-        </Modal.Body>
+              <div className={`text-danger ${styles['err-msg']}`}>
+                {errors.email?.message ?? <>{'\u00A0'}</>}
+              </div>
+            </label>
+            <div>
+              <label htmlFor="phone-number" className={styles.phoneNumField}>
+                <h3 className={styles.requiredSubtitles}>Phone Number</h3>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  placeholder="Phone Number"
+                  className={`form-control ${errors.phoneNumber ? `is-invalid` : ''}`}
+                  {...register('phoneNumber')}
+                />
+              </label>
+              <div className={`text-danger ${styles['err-msg']}`}>
+                {errors.phoneNumber?.message ?? <>{'\u00A0'}</>}
+              </div>
+              {/* {JSON.stringify(errors)} */}
+            </div>
+          </Modal.Body>
 
-        <Modal.Footer>
-          <Button variant="primary" className="modalSave" onClick={handleSubmit}>
-            Send Email
-          </Button>
-          {errorMessage && <p>{errorMessage}</p>}
-        </Modal.Footer>
+          <Modal.Footer>
+            <Button variant="primary" className={styles.modalSave} type="submit">
+              Send Email
+            </Button>
+            {errorMessage && <p>{errorMessage}</p>}
+          </Modal.Footer>
+        </form>
       </Modal>
       {showAlert ? (
         <div className="center-block">

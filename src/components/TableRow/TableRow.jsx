@@ -2,6 +2,7 @@ import { React, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Button, Form } from 'react-bootstrap';
 import { FaTrashAlt, FaPlus, FaPencilAlt } from 'react-icons/fa';
+import '../../common/vars.css';
 import EditMasterTeacherModal from '../EditMasterTeacherModal/EditMasterTeacherModal';
 import EditAdminModal from '../EditAdminModal/EditAdminModal';
 
@@ -11,6 +12,37 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   const addBadgeStyles = {
     cursor: 'pointer',
     marginLeft: '0.5em',
+  };
+
+  const displayPencilAndLink = item => {
+    if (sectionTitle === 'Admin' || sectionTitle === 'Master Teachers')
+      return (
+        <>
+          <Button
+            variant="link"
+            onClick={() => setModalOpen(sectionTitle)}
+            style={{ color: 'black' }}
+          >
+            {item}
+          </Button>
+          <FaPencilAlt cursor="pointer" onClick={() => setModalOpen(sectionTitle)} />
+        </>
+      );
+    return item;
+  };
+
+  const displayAsButton = item => {
+    if (sectionTitle === 'Students')
+      return (
+        <Button
+          variant="primary"
+          style={{ color: 'var(--text-color-white)' }}
+          onClick={() => setModalOpen(sectionTitle)}
+        >
+          {item}
+        </Button>
+      );
+    return item;
   };
 
   const styleStatus = val => {
@@ -27,27 +59,20 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     return 'Account Pending';
   };
 
+  /* eslint-disable react/no-array-index-key */
   return (
     <>
       <tr>
         {data.map((item, ind) => {
           if (ind === 0) {
-            return (
-              <td key={item}>
-                <Button
-                  variant="link"
-                  onClick={() => setModalOpen(sectionTitle)}
-                  style={{ color: 'black' }}
-                >
-                  {item}
-                </Button>
-                <FaPencilAlt cursor="pointer" onClick={() => setModalOpen(sectionTitle)} />
-              </td>
-            );
+            return <td key={ind}>{displayPencilAndLink(item)}</td>;
+          }
+          if (ind === data.length - 1) {
+            return <td key={ind}>{displayAsButton(item)}</td>;
           }
           if (colIsBadge.includes(ind)) {
             return (
-              <td key={item}>
+              <td key={ind}>
                 {item !== null && (
                   <Badge bg="dark" style={{ cursor: 'pointer' }}>
                     {item} <FaTrashAlt color="red" cursor="pointer" />
@@ -61,12 +86,12 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           }
           if (statusCol === ind) {
             return (
-              <td key={item} style={{ color: '#17A2B8' }}>
+              <td key={ind} style={{ color: '#17A2B8' }}>
                 {styleStatus(item)}
               </td>
             );
           }
-          return <td key={item}>{item}</td>;
+          return <td key={ind}>{item}</td>;
         })}
       </tr>
       <EditMasterTeacherModal
@@ -84,6 +109,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     </>
   );
 };
+/* eslint-enable react/no-array-index-key */
 
 TableRow.defaultProps = {
   uniqueKey: null,
@@ -95,7 +121,7 @@ TableRow.defaultProps = {
 
 TableRow.propTypes = {
   uniqueKey: PropTypes.number,
-  data: PropTypes.arrayOf(),
+  data: PropTypes.arrayOf(PropTypes.node),
   colIsBadge: PropTypes.arrayOf(PropTypes.number),
   sectionTitle: PropTypes.string,
   statusCol: PropTypes.number,

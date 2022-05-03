@@ -4,15 +4,19 @@ import { Modal, Button, Alert, CloseButton, Form, Badge } from 'react-bootstrap'
 import { BsX } from 'react-icons/bs';
 import styles from './EditMasterTeacherModal.module.css';
 import { TLPBackend, reloadPage } from '../../common/utils';
+import WarningModal from '../WarningModal/WarningModal';
 
 const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [showEditMasterTeacherAlert, setShowEditMasterTeacherAlert] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [status, setStatus] = useState('');
+  const [warningOpen, setWarningOpen] = useState(false);
+  const teacherName = `${firstName} ${lastName}`;
 
   const [sites, setSites] = useState([]);
   const removeSite = e => {
@@ -37,32 +41,46 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     closeModal();
   };
 
+  const openWarningModal = () => {
+    setWarningOpen(!warningOpen);
+  };
+
   const deleteMasterTeacher = async () => {
+    // TODO: Figure out what to do if it fails
     await TLPBackend.delete(`/teachers/${teacherId}`);
     reloadPage();
     setIsOpen(false);
   };
 
   useEffect(async () => {
-    const res = await TLPBackend.get(`/teachers/${teacherId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (res.status === 200) {
+    if (!isOpen) return;
+
+    try {
+      const res = await TLPBackend.get(`/teachers/${teacherId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       const mtData = res.data;
       setEmail(mtData.email);
       setFirstName(mtData.firstName);
       setLastName(mtData.lastName);
       setPhoneNumber(mtData.phoneNumber);
-      setStatus(mtData.status);
-    } else {
-      setError(error);
+      setStatus(mtData.active);
+    } catch (err) {
+      setError(err);
     }
-  }, []);
+  }, [isOpen]);
 
   return (
     <>
+      <WarningModal
+        isOpen={warningOpen}
+        setIsOpen={setWarningOpen}
+        name={teacherName}
+        body="teacher"
+        deleteFunc={deleteMasterTeacher}
+      />
       <Modal show={isOpen} onHide={() => setIsOpen(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Teacher</Modal.Title>
@@ -131,17 +149,17 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                 <option value="School Three">School Three</option>
               </Form.Select>
             </Form.Group>
-            <Form.Group classname="mb-3" controlId="editTeacherAccount.notes">
+            <Form.Group className="mb-3" controlId="editTeacherAccount.notes">
               <Form.Label>Notes</Form.Label>
               <Form.Control as="textarea" rows={3} />
             </Form.Group>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={deleteMasterTeacher}>
+          <Button variant="danger" className={styles.button} onClick={openWarningModal}>
             Delete
           </Button>
-          <Button variant="primary" onClick={updateMasterTeacherData}>
+          <Button variant="primary" className={styles.button} onClick={updateMasterTeacherData}>
             Save Changes
           </Button>
         </Modal.Footer>

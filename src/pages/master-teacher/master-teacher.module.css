@@ -1,0 +1,127 @@
+.main {
+  margin-bottom: 10em;
+}
+
+.section {
+  padding: 2em 5vw 0;
+}
+
+.toggle-container {
+  border-bottom: 1px solid #c4c4c4;
+  padding-top: 3em;
+  padding-bottom: 2em;
+}
+
+.toggle-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.toggle-bar > div {
+  display: flex;
+  flex-direction: row;
+}
+
+.inner-toggle-bar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0 0.5em;
+}
+
+.inner-toggle-bar > * {
+  margin: 0 0.3em;
+}
+
+.empty-view {
+  color: var(--text-color-dark-gray);
+  text-align: center;
+}
+
+.graph-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.graph {
+  width: 30vw;
+  height: 20vw;
+  position: relative;
+  margin: 4vh 0;
+  min-width: 300px;
+  min-height: 300px;
+}
+
+.header > h3 {
+  margin: 0;
+}
+
+.gray-text {
+  color: var(--text-color-dark-gray);
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+  column-gap: 35px;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.create-button {
+  padding: 4px 8px;
+}
+
+.create-button:hover {
+  background-color: var(--color-dark-blue);
+  border-color: var(--color-dark-blue);
+  color: var(--text-color-white);
+}
+
+.arrow {
+  position: absolute;
+  margin-left: 25em;
+  margin-right: 5em;
+  top: 0;
+  left: 0;
+}
+
+.students-container {
+  position: relative;
+}
+
+.plus__icon {
+  width: 14px;
+  margin-bottom: 2px;
+}
+
+.create-button:hover > .plus__icon {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(103deg) brightness(105%) contrast(105%);
+}
+
+.view-all-button,
+.view-all-button:hover,
+.view-all-button:focus,
+.view-all-button:active {
+  background-color: transparent;
+  border: none;
+  margin-left: auto;
+  box-shadow: none;
+  outline: none;
+}
+
+.view-all-text {
+  margin-bottom: 0;
+  text-decoration: underline;
+}

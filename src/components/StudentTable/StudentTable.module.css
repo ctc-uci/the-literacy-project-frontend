@@ -1,0 +1,18 @@
+.view-group-btn {
+  color: #ffffff;
+}
+
+td {
+  padding: 10px 20px !important;
+  width: auto;
+  vertical-align: middle;
+}
+
+.view-group-col {
+  text-align: center;
+  width: 200px;
+}
+
+.table-heading {
+  height: 70px;
+}
