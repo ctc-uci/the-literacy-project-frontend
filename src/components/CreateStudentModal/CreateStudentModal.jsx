@@ -160,7 +160,7 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
             </div>
 
             <div className={styles['input-area']}>
-              <p>Ethnicity</p>
+              <p className={styles.required}>Ethnicity</p>
               <div className={styles['selected-ethnicity']}>
                 {/* buttons to show which ethnicies are already selected and removed when clicked */}
                 {addedEthnicity.map(ethnic => {
