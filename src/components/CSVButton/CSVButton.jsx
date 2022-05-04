@@ -5,12 +5,12 @@ import { CSVLink } from 'react-csv';
 import { TLPBackend } from '../../common/utils';
 import styles from './CSVButton.module.css';
 
-const CSVButton = props => {
+const CSVButton = ({ type }) => {
   const [studentResponseData, setStudentResponseData] = useState([]);
 
   function createHeaders() {
     // Student Area Data
-    if (props.type === 'area') {
+    if (type === 'area') {
       return [
         'Area ID',
         'Student ID',
@@ -36,7 +36,7 @@ const CSVButton = props => {
 
   // eslint-disable-next-line consistent-return
   function mapResponse() {
-    if (props.type === 'area') {
+    if (type === 'area') {
       return studentResponseData.map(student => [
         student.areaId,
         student.studentId,
@@ -93,13 +93,12 @@ const CSVButton = props => {
 
   useEffect(() => {
     async function fetchAreas() {
-      await TLPBackend.get('/areas')
-        .then(res => {
-          setTimeout(() => {
-            addAssociatedSiteToArea(res.data);
-          }, 1000);
-        })
-        .catch(() => {});
+      try {
+        const areasResponse = await TLPBackend.get('/areas');
+        addAssociatedSiteToArea(areasResponse.data);
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     fetchAreas();
