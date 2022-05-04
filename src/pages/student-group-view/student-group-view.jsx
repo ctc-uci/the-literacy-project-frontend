@@ -128,7 +128,8 @@ const StudentGroupView = () => {
           {typeof siteId === 'number' && typeof masterTeacherId === 'number' ? (
             <EditStudentGroupModal
               siteId={siteId}
-              teacherId={masterTeacherId}
+              // teacherId={masterTeacherId}
+              studentGroupId={studentGroupId}
               isOpen={editStudentGroupIsOpen}
               setIsOpen={setEditStudentGroupIsOpen}
             />

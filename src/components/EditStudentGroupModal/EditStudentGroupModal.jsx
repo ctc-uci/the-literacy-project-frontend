@@ -360,23 +360,6 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
           </div>
         </div>
       </Modal.Footer>
-      {/* <div className={styles['edit-student-group-modal-bottom-bar']}>
-        <button
-          type="button"
-          className={styles['edit-student-group-cancel-button']}
-          onClick={() => setIsOpen(false)}
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          className={styles['edit-student-group-save-button']}
-          // onClick={() => setIsOpen(false)}
-          onClick={() => updateGroup()}
-        >
-          Save
-        </button>
-      </div> */}
     </Modal>
   );
 };
