@@ -67,7 +67,7 @@ input[type='number'] {
 
 .input-fields-coalesce-wrapper {
   display: flex;
-  width: 520px;
+  width: 380px;
   justify-content: space-between;
 }
 

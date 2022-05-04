@@ -4,16 +4,9 @@ import { Container, Col, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import states from 'states-us';
 import styles from './CreateSiteModal.module.css';
 import { TLPBackend } from '../../common/utils';
 import '../../common/vars.css';
-
-const s = states.filter(x => !x.territory);
-const abbrev = s.map(x => x.name);
-// remove district of columbia
-abbrev.splice(8, 1);
-const options = abbrev.map(x => ({ label: x, value: x }));
 
 const schema = yup
   .object({
@@ -21,7 +14,6 @@ const schema = yup
     addressStreet: yup.string().required('Address street is required.'),
     addressApt: yup.string(),
     addressCity: yup.string().required(),
-    addressState: yup.string().required(),
     addressZip: yup.number().required(),
     primaryFirstName: yup.string().required(),
     primaryLastName: yup.string().required(),
@@ -53,7 +45,6 @@ const CreateSiteModal = ({ areaId }) => {
       addressStreet: data.addressStreet,
       addressApt: data.addressApt,
       addressCity: data.addressCity,
-      addressState: data.addressState,
       addressZip: data.addressZip,
       areaId,
       active: true,
@@ -143,22 +134,7 @@ const CreateSiteModal = ({ areaId }) => {
                       {...register('addressCity')}
                     />
                   </label>
-                  <label
-                    className={styles.label}
-                    aria-label="address-state"
-                    htmlFor="address-state"
-                  >
-                    <>{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}</>
-                    State<span style={{ color: '#e32' }}>*</span>
-                    <select {...register('addressState')} className="form-control">
-                      {options.map(option => (
-                        <option key={option.value} value={option.value}>
-                          {option.value}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className={styles.label} htmlFor="address-zip">
+                  <label style={{ padding: 10 }} htmlFor="address-zip">
                     Zip Code<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="number"
