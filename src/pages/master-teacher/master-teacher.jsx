@@ -382,7 +382,7 @@ const MasterTeacherView = ({ cookies }) => {
               </Button>
             )}
           </div>
-          {typeof masterTeacherId === 'number' ? (
+          {typeof masterTeacherId === 'number' && typeof selectedSiteId === 'number' ? (
             <CreateStudentModal
               siteId={selectedSiteId}
               teacherId={masterTeacherId}
