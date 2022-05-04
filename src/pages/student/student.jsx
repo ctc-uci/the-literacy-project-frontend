@@ -130,7 +130,6 @@ const StudentView = () => {
         'Content-Type': 'application/json',
       },
     });
-    console.log(res);
     if (res.status === 200) {
       setStudent(res.data);
       await TLPBackend.get(`/student-groups/site/${res.data.siteId}`)
