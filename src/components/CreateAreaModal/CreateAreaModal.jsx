@@ -3,10 +3,12 @@ import { PropTypes } from 'prop-types';
 import './CreateAreaModal.css';
 import { Modal, Button, Form, Alert, CloseButton } from 'react-bootstrap';
 import { TLPBackend } from '../../common/utils';
+import StateFormSelect from '../StateFormSelect/StateFormSelect';
 
 const CreateAreaModal = ({ isOpen, setIsOpen }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [areaName, setAreaName] = useState('');
+  const [areaState, setAreaState] = useState('');
   const [alertText, setAlertText] = useState('');
   const [isAlertSuccess, setIsAlertSuccess] = useState(true);
 
@@ -18,9 +20,21 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
     setIsOpen(false);
     setShowAlert(false);
   };
-  const submitNewArea = () => {
+  const submitNewArea = async () => {
+    const areas = await TLPBackend.get('/areas');
+    const areaNames = areas.data.map(area => area.areaName);
+
+    if (areaNames.indexOf(areaName) > -1) {
+      // same area name as existing one
+      setAlertText(`[ERROR] area name ${areaName} already exists`);
+      setIsAlertSuccess(false);
+      closeModal();
+      return;
+    }
+
     TLPBackend.post('/areas', {
       areaName,
+      areaState,
       active: 'true',
     })
       .then(() => {
@@ -48,7 +62,7 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
 
         <Modal.Body>
           <div>
-            <Form.Group className="mb-5" controlId="createArea.name">
+            <Form.Group className="mb-3" controlId="createArea.name">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 placeholder="Name"
@@ -59,14 +73,24 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
                 required
               />
             </Form.Group>
+            <Form.Group className="mb-3" controlId="createArea.state">
+              <Form.Label>State</Form.Label>
+              <StateFormSelect
+                defaultValue={areaState}
+                onChange={e => {
+                  setAreaState(e.target.value);
+                }}
+              />
+            </Form.Group>
           </div>
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeModal}>
-            Create and Add Another
-          </Button>
-          <Button variant="primary" onClick={submitNewArea}>
+          <Button
+            variant="primary"
+            onClick={submitNewArea}
+            disabled={areaName === '' || areaState === ''}
+          >
             Create
           </Button>
         </Modal.Footer>

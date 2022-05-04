@@ -26,8 +26,9 @@
   margin-bottom: 30px;
 }
 
-.scorecard-table th, td {
-  border: 1px solid #B9B9B9;
+.scorecard-table th,
+td {
+  border: 1px solid #b9b9b9;
 }
 
 .scorecard-table th {
@@ -53,7 +54,7 @@
 .game-name {
   max-width: 350px;
   min-width: 350px;
-  background: #FFE79F;
+  background: #ffe79f;
 }
 
 .skill-test {

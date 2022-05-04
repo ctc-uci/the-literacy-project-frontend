@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { TLPBackend, scrollToTop } from '../../common/utils';
-
+import { TLPBackend } from '../../common/utils';
 import ReturnHeader from '../../common/ReturnHeader/ReturnHeader';
 import { AssessmentScoreCard, ImprovementGraph } from '../../components/AssessmentForms';
 import styles from './assessment-scorecard-input.module.css';
+import Footer from '../../components/Footer/Footer';
 
 const AssessmentScorecardInput = () => {
   const { studentID } = useParams();
@@ -47,44 +47,38 @@ const AssessmentScorecardInput = () => {
   }, []);
 
   return (
-    <div className={styles['form-wrapper']}>
-      <ReturnHeader
-        returnText={`Return to ${studentData?.lastName}, ${studentData?.firstName}`}
-        returnLink="/"
-        rightText="Assessment Score Card"
-      />
-      <hr size="1" className={styles.divider} />
-      <AssessmentScoreCard
-        name="pretestA"
-        headerText="Pre-Test"
-        tableData={{
-          scores: studentData.pretestA,
-          notes: studentData.pretestANotes,
-        }}
-        setTableData={data => updateStudentData('pretestA', data)}
-      />
-      <AssessmentScoreCard
-        name="posttestA"
-        headerText="Post-Test"
-        tableData={{
-          scores: studentData.posttestA,
-          notes: studentData.posttestANotes,
-        }}
-        setTableData={data => updateStudentData('posttestA', data)}
-      />
-      <h3 className={styles['graph-header']}>Improvement</h3>
-      <div className={styles['improvement-graph']}>
-        <ImprovementGraph studentData={studentData} />
+    <div>
+      <div className={styles['form-wrapper']}>
+        <ReturnHeader
+          returnText={`Return to ${studentData?.lastName}, ${studentData?.firstName}`}
+          returnLink="/"
+          rightText="Assessment Score Card"
+        />
+        <hr size="1" className={styles.divider} />
+        <AssessmentScoreCard
+          name="pretestA"
+          headerText="Pre-Test"
+          tableData={{
+            scores: studentData.pretestA,
+            notes: studentData.pretestANotes,
+          }}
+          setTableData={data => updateStudentData('pretestA', data)}
+        />
+        <AssessmentScoreCard
+          name="posttestA"
+          headerText="Post-Test"
+          tableData={{
+            scores: studentData.posttestA,
+            notes: studentData.posttestANotes,
+          }}
+          setTableData={data => updateStudentData('posttestA', data)}
+        />
+        <h3 className={styles['graph-header']}>Improvement</h3>
+        <div className={styles['improvement-graph']}>
+          <ImprovementGraph studentData={studentData} />
+        </div>
       </div>
-      <div
-        onClick={() => scrollToTop()}
-        onKeyDown={() => scrollToTop()}
-        className={styles['top-button']}
-        role="button"
-        tabIndex="0"
-      >
-        Back to Top
-      </div>
+      <Footer />
     </div>
   );
 };

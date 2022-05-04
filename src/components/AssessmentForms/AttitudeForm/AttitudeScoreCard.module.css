@@ -26,8 +26,9 @@
   margin-bottom: 20px;
 }
 
-.scorecard-table th, td {
-  border: 1px solid #B9B9B9;
+.scorecard-table th,
+td {
+  border: 1px solid #b9b9b9;
 }
 
 .scorecard-table th {
@@ -47,7 +48,8 @@
   margin-left: 50%;
 }
 
-.indiv-score-table td, .combined-score-table td {
+.indiv-score-table td,
+.combined-score-table td {
   height: 70px;
   background: var(--color-gray-white);
   font-weight: bold;

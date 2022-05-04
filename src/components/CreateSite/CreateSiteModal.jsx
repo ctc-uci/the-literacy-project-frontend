@@ -1,36 +1,27 @@
 import { React } from 'react';
 import PropTypes from 'prop-types';
-import './CreateSiteModal.css';
 import { Container, Col, Row } from 'react-bootstrap';
-// Forms
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
+import styles from './CreateSiteModal.module.css';
 import { TLPBackend } from '../../common/utils';
-
-const nameContainsSpace = name => {
-  return name.indexOf(' ') !== -1;
-};
+import '../../common/vars.css';
 
 const schema = yup
   .object({
-    siteName: yup.string().required(),
-    addressStreet: yup.string().required(),
-    // addressStreet: yup.string(),
+    siteName: yup.string().required('Please enter a site name.'),
+    addressStreet: yup.string().required('Address street is required.'),
+    addressApt: yup.string(),
     addressCity: yup.string().required(),
-    // addressCity: yup.string(),
     addressZip: yup.number().required(),
-    // addressZip: yup.number(),
-    primaryName: yup.string().required(),
-    // primaryName: yup.string(),
-    primaryTitle: yup.string().required(),
-    // primaryTitle: yup.string(),
+    primaryFirstName: yup.string().required(),
+    primaryLastName: yup.string().required(),
+    primaryTitle: yup.string(),
     primaryEmail: yup.string().required(),
-    // primaryEmail: yup.string(),
     primaryPhone: yup.string().required(),
-    // primaryPhone: yup.string(),
-    secondaryName: yup.string(),
+    secondaryFirstName: yup.string(),
+    secondaryLastName: yup.string(),
     secondaryTitle: yup.string(),
     secondaryEmail: yup.string(),
     secondaryPhone: yup.string(),
@@ -44,53 +35,46 @@ const CreateSiteModal = ({ areaId }) => {
     delayError: 750,
   });
 
+  const cancel = () => {
+    window.location.replace(`/area/${areaId}`);
+  };
+
   const onSubmit = async data => {
     const formData = {
       siteName: data.siteName,
       addressStreet: data.addressStreet,
+      addressApt: data.addressApt,
       addressCity: data.addressCity,
       addressZip: data.addressZip,
       areaId,
-      active: 'true',
+      active: true,
       notes: data.notes,
       primaryContactInfo: {
-        // Revisit later: currently only one input field for name,
-        // but we need first + last name differentiation
-        firstName: nameContainsSpace(data.primaryName)
-          ? data.primaryName.slice(0, data.primaryName.indexOf(' '))
-          : data.primaryName,
-        lastName: nameContainsSpace(data.primaryName)
-          ? data.primaryName.slice(data.primaryName.indexOf(' ') + 1)
-          : '',
+        firstName: data.primaryFirstName,
+        lastName: data.primaryLastName,
         title: data.primaryTitle,
         email: data.primaryEmail,
-        phoneNumber: data.primaryPhone,
+        phone: data.primaryPhone,
       },
     };
 
     // Adding secondary contact info, if present
-    if (data.secondaryName !== '') {
+    if (data.secondaryFirstName) {
       formData.secondContactInfo = {
-        firstName: nameContainsSpace(data.secondaryName)
-          ? data.secondaryName.slice(0, data.secondaryName.indexOf(' '))
-          : data.secondaryName,
-        lastName: nameContainsSpace(data.secondaryName)
-          ? data.secondaryName.slice(data.secondaryName.indexOf(' ') + 1)
-          : '',
+        firstName: data.secondaryFirstName,
+        lastName: data.secondaryLastName,
         title: data.secondaryTitle,
         email: data.secondaryEmail,
-        phoneNumber: data.secondaryPhone,
+        phone: data.secondaryPhone,
       };
     }
 
     // send form data to server
-    console.log(formData);
     await TLPBackend.post('/sites', formData, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    // console.log('Submit success');
     // Send the user back to all sites; TODO add success status notif
     window.location.replace(`/area/${areaId}`);
   };
@@ -98,108 +82,134 @@ const CreateSiteModal = ({ areaId }) => {
   return (
     <Container>
       <Col md={{ span: 8, offset: 2 }}>
-        <form className="form-group site-form" onSubmit={handleSubmit(onSubmit)}>
-          <div className="formwrapper">
-            <div className="form-header">
-              <h2 className="form-title">CREATE NEW SITE</h2>
+        <form className={`form-group ${styles['site-form']}`} onSubmit={handleSubmit(onSubmit)}>
+          <div className={styles['form-wrapper']}>
+            <div className={styles['form-header']}>
+              <h2 className={styles['form-title']}>CREATE NEW SITE</h2>
             </div>
-            <h3 className="required-subtitles">Basic Information</h3>
-            <div className="input-area">
+            <h3 className={styles['required-subtitles']}>Basic Information</h3>
+            <div className={styles['input-area']}>
               <Col md={5}>
-                <label htmlFor="site-name">
-                  Name
+                <label className={styles.label} htmlFor="site-name">
+                  Name<span style={{ color: '#e32' }}>*</span>
                   <input
+                    style={{ width: '255px' }}
                     type="text"
                     className="form-control"
                     name="siteName"
-                    placeholder="placeholder"
+                    placeholder="i.e. Lakeview Middle School"
                     {...register('siteName')}
                   />
                 </label>
-                <label htmlFor="address-street">
-                  Address Line
+                <label className={styles.label} htmlFor="address-street">
+                  Street Address<span style={{ color: '#e32' }}>*</span>
                   <input
+                    style={{ width: '255px' }}
                     type="text"
-                    className="form-control"
+                    className={`form-control ${styles['page-inputs']}`}
                     name="addressStreet"
-                    placeholder="placeholder"
+                    placeholder="ie 123 Playa Dr"
                     {...register('addressStreet')}
                   />
                 </label>
-                <div className="input-fields-coalesce-wrapper">
-                  <label htmlFor="address-city">
-                    City
+                <label className={styles.label} htmlFor="apt-suite-etc">
+                  Apt, suite, etc
+                  <input
+                    style={{ width: '255px' }}
+                    type="text"
+                    className="form-control"
+                    name="addressApt"
+                    placeholder="Apt 208"
+                    {...register('addressApt')}
+                  />
+                </label>
+                <div className={styles['input-fields-coalesce-wrapper']}>
+                  <label className={styles.label} htmlFor="address-city">
+                    City<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="text"
-                      className="addr-small-field form-control"
+                      className={`form-control ${styles['addr-small-field']}`}
                       name="addressCity"
-                      placeholder="placeholder"
+                      placeholder="Irvine"
                       {...register('addressCity')}
                     />
                   </label>
-                  <label htmlFor="address-zip">
-                    ZIP Code
+                  <label style={{ padding: 10 }} htmlFor="address-zip">
+                    Zip Code<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="number"
-                      // ZIP Codes are <= 9 digits
                       onInput={e => {
                         if (e.target.value.length > 9) {
                           e.target.value = e.target.value.slice(0, 9);
                         }
                       }}
                       maxLength={9}
-                      className="form-control addr-small-field"
+                      className={`form-control ${styles['addr-small-field']}`}
                       name="address-zip"
-                      placeholder="placeholder"
+                      placeholder="ie 92614"
                       {...register('addressZip')}
                     />
                   </label>
                 </div>
               </Col>
             </div>
-
-            <h3 className="required-subtitles">Primary Contact</h3>
-            <div className="input-area">
+            <h3 className={styles['required-subtitles']}>Primary Contact</h3>
+            <div className={styles['input-area']}>
               <Row>
-                <Col lg={5}>
-                  <label htmlFor="primary-name">
-                    Name
+                <Col lg={3}>
+                  <label className={styles.label} htmlFor="primary-name">
+                    First Name<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="text"
                       className="form-control"
                       name="primaryName"
-                      placeholder="placeholder"
-                      {...register('primaryName')}
+                      placeholder="First Name"
+                      {...register('primaryFirstName')}
+                    />
+                  </label>
+                </Col>
+                <Col lg={3}>
+                  <label className={styles.label} htmlFor="primary-name">
+                    Last Name<span style={{ color: '#e32' }}>*</span>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="primaryName"
+                      placeholder="Last Name"
+                      {...register('primaryLastName')}
                     />
                   </label>
                 </Col>
                 <Col lg={5}>
-                  <label htmlFor="primary-title">
+                  <label className={styles.label} htmlFor="primary-title">
                     Title
                     <input
+                      style={{ width: '255px' }}
                       type="text"
                       className="form-control"
                       name="primaryTitle"
-                      placeholder="placeholder"
+                      placeholder="i.e. Principal, Sir"
                       {...register('primaryTitle')}
                     />
                   </label>
                 </Col>
               </Row>
               <Col md={5}>
-                <label htmlFor="primary-email">
-                  Email
+                <label className={styles.label} htmlFor="primary-email">
+                  Email<span style={{ color: '#e32' }}>*</span>
                   <input
-                    type="text"
+                    style={{ width: '255px' }}
+                    type="email"
                     className="form-control"
                     name="primaryEmail"
-                    placeholder="placeholder"
+                    placeholder="email@gmail.com"
                     {...register('primaryEmail')}
                   />
                 </label>
-                <label htmlFor="primary-phone">
-                  Phone Number
+                <label className={styles.label} htmlFor="primary-phone">
+                  Phone Number<span style={{ color: '#e32' }}>*</span>
                   <input
+                    style={{ width: '255px' }}
                     type="number"
                     // Phone #s are <= 10 digits
                     onInput={e => {
@@ -210,55 +220,69 @@ const CreateSiteModal = ({ areaId }) => {
                     maxLength={10}
                     className="form-control"
                     name="primaryPhone"
-                    placeholder="placeholder"
+                    placeholder="1233332410"
                     {...register('primaryPhone')}
                   />
                 </label>
               </Col>
             </div>
-
-            <h3 className="optional-subtitles">Secondary Contact</h3>
-            <div className="input-area">
+            <h3 className={styles['optional-subtitles']}>Secondary Contact</h3>
+            <div className={styles['input-area']}>
               <Row>
-                <Col lg={5}>
-                  <label htmlFor="secondary-name">
-                    Name
+                <Col lg={3}>
+                  <label className={styles.label} htmlFor="secondary-name">
+                    First Name
                     <input
                       type="text"
                       className="form-control"
-                      name="secondaryName"
-                      placeholder="placeholder"
-                      {...register('secondaryName')}
+                      name="secondaryFirstName"
+                      placeholder="First Name"
+                      {...register('secondaryFirstName')}
+                    />
+                  </label>
+                </Col>
+                <Col lg={3}>
+                  <label className={styles.label} htmlFor="secondary-name">
+                    Last Name
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="secondaryLastName"
+                      placeholder="Last Name"
+                      {...register('secondaryLastName')}
                     />
                   </label>
                 </Col>
                 <Col lg={5}>
-                  <label htmlFor="secondary-title">
+                  <label className={styles.label} htmlFor="secondary-title">
                     Title
                     <input
+                      style={{ width: '255px' }}
                       type="text"
                       className="form-control"
                       name="secondaryTitle"
-                      placeholder="placeholder"
+                      placeholder="i.e. Principal, Sir"
                       {...register('secondaryTitle')}
                     />
                   </label>
                 </Col>
               </Row>
               <Col md={5}>
-                <label htmlFor="secondary-email">
+                <label className={styles.label} htmlFor="secondary-email">
                   Email
                   <input
-                    type="text"
+                    style={{ width: '255px' }}
+                    type="email"
                     className="form-control"
                     name="secondaryEmail"
-                    placeholder="placeholder"
+                    placeholder="email@gmail.com"
                     {...register('secondaryEmail')}
                   />
                 </label>
-                <label htmlFor="secondary-phone">
+                <label className={styles.label} htmlFor="secondary-phone">
                   Phone Number
                   <input
+                    style={{ width: '255px' }}
                     className="form-control"
                     type="number"
                     // Phone #s are <= 10 digits
@@ -268,25 +292,48 @@ const CreateSiteModal = ({ areaId }) => {
                       }
                     }}
                     name="secondaryPhone"
-                    placeholder="placeholder"
+                    placeholder="1233332401"
                     {...register('secondaryPhone')}
                   />
                 </label>
               </Col>
             </div>
-
-            <h3 className="optional-subtitles">Notes</h3>
-            <label htmlFor="notes" className="input-area">
-              <textarea
-                className="form-control"
-                placeholder="placeholder"
-                name="notes"
-                {...register('notes')}
-              />
-            </label>
-
-            <button type="submit" className="btn save-btn">
+            <h3 className={styles['optional-subtitles']}>Notes</h3>
+            <Col>
+              <label htmlFor="notes" className={`${styles['input-area']} ${styles.label}`}>
+                <textarea
+                  style={{ width: '700px' }}
+                  className="form-control"
+                  placeholder="notes"
+                  name="notes"
+                  {...register('notes')}
+                />
+              </label>
+            </Col>
+            <button
+              type="submit"
+              className="btn"
+              style={{
+                backgroundColor: '#3288c4',
+                color: 'var(--text-color-white)',
+                width: '160px',
+                margin: '60px 0px 30px 70px',
+              }}
+            >
               Save
+            </button>
+            <button
+              type="button"
+              onClick={cancel}
+              className={`btn ${styles['cancel-btn']}`}
+              style={{
+                backgroundColor: '#5f758d',
+                color: 'var(--text-color-white)',
+                width: '160px',
+                margin: '60px 0px 30px 70px',
+              }}
+            >
+              Cancel
             </button>
           </div>
         </form>

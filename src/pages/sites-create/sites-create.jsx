@@ -35,11 +35,11 @@ const SitesCreateView = () => {
   return (
     <div>
       <p className="routing offset-1">
-        <Link to="/area-management" className="link">
+        <Link to="/" className="link">
           Area{' '}
         </Link>
         / {/* filler for now */}
-        <Link to="/sites" className="link">
+        <Link to={`/area/${areaId}`} className="link">
           {areaName}{' '}
         </Link>
         / Create New Site

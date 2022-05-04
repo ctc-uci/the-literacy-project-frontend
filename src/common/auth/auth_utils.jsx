@@ -4,6 +4,9 @@ import {
   sendPasswordResetEmail,
   confirmPasswordReset,
   applyActionCode,
+  updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
 } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
@@ -181,6 +184,24 @@ const logout = async (redirectPath, navigate, cookies) => {
   navigate(redirectPath);
 };
 
+/**
+ * Updates user password
+ * @param {string} currPassword User's current password
+ * @param {string} newPassword User's new password
+ */
+const updateUserPassword = async (currPassword, newPassword) => {
+  const currUser = auth.currentUser;
+  await signInWithEmailAndPassword(auth, currUser.email, currPassword);
+  const credential = EmailAuthProvider.credential(currUser.email, currPassword);
+  reauthenticateWithCredential(currUser, credential).then(({ user }) => {
+    try {
+      updatePassword(user, newPassword);
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  });
+};
+
 export {
   useNavigate,
   logInWithEmailAndPassword,
@@ -190,4 +211,5 @@ export {
   confirmNewPassword,
   confirmVerifyEmail,
   finishAccountSetUp,
+  updateUserPassword,
 };

@@ -1,18 +1,24 @@
 import { React, useState, useEffect } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { Button, Card } from 'react-bootstrap';
-import { TLPBackend } from '../../common/utils';
+import { BsPeople } from 'react-icons/bs';
+import { TLPBackend, calculateScores } from '../../common/utils';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import SitesTable from './sitesTable';
 import styles from './AreaView.module.css';
+import Graph from '../Graph/Graph';
+import SchoolIcon from '../../assets/icons/school.svg';
+import TeacherIcon from '../../assets/icons/Teacher.svg';
 
 const BackToAllAreas = () => {
-  Navigate('/area-management');
+  Navigate('/');
 };
 
 const AreaView = () => {
   const { areaId } = useParams();
   const [areaName, setAreaName] = useState('');
+  const [testScores, setTestScores] = useState({});
+  const [error, setError] = useState(null);
 
   // Gets area name from backend; sends user back if area ID is invalid
   useEffect(async () => {
@@ -35,6 +41,21 @@ const AreaView = () => {
       // console.log(err);
       BackToAllAreas();
     }
+
+    async function fetchStudents() {
+      const studentScoresRes = await TLPBackend.get(`/students/area/${areaId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (studentScoresRes.status === 200) {
+        setTestScores(calculateScores(studentScoresRes.data));
+      } else {
+        setTestScores('');
+        setError(error);
+      }
+    }
+    fetchStudents();
   }, []);
 
   const [schoolYear, setSchoolYear] = useState('2020-21');
@@ -50,7 +71,7 @@ const AreaView = () => {
       <div className={styles.site_container}>
         <div className={styles.main_content}>
           <div className={styles.areas_breadcrumb}>
-            <Link to="/area-management" className={styles.all_areas_link}>
+            <Link to="/" className={styles.all_areas_link}>
               Areas{' '}
             </Link>
             / {areaName}
@@ -96,20 +117,48 @@ const AreaView = () => {
           {/* </div> */}
         </div>
         <div className="data">
-          <div>
-            <h2>{areaName} Data</h2>
+          <div className={styles.sidebar_data_text}>
+            <div>
+              <h2>{areaName} Data</h2>
+            </div>
+            <Button className={`btn btn-primary ${styles.export_stats_to_csv_btn}`}>
+              Export to CSV
+            </Button>
           </div>
-          <Button className={`btn btn-primary ${styles.export_stats_to_csv_btn}`}>
-            Export to CSV
-          </Button>
-          <h2>Data</h2>
-          <h3>Average Scores</h3>
-          {/* placeholder for graph */}
-          <Card className="graph" />
-          <Card className="stats">
-            <p># Students</p>
-            <p># Teachers</p>
-            <p># Sites</p>
+          <Card className={styles.stats}>
+            <p>
+              <BsPeople /> 0 Students
+            </p>
+            <p>
+              <img
+                className={styles['area-dropdown__open__area_stats__section-icon']}
+                src={TeacherIcon}
+                alt="Teacher Icon"
+              />
+              0 Teachers
+            </p>
+            <p>
+              <img
+                className={styles['area-dropdown__open__area_stats__section-icon']}
+                src={SchoolIcon}
+                alt="School Icon"
+              />
+              1 Sites
+            </p>
+          </Card>
+          <div className={styles.graph_headings}>
+            <p>{areaName}</p>
+            <p>Year: 2021-22 Cycle: 1</p>
+            <p>
+              <strong>Average Growth in Reading</strong>
+            </p>
+          </div>
+          <Card className={styles.graph}>
+            <Graph
+              xLabels={['Attitudinal', 'Academic']}
+              preData={testScores.pre}
+              postData={testScores.post}
+            />
           </Card>
         </div>
       </div>

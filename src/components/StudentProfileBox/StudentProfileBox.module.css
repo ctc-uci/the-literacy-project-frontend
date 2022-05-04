@@ -4,7 +4,7 @@
 }
 
 .student-profile-row {
-  width: 560px;
+  width: 350px;
   height: 88px;
 
   background: #ffffff !important;
@@ -12,4 +12,6 @@
 
   font-family: 'Calibri';
   font-style: normal;
+
+  --bs-gutter-x: 0;
 }
