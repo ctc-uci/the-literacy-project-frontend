@@ -241,7 +241,7 @@ const AreaManagement = () => {
                 }}
               >
                 <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
-                New Area
+                Create New Area
               </Button>
               <CreateAreaModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
               <div className={styles['area-button-options-right']}>
