@@ -12,7 +12,19 @@ import { TLPBackend } from '../../common/utils';
 import StudentGroupDropdown from '../EditStudentGroupModal/StudentGroupDropdown';
 
 const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
-  const schoolYears = ['2021-2022', '2022-2023', '2023-2024'];
+  const schoolYears = [
+    '2020-2021',
+    '2021-2022',
+    '2022-2023',
+    '2023-2024',
+    '2024-2025',
+    '2025-2026',
+    '2026-2027',
+    '2027-2028',
+    '2028-2029',
+    '2029-2030',
+    '2030-2031',
+  ];
   const schoolCycles = ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
   const meetingDays = [
     'Mondays',
