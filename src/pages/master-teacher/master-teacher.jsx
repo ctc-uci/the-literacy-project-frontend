@@ -17,6 +17,8 @@ import StudentTable from '../../components/StudentTable/StudentTable';
 import Graph from '../../components/Graph/Graph';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import Footer from '../../components/Footer/Footer';
+import CreateStudentGroupModal from '../../components/CreateStudentGroupModal/CreateStudentGroupModal';
+import CreateStudentModal from '../../components/CreateStudentModal/CreateStudentModal';
 
 const MasterTeacherView = ({ cookies }) => {
   const [allData, setAllData] = useState([]); // all student group data
@@ -38,6 +40,9 @@ const MasterTeacherView = ({ cookies }) => {
   const [yearToggle, setYearToggle] = useState(true);
   const VIEW_ALL = 'All Sites';
   const cycles = ['1', '2', '3', '4'];
+  const [createStudentGroupIsOpen, setCreateStudentGroupIsOpen] = useState(false);
+  const [createStudentIsOpen, setCreateStudentIsOpen] = useState(false);
+  const [masterTeacherId, setMasterTeacherId] = useState();
 
   const filterSchoolYearCycle = async (
     filterOptions,
@@ -181,7 +186,8 @@ const MasterTeacherView = ({ cookies }) => {
   };
 
   useEffect(async () => {
-    const teacherId = cookies.get(cookieKeys.USER_ID);
+    const teacherId = await cookies.get(cookieKeys.USER_ID);
+    setMasterTeacherId(Number(teacherId));
 
     async function fetchTeacherData() {
       const allStudentData = await TLPBackend.get(`/student-groups/master-teacher/${teacherId}`);
@@ -312,7 +318,11 @@ const MasterTeacherView = ({ cookies }) => {
         <div className={styles.section}>
           <div className={styles.header}>
             <h3>Student Groups</h3>
-            <Button variant="warning" className={styles['create-button']}>
+            <Button
+              variant="warning"
+              className={styles['create-button']}
+              onClick={() => setCreateStudentGroupIsOpen(true)}
+            >
               Create Student Group
               <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
             </Button>
@@ -328,6 +338,7 @@ const MasterTeacherView = ({ cookies }) => {
                 .map(group => (
                   <StudentGroup
                     key={group.groupId}
+                    groupId={group.groupId}
                     groupName={group.name}
                     studentList={
                       group.students
@@ -346,11 +357,22 @@ const MasterTeacherView = ({ cookies }) => {
             </div>
           )}
         </div>
-
+        {typeof masterTeacherId === 'number' ? (
+          <CreateStudentGroupModal
+            siteId={selectedSiteId}
+            teacherId={masterTeacherId}
+            isOpen={createStudentGroupIsOpen}
+            setIsOpen={setCreateStudentGroupIsOpen}
+          />
+        ) : null}
         <div className={`${styles.section} ${styles['students-container']}`}>
           <div className={styles.header}>
             <h3>Students</h3>
-            <Button variant="warning" className={styles['create-button']}>
+            <Button
+              variant="warning"
+              className={styles['create-button']}
+              onClick={() => setCreateStudentIsOpen(true)}
+            >
               Create New Student
               <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
             </Button>
@@ -360,6 +382,14 @@ const MasterTeacherView = ({ cookies }) => {
               </Button>
             )}
           </div>
+          {typeof masterTeacherId === 'number' && typeof selectedSiteId === 'number' ? (
+            <CreateStudentModal
+              siteId={selectedSiteId}
+              teacherId={masterTeacherId}
+              isOpen={createStudentIsOpen}
+              setIsOpen={setCreateStudentIsOpen}
+            />
+          ) : null}
           {siteStudents.length === 0 ? (
             <div className={styles['empty-view']}>
               <h2>No students have been created for this selected time.</h2>
@@ -372,6 +402,7 @@ const MasterTeacherView = ({ cookies }) => {
                   .map(s => (
                     <StudentProfileBox
                       key={s.studentId}
+                      studentId={s.studentId}
                       studentName={`${s.firstName} ${s.lastName}`}
                     />
                   ))

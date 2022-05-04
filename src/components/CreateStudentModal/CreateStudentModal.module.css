@@ -1,0 +1,75 @@
+.modalTitle {
+  width: 100%;
+  text-align: center;
+}
+
+.form-body {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.input-area {
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.input-area p {
+  margin-bottom: 5px;
+  width: 100%;
+  text-align: left;
+}
+
+.required:after {
+  content: '*';
+  color: #ff0000;
+}
+
+.ethnicity-badge {
+  background-color: #e9ecef !important;
+  margin-right: 1em;
+  margin-bottom: 0.5em;
+
+  line-height: 1.5;
+  font-size: 14px;
+  font-family: 'Calibri';
+  font-weight: 400;
+}
+
+.cancel-button {
+  background-color: #868e96;
+}
+
+.save-button {
+  color: white;
+}
+
+.input-empty {
+  border-color: #ff0000;
+}
+
+.alert-custom {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  right: 0;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  max-width: 300px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.error-message {
+  margin-top: 3px;
+  margin-bottom: 0px !important;
+  font-size: 13px;
+  color: #ff0000;
+}
+
+@media only screen and (max-width: 500px) {
+  .form-body {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}

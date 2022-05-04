@@ -23,7 +23,7 @@ const schema = yup
     addressStreet: yup.string().required(),
     addressApt: yup.string(),
     addressCity: yup.string().required(),
-    addressState: yup.string().required(),
+    addressState: yup.string(),
     addressZip: yup.number().required(),
     primaryFirstName: yup.string().required(),
     primaryLastName: yup.string().required(),
@@ -82,7 +82,7 @@ const ViewSite = ({ siteId }) => {
 
   useEffect(async () => {
     getSiteInfo();
-  }, []);
+  }, [siteInfo]);
 
   const onSubmit = async data => {
     const formData = {
@@ -90,7 +90,7 @@ const ViewSite = ({ siteId }) => {
       addressStreet: data.addressStreet,
       addressApt: data.addressApt,
       addressCity: data.addressCity,
-      addressState: data.addressState,
+      addressState: siteInfo.addressState,
       addressZip: data.addressZip,
       areaId: siteInfo.areaId,
       active: data.active === 'true',
@@ -116,9 +116,7 @@ const ViewSite = ({ siteId }) => {
     }
 
     // send form data to server
-
     await TLPBackend.put(`/sites/${siteId}`, formData);
-    window.location.reload();
     changeEdit();
   };
 
@@ -210,9 +208,9 @@ const ViewSite = ({ siteId }) => {
                       </label>
                       <label aria-label="address-state" htmlFor="address-state">
                         <>{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}</>
-                        State<span style={{ color: '#e32' }}>*</span>
+                        State
                         <select
-                          {...register('addressState')}
+                          disabled="true"
                           className="form-control"
                           defaultValue={siteInfo.addressState}
                         >

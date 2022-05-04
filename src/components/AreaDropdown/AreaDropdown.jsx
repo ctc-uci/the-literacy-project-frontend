@@ -11,6 +11,7 @@ function AreaDropdown({
   areaId,
   areaActive,
   areaName,
+  areaState,
   areaStats,
   areaSites,
   editable,
@@ -120,6 +121,7 @@ function AreaDropdown({
         areaId={areaId}
         areaActive={areaActive}
         areaName={areaName}
+        areaState={areaState}
         isOpen={editAreaModalIsOpen}
         setIsOpen={setEditAreaModalIsOpen}
       />
@@ -131,6 +133,7 @@ AreaDropdown.defaultProps = {
   areaId: null,
   areaActive: false,
   areaName: '',
+  areaState: '',
   areaStats: {},
   areaSites: [],
   editable: true,
@@ -140,6 +143,7 @@ AreaDropdown.defaultProps = {
 AreaDropdown.propTypes = {
   areaId: PropTypes.number,
   areaName: PropTypes.string,
+  areaState: PropTypes.string,
   areaActive: PropTypes.bool,
   // areaStats: PropTypes.arrayOf(
   //   PropTypes.shape({
@@ -149,6 +153,7 @@ AreaDropdown.propTypes = {
   //   }),
   // ),
   areaStats: PropTypes.oneOfType([PropTypes.object]),
+  // eslint-disable-next-line react/forbid-prop-types
   areaSites: PropTypes.arrayOf(PropTypes.object),
   editable: PropTypes.bool,
   hideSitesLink: PropTypes.bool,
