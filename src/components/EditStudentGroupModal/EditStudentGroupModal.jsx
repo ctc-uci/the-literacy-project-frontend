@@ -1,7 +1,8 @@
 import { React, useState, useEffect } from 'react';
 import debounce from 'lodash.debounce';
 import { PropTypes } from 'prop-types';
-import { Badge } from 'react-bootstrap';
+import { Modal, Button, Badge } from 'react-bootstrap';
+import CloseButton from 'react-bootstrap/CloseButton';
 import { BsXLg } from 'react-icons/bs';
 import Select from 'react-select';
 
@@ -9,9 +10,6 @@ import styles from './EditStudentGroupModal.module.css';
 import { TLPBackend } from '../../common/utils';
 
 import StudentGroupDropdown from './StudentGroupDropdown';
-
-// TODO:
-// [] Make selection dropdown resize accordingly
 
 const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) => {
   const schoolYears = ['2021-2022', '2022-2023', '2023-2024'];
@@ -35,20 +33,16 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     meetingTime: '3:30PM',
   });
 
-  // Students already in group
+  // Students currently in the group
   const [currentStudents, setCurrentStudents] = useState();
   const [currentStudentsLoaded, setCurrentStudentsLoaded] = useState(false);
-  // Students in the site that are not in the group
+  // Students in the system that are not in the group
   const [possibleStudents, setPossibleStudents] = useState();
   const [possibleStudentsLoaded, setPossibleStudentsLoaded] = useState(false);
 
   const [originalStudents, setOriginalStudents] = useState([]); // Students that were originally in the group
   const removedStudents = []; // Students removed from original group
   const addedStudents = []; // Students added to group that weren't in original group
-
-  // const [error, setError] = useState(null);
-
-  const closeModal = () => setIsOpen(false);
 
   const getStudentGroupData = async () => {
     try {
@@ -87,7 +81,6 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
   };
 
   const getPossibleStudents = async () => {
-    // const siteStudents = await TLPBackend.get(`/students/site/${siteId}`, {
     const systemStudents = await TLPBackend.get(`/students`, {
       headers: {
         'Content-Type': 'application/json',
@@ -163,6 +156,8 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     });
   };
 
+  const closeModal = () => setIsOpen(false);
+
   const editStudentGroupData = () => {
     TLPBackend.put(`/student-groups/${studentGroupId}`, {
       name: studentGroupInfo.groupName,
@@ -205,7 +200,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
       });
   };
 
-  const update = () => {
+  const updateGroup = () => {
     findMovedStudents();
     editStudentGroupData();
     editStudentGroupStudents();
@@ -219,11 +214,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     await getPossibleStudents();
   }, [currentStudentsLoaded]);
 
-  // console.log(currentStudents);
-  // console.log(possibleStudents);
-
   const updateName = name => {
-    // console.log(studentGroupInfo);
     setStudentGroupInfo({
       ...studentGroupInfo,
       groupName: name?.target?.value,
@@ -251,29 +242,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     </>
   );
 
-  // const dummyStudents = [{value: 20, label: "Winnie the Pooh"}];
-  // const studentOptions = () => {
-  // Object.keys(possibleStudents).map(studentId => ({
-  //   value: studentId,
-  //   label: `${possibleStudents[studentId].firstName} ${possibleStudents[studentId].lastName}`,
-  // }));
-  // {
-  // const studentObj = possibleStudents[studentId];
-  // console.log({ value: studentId, label: `${studentObj.firstName} ${studentObj.lastName}` });
-  // return ({
-  //   value: studentId,
-  //   label: `${studentObj.firstName} ${studentObj.lastName}`,
-  // });
-  // return (
-  // <option
-  //   id={studentId}
-  //   key={studentId}
-  //   value={studentId}
-  // >{`${studentObj.firstName} ${studentObj.lastName}`}</option>
-  // );
-  // });
-  // console.log(currentStudents);
-
+  // Styling for react-select component used to search for students
   const selectStyles = {
     option: (provided, state) => ({
       ...provided,
@@ -288,31 +257,20 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
       background: 'white',
       color: state.isSelected ? 'white' : 'white',
     }),
-    container: (provided, state) => ({
-      ...provided,
-      margin: state.isSelected ? 'red' : 'blue',
-    }),
-    menuList: provided => ({
-      ...provided,
-      height: 160,
-    }),
   };
 
-  const ModalContent = () => (
-    <>
-      <div className={styles['edit-student-group-modal']}>
-        <div className={styles['edit-student-group-modal-top-bar']}>
-          <div className={styles['edit-student-group-modal-top-bar-title']}>Edit Student Group</div>
-          {/* <div className={styles['edit-student-group-modal-exit-button']}>
-            <button
-              type="button"
-              className={styles['edit-student-group-exit-button']}
-              onClick={() => setIsOpen(false)}
-            >
-              X
-            </button>
-          </div> */}
-        </div>
+  return (
+    <Modal show={isOpen} onHide={closeModal} dialogClassName={styles['modal-content']}>
+      <Modal.Header dialogClassName={styles['edit-student-group-modal-header']}>
+        <Modal.Title dialogClassName={styles['edit-student-group-modal-top-bar-title']}>
+          Edit Student Group
+        </Modal.Title>
+        <CloseButton onClick={() => closeModal()} />
+      </Modal.Header>
+      {/* <div className={styles['edit-student-group-modal-top-bar']}>
+        <div className={styles['edit-student-group-modal-top-bar-title']}>Edit Student Group</div>
+      </div> */}
+      <Modal.Body>
         <div className={styles['edit-student-group-modal-body']}>
           <div className={styles['edit-student-group-modal-field-desc']}>Group Name</div>
           <input
@@ -320,12 +278,6 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
             type="text"
             defaultValue={studentGroupInfo.groupName}
             onChange={debouncedUpdateName}
-            // event =>
-            // setStudentGroupInfo({
-            //   ...studentGroupInfo,
-            //   groupName: event.target.value,
-            // })
-            // }
           />
           <div className={styles['edit-student-group-modal-field-desc']}>School Cycle</div>
           <div className={styles['edit-student-group-school-cycle']}>
@@ -392,35 +344,41 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
               className={styles['students-select']}
             />
           ) : null}
-          {/* <Form.Group>
-            <Form.Select onChange={e => addToCurrentStudents(e.target.value)}>
-              <option value={-1}>Select Students</option>
-              {possibleStudentsLoaded ? <StudentSelect /> : null}
-            </Form.Select>
-          </Form.Group> */}
         </div>
-        <div className={styles['edit-student-group-modal-bottom-bar']}>
-          <button
-            type="button"
-            className={styles['edit-student-group-cancel-button']}
-            onClick={() => setIsOpen(false)}
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className={styles['edit-student-group-save-button']}
-            // onClick={() => setIsOpen(false)}
-            onClick={() => update()}
-          >
-            Save
-          </button>
+      </Modal.Body>
+      <Modal.Footer>
+        <div className={styles['edit-student-group-modal-footer']}>
+          <div className={styles['edit-student-group-cancel-button']}>
+            <Button variant="secondary" onClick={() => closeModal()}>
+              Cancel
+            </Button>
+          </div>
+          <div className={styles['edit-student-group-save-button']}>
+            <Button variant="primary" onClick={() => updateGroup()}>
+              Save
+            </Button>
+          </div>
         </div>
-      </div>
-    </>
+      </Modal.Footer>
+      {/* <div className={styles['edit-student-group-modal-bottom-bar']}>
+        <button
+          type="button"
+          className={styles['edit-student-group-cancel-button']}
+          onClick={() => setIsOpen(false)}
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          className={styles['edit-student-group-save-button']}
+          // onClick={() => setIsOpen(false)}
+          onClick={() => updateGroup()}
+        >
+          Save
+        </button>
+      </div> */}
+    </Modal>
   );
-
-  return isOpen ? <ModalContent /> : null;
 };
 
 EditStudentGroupModal.propTypes = {

@@ -8,16 +8,19 @@ import StudentProfileBox from '../../components/StudentProfileBox/StudentProfile
 import Graph from '../../components/Graph/Graph';
 import styles from './student-group-view.module.css';
 import Footer from '../../components/Footer/Footer';
+import EditStudentGroupModal from '../../components/EditStudentGroupModal/EditStudentGroupModal';
 
 const StudentGroupView = () => {
   const studentGroupId = useParams().groupId;
   const [siteId, setSiteId] = useState();
+  const [masterTeacherId, setMasterTeacherId] = useState();
   const [siteName, setSiteName] = useState('');
   const [siteAddress, setSiteAddress] = useState('');
   const [meetingTime, setMeetingTime] = useState('');
   const [studentGroupList, setStudentGroupList] = useState([]);
   const [testScores, setTestScores] = useState({});
   const [error, setError] = useState(null);
+  const [editStudentGroupIsOpen, setEditStudentGroupIsOpen] = useState(false);
 
   const getStudentFirstNames = students => {
     const studentList = [];
@@ -39,6 +42,7 @@ const StudentGroupView = () => {
         `${studentGroupRes.data.meetingDay} ${parseTime(studentGroupRes.data.meetingTime)}`,
       );
       setStudentGroupList(getStudentFirstNames(studentGroupRes.data.students));
+      setMasterTeacherId(studentGroupRes.data.masterTeacherId);
     } else {
       setSiteId(-1);
       setError(error);
@@ -113,10 +117,22 @@ const StudentGroupView = () => {
         <div id={styles['student-group-container']}>
           <div className={styles['header-section']}>
             <h2 className={styles['student-group-header']}>Student Group {studentGroupId}</h2>
-            <Button variant="warning" className={styles['edit-group-btn']}>
+            <Button
+              variant="warning"
+              className={styles['edit-group-btn']}
+              onClick={() => setEditStudentGroupIsOpen(true)}
+            >
               Edit Group <BsPencil />
             </Button>
           </div>
+          {typeof siteId === 'number' && typeof masterTeacherId === 'number' ? (
+            <EditStudentGroupModal
+              siteId={siteId}
+              teacherId={masterTeacherId}
+              isOpen={editStudentGroupIsOpen}
+              setIsOpen={setEditStudentGroupIsOpen}
+            />
+          ) : null}
           <div id={styles['site-info-section']}>
             <h5 className={styles['grey-text']}>{siteName} Site</h5>
             <h5 className={styles['grey-text']}>{siteAddress}</h5>

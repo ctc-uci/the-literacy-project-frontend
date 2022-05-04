@@ -1,19 +1,15 @@
 import { React, useState, useEffect } from 'react';
 import debounce from 'lodash.debounce';
 import { PropTypes } from 'prop-types';
-import { Modal, Button, Badge, Form } from 'react-bootstrap';
+import { Modal, Button, Badge } from 'react-bootstrap';
 import CloseButton from 'react-bootstrap/CloseButton';
 import { BsXLg } from 'react-icons/bs';
-// import { useForm } from 'react-hook-form';
-import Select, { components } from 'react-select';
+import Select from 'react-select';
 
 import styles from './CreateStudentGroupModal.module.css';
 import { TLPBackend } from '../../common/utils';
 
 import StudentGroupDropdown from '../EditStudentGroupModal/StudentGroupDropdown';
-
-// TODO:
-// [] Select focus styling
 
 const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
   const schoolYears = ['2021-2022', '2022-2023', '2023-2024'];
@@ -43,17 +39,11 @@ const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
   const [validDay, setValidDay] = useState(true);
   const [validTime, setValidTime] = useState(true);
 
-  // const [showStudentOptions, setShowStudentOptions] = useState(false);
-  // const [search, setSearch] = useState('');
-
-  // Students in group
+  // Students in the group
   const [currentStudents, setCurrentStudents] = useState([]);
-  // const [currentStudentsLoaded, setCurrentStudentsLoaded] = useState(false);
   // Students in the system that are not in the group
   const [possibleStudents, setPossibleStudents] = useState();
   const [possibleStudentsLoaded, setPossibleStudentsLoaded] = useState(false);
-
-  const closeModal = () => setIsOpen(false);
 
   const getPossibleStudents = async () => {
     const siteStudents = await TLPBackend.get(`/students`, {
@@ -131,6 +121,26 @@ const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
     return notDefault;
   };
 
+  const closeModal = () => setIsOpen(false);
+
+  const resetModal = () => {
+    setStudentGroupInfo({
+      groupName: '',
+      masterTeacherId: teacherId,
+      schoolYear: 'Year',
+      schoolCycle: 'Cycle',
+      meetingDay: 'Day',
+      meetingTime: 'Time',
+    });
+    setValidName(true);
+    setValidYear(true);
+    setValidCycle(true);
+    setValidDay(true);
+    setValidTime(true);
+    setCurrentStudents([]);
+    closeModal();
+  };
+
   const createStudentGroup = async () => {
     if (!checkNotDefaultFields()) {
       return;
@@ -153,30 +163,12 @@ const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
       studentIds: addedStudents,
       studentGroupId: studentGroupData.data.groupId,
     });
-
-    closeModal();
-  };
-
-  const resetModal = () => {
-    setStudentGroupInfo({
-      groupName: '',
-      masterTeacherId: teacherId,
-      schoolYear: 'Year',
-      schoolCycle: 'Cycle',
-      meetingDay: 'Day',
-      meetingTime: 'Time',
-    });
-    setValidName(true);
-    setValidYear(true);
-    setValidCycle(true);
-    setValidDay(true);
-    setValidTime(true);
+    resetModal();
     closeModal();
   };
 
   useEffect(async () => {
     await getPossibleStudents();
-    // }, [currentStudentsLoaded]);
   }, []);
 
   const StudentBadges = () => (
@@ -198,28 +190,6 @@ const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
     </>
   );
 
-  // const dummyStudents = [{value: 20, label: "Winnie the Pooh"}];
-  // const studentOptions = () => {
-  // Object.keys(possibleStudents).map(studentId => ({
-  //   value: studentId,
-  //   label: `${possibleStudents[studentId].firstName} ${possibleStudents[studentId].lastName}`,
-  // }));
-  // {
-  // const studentObj = possibleStudents[studentId];
-  // console.log({ value: studentId, label: `${studentObj.firstName} ${studentObj.lastName}` });
-  // return ({
-  //   value: studentId,
-  //   label: `${studentObj.firstName} ${studentObj.lastName}`,
-  // });
-  // return (
-  // <option
-  //   id={studentId}
-  //   key={studentId}
-  //   value={studentId}
-  // >{`${studentObj.firstName} ${studentObj.lastName}`}</option>
-  // );
-  // });
-  // console.log(currentStudents);
   const updateName = name => {
     setStudentGroupInfo({
       ...studentGroupInfo,
@@ -228,24 +198,9 @@ const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
     setValidName(true);
   };
 
-  // const updateSearch = searchInput => {
-  //   // console.log(studentGroupInfo);
-  //   setSearch(searchInput);
-  //   setValidName(true);
-  // };
-
   const debouncedUpdateName = debounce(updateName, 800);
-  // const debouncedUpdateSearch = debounce(updateSearch, 800);
 
-  const selectDropdownIndicator = props => {
-    return (
-      <components.DropdownIndicator {...props}>
-        <BsXLg />
-        {/* <EmojiIcon label="Emoji" primaryColor={colourOptions[2].color} /> */}
-      </components.DropdownIndicator>
-    );
-  };
-
+  // Styling for react-select component used to search for students
   const selectStyles = {
     option: (provided, state) => ({
       ...provided,
@@ -262,189 +217,130 @@ const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
     }),
   };
 
-  const ModalContent = () => (
-    <>
-      <Modal show={isOpen} onHide={closeModal} dialogClassName={styles['modal-content']}>
-        {/* <div className={styles['create-student-group-modal']}> */}
-        {/* <div className={styles['create-student-group-modal-top-bar']}>
-          <div className={styles['create-student-group-modal-top-bar-title']}>
-            Create Student Group
+  return (
+    <Modal show={isOpen} onHide={closeModal} dialogClassName={styles['modal-content']}>
+      <Modal.Header dialogClassName={styles['create-student-group-modal-header']}>
+        <Modal.Title dialogClassName={styles['create-student-group-modal-top-bar-title']}>
+          Create Student Group
+        </Modal.Title>
+        <CloseButton onClick={() => resetModal()} />
+      </Modal.Header>
+      <Modal.Body>
+        <div className={styles['create-student-group-modal-body']}>
+          <div className={styles['create-student-group-modal-field-desc']}>Group Name</div>
+          <input
+            className={validName ? styles['modal-text-input'] : styles['modal-text-input-error']}
+            type="text"
+            defaultValue={studentGroupInfo.groupName}
+            onChange={debouncedUpdateName}
+            placeholder="Group"
+          />
+          <div className={styles['meeting-day-err-message']}>
+            {validName ? '' : 'Invalid Group Name'}
           </div>
-        </div> */}
-        <Modal.Header dialogClassName={styles['create-student-group-modal-header']}>
-          <Modal.Title dialogClassName={styles['create-student-group-modal-top-bar-title']}>
-            Create Student Group
-          </Modal.Title>
-          <CloseButton onClick={() => resetModal()} />
-        </Modal.Header>
-        <Modal.Body>
-          <div className={styles['create-student-group-modal-body']}>
-            {/* <div className={styles['create-student-group-modal-field-desc']}>Group Name</div>
+          <div className={styles['create-student-group-modal-field-desc']}>School Cycle</div>
+          <div className={styles['create-student-group-school-cycle']}>
+            <StudentGroupDropdown
+              choices={schoolYears}
+              current={studentGroupInfo.schoolYear}
+              setFn={eventKey => {
+                setStudentGroupInfo({
+                  ...studentGroupInfo,
+                  schoolYear: eventKey,
+                });
+                setValidYear(true);
+              }}
+              errorState={validYear}
+            />
+            <StudentGroupDropdown
+              choices={schoolCycles}
+              current={studentGroupInfo.schoolCycle}
+              setFn={eventKey => {
+                setStudentGroupInfo({
+                  ...studentGroupInfo,
+                  schoolCycle: eventKey,
+                });
+                setValidCycle(true);
+              }}
+              errorState={validCycle}
+            />
+            <div className={styles['school-year-err-message']}>
+              {validYear ? '' : 'Invalid School Year'}
+            </div>
+            <div className={styles['school-cycle-err-message']}>
+              {validCycle ? '' : 'Invalid School Cycle'}
+            </div>
+          </div>
+          <div className={styles['create-student-group-modal-field-desc']}>Meeting Time</div>
+          <div className={styles['create-student-group-meeting']}>
+            <StudentGroupDropdown
+              choices={meetingDays}
+              current={studentGroupInfo.meetingDay}
+              setFn={eventKey => {
+                setStudentGroupInfo({
+                  ...studentGroupInfo,
+                  meetingDay: eventKey,
+                });
+                setValidDay(true);
+              }}
+              errorState={validDay}
+            />
             <input
-              className={validName ? styles['modal-text-input'] : styles['modal-text-input-error']}
-              type="text"
-              defaultValue={studentGroupInfo.groupName}
-              onChange={debouncedUpdateName}
-              placeholder="Group"
-            /> */}
-            <Form.Group>
-              <Form.Label>Group Name</Form.Label>
-              <Form.Control
-                placeholder="Group"
-                defaultValue={studentGroupInfo.groupName}
-                onChange={debouncedUpdateName}
-                required
-              />
-            </Form.Group>
+              className={validTime ? styles['time-input'] : styles['time-input-error']}
+              type="time"
+              min="00:00"
+              max="23:59"
+              value={studentGroupInfo.meetingTime}
+              onChange={event => {
+                setStudentGroupInfo({
+                  ...studentGroupInfo,
+                  meetingTime: event.target.value,
+                });
+                setValidTime(true);
+              }}
+            />
             <div className={styles['meeting-day-err-message']}>
-              {validName ? '' : 'Invalid Group Name'}
+              {validDay ? '' : 'Invalid Meeting Day'}
             </div>
-            <div className={styles['create-student-group-modal-field-desc']}>School Cycle</div>
-            <div className={styles['create-student-group-school-cycle']}>
-              <StudentGroupDropdown
-                choices={schoolYears}
-                current={studentGroupInfo.schoolYear}
-                setFn={eventKey => {
-                  setStudentGroupInfo({
-                    ...studentGroupInfo,
-                    schoolYear: eventKey,
-                  });
-                  setValidYear(true);
-                }}
-                errorState={validYear}
-              />
-              <StudentGroupDropdown
-                choices={schoolCycles}
-                current={studentGroupInfo.schoolCycle}
-                setFn={eventKey => {
-                  setStudentGroupInfo({
-                    ...studentGroupInfo,
-                    schoolCycle: eventKey,
-                  });
-                  setValidCycle(true);
-                }}
-                errorState={validCycle}
-              />
-              <div className={styles['school-year-err-message']}>
-                {validYear ? '' : 'Invalid School Year'}
-              </div>
-              <div className={styles['school-cycle-err-message']}>
-                {validCycle ? '' : 'Invalid School Cycle'}
-              </div>
-            </div>
-            <div className={styles['create-student-group-modal-field-desc']}>Meeting Time</div>
-            <div className={styles['create-student-group-meeting']}>
-              <StudentGroupDropdown
-                choices={meetingDays}
-                current={studentGroupInfo.meetingDay}
-                setFn={eventKey => {
-                  setStudentGroupInfo({
-                    ...studentGroupInfo,
-                    meetingDay: eventKey,
-                  });
-                  setValidDay(true);
-                }}
-                errorState={validDay}
-              />
-              <input
-                className={validTime ? styles['time-input'] : styles['time-input-error']}
-                type="time"
-                min="00:00"
-                max="23:59"
-                value={studentGroupInfo.meetingTime}
-                onChange={event => {
-                  setStudentGroupInfo({
-                    ...studentGroupInfo,
-                    meetingTime: event.target.value,
-                  });
-                  setValidTime(true);
-                }}
-              />
-              <div className={styles['meeting-day-err-message']}>
-                {validDay ? '' : 'Invalid Meeting Day'}
-              </div>
-              <div className={styles['meeting-time-err-message']}>
-                {validTime ? '' : 'Invalid Meeting Time'}
-              </div>
-            </div>
-            <div className={styles['create-student-group-modal-field-desc']}>
-              Add/Remove Students
-            </div>
-            <div className={styles['create-student-group-badges']}>
-              {/* {currentStudentsLoaded ? <StudentBadges /> : null} */}
-              <StudentBadges />
-            </div>
-            <div className={styles['students-select']}>
-              {possibleStudentsLoaded ? (
-                <Select
-                  options={Object.keys(possibleStudents).map(studentId => ({
-                    value: studentId,
-                    label: `${possibleStudents[studentId].firstName} ${possibleStudents[studentId].lastName}`,
-                  }))}
-                  onChange={opt => addToCurrentStudents(opt.value)}
-                  placeholder="Select Students"
-                  components={{ selectDropdownIndicator }}
-                  styles={selectStyles}
-                />
-              ) : null}
-            </div>
-            {/* <div className={styles['students-select']}>
-              <input
-                type="text"
-                placeholder="Select students"
-                className={styles['modal-text-input']}
-                // onFocus={debouncedUpdateSearch}
-                onFocus={() => {
-                  setShowStudentOptions(true);
-                  console.log('show');
-                }}
-                onBlur={() => {
-                  setShowStudentOptions(false);
-                  console.log('hide');
-                }}
-              />
-              <div className={styles['students-select-options']}>
-                {possibleStudentsLoaded && showStudentOptions
-                  ? Object.keys(possibleStudents).map(studentId => (
-                      <button
-                        type="button"
-                        key={studentId}
-                        className={styles['students-select-option']}
-                      >
-                        {`${possibleStudents[studentId].firstName} ${possibleStudents[studentId].lastName}`}
-                      </button>
-                    ))
-                  : null}
-              </div>
-            </div> */}
-            {/* <Form.Group>
-              <Form.Select onChange={e => addToCurrentStudents(e.target.value)}>
-                <option value={-1}>Select Students</option>
-                {possibleStudentsLoaded ? <StudentSelect /> : null}
-              </Form.Select>
-            </Form.Group> */}
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <div className={styles['create-student-group-modal-footer']}>
-            <div className={styles['create-student-group-cancel-button']}>
-              <Button variant="secondary" onClick={() => resetModal()}>
-                Cancel
-              </Button>
-            </div>
-            <div className={styles['create-student-group-save-button']}>
-              <Button variant="primary" onClick={() => createStudentGroup()}>
-                Save
-              </Button>
+            <div className={styles['meeting-time-err-message']}>
+              {validTime ? '' : 'Invalid Meeting Time'}
             </div>
           </div>
-        </Modal.Footer>
-        {/* </div> */}
-      </Modal>
-    </>
+          <div className={styles['create-student-group-modal-field-desc']}>Add/Remove Students</div>
+          <div className={styles['create-student-group-badges']}>
+            <StudentBadges />
+          </div>
+          <div className={styles['students-select']}>
+            {possibleStudentsLoaded ? (
+              <Select
+                options={Object.keys(possibleStudents).map(studentId => ({
+                  value: studentId,
+                  label: `${possibleStudents[studentId].firstName} ${possibleStudents[studentId].lastName}`,
+                }))}
+                onChange={opt => addToCurrentStudents(opt.value)}
+                placeholder="Select Students"
+                styles={selectStyles}
+              />
+            ) : null}
+          </div>
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <div className={styles['create-student-group-modal-footer']}>
+          <div className={styles['create-student-group-cancel-button']}>
+            <Button variant="secondary" onClick={() => resetModal()}>
+              Cancel
+            </Button>
+          </div>
+          <div className={styles['create-student-group-save-button']}>
+            <Button variant="primary" onClick={() => createStudentGroup()}>
+              Save
+            </Button>
+          </div>
+        </div>
+      </Modal.Footer>
+    </Modal>
   );
-
-  return isOpen ? <ModalContent /> : null;
 };
 
 CreateStudentGroupModal.propTypes = {

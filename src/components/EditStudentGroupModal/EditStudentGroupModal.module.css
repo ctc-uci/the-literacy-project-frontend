@@ -6,7 +6,7 @@
   font-family: var(font-family), Helvetica, Arial, sans-serif;
   font-size: 1.2em;
   font-weight: 400;
-  width: 40%;
+  width: 90%;
   height: 1000px;
   border: 1.5px solid #ced4da;
   border-radius: 10px;
@@ -15,7 +15,7 @@
   left: 25%;
 }
 
-.edit-student-group-modal-top-bar {
+.edit-student-group-modal-header {
   padding: 15px 10px 15px 10px;
   display: flex;
   justify-content: center;
@@ -29,19 +29,37 @@
 }
 
 .edit-student-group-modal-body {
-  padding: 10px 15%;
+  padding: 0 3em 7em 3em;
+}
+
+.edit-student-group-modal-footer {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+}
+
+.edit-student-group-cancel-button {
+  margin: 0 1em 0 0;
+}
+
+.edit-student-group-save-button {
+  margin: 0 1em 0 0;
 }
 
 .edit-student-group-school-cycle {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 
 .edit-student-group-meeting {
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .edit-student-group-modal-field-desc {
@@ -55,11 +73,10 @@
 }
 
 .modal-text-input {
-  border: 1px solid #ced4da;
   color: #767676;
   border-radius: 10px;
   text-align: left;
-  padding: 22px 0px 22px 17px;
+  padding: 0.5em 0 0.5em 1em;
   width: 98%;
   border-radius: 10px;
   border: 1px solid #ced4da;
@@ -72,7 +89,7 @@
   color: #767676;
   border-radius: 10px;
   text-align: left;
-  padding: 22px 0px 22px 17px;
+  padding: 0.5em 0 0.5em 1em;
   width: 98%;
   border: 1px solid #80BDFF;
   box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
@@ -82,18 +99,17 @@
   font-size: 1em;
 }
 
-.edit-student-group-exit-button {
+/* .edit-student-group-exit-button {
   position: absolute;
   top: 15px;
   right: 10px;
   background-color: #fdfdfd;
-  /* border: 1px dotted black; */
   border: 0px;
   font-weight: 800;
   cursor: pointer;
-}
+} */
 
-.edit-student-group-cancel-button {
+/* .edit-student-group-cancel-button {
   background-color: var(--color-dark-gray);
   color: #fdfdfd;
   width: 96px;
@@ -123,7 +139,7 @@
   border-width: 1px;
   border-color: #fdfdfd;
   cursor: pointer;
-}
+} */
 
 .student-badge {
   margin-right: 1em;
@@ -132,6 +148,7 @@
   color: #212529;
   padding: 10px;
   padding-right: 15px;
+  font-size: 0.85em;
 }
 
 .student-badge-icon {
@@ -157,53 +174,4 @@
   outline: none;
   padding: 0px 15px 0px 15px;
   color: #6c757d;
-}
-
-.dropdown-outer-class {
-  width: 47%;
-}
-
-.dropdown-inner-class {
-  padding: 5px;
-}
-
-.dropdown-choice-wrapper-class {
-  padding: 0px;
-}
-
-.dropdown-choice-selected {
-  color: black;
-  font-size: 19px;
-  padding-left: 5px;
-}
-
-.dropdown-choice-selected:hover {
-  text-decoration: none;
-  background-color: whitesmoke;
-}
-
-.dropdown-choice-selected:active {
-  color: black;
-  background-color: #b2d4ff;
-  font-size: 19px;
-  padding-left: 5px;
-}
-
-.dropdown-choice-unselected {
-  color: #6c757d;
-  font-size: 19px;
-  padding-left: 5px;
-}
-
-.dropdown-choice-unselected:hover {
-  text-decoration: none;
-  background-color: whitesmoke;
-  color: black;
-}
-
-.dropdown-choice-unselected:active {
-  color: black;
-  background-color: #b2d4ff;
-  font-size: 19px;
-  padding-left: 5px;
 }
