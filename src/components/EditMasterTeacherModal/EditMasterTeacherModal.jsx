@@ -8,6 +8,7 @@ import WarningModal from '../WarningModal/WarningModal';
 
 const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [showEditMasterTeacherAlert, setShowEditMasterTeacherAlert] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -52,22 +53,25 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   };
 
   useEffect(async () => {
-    const res = await TLPBackend.get(`/teachers/${teacherId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (res.status === 200) {
+    if (!isOpen) return;
+
+    try {
+      const res = await TLPBackend.get(`/teachers/${teacherId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       const mtData = res.data;
       setEmail(mtData.email);
       setFirstName(mtData.firstName);
       setLastName(mtData.lastName);
       setPhoneNumber(mtData.phoneNumber);
       setStatus(mtData.active);
-    } else {
-      setError(error);
+    } catch (err) {
+      setError(err);
     }
-  }, []);
+  }, [isOpen]);
+
   return (
     <>
       <WarningModal

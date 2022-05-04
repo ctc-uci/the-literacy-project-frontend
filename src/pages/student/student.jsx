@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
 import { BsPencil, BsBackspace, BsCheck2All } from 'react-icons/bs';
 import { Table, Button, DropdownButton, Dropdown, Form, Alert, CloseButton } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Graph from '../../components/Graph/Graph';
-
+import Footer from '../../components/Footer/Footer';
 import styles from './student.module.css';
 import { TLPBackend } from '../../common/utils';
 
@@ -87,7 +86,7 @@ const StudentView = () => {
       });
   };
 
-  const calculateTotalPrePostData = function (resStudentsData) {
+  const calculateTotalPrePostData = resStudentsData => {
     // Calculates the total student Pre / Post Data from post the Attitudinal and Academic lists of scores
     const tempSiteData = {
       pre: 0,
@@ -156,21 +155,21 @@ const StudentView = () => {
           });
         })
         .catch(() => {
-          console.log('ERROR: Cannot load editing options.');
+          // console.log('ERROR: Cannot load editing options.');
         });
       TLPBackend.get(`/students/site/${res.data.siteId}`)
         .then(resStudentsData => {
           setSiteData(calculateTotalPrePostData(resStudentsData));
         })
         .catch(() => {
-          console.log('ERROR: Cannot load all students from site.');
+          // console.log('ERROR: Cannot load all students from site.');
         });
       TLPBackend.get(`/students/other-sites/${res.data.siteId}`)
         .then(resStudentsData => {
           setOtherSiteData(calculateTotalPrePostData(resStudentsData));
         })
         .catch(() => {
-          console.log('ERROR: Cannot load all students from other sites.');
+          // console.log('ERROR: Cannot load all students from other sites.');
         });
     }
   }, [studentId]);
@@ -180,7 +179,7 @@ const StudentView = () => {
       <div className={styles['student-view']}>
         <section className={styles['student-return-name-section']}>
           <h2>
-            <a href={`/site/${student.siteId}`}>
+            <a href="/">
               <BsBackspace /> Return to {`${student.siteName}`}
             </a>
           </h2>
@@ -406,7 +405,7 @@ const StudentView = () => {
                 id: 3,
                 title: 'Go to Student Group',
                 src: 'links-card__student-group',
-                link: `/student-group/${student.studentGroupId}`,
+                link: `/student-groups/${student.studentGroupId}`,
               },
             ].map(linkObject => {
               return (
@@ -427,6 +426,7 @@ const StudentView = () => {
           </div>
         </section>
       </div>
+      <Footer />
       {showEditAlert ? (
         <div className="center-block">
           <Alert variant={isAlertSuccess ? 'primary' : 'danger'} className="alert-custom">

@@ -59,12 +59,13 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     return 'Account Pending';
   };
 
+  /* eslint-disable react/no-array-index-key */
   return (
     <>
       <tr>
         {data.map((item, ind) => {
           if (ind === 0) {
-            return <td key={item}>{displayPencilAndLink(item)}</td>;
+            return <td key={ind}>{displayPencilAndLink(item)}</td>;
           }
           if (statusCol === ind) {
             return (
@@ -74,11 +75,11 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
             );
           }
           if (ind === data.length - 1) {
-            return <td key={item}>{displayAsButton(item)}</td>;
+            return <td key={ind}>{displayAsButton(item)}</td>;
           }
           if (colIsBadge.includes(ind)) {
             return (
-              <td key={item}>
+              <td key={ind}>
                 {item !== null && (
                   <Badge bg="dark" style={{ cursor: 'pointer' }}>
                     {item} <FaTrashAlt color="red" cursor="pointer" />
@@ -108,6 +109,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     </>
   );
 };
+/* eslint-enable react/no-array-index-key */
 
 TableRow.defaultProps = {
   uniqueKey: null,
@@ -119,7 +121,7 @@ TableRow.defaultProps = {
 
 TableRow.propTypes = {
   uniqueKey: PropTypes.number,
-  data: PropTypes.arrayOf(),
+  data: PropTypes.arrayOf(PropTypes.node),
   colIsBadge: PropTypes.arrayOf(PropTypes.number),
   sectionTitle: PropTypes.string,
   statusCol: PropTypes.number,

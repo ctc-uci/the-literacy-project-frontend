@@ -1,0 +1,42 @@
+.button-wrapper {
+  padding-left: 150px;
+}
+
+.to-top {
+  font-weight: bold;
+}
+
+.button {
+  background-color: transparent;
+  border: 0;
+}
+
+.middle {
+  background-color: #5f758d;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.logo {
+  background-color: #e5e5e5;
+  border-radius: 50%;
+}
+
+.copyright {
+  display: flex;
+  justify-content: center;
+  color: black;
+  font-weight: 400;
+}
+
+.footer-link {
+  all: unset;
+}
+
+.footer-link:hover {
+  all: unset;
+}

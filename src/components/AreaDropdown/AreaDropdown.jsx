@@ -11,6 +11,7 @@ function AreaDropdown({
   areaId,
   areaActive,
   areaName,
+  areaState,
   areaStats,
   areaSites,
   editable,
@@ -99,7 +100,7 @@ function AreaDropdown({
                   return (
                     <Link
                       className={styles['area-dropdown__open__site-link']}
-                      to={`/site/${site.siteId}`}
+                      to={`/sites/${site.siteId}`}
                       key={`site-${site.siteId}`}
                     >
                       {site.siteName}
@@ -120,6 +121,7 @@ function AreaDropdown({
         areaId={areaId}
         areaActive={areaActive}
         areaName={areaName}
+        areaState={areaState}
         isOpen={editAreaModalIsOpen}
         setIsOpen={setEditAreaModalIsOpen}
       />
@@ -131,6 +133,7 @@ AreaDropdown.defaultProps = {
   areaId: null,
   areaActive: false,
   areaName: '',
+  areaState: '',
   areaStats: {},
   areaSites: [],
   editable: true,
@@ -140,6 +143,7 @@ AreaDropdown.defaultProps = {
 AreaDropdown.propTypes = {
   areaId: PropTypes.number,
   areaName: PropTypes.string,
+  areaState: PropTypes.string,
   areaActive: PropTypes.bool,
   // areaStats: PropTypes.arrayOf(
   //   PropTypes.shape({

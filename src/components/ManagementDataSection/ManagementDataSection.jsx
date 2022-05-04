@@ -9,7 +9,6 @@ import Table from '../Table/Table';
 import InformationPopover from '../Popover/InformationPopover';
 import CreateMasterTeacherModal from '../CreateMasterTeacherModal/CreateMasterTeacherModal';
 import CreateAdminModal from '../CreateAdminModal/CreateAdminModal';
-import CSVButton from '../CSVButton/CSVButton';
 
 const ManagementDataSection = ({
   sectionTitle,
@@ -46,7 +45,9 @@ const ManagementDataSection = ({
             {sectionTitle}
             {popover}
           </h1>
-          <CSVButton />
+          <Button className={styles['export-button']} variant="primary">
+            Export to CSV
+          </Button>
         </>
       );
     }
@@ -66,7 +67,11 @@ const ManagementDataSection = ({
 
   const displayExportButtonRight = () => {
     if (sectionTitle === 'Students') {
-      return <CSVButton />;
+      return (
+        <Button className={styles['export-button']} variant="primary">
+          Export to CSV
+        </Button>
+      );
     }
     return null;
   };

@@ -4,14 +4,14 @@
 
 .table-header {
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   padding: 10px 0;
   gap: 5px 10px;
 }
 
 .table-buttons {
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   gap: 5px 10px;
   align-items: center;
 }
