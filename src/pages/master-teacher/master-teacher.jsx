@@ -18,6 +18,7 @@ import Graph from '../../components/Graph/Graph';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import Footer from '../../components/Footer/Footer';
 import CreateStudentGroupModal from '../../components/CreateStudentGroupModal/CreateStudentGroupModal';
+import CreateStudentModal from '../../components/CreateStudentModal/CreateStudentModal';
 
 const MasterTeacherView = ({ cookies }) => {
   const [allData, setAllData] = useState([]); // all student group data
@@ -40,6 +41,7 @@ const MasterTeacherView = ({ cookies }) => {
   const VIEW_ALL = 'All Sites';
   const cycles = ['1', '2', '3', '4'];
   const [createStudentGroupIsOpen, setCreateStudentGroupIsOpen] = useState(false);
+  const [createStudentIsOpen, setCreateStudentIsOpen] = useState(false);
   const [masterTeacherId, setMasterTeacherId] = useState();
 
   const filterSchoolYearCycle = async (
@@ -365,7 +367,11 @@ const MasterTeacherView = ({ cookies }) => {
         <div className={`${styles.section} ${styles['students-container']}`}>
           <div className={styles.header}>
             <h3>Students</h3>
-            <Button variant="warning" className={styles['create-button']}>
+            <Button
+              variant="warning"
+              className={styles['create-button']}
+              onClick={() => setCreateStudentIsOpen(true)}
+            >
               Create New Student
               <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
             </Button>
@@ -375,6 +381,14 @@ const MasterTeacherView = ({ cookies }) => {
               </Button>
             )}
           </div>
+          {typeof masterTeacherId === 'number' ? (
+            <CreateStudentModal
+              siteId={selectedSiteId}
+              teacherId={masterTeacherId}
+              isOpen={createStudentIsOpen}
+              setIsOpen={setCreateStudentIsOpen}
+            />
+          ) : null}
           {siteStudents.length === 0 ? (
             <div className={styles['empty-view']}>
               <h2>No students have been created for this selected time.</h2>
