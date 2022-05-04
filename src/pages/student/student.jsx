@@ -293,26 +293,6 @@ const StudentView = () => {
                       </DropdownButton>
                     </td>
                     <td>
-                      {/* <DropdownButton
-                        variant="outline-secondary"
-                        title={editStudentData.studentEthnicity}
-                        multiple
-                      >
-                        {editOptions.ethnicityOptions.map(ethnicity => {
-                          return (
-                            <Dropdown.Item
-                              key={ethnicity}
-                              onClick={() => {
-                                const tempStudentData = { ...editStudentData };
-                                tempStudentData.studentEthnicity = ethnicity;
-                                setEditStudentData(tempStudentData);
-                              }}
-                            >
-                              {ethnicity}
-                            </Dropdown.Item>
-                          );
-                        })}
-                      </DropdownButton> */}
                       <Form.Control
                         as="select"
                         value={editStudentData.studentEthnicity}
@@ -329,11 +309,6 @@ const StudentView = () => {
                           return <option key={ethnicity}>{ethnicity}</option>;
                         })}
                       </Form.Control>
-                      {/* <Multiselect
-                        onChange={console.log('dafsdf')}
-                        data={editStudentData.ethnicityOptions}
-                        multiple
-                      /> */}
                     </td>
                     <td>
                       <DropdownButton
