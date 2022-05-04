@@ -178,7 +178,7 @@ const AreaManagement = () => {
       }
     }
     fetchStudents();
-  }, []);
+  }, [modalIsOpen]);
 
   return (
     <div>
@@ -287,7 +287,7 @@ const AreaManagement = () => {
               editable={false}
               hideSitesLink
             />
-            {displayAreas()}
+            <div style={{ paddingBottom: '20px' }}>{displayAreas()}</div>
           </div>
           <div className={styles['sites-data']}>
             <p>
