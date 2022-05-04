@@ -14,7 +14,6 @@ const schema = yup
     addressStreet: yup.string().required('Address street is required.'),
     addressApt: yup.string(),
     addressCity: yup.string().required(),
-    addressState: yup.string().required(),
     addressZip: yup.number().required(),
     primaryFirstName: yup.string().required(),
     primaryLastName: yup.string().required(),
