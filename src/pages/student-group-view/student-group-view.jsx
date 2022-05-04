@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import '../../common/vars.css';
 import { Button, Container, Form } from 'react-bootstrap';
 import { BsPencil, BsBackspace } from 'react-icons/bs';
@@ -81,12 +81,14 @@ const StudentGroupView = () => {
       <div id={styles['header-container']}>
         <div className="d-flex">
           <div>
-            <Button variant="link">
-              <h3>
-                <BsBackspace id={styles['backspace-icon']} />
-                Return to {siteName} Site
-              </h3>
-            </Button>
+            <Link to="/">
+              <Button variant="link">
+                <h3>
+                  <BsBackspace id={styles['backspace-icon']} />
+                  Return to {siteName} Site
+                </h3>
+              </Button>
+            </Link>
           </div>
           <div className={styles['float-right-section']}>
             <h1>Student Group {studentGroupId}</h1>

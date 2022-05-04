@@ -338,6 +338,7 @@ const MasterTeacherView = ({ cookies }) => {
                 .map(group => (
                   <StudentGroup
                     key={group.groupId}
+                    groupId={group.groupId}
                     groupName={group.name}
                     studentList={
                       group.students
@@ -401,6 +402,7 @@ const MasterTeacherView = ({ cookies }) => {
                   .map(s => (
                     <StudentProfileBox
                       key={s.studentId}
+                      studentId={s.studentId}
                       studentName={`${s.firstName} ${s.lastName}`}
                     />
                   ))
