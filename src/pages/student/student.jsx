@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
 import { BsPencil, BsBackspace, BsCheck2All } from 'react-icons/bs';
 import { Table, Button, DropdownButton, Dropdown, Form, Alert, CloseButton } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Graph from '../../components/Graph/Graph';
 import Footer from '../../components/Footer/Footer';
 import styles from './student.module.css';
@@ -131,6 +130,7 @@ const StudentView = () => {
         'Content-Type': 'application/json',
       },
     });
+    console.log(res);
     if (res.status === 200) {
       setStudent(res.data);
       await TLPBackend.get(`/student-groups/site/${res.data.siteId}`)
@@ -180,7 +180,7 @@ const StudentView = () => {
       <div className={styles['student-view']}>
         <section className={styles['student-return-name-section']}>
           <h2>
-            <a href={`/site/${student.siteId}`}>
+            <a href="/">
               <BsBackspace /> Return to {`${student.siteName}`}
             </a>
           </h2>
@@ -406,7 +406,7 @@ const StudentView = () => {
                 id: 3,
                 title: 'Go to Student Group',
                 src: 'links-card__student-group',
-                link: `/student-group/${student.studentGroupId}`,
+                link: `/student-groups/${student.studentGroupId}`,
               },
             ].map(linkObject => {
               return (
