@@ -7,7 +7,7 @@ import { TLPBackend } from '../../common/utils';
 import styles from '../ManagementDataSection/ManagementDataSection.module.css';
 
 const CSVButton = () => {
-  const [setAreaResponseData] = useState([]);
+  const [areaResponseData, setAreaResponseData] = useState([]);
   // const [siteResponseData, setSiteResponseData] = useState([]);
   const [studentResponseData, setStudentResponseData] = useState([]);
 
@@ -72,6 +72,7 @@ const CSVButton = () => {
 
     await fetchAllSites();
     setTimeout(() => {
+      console.log(areaResponseData);
       setAreaResponseData(resData);
     }, 2000);
   };

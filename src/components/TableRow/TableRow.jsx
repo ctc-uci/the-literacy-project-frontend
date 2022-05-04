@@ -18,6 +18,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     if (sectionTitle === 'Admin' || sectionTitle === 'Master Teachers')
       return (
         <>
+          <FaPencilAlt cursor="pointer" onClick={() => setModalOpen(sectionTitle)} />
           <Button
             variant="link"
             onClick={() => setModalOpen(sectionTitle)}
@@ -25,7 +26,6 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           >
             {item}
           </Button>
-          <FaPencilAlt cursor="pointer" onClick={() => setModalOpen(sectionTitle)} />
         </>
       );
     return item;
@@ -66,6 +66,13 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           if (ind === 0) {
             return <td key={item}>{displayPencilAndLink(item)}</td>;
           }
+          if (statusCol === ind) {
+            return (
+              <td key={item} style={{ color: '#17A2B8' }}>
+                {styleStatus(item)}
+              </td>
+            );
+          }
           if (ind === data.length - 1) {
             return <td key={item}>{displayAsButton(item)}</td>;
           }
@@ -80,13 +87,6 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
                 <Badge bg="primary" style={addBadgeStyles}>
                   Add Site <FaPlus cursor="pointer" />
                 </Badge>
-              </td>
-            );
-          }
-          if (statusCol === ind) {
-            return (
-              <td key={item} style={{ color: '#17A2B8' }}>
-                {styleStatus(item)}
               </td>
             );
           }
