@@ -1,10 +1,12 @@
 import { React, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Badge, Button, Form } from 'react-bootstrap';
+import { Badge, Button } from 'react-bootstrap';
 import { FaTrashAlt, FaPlus, FaPencilAlt } from 'react-icons/fa';
 import '../../common/vars.css';
 import EditMasterTeacherModal from '../EditMasterTeacherModal/EditMasterTeacherModal';
 import EditAdminModal from '../EditAdminModal/EditAdminModal';
+import StatusCell from '../StatusCell/StatusCell';
+import { TLPBackend } from '../../common/utils';
 
 const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   const [modalIsOpen, setModalOpen] = useState('');
@@ -12,6 +14,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   const addBadgeStyles = {
     cursor: 'pointer',
     marginLeft: '0.5em',
+    backgroundColor: '#17A2B8',
   };
 
   const displayPencilAndLink = item => {
@@ -45,18 +48,12 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     return item;
   };
 
-  const styleStatus = val => {
-    if (val === 'active' || val === 'inactive') {
-      return (
-        <Form.Group className="mb-3">
-          <Form.Select style={{ width: '110px' }}>
-            <option value={val}>{val === 'active' ? 'Active' : 'Inactive'}</option>
-            <option>{val === 'active' ? 'Inactive' : 'Active'}</option>
-          </Form.Select>
-        </Form.Group>
-      );
-    }
-    return 'Account Pending';
+  // remove a site from the teacher site relation
+  const deleteSite = async (siteId, siteList, index) => {
+    console.log(uniqueKey, siteId);
+    await TLPBackend.delete(`teachers/remove-site/${uniqueKey}`, { siteId });
+    siteList.splice(index, 1);
+    console.log(siteList);
   };
 
   /* eslint-disable react/no-array-index-key */
@@ -69,29 +66,37 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           }
           if (statusCol === ind) {
             return (
-              <td key={item} style={{ color: '#17A2B8' }}>
-                {styleStatus(item)}
+              <td key={item}>
+                <StatusCell data={item} />
               </td>
             );
           }
           if (ind === data.length - 1) {
             return <td key={ind}>{displayAsButton(item)}</td>;
           }
+          // badge column for displaying sites
+          // item here should be an object with site id and site name
           if (colIsBadge.includes(ind)) {
             return (
               <td key={ind}>
-                {item !== null && (
-                  <Badge bg="dark" style={{ cursor: 'pointer' }}>
-                    {item} <FaTrashAlt color="red" cursor="pointer" />
+                {item.map(i => (
+                  <Badge
+                    key={i.siteId}
+                    bg="dark"
+                    style={{ cursor: 'pointer', marginLeft: '0.5em' }}
+                    onClick={() => deleteSite(i.siteId, item, i)}
+                  >
+                    {i.siteName}
+                    <FaTrashAlt color="red" cursor="pointer" />
                   </Badge>
-                )}
-                <Badge bg="primary" style={addBadgeStyles}>
+                ))}
+                <Badge style={addBadgeStyles} onClick={() => setModalOpen('Master Teachers')}>
                   Add Site <FaPlus cursor="pointer" />
                 </Badge>
               </td>
             );
           }
-          return <td key={item}>{item}</td>;
+          return <td key={ind}>{item}</td>;
         })}
       </tr>
       <EditMasterTeacherModal
@@ -120,8 +125,8 @@ TableRow.defaultProps = {
 };
 
 TableRow.propTypes = {
-  uniqueKey: PropTypes.number,
-  data: PropTypes.arrayOf(PropTypes.node),
+  uniqueKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  data: PropTypes.arrayOf(PropTypes.any),
   colIsBadge: PropTypes.arrayOf(PropTypes.number),
   sectionTitle: PropTypes.string,
   statusCol: PropTypes.number,

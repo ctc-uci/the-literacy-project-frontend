@@ -16,6 +16,11 @@
   align-items: center;
 }
 
-.create-button {
+.export-button {
+  background-color: var(--color-dark-blue-muted);
+  color: var(--text-color-white);
+}
+
+button {
   white-space: nowrap;
 }

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dropdown, DropdownButton, InputGroup, FormControl } from 'react-bootstrap';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaFilter, FaPlusSquare, FaPenSquare } from 'react-icons/fa';
 import Table from '../../components/Table/Table';
 import CreateMasterTeacherModal from '../../components/CreateMasterTeacherModal/CreateMasterTeacherModal';
-import CSVButton from '../../components/CSVButton/CSVButton';
 import { TLPBackend } from '../../common/utils';
-import { AUTH_ROLES } from '../../common/config';
 import styles from './master-teachers-table.module.css';
 
 const MasterTeacherTableView = () => {
@@ -36,7 +34,11 @@ const MasterTeacherTableView = () => {
     {
       headerTitle: 'Status',
       headerPopover:
-        "<p><strong style='color:#28a745'>Active:</strong> This user is active in the current cycle. They have full access and can log in.</p> <p><strong style='color:#5f758d'>Inactive:</strong> This user is inactive in the current cycle. They cannot log in until an admin user reactivates their account.</p> <p><strong style='color:#17a2b8'>Email Sent:</strong> An email sign up link was sent. They have not set up their account yet.",
+        "<p><strong style='color:#28a745'>Active:</strong> This user is active in the current cycle. They have full access and can log in.</p> <p><strong style='color:#17a2b8'>Email Sent:</strong> An email sign up link was sent. They have not set up their account yet.",
+    },
+    {
+      headerTitle: 'Reset Password',
+      headerPopover: '',
     },
     {
       headerTitle: 'Notes',
@@ -44,16 +46,48 @@ const MasterTeacherTableView = () => {
     },
   ];
 
+  const contactInfo = (email, phoneNumber) => {
+    return (
+      <div>
+        <div>{email}</div>
+        <div>{phoneNumber}</div>
+      </div>
+    );
+  };
+
+  const resetPasswordBtn = () => {
+    return <Button className={styles['reset-button']}>Reset</Button>;
+  };
+
+  const noteIcon = hasNotes => {
+    return (
+      <div className={styles['notes-button']}>
+        {hasNotes ? (
+          <FaPenSquare cursor="pointer" size="2em" />
+        ) : (
+          <FaPlusSquare cursor="pointer" size="2em" />
+        )}
+      </div>
+    );
+  };
+
   // get data to show in the table
   const parseTableData = data => {
     const allTeachers = [];
-    data.forEach(admObj => {
-      const { firstName, lastName, email } = admObj;
-      const userId = admObj.userId ? admObj.userId : admObj.inviteId;
-      const active = admObj.active ? admObj.active : 'pending';
+
+    data.forEach(teacherObj => {
+      const { firstName, lastName, email, phoneNumber, sites, notes } = teacherObj;
+      const userId = teacherObj.userId ? teacherObj.userId : teacherObj.inviteId;
       allTeachers.push({
         id: userId,
-        items: [`${firstName} ${lastName}`, email, active],
+        items: [
+          `${firstName} ${lastName}`,
+          contactInfo(email, phoneNumber),
+          sites || [],
+          teacherObj, // used to show active status and resend invite if needed
+          resetPasswordBtn(),
+          noteIcon(notes?.length > 0 || false),
+        ],
       });
     });
     setBodyData(allTeachers);
@@ -62,24 +96,8 @@ const MasterTeacherTableView = () => {
   const fetchData = async () => {
     const teacherData = [];
 
-    // fetching and filtering all admin invites
-    const pending = await TLPBackend.get(`/tlp-users/invite`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (pending.status === 200) {
-      const { data } = pending;
-
-      data.forEach(user => {
-        if (user.position === AUTH_ROLES.ADMIN_ROLE) {
-          teacherData.push(user);
-        }
-      });
-    }
-
     // fetching all admin accounts
-    const admins = await TLPBackend.get(`/admins`, {
+    const admins = await TLPBackend.get(`/teachers`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -99,7 +117,9 @@ const MasterTeacherTableView = () => {
       <div className={styles['table-view']}>
         <div className={styles['table-header']}>
           <h3>MasterTeacher</h3>
-          <CSVButton />
+          <Button className={styles['export-button']} variant="primary">
+            Export to CSV
+          </Button>
         </div>
         <div className={styles['table-buttons']}>
           <Button className={styles['create-button']} variant="warning" onClick={createTeacher}>
@@ -112,6 +132,9 @@ const MasterTeacherTableView = () => {
               aria-describedby="search-icon"
             />
           </InputGroup>
+          <Button className={styles['filter-button']} variant="primary">
+            Filter By <FaFilter cursor="pointer" />
+          </Button>
           <DropdownButton
             className={styles['dropdown-button']}
             id="dropdown-basic-button"
@@ -122,7 +145,7 @@ const MasterTeacherTableView = () => {
           </DropdownButton>
         </div>
         <Table
-          sectionTitle="Master Teacher"
+          sectionTitle="Master Teachers"
           theadData={theadData}
           tbodyData={tbodyData}
           statusCol={3}

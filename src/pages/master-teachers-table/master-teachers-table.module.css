@@ -14,8 +14,22 @@
   flex-direction: row;
   gap: 5px 10px;
   align-items: center;
+  margin-bottom: 2em;
 }
 
-.create-button {
+.export-button {
+  background-color: var(--color-dark-blue-muted);
+  color: var(--text-color-white);
+}
+
+button {
   white-space: nowrap;
+}
+
+.reset-button {
+  background-color: var(--color-gray-blue-muted);
+}
+
+.notes-button {
+  text-align: center;
 }

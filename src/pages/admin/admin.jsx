@@ -4,14 +4,13 @@ import { FaPlus } from 'react-icons/fa';
 import CreateAdminModal from '../../components/CreateAdminModal/CreateAdminModal';
 import styles from './admin.module.css';
 import Table from '../../components/Table/Table';
-import CSVButton from '../../components/CSVButton/CSVButton';
 import { TLPBackend } from '../../common/utils';
-import { AUTH_ROLES } from '../../common/config';
 
 const AdminView = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
   const [tbodyData, setBodyData] = useState([]);
   const [sortBy, setSortBy] = useState('A-Z');
+
   const createAdmin = () => {
     setModalOpen(true);
   };
@@ -25,13 +24,13 @@ const AdminView = () => {
       headerPopover: '',
     },
     {
-      headerTitle: 'Email',
+      headerTitle: 'Contact Information',
       headerPopover: '',
     },
     {
       headerTitle: 'Status',
       headerPopover:
-        "<p><strong style='color:#28a745'>Active:</strong> This user is active in the current cycle. They have full access and can log in.</p> <p><strong style='color:#5f758d'>Inactive:</strong> This user is inactive in the current cycle. They cannot log in until an admin user reactivates their account.</p> <p><strong style='color:#17a2b8'>Email Sent:</strong> An email sign up link was sent. They have not set up their account yet.</p>",
+        "<p><strong style='color:#28a745'>Active:</strong> This user is active in the current cycle. They have full access and can log in.</p> <p><strong style='color:#17a2b8'>Email Sent:</strong> An email sign up link was sent. They have not set up their account yet.</p>",
     },
   ];
 
@@ -41,10 +40,9 @@ const AdminView = () => {
     data.forEach(admObj => {
       const { firstName, lastName, email } = admObj;
       const userId = admObj.userId ? admObj.userId : admObj.inviteId;
-      const active = admObj.active ? admObj.active : 'pending';
       allAdmins.push({
         id: userId,
-        items: [`${firstName} ${lastName}`, email, active],
+        items: [`${firstName} ${lastName}`, email, admObj],
       });
     });
     setBodyData(allAdmins);
@@ -60,13 +58,7 @@ const AdminView = () => {
       },
     });
     if (pending.status === 200) {
-      const { data } = pending;
-
-      data.forEach(user => {
-        if (user.position === AUTH_ROLES.ADMIN_ROLE) {
-          adminData.push(user);
-        }
-      });
+      adminData.push(...pending.data);
     }
 
     // fetching all admin accounts
@@ -90,7 +82,9 @@ const AdminView = () => {
       <div className={styles['table-view']}>
         <div className={styles['table-header']}>
           <h3>Admin</h3>
-          <CSVButton />
+          <Button className={styles['export-button']} variant="primary">
+            Export to CSV
+          </Button>
         </div>
         <div className={styles['table-buttons']}>
           <Button className={styles['create-button']} variant="warning" onClick={createAdmin}>
