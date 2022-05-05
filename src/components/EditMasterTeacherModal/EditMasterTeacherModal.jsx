@@ -8,6 +8,7 @@ import WarningModal from '../WarningModal/WarningModal';
 
 const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [showEditMasterTeacherAlert, setShowEditMasterTeacherAlert] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
