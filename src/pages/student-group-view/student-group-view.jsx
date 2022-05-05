@@ -43,7 +43,6 @@ const StudentGroupView = () => {
       },
     });
     if (studentGroupRes.status === 200) {
-      console.log('studentgroupres', studentGroupRes);
       setSiteId(studentGroupRes.data.siteId);
       setMeetingTime(
         `${studentGroupRes.data.meetingDay} ${parseTime(studentGroupRes.data.meetingTime)}`,
@@ -186,5 +185,4 @@ const StudentGroupView = () => {
   );
 };
 
-console.log('HELLO');
 export default StudentGroupView;
