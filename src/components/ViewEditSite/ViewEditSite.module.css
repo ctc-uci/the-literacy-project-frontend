@@ -39,8 +39,8 @@
 .optional-subtitles {
   font-family: Calibri, 'sans-serif';
   font-size: 24px;
-  padding-top: 20px;
   padding-left: 30px;
+
 }
 
 .input-area {
@@ -109,3 +109,24 @@
   border-radius: 5px;
   border-color: #ced4da;
 }
+
+
+/* Site Status Header and CSV button */
+.title-csv{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 20px;
+  padding-right: 30px;
+}
+
+
+
+.csv-btn-align{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+

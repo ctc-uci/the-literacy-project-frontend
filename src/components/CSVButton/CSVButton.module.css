@@ -8,3 +8,10 @@
   color: white;
   text-decoration: none;
 }
+
+.site-export{
+  max-height: 36px;
+  width: 160px;
+  background-color: var(--color-dark-blue-muted);
+  color: var(--text-color-white);
+}

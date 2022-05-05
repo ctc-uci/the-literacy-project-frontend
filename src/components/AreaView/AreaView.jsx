@@ -29,7 +29,6 @@ const AreaView = () => {
           'Content-Type': 'application/json',
         },
       });
-      // console.log(res);
       if (res.status === 200) {
         if (res.data.areaName == null || res.data.areaName === '') {
           BackToAllAreas();

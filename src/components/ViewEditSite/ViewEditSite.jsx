@@ -148,7 +148,10 @@ const ViewSite = ({ siteId }) => {
                 <div className={styles['form-header']}>
                   <h2 className={styles['form-title']}>{siteInfo.siteName}</h2>
                 </div>
-                <h3 className={styles['optional-subtitles']}>Site Status</h3>
+                <div className={styles['title-csv']}>
+                  <h3 className={styles['optional-subtitles']}>Site Status</h3>
+                  <CSVButton type="site" siteID={Number.parseInt(siteId, 10)} />
+                </div>
                 <div className={styles['input-area']}>
                   <Col md={5}>
                     <>{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}</>
@@ -162,9 +165,7 @@ const ViewSite = ({ siteId }) => {
                     </select>
                   </Col>
                 </div>
-                <CSVButton type="site" siteID={siteId} />
                 <h3 className={styles['optional-subtitles']}>Basic Information</h3>
-                {/* <CSVButton type="site" /> */}
                 <div className={styles['input-area']}>
                   <Col md={5}>
                     <label htmlFor="site-name">
@@ -452,7 +453,10 @@ const ViewSite = ({ siteId }) => {
             <div className={styles['form-header']}>
               <h2 className={styles['form-title']}>{siteInfo.siteName}</h2>
             </div>
-            <h3 className={styles['optional-subtitles']}>Site Status</h3>
+            <div className={styles['title-csv']}>
+              <h3 className={styles['optional-subtitles']}>Site Status</h3>
+              <CSVButton type="site" siteID={Number.parseInt(siteId, 10)} />
+            </div>
             <div className={styles['input-area']}>
               <Col md={5}>
                 <p>
@@ -464,7 +468,7 @@ const ViewSite = ({ siteId }) => {
                 </p>
               </Col>
             </div>
-            <CSVButton type="site" siteID={siteId} />
+
             <h3 className={styles['optional-subtitles']}>Basic Information</h3>
             <div className={styles['input-area']}>
               <Col md={5}>

@@ -290,7 +290,7 @@ const AreaManagement = () => {
             <div style={{ paddingBottom: '20px' }}>{displayAreas()}</div>
           </div>
           <div className={styles['sites-data']}>
-            s{' '}
+            {' '}
             <p>
               <strong>All Area Data</strong>
             </p>
