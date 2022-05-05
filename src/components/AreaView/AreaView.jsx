@@ -122,7 +122,7 @@ const AreaView = () => {
             <div>
               <h2>{areaName} Data</h2>
             </div>
-            <CSVButton type="site" />
+            <CSVButton type="area" areaID={Number.parseInt(areaId, 10)} />
           </div>
           <Card className={styles.stats}>
             <p>
@@ -152,7 +152,6 @@ const AreaView = () => {
               <strong>Average Growth in Reading</strong>
             </p>
           </div>
-          <CSVButton type="site" />
           <Card className={styles.graph}>
             <Graph
               xLabels={['Attitudinal', 'Academic']}

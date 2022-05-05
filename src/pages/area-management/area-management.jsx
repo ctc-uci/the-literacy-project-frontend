@@ -30,7 +30,6 @@ const AreaManagement = () => {
   const [sortBy, setSortBy] = useState('A-Z');
   const [testScores, setTestScores] = useState({});
   const [error, setError] = useState(null);
-
   const sorts = ['A-Z', 'Z-A'];
 
   function getFilters() {
@@ -295,7 +294,7 @@ const AreaManagement = () => {
             <p>
               <strong>All Area Data</strong>
             </p>
-            <CSVButton type="area" />
+            <CSVButton type="allAreas" />
             <Card className={styles['area-data-stats']}>
               <p>
                 <BsPeople /> 40 Students

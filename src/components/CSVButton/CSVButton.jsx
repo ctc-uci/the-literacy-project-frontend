@@ -5,14 +5,56 @@ import { CSVLink } from 'react-csv';
 import { TLPBackend } from '../../common/utils';
 import styles from './CSVButton.module.css';
 
-const CSVButton = ({ type }) => {
+const CSVButton = ({ type, areaID, siteID }) => {
   const [studentResponseData, setStudentResponseData] = useState([]);
 
   function createHeaders() {
     // Student Area Data
+    if (type === 'allAreas') {
+      return [
+        'Area ID',
+        'Student ID',
+        'First Name',
+        'Last Name',
+        'Grade',
+        'Home Teacher',
+        'Gender',
+        'Ethnicity',
+        'Student Group ID',
+        'Post-Test A',
+        'Post-Test A Notes',
+        'Post-Test R',
+        'Post-Test R Notes',
+        'Pre-Test A',
+        'Pre-Test A Notes',
+        'Pre-Test R',
+        'Pre-Test R Notes',
+      ];
+    }
     if (type === 'area') {
       return [
         'Area ID',
+        'Student ID',
+        'First Name',
+        'Last Name',
+        'Grade',
+        'Home Teacher',
+        'Gender',
+        'Ethnicity',
+        'Student Group ID',
+        'Post-Test A',
+        'Post-Test A Notes',
+        'Post-Test R',
+        'Post-Test R Notes',
+        'Pre-Test A',
+        'Pre-Test A Notes',
+        'Pre-Test R',
+        'Pre-Test R Notes',
+      ];
+    }
+    if (type === 'site') {
+      return [
+        'Site ID',
         'Student ID',
         'First Name',
         'Last Name',
@@ -36,6 +78,27 @@ const CSVButton = ({ type }) => {
 
   // eslint-disable-next-line consistent-return
   function mapResponse() {
+    if (type === 'allAreas') {
+      return studentResponseData.map(student => [
+        student.areaId,
+        student.studentId,
+        student.firstName,
+        student.lastName,
+        student.grade,
+        student.homeTeacher,
+        student.gender,
+        student.ethnicity,
+        student.studentGroupId,
+        student.posttestA,
+        student.posttestANotes,
+        student.posttestR,
+        student.posttestRNotes,
+        student.pretestA,
+        student.pretestANotes,
+        student.pretestR,
+        student.pretestRNotes,
+      ]);
+    }
     if (type === 'area') {
       return studentResponseData.map(student => [
         student.areaId,
@@ -57,6 +120,28 @@ const CSVButton = ({ type }) => {
         student.pretestRNotes,
       ]);
     }
+    if (type === 'site') {
+      return studentResponseData.map(student => [
+        student.siteId,
+        student.studentId,
+        student.firstName,
+        student.lastName,
+        student.grade,
+        student.homeTeacher,
+        student.gender,
+        student.ethnicity,
+        student.studentGroupId,
+        student.posttestA,
+        student.posttestANotes,
+        student.posttestR,
+        student.posttestRNotes,
+        student.pretestA,
+        student.pretestANotes,
+        student.pretestR,
+        student.pretestRNotes,
+      ]);
+    }
+    return [];
   }
 
   const CSVReport = {
@@ -66,7 +151,7 @@ const CSVButton = ({ type }) => {
   };
 
   const addAssociatedSiteToArea = async resData => {
-    async function fetchAllSites() {
+    async function fetchStudentsByAllAreas() {
       // eslint-disable-next-line no-restricted-syntax
       for (const element of resData) {
         TLPBackend.get(`/students/area/${element.areaId}`)
@@ -85,23 +170,72 @@ const CSVButton = ({ type }) => {
       }
     }
 
-    await fetchAllSites();
+    async function fetchStudentsByArea() {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const element of resData) {
+        // eslint-disable-next-line no-restricted-syntax
+        TLPBackend.get(`/students/site/${element.siteId}`)
+          .then(res => {
+            res.data.forEach(student => {
+              // eslint-disable-next-line no-param-reassign
+              student.areaId = areaID;
+            });
+            if (res.data.length !== 0) {
+              studentResponseData.push(...res.data);
+            }
+          })
+          .catch(() => {
+            /* TODO document why this arrow function is empty */
+          });
+      }
+    }
+
+    async function fetchStudentsBySite() {
+      // eslint-disable-next-line no-restricted-syntax
+      resData.forEach(student => {
+        // eslint-disable-next-line no-param-reassign
+        student.siteId = siteID;
+      });
+      if (resData.length !== 0) {
+        studentResponseData.push(...resData);
+      }
+    }
+
+    if (type === 'allAreas') {
+      await fetchStudentsByAllAreas();
+    }
+    if (type === 'area') {
+      await fetchStudentsByArea();
+    }
+    if (type === 'site') {
+      await fetchStudentsBySite();
+    }
     setTimeout(() => {
       setStudentResponseData(mapResponse());
     }, 2000);
   };
 
   useEffect(() => {
-    async function fetchAreas() {
+    async function fetchStudents() {
       try {
-        const areasResponse = await TLPBackend.get('/areas');
-        addAssociatedSiteToArea(areasResponse.data);
+        if (type === 'allAreas') {
+          const areasResponse = await TLPBackend.get('/areas');
+          addAssociatedSiteToArea(areasResponse.data);
+        }
+        if (type === 'area') {
+          const sitesResponse = await TLPBackend.get(`/sites/area/${areaID}`);
+          addAssociatedSiteToArea(sitesResponse.data);
+        }
+        if (type === 'site') {
+          const siteResponse = await TLPBackend.get(`/students/site/${siteID}`);
+          addAssociatedSiteToArea(siteResponse.data);
+        }
       } catch (err) {
         console.log(err);
       }
     }
 
-    fetchAreas();
+    fetchStudents();
   }, []);
 
   return (
@@ -115,6 +249,10 @@ const CSVButton = ({ type }) => {
 
 CSVButton.propTypes = {
   type: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/require-default-props
+  areaID: PropTypes.number,
+  // eslint-disable-next-line react/require-default-props
+  siteID: PropTypes.number,
 };
 
 export default CSVButton;

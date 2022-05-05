@@ -9,6 +9,7 @@ import states from 'states-us';
 import styles from './ViewEditSite.module.css';
 import WarningModal from '../WarningModal/WarningModal';
 import { TLPBackend } from '../../common/utils';
+import CSVButton from '../CSVButton/CSVButton';
 import '../../common/vars.css';
 
 const s = states.filter(x => !x.territory);
@@ -161,7 +162,9 @@ const ViewSite = ({ siteId }) => {
                     </select>
                   </Col>
                 </div>
+                <CSVButton type="site" siteID={siteId} />
                 <h3 className={styles['optional-subtitles']}>Basic Information</h3>
+                {/* <CSVButton type="site" /> */}
                 <div className={styles['input-area']}>
                   <Col md={5}>
                     <label htmlFor="site-name">
@@ -461,6 +464,7 @@ const ViewSite = ({ siteId }) => {
                 </p>
               </Col>
             </div>
+            <CSVButton type="site" siteID={siteId} />
             <h3 className={styles['optional-subtitles']}>Basic Information</h3>
             <div className={styles['input-area']}>
               <Col md={5}>
