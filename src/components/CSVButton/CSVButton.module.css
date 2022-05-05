@@ -4,8 +4,15 @@
   color: var(--text-color-white);
 }
 
+
+
 .csvLink{
-  color: white;
+  color: var(--text-color-white);
+  text-decoration: none;
+}
+
+.csvLink:focus{
+  color: var(--text-color-white);
   text-decoration: none;
 }
 
@@ -15,3 +22,5 @@
   background-color: var(--color-dark-blue-muted);
   color: var(--text-color-white);
 }
+
+
