@@ -9,6 +9,7 @@ import Graph from '../../components/Graph/Graph';
 import styles from './student-group-view.module.css';
 import Footer from '../../components/Footer/Footer';
 import EditStudentGroupModal from '../../components/EditStudentGroupModal/EditStudentGroupModal';
+import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 
 const StudentGroupView = () => {
   const studentGroupId = useParams().groupId;
@@ -21,6 +22,11 @@ const StudentGroupView = () => {
   const [testScores, setTestScores] = useState({});
   const [error, setError] = useState(null);
   const [editStudentGroupIsOpen, setEditStudentGroupIsOpen] = useState(false);
+  const schoolYears = ['2021-2022', '2022-2023', '2023-2024'];
+  const [schoolYear, setSchoolYear] = useState();
+  const schoolCycles = [1, 2, 3, 4];
+  const [schoolCycle, setSchoolCycle] = useState();
+  const dropdownDisabled = true;
 
   const getStudentFirstNames = students => {
     const studentList = [];
@@ -37,12 +43,15 @@ const StudentGroupView = () => {
       },
     });
     if (studentGroupRes.status === 200) {
+      console.log('studentgroupres', studentGroupRes);
       setSiteId(studentGroupRes.data.siteId);
       setMeetingTime(
         `${studentGroupRes.data.meetingDay} ${parseTime(studentGroupRes.data.meetingTime)}`,
       );
       setStudentGroupList(getStudentFirstNames(studentGroupRes.data.students));
       setMasterTeacherId(studentGroupRes.data.masterTeacherId);
+      setSchoolYear(`${studentGroupRes.data.year}-${studentGroupRes.data.year + 1}`);
+      setSchoolCycle(studentGroupRes.data.cycle);
     } else {
       setSiteId(-1);
       setError(error);
@@ -99,19 +108,25 @@ const StudentGroupView = () => {
             <Form.Label className={styles['custom-form-label']}>
               <h4>School Year</h4>
             </Form.Label>
-            <Form.Select className={styles['custom-form-select']}>
-              <option>2021-22</option>
-              <option>2022-23</option>
-            </Form.Select>
+            {typeof schoolYear === 'string' ? (
+              <DropdownMenu
+                choices={schoolYears}
+                current={schoolYear}
+                setFn={setSchoolYear}
+                disabled={dropdownDisabled}
+              />
+            ) : null}
             <Form.Label className={styles['custom-form-label']}>
               <h4>Cycle</h4>
             </Form.Label>
-            <Form.Select className={styles['custom-form-select']}>
-              <option>Cycle 1</option>
-              <option>Cycle 2</option>
-              <option>Cycle 3</option>
-              <option>Cycle 4</option>
-            </Form.Select>
+            {typeof schoolCycle === 'string' ? (
+              <DropdownMenu
+                choices={schoolCycles}
+                current={schoolCycle}
+                setFn={setSchoolCycle}
+                disabled={dropdownDisabled}
+              />
+            ) : null}
           </div>
         </div>
       </div>
@@ -171,4 +186,5 @@ const StudentGroupView = () => {
   );
 };
 
+console.log('HELLO');
 export default StudentGroupView;
