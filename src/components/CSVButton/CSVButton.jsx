@@ -8,8 +8,8 @@ import styles from './CSVButton.module.css';
 const CSVButton = ({ type, areaID, siteID }) => {
   const [studentResponseData, setStudentResponseData] = useState([]);
 
+  // Creates CSV file headers
   function createHeaders() {
-    // Student Area Data
     if (type === 'allAreas') {
       return [
         'Area ID',
@@ -76,7 +76,6 @@ const CSVButton = ({ type, areaID, siteID }) => {
     return [];
   }
 
-  // eslint-disable-next-line consistent-return
   function mapResponse() {
     if (type === 'allAreas') {
       return studentResponseData.map(student => [
@@ -173,7 +172,6 @@ const CSVButton = ({ type, areaID, siteID }) => {
     async function fetchStudentsByArea() {
       // eslint-disable-next-line no-restricted-syntax
       for (const element of resData) {
-        // eslint-disable-next-line no-restricted-syntax
         TLPBackend.get(`/students/site/${element.siteId}`)
           .then(res => {
             res.data.forEach(student => {
@@ -191,7 +189,6 @@ const CSVButton = ({ type, areaID, siteID }) => {
     }
 
     async function fetchStudentsBySite() {
-      // eslint-disable-next-line no-restricted-syntax
       resData.forEach(student => {
         // eslint-disable-next-line no-param-reassign
         student.siteId = siteID;
