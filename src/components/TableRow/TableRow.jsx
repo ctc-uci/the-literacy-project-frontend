@@ -6,10 +6,17 @@ import '../../common/vars.css';
 import EditMasterTeacherModal from '../EditMasterTeacherModal/EditMasterTeacherModal';
 import EditAdminModal from '../EditAdminModal/EditAdminModal';
 import StatusCell from '../StatusCell/StatusCell';
+import ResetPasswordModal from '../ResetPasswordModal/ResetPasswordModal';
 import { TLPBackend } from '../../common/utils';
 
 const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   const [modalIsOpen, setModalOpen] = useState('');
+  const RESET = 'Reset Password'; // used to open reset password modal
+  const sections = {
+    ADMIN: 'Admin',
+    TEACHER: 'Master Teachers',
+    STUDENT: 'Student',
+  };
 
   const addBadgeStyles = {
     cursor: 'pointer',
@@ -18,7 +25,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   };
 
   const displayPencilAndLink = item => {
-    if (sectionTitle === 'Admin' || sectionTitle === 'Master Teachers')
+    if (sectionTitle === sections.ADMIN || sectionTitle === sections.TEACHER)
       return (
         <>
           <FaPencilAlt cursor="pointer" onClick={() => setModalOpen(sectionTitle)} />
@@ -35,7 +42,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   };
 
   const displayAsButton = item => {
-    if (sectionTitle === 'Students')
+    if (sectionTitle === sections.STUDENT)
       return (
         <Button
           variant="primary"
@@ -50,10 +57,39 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
 
   // remove a site from the teacher site relation
   const deleteSite = async (siteId, siteList, index) => {
-    console.log(uniqueKey, siteId);
-    await TLPBackend.delete(`teachers/remove-site/${uniqueKey}`, { siteId });
-    siteList.splice(index, 1);
-    console.log(siteList);
+    try {
+      console.log(uniqueKey, siteId);
+      await TLPBackend.delete(`teachers/remove-site/${uniqueKey}`, { siteId });
+      siteList.splice(index, 1);
+      console.log(siteList);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  // for teachers, display names of all sites they are in with the option to remove that site + add site button
+  const displayBadgeCell = (item, ind) => {
+    if (sectionTitle === sections.TEACHER) {
+      return (
+        <td key={ind}>
+          {item.map(i => (
+            <Badge
+              key={i.siteId}
+              bg="dark"
+              style={{ cursor: 'pointer', marginLeft: '0.5em' }}
+              onClick={() => deleteSite(i.siteId, item, i)}
+            >
+              {i.siteName}
+              <FaTrashAlt color="red" cursor="pointer" />
+            </Badge>
+          ))}
+          <Badge style={addBadgeStyles} onClick={() => setModalOpen(sections.TEACHER)}>
+            Add Site <FaPlus cursor="pointer" />
+          </Badge>
+        </td>
+      );
+    }
+    return null;
   };
 
   /* eslint-disable react/no-array-index-key */
@@ -74,43 +110,46 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           if (ind === data.length - 1) {
             return <td key={ind}>{displayAsButton(item)}</td>;
           }
-          // badge column for displaying sites
-          // item here should be an object with site id and site name
-          if (colIsBadge.includes(ind)) {
+          // reset password button
+          if (ind === 4 && sectionTitle === sections.TEACHER) {
             return (
               <td key={ind}>
-                {item.map(i => (
-                  <Badge
-                    key={i.siteId}
-                    bg="dark"
-                    style={{ cursor: 'pointer', marginLeft: '0.5em' }}
-                    onClick={() => deleteSite(i.siteId, item, i)}
-                  >
-                    {i.siteName}
-                    <FaTrashAlt color="red" cursor="pointer" />
-                  </Badge>
-                ))}
-                <Badge style={addBadgeStyles} onClick={() => setModalOpen('Master Teachers')}>
-                  Add Site <FaPlus cursor="pointer" />
-                </Badge>
+                <Button
+                  style={{ backgroundColor: 'var(--color-gray-blue-muted)' }}
+                  onClick={() => setModalOpen('Reset Password')}
+                >
+                  Reset
+                </Button>
               </td>
             );
+          }
+          // badge column for displaying sites
+          // item here should be an object with site id and site name for teacher section
+          if (colIsBadge.includes(ind)) {
+            return displayBadgeCell(item, ind);
           }
           return <td key={ind}>{item}</td>;
         })}
       </tr>
       <EditMasterTeacherModal
         isOpen={
-          modalIsOpen === 'Master Teachers'
+          modalIsOpen === sections.TEACHER
         } /* Since this is a generic section, you must first check the sectionTitle to ensure that the correct modal is triggered */
         setIsOpen={setModalOpen}
         teacherId={uniqueKey}
       />
       <EditAdminModal
-        isOpen={modalIsOpen === 'Admin'}
+        isOpen={modalIsOpen === sections.ADMIN}
         setIsOpen={setModalOpen}
         adminId={uniqueKey}
       />
+      {sectionTitle === sections.TEACHER && (
+        <ResetPasswordModal
+          userId={uniqueKey}
+          isOpen={modalIsOpen === RESET}
+          setIsOpen={setModalOpen}
+        />
+      )}
     </>
   );
 };

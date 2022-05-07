@@ -7,12 +7,12 @@ import { TLPBackend } from '../../common/utils';
 import styles from './master-teachers-table.module.css';
 
 const MasterTeacherTableView = () => {
-  const [modalIsOpen, setModalOpen] = useState(false);
+  const [createModalIsOpen, setCreateModalOpen] = useState(false);
   const [tbodyData, setBodyData] = useState([]);
   const [sortBy, setSortBy] = useState('A-Z');
 
   const createTeacher = () => {
-    setModalOpen(true);
+    setCreateModalOpen(true);
   };
 
   const updateSortBy = option => {
@@ -55,10 +55,6 @@ const MasterTeacherTableView = () => {
     );
   };
 
-  const resetPasswordBtn = () => {
-    return <Button className={styles['reset-button']}>Reset</Button>;
-  };
-
   const noteIcon = hasNotes => {
     return (
       <div className={styles['notes-button']}>
@@ -85,7 +81,7 @@ const MasterTeacherTableView = () => {
           contactInfo(email, phoneNumber),
           sites || [],
           teacherObj, // used to show active status and resend invite if needed
-          resetPasswordBtn(),
+          null, // empty placeholder to make sure there is something for each column
           noteIcon(notes?.length > 0 || false),
         ],
       });
@@ -151,7 +147,7 @@ const MasterTeacherTableView = () => {
           statusCol={3}
           tbodyColIsBadge={[2]}
         />
-        <CreateMasterTeacherModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
+        <CreateMasterTeacherModal isOpen={createModalIsOpen} setIsOpen={setCreateModalOpen} />
       </div>
     </div>
   );

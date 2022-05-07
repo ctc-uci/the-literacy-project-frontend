@@ -32,23 +32,31 @@ const StatusCell = ({ data }) => {
     }
   }, []);
 
-  if (status === USER_STATUS.ACTIVE) {
+  if (status === USER_STATUS.PENDING) {
     return (
       <div style={{ fontWeight: 'bold' }}>
-        <div style={{ color: '#28a745' }}>Active</div>
+        <div style={{ color: '#17A2B8' }}>Account Pending</div>
+        {position === AUTH_ROLES.ADMIN_ROLE && (
+          <div style={{ color: '#e53e3e' }}>({expireTime} day(s) until link expiration)</div>
+        )}
+        <button type="button" className={styles['resend-email']} onClick={resendEmail}>
+          Resend Email
+        </button>
       </div>
     );
   }
 
+  // temporary to display inactive since it's still an option
+  if (status === USER_STATUS.INACTIVE) {
+    return (
+      <div style={{ fontWeight: 'bold' }}>
+        <div>Inactive</div>
+      </div>
+    );
+  }
   return (
     <div style={{ fontWeight: 'bold' }}>
-      <div style={{ color: '#17A2B8' }}>Account Pending</div>
-      {position === AUTH_ROLES.ADMIN_ROLE && (
-        <div style={{ color: '#e53e3e' }}>({expireTime} day(s) until link expiration)</div>
-      )}
-      <button type="button" className={styles['resend-email']} onClick={resendEmail}>
-        Resend Email
-      </button>
+      <div style={{ color: '#28a745' }}>Active</div>
     </div>
   );
 };

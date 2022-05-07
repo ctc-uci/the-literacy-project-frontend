@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import styles from './settings-edit.module.css';
 import { updateUserPassword } from '../../common/auth/auth_utils';
 import InformationPopover from '../../components/Popover/InformationPopover';
+import { passwordRulesTooltipText, passwordRegExp } from '../../common/utils';
 
 const PasswordEditView = () => {
   const navigate = useNavigate();
@@ -29,15 +30,6 @@ const PasswordEditView = () => {
     setReenterPasswordShown(!reenterPasswordShown);
   };
 
-  const passwordRulesTooltipText =
-    '\u2022 Must be at least 8 characters long' +
-    '<br />' +
-    '\u2022 Include at least one uppercase and lowercase letter' +
-    '<br />' +
-    '\u2022 Include at least 1 number' +
-    '<br />' +
-    '\u2022 Include one of these set of special characters [@$!%*?&]';
-  const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,255}$/;
   const passValidationSchema = Yup.object().shape({
     currentPassword: Yup.string().required('Current password is required'),
     newPassword: Yup.string()

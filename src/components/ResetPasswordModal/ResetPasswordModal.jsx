@@ -1,7 +1,118 @@
-// import { React, useState, useEffect } from 'react';
-// import { Modal, Button } from 'react-bootstrap';
-// import PropTypes from 'prop-types';
+import { React, useState } from 'react';
+import { Modal, Button } from 'react-bootstrap';
+import { FaEye } from 'react-icons/fa';
+import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import styles from './ResetPasswordModal.module.css';
+import InformationPopover from '../Popover/InformationPopover';
+import { TLPBackend, passwordRulesTooltipText, passwordRegExp } from '../../common/utils';
 
-// const ResetPasswordModal = ({ isOpen, setIsOpen }) => {};
+const ResetPasswordModal = ({ userId, isOpen, setIsOpen }) => {
+  const [newPasswordShown, setNewPasswordShown] = useState(false);
+  const [checkPasswordShown, setCheckPasswordShown] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-// export default ResetPasswordModal;
+  const passValidationSchema = Yup.object().shape({
+    newPassword: Yup.string()
+      .required('Please enter your new password')
+      .matches(passwordRegExp, 'Password is invalid'),
+    checkPassword: Yup.string()
+      .required('Please re-enter your new password')
+      .oneOf([Yup.ref('newPassword'), null], 'Passwords do not match!'),
+  });
+
+  const {
+    register: registerPass,
+    handleSubmit: handleSubmitPass,
+    formState: { errors: errorsPass },
+  } = useForm({
+    resolver: yupResolver(passValidationSchema),
+  });
+
+  const handleSubmit = async data => {
+    try {
+      // given user id, find the firebase id in the backend to change the password
+      console.log(userId, data.newPassword);
+      await TLPBackend.post(`/teachers/reset-password/${userId}`, {
+        newPassword: data.newPassword,
+      });
+      setIsOpen(false);
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
+  };
+
+  return (
+    <Modal show={isOpen} onHide={() => setIsOpen(false)} centered>
+      <Modal.Header className="border-0 pb-0" closeButton>
+        <Modal.Title className={styles.title}>Reset Password</Modal.Title>
+      </Modal.Header>
+
+      <Modal.Body>
+        <form onSubmit={handleSubmitPass(handleSubmit)}>
+          <label className={styles['log-label']} htmlFor="password">
+            New Password{' '}
+            <span className={styles['password-popover']}>
+              <InformationPopover bodyText={passwordRulesTooltipText} header="Password Rules" />
+            </span>
+            <div className={styles['password-input']}>
+              <input
+                type={newPasswordShown ? 'text' : 'password'}
+                {...registerPass('newPassword')}
+                className={`form-control ${errorsPass.newPassword ? 'is-invalid' : ''}${
+                  styles['input-custom']
+                }`}
+              />
+              <FaEye
+                className={styles['eye-icon']}
+                color="black"
+                onClick={() => setNewPasswordShown(!newPasswordShown)}
+              />
+            </div>
+          </label>
+          <div className={`text-danger ${styles['err-msg']}`}>
+            {errorsPass.newPassword?.message || errorMessage}
+          </div>
+
+          <label className={styles['log-label']} htmlFor="password">
+            Re-enter Password
+            <div className={styles['password-input']}>
+              <input
+                type={checkPasswordShown ? 'text' : 'password'}
+                {...registerPass('checkPassword')}
+                className={`form-control ${errorsPass.checkPassword ? 'is-invalid' : ''}${
+                  styles['input-custom']
+                }`}
+              />
+              <FaEye
+                className={styles['eye-icon']}
+                color="black"
+                onClick={() => setCheckPasswordShown(!checkPasswordShown)}
+              />
+            </div>
+          </label>
+          <div className={`text-danger ${styles['err-msg']}`}>
+            {errorsPass.checkPassword?.message || errorMessage}
+          </div>
+        </form>
+      </Modal.Body>
+
+      <Modal.Footer className="border-0">
+        <Button onClick={() => setIsOpen(false)} className="btn-danger">
+          Cancel
+        </Button>
+        <Button onClick={handleSubmitPass(handleSubmit)}>Save Changes</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
+ResetPasswordModal.propTypes = {
+  userId: PropTypes.number.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
+};
+
+export default ResetPasswordModal;
