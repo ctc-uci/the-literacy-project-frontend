@@ -236,14 +236,14 @@ const CSVButton = ({ type, areaID, siteID }) => {
   }, []);
 
   return (
-    <Button
-      className={type === 'site' ? styles['site-export'] : styles['export-button']}
-      variant="primary"
-    >
-      <CSVLink {...CSVReport} className={styles.csvLink}>
+    <CSVLink {...CSVReport} className={styles.csvLink}>
+      <Button
+        className={type === 'site' ? styles['site-export'] : styles['export-button']}
+        variant="primary"
+      >
         {type === 'site' ? 'Export' : 'Export to CSV'}
-      </CSVLink>
-    </Button>
+      </Button>
+    </CSVLink>
   );
 };
 
