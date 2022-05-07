@@ -8,7 +8,6 @@ import StudentProfileBox from '../../components/StudentProfileBox/StudentProfile
 import Graph from '../../components/Graph/Graph';
 import styles from './student-group-view.module.css';
 import Footer from '../../components/Footer/Footer';
-import CSVButton from '../../components/CSVButton/CSVButton';
 import EditStudentGroupModal from '../../components/EditStudentGroupModal/EditStudentGroupModal';
 
 const StudentGroupView = () => {
@@ -164,7 +163,7 @@ const StudentGroupView = () => {
               postData={testScores.post}
             />
           </div>
-          <CSVButton />
+          <Button className={styles['export-csv-btn']}> Export to CSV </Button>
         </div>
       </div>
       <Footer />
