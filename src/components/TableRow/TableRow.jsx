@@ -1,17 +1,19 @@
 import { React, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Button } from 'react-bootstrap';
-import { FaTrashAlt, FaPlus, FaPencilAlt } from 'react-icons/fa';
+import { FaTrashAlt, FaPlus, FaPencilAlt, FaPlusSquare, FaPenSquare } from 'react-icons/fa';
 import '../../common/vars.css';
 import EditMasterTeacherModal from '../EditMasterTeacherModal/EditMasterTeacherModal';
 import EditAdminModal from '../EditAdminModal/EditAdminModal';
 import StatusCell from '../StatusCell/StatusCell';
 import ResetPasswordModal from '../ResetPasswordModal/ResetPasswordModal';
+import TeacherNotesModal from '../NotesModal/TeacherNotesModal';
 import { TLPBackend } from '../../common/utils';
 import { SECTIONS } from '../../common/config';
 
 const { ADMIN, TEACHER, STUDENT } = SECTIONS;
 const RESET = 'Reset Password'; // used to open reset password modal
+const NOTES = 'Notes';
 
 const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   const [modalIsOpen, setModalOpen] = useState('');
@@ -50,6 +52,18 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           {item}
         </Button>
       );
+    if (sectionTitle === TEACHER) {
+      const hasNotes = item !== '';
+      return (
+        <div>
+          {hasNotes ? (
+            <FaPenSquare cursor="pointer" size="2em" onClick={() => setModalOpen(NOTES)} />
+          ) : (
+            <FaPlusSquare cursor="pointer" size="2em" onClick={() => setModalOpen(NOTES)} />
+          )}
+        </div>
+      );
+    }
     return item;
   };
 
@@ -138,11 +152,18 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
       />
       <EditAdminModal isOpen={modalIsOpen === ADMIN} setIsOpen={setModalOpen} adminId={uniqueKey} />
       {sectionTitle === TEACHER && (
-        <ResetPasswordModal
-          userId={uniqueKey}
-          isOpen={modalIsOpen === RESET}
-          setIsOpen={setModalOpen}
-        />
+        <>
+          <ResetPasswordModal
+            userId={uniqueKey}
+            isOpen={modalIsOpen === RESET}
+            setIsOpen={setModalOpen}
+          />
+          <TeacherNotesModal
+            isOpen={modalIsOpen === NOTES}
+            setIsOpen={setModalOpen}
+            teacherId={uniqueKey}
+          />
+        </>
       )}
     </>
   );

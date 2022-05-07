@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dropdown, DropdownButton, InputGroup, FormControl } from 'react-bootstrap';
-import { FaPlus, FaFilter, FaPlusSquare, FaPenSquare } from 'react-icons/fa';
+import { FaPlus, FaFilter } from 'react-icons/fa';
 import Table from '../../components/Table/Table';
 import CreateMasterTeacherModal from '../../components/CreateMasterTeacherModal/CreateMasterTeacherModal';
 import { TLPBackend } from '../../common/utils';
@@ -56,18 +56,6 @@ const MasterTeacherTableView = () => {
     );
   };
 
-  const noteIcon = hasNotes => {
-    return (
-      <div className={styles['notes-button']}>
-        {hasNotes ? (
-          <FaPenSquare cursor="pointer" size="2em" />
-        ) : (
-          <FaPlusSquare cursor="pointer" size="2em" />
-        )}
-      </div>
-    );
-  };
-
   // get data to show in the table
   const parseTableData = data => {
     const allTeachers = [];
@@ -83,7 +71,7 @@ const MasterTeacherTableView = () => {
           sites || [],
           teacherObj, // used to show active status and resend invite if needed
           null, // empty placeholder for reset password to make sure there is something for each column
-          noteIcon(notes?.length > 0 || false),
+          notes || '',
         ],
       });
     });
