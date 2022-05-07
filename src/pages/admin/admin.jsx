@@ -5,6 +5,7 @@ import CreateAdminModal from '../../components/CreateAdminModal/CreateAdminModal
 import styles from './admin.module.css';
 import Table from '../../components/Table/Table';
 import { TLPBackend } from '../../common/utils';
+import { SECTIONS } from '../../common/config';
 
 const AdminView = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
@@ -107,7 +108,7 @@ const AdminView = () => {
           </DropdownButton>
         </div>
         <Table
-          sectionTitle="Admin"
+          sectionTitle={SECTIONS.ADMIN}
           theadData={theadData}
           tbodyData={tbodyData}
           statusCol={2}

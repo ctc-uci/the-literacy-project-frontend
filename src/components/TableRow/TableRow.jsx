@@ -8,15 +8,13 @@ import EditAdminModal from '../EditAdminModal/EditAdminModal';
 import StatusCell from '../StatusCell/StatusCell';
 import ResetPasswordModal from '../ResetPasswordModal/ResetPasswordModal';
 import { TLPBackend } from '../../common/utils';
+import { SECTIONS } from '../../common/config';
+
+const { ADMIN, TEACHER, STUDENT } = SECTIONS;
+const RESET = 'Reset Password'; // used to open reset password modal
 
 const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   const [modalIsOpen, setModalOpen] = useState('');
-  const RESET = 'Reset Password'; // used to open reset password modal
-  const sections = {
-    ADMIN: 'Admin',
-    TEACHER: 'Master Teachers',
-    STUDENT: 'Student',
-  };
 
   const addBadgeStyles = {
     cursor: 'pointer',
@@ -25,7 +23,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   };
 
   const displayPencilAndLink = item => {
-    if (sectionTitle === sections.ADMIN || sectionTitle === sections.TEACHER)
+    if (sectionTitle === ADMIN || sectionTitle === TEACHER)
       return (
         <>
           <FaPencilAlt cursor="pointer" onClick={() => setModalOpen(sectionTitle)} />
@@ -42,7 +40,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   };
 
   const displayAsButton = item => {
-    if (sectionTitle === sections.STUDENT)
+    if (sectionTitle === STUDENT)
       return (
         <Button
           variant="primary"
@@ -69,7 +67,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
 
   // for teachers, display names of all sites they are in with the option to remove that site + add site button
   const displayBadgeCell = (item, ind) => {
-    if (sectionTitle === sections.TEACHER) {
+    if (sectionTitle === TEACHER) {
       return (
         <td key={ind}>
           {item.map(i => (
@@ -83,7 +81,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
               <FaTrashAlt color="red" cursor="pointer" />
             </Badge>
           ))}
-          <Badge style={addBadgeStyles} onClick={() => setModalOpen(sections.TEACHER)}>
+          <Badge style={addBadgeStyles} onClick={() => setModalOpen(TEACHER)}>
             Add Site <FaPlus cursor="pointer" />
           </Badge>
         </td>
@@ -111,7 +109,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
             return <td key={ind}>{displayAsButton(item)}</td>;
           }
           // reset password button
-          if (ind === 4 && sectionTitle === sections.TEACHER) {
+          if (ind === 4 && sectionTitle === TEACHER) {
             return (
               <td key={ind}>
                 <Button
@@ -133,17 +131,13 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
       </tr>
       <EditMasterTeacherModal
         isOpen={
-          modalIsOpen === sections.TEACHER
+          modalIsOpen === TEACHER
         } /* Since this is a generic section, you must first check the sectionTitle to ensure that the correct modal is triggered */
         setIsOpen={setModalOpen}
         teacherId={uniqueKey}
       />
-      <EditAdminModal
-        isOpen={modalIsOpen === sections.ADMIN}
-        setIsOpen={setModalOpen}
-        adminId={uniqueKey}
-      />
-      {sectionTitle === sections.TEACHER && (
+      <EditAdminModal isOpen={modalIsOpen === ADMIN} setIsOpen={setModalOpen} adminId={uniqueKey} />
+      {sectionTitle === TEACHER && (
         <ResetPasswordModal
           userId={uniqueKey}
           isOpen={modalIsOpen === RESET}

@@ -4,6 +4,7 @@ import { FaPlus, FaFilter, FaPlusSquare, FaPenSquare } from 'react-icons/fa';
 import Table from '../../components/Table/Table';
 import CreateMasterTeacherModal from '../../components/CreateMasterTeacherModal/CreateMasterTeacherModal';
 import { TLPBackend } from '../../common/utils';
+import { SECTIONS } from '../../common/config';
 import styles from './master-teachers-table.module.css';
 
 const MasterTeacherTableView = () => {
@@ -81,7 +82,7 @@ const MasterTeacherTableView = () => {
           contactInfo(email, phoneNumber),
           sites || [],
           teacherObj, // used to show active status and resend invite if needed
-          null, // empty placeholder to make sure there is something for each column
+          null, // empty placeholder for reset password to make sure there is something for each column
           noteIcon(notes?.length > 0 || false),
         ],
       });
@@ -92,7 +93,7 @@ const MasterTeacherTableView = () => {
   const fetchData = async () => {
     const teacherData = [];
 
-    // fetching all admin accounts
+    // fetching all teacher  accounts (created and invited)
     const admins = await TLPBackend.get(`/teachers`, {
       headers: {
         'Content-Type': 'application/json',
@@ -141,7 +142,7 @@ const MasterTeacherTableView = () => {
           </DropdownButton>
         </div>
         <Table
-          sectionTitle="Master Teachers"
+          sectionTitle={SECTIONS.TEACHER}
           theadData={theadData}
           tbodyData={tbodyData}
           statusCol={3}

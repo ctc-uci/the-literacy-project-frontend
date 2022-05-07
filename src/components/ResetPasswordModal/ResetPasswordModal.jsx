@@ -34,7 +34,6 @@ const ResetPasswordModal = ({ userId, isOpen, setIsOpen }) => {
   const handleSubmit = async data => {
     try {
       // given user id, find the firebase id in the backend to change the password
-      console.log(userId, data.newPassword);
       await TLPBackend.post(`/teachers/reset-password/${userId}`, {
         newPassword: data.newPassword,
       });
