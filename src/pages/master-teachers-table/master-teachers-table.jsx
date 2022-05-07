@@ -98,7 +98,7 @@ const MasterTeacherTableView = () => {
   const fetchData = async () => {
     const teacherData = [];
 
-    // fetching all teacher  accounts (created and invited)
+    // fetching all teacher accounts (created and invited)
     const admins = await TLPBackend.get(`/teachers`, {
       headers: {
         'Content-Type': 'application/json',

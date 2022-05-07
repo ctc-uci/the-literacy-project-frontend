@@ -1,29 +1,28 @@
-import { React, useState } from 'react';
+import { React } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import styles from './NotesModal.module.css';
 import { TLPBackend } from '../../common/utils';
 
-const NotesModal = ({ isOpen, setIsOpen, teacherId, notes }) => {
-  const [noteText, setNoteText] = useState(notes);
-
+const TeacherNotesModal = ({ isOpen, setIsOpen, teacherId, teacherName, notes, setNote, data }) => {
   const handleNoteChange = e => {
-    setNoteText(e.target.value);
+    setNote(e.target.value);
   };
 
   // sends a PUT request to update teacher's notes and close modal
+  // also update the data in the frontend
   const updateNote = async () => {
-    await TLPBackend.put(`/teachers/${teacherId}`, {
-      notes: noteText,
-    });
+    await TLPBackend.put(`/teachers/${teacherId}`, { notes });
     setIsOpen(false);
+    // update the teacher's note
+    // eslint-disable-next-line no-param-reassign
+    data[data.length - 1] = notes;
   };
 
   return (
     <Modal show={isOpen} onHide={() => setIsOpen(false)} centered>
       <Modal.Header className="border-0 pb-0" closeButton>
-        {/* should be teacher first + last name */}
-        <Modal.Title className={styles.title}>{teacherId}</Modal.Title>
+        <Modal.Title className={styles.title}>{teacherName}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -32,9 +31,10 @@ const NotesModal = ({ isOpen, setIsOpen, teacherId, notes }) => {
             Notes
             <textarea
               type="text"
-              value={noteText}
+              value={notes}
               className="form-control"
               onChange={handleNoteChange}
+              placeholder={notes === '' ? 'Enter some notes for the teacher here' : ''}
             />
           </label>
         </form>
@@ -50,15 +50,18 @@ const NotesModal = ({ isOpen, setIsOpen, teacherId, notes }) => {
   );
 };
 
-NotesModal.defaultProps = {
-  notes: '',
+TeacherNotesModal.defaultProps = {
+  data: [],
 };
 
-NotesModal.propTypes = {
+TeacherNotesModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   teacherId: PropTypes.number.isRequired,
-  notes: PropTypes.string,
+  teacherName: PropTypes.string.isRequired,
+  notes: PropTypes.string.isRequired,
+  setNote: PropTypes.func.isRequired,
+  data: PropTypes.arrayOf(PropTypes.any),
 };
 
-export default NotesModal;
+export default TeacherNotesModal;

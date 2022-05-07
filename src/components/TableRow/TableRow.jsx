@@ -1,24 +1,27 @@
 import { React, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Button } from 'react-bootstrap';
-import { FaTrashAlt, FaPlus, FaPencilAlt, FaPlusSquare, FaPenSquare } from 'react-icons/fa';
+import { FaPlus, FaPencilAlt, FaPlusSquare, FaPenSquare } from 'react-icons/fa';
 import '../../common/vars.css';
 import EditMasterTeacherModal from '../EditMasterTeacherModal/EditMasterTeacherModal';
 import EditAdminModal from '../EditAdminModal/EditAdminModal';
 import StatusCell from '../StatusCell/StatusCell';
 import ResetPasswordModal from '../ResetPasswordModal/ResetPasswordModal';
 import TeacherNotesModal from '../NotesModal/TeacherNotesModal';
-import { TLPBackend } from '../../common/utils';
+import TeacherTableSiteCell from '../TeacherTableSiteCell/TeacherTableSiteCell';
 import { SECTIONS } from '../../common/config';
 
 const { ADMIN, TEACHER, STUDENT } = SECTIONS;
-const RESET = 'Reset Password'; // used to open reset password modal
+const RESET = 'Reset Password'; // used to open reset password and edit note modal modal
 const NOTES = 'Notes';
 
 const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   const [modalIsOpen, setModalOpen] = useState('');
-  // const [siteList, setSiteList] = useState([]); // for master teacher sites
 
+  // used to for master teacher note
+  const [noteModalText, setNoteModalText] = useState('');
+
+  const userName = data[0];
   const addBadgeStyles = {
     cursor: 'pointer',
     marginLeft: '0.5em',
@@ -42,6 +45,11 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     return item;
   };
 
+  const setNotes = note => {
+    setNoteModalText(note);
+    setModalOpen(NOTES);
+  };
+
   const displayAsButton = item => {
     if (sectionTitle === STUDENT)
       return (
@@ -55,7 +63,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
       );
     if (sectionTitle === TEACHER) {
       return item !== '' ? (
-        <FaPenSquare cursor="pointer" size="2em" onClick={() => setModalOpen(NOTES)} />
+        <FaPenSquare cursor="pointer" size="2em" onClick={() => setNotes(item)} />
       ) : (
         <FaPlusSquare cursor="pointer" size="2em" onClick={() => setModalOpen(NOTES)} />
       );
@@ -63,35 +71,13 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     return item;
   };
 
-  // remove a site from the teacher site relation
-  const deleteSite = async (siteId, sites, index) => {
-    try {
-      console.log(uniqueKey, typeof siteId);
-      await TLPBackend.put(`teachers/remove-site/${uniqueKey}`, { siteId });
-      sites.splice(index, 1);
-      // setSiteList(sites);
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
   // for teachers, display names of all sites they are in with the option to remove that site + add site button
   const displayBadgeCell = (item, ind) => {
     if (sectionTitle === TEACHER) {
       return (
         <td key={ind}>
-          {item.map((site, index) => (
-            <Badge
-              key={site.siteId}
-              bg="dark"
-              style={{ cursor: 'pointer', marginLeft: '0.5em' }}
-              onClick={() => deleteSite(site.siteId, item, index)}
-            >
-              {site.siteName}
-              <FaTrashAlt color="red" cursor="pointer" />
-            </Badge>
-          ))}
-          <Badge style={addBadgeStyles} onClick={() => setModalOpen(TEACHER)}>
+          <TeacherTableSiteCell teacherId={uniqueKey} item={item} />
+          <Badge style={addBadgeStyles} onClick={() => setModalOpen(SECTIONS.TEACHER)}>
             Add Site <FaPlus cursor="pointer" />
           </Badge>
         </td>
@@ -157,6 +143,10 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
             isOpen={modalIsOpen === NOTES}
             setIsOpen={setModalOpen}
             teacherId={uniqueKey}
+            teacherName={userName}
+            notes={noteModalText}
+            setNote={setNoteModalText}
+            data={data}
           />
         </>
       )}
