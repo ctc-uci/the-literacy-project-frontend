@@ -17,7 +17,7 @@ const ResetPasswordModal = ({ userId, isOpen, setIsOpen }) => {
   const passValidationSchema = Yup.object().shape({
     newPassword: Yup.string()
       .required('Please enter your new password')
-      .matches(passwordRegExp, 'Password is invalid'),
+      .matches(passwordRegExp, 'Password does not meet requirements'),
     checkPassword: Yup.string()
       .required('Please re-enter your new password')
       .oneOf([Yup.ref('newPassword'), null], 'Passwords do not match!'),

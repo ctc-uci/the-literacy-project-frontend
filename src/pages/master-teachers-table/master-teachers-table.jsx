@@ -19,6 +19,22 @@ const MasterTeacherTableView = () => {
   const updateSortBy = option => {
     setSortBy(option);
   };
+
+  // Sorting function for name using the sort by value in the body data
+  const compareNames = (user1, user2) => {
+    const u1 = user1.sortBy.toLowerCase();
+    const u2 = user2.sortBy.toLowerCase();
+
+    switch (sortBy) {
+      case 'A-Z':
+        return u1 < u2 ? -1 : 1;
+      case 'Z-A':
+        return u1 < u2 ? 1 : -1;
+      default:
+        return u1 < u2 ? -1 : 1;
+    }
+  };
+
   const theadData = [
     {
       headerTitle: 'Name',
@@ -73,6 +89,7 @@ const MasterTeacherTableView = () => {
           null, // empty placeholder for reset password to make sure there is something for each column
           notes || '',
         ],
+        sortBy: `${lastName} ${firstName}`,
       });
     });
     setBodyData(allTeachers);
@@ -132,7 +149,7 @@ const MasterTeacherTableView = () => {
         <Table
           sectionTitle={SECTIONS.TEACHER}
           theadData={theadData}
-          tbodyData={tbodyData}
+          tbodyData={tbodyData.sort(compareNames)}
           statusCol={3}
           tbodyColIsBadge={[2]}
         />

@@ -51,7 +51,7 @@ const NotesModal = ({ isOpen, setIsOpen, teacherId, notes }) => {
 };
 
 NotesModal.defaultProps = {
-  notes: 'some notes',
+  notes: '',
 };
 
 NotesModal.propTypes = {

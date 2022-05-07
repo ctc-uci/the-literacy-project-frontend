@@ -17,6 +17,7 @@ const NOTES = 'Notes';
 
 const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   const [modalIsOpen, setModalOpen] = useState('');
+  // const [siteList, setSiteList] = useState([]); // for master teacher sites
 
   const addBadgeStyles = {
     cursor: 'pointer',
@@ -53,27 +54,22 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
         </Button>
       );
     if (sectionTitle === TEACHER) {
-      const hasNotes = item !== '';
-      return (
-        <div>
-          {hasNotes ? (
-            <FaPenSquare cursor="pointer" size="2em" onClick={() => setModalOpen(NOTES)} />
-          ) : (
-            <FaPlusSquare cursor="pointer" size="2em" onClick={() => setModalOpen(NOTES)} />
-          )}
-        </div>
+      return item !== '' ? (
+        <FaPenSquare cursor="pointer" size="2em" onClick={() => setModalOpen(NOTES)} />
+      ) : (
+        <FaPlusSquare cursor="pointer" size="2em" onClick={() => setModalOpen(NOTES)} />
       );
     }
     return item;
   };
 
   // remove a site from the teacher site relation
-  const deleteSite = async (siteId, siteList, index) => {
+  const deleteSite = async (siteId, sites, index) => {
     try {
-      console.log(uniqueKey, siteId);
-      await TLPBackend.delete(`teachers/remove-site/${uniqueKey}`, { siteId });
-      siteList.splice(index, 1);
-      console.log(siteList);
+      console.log(uniqueKey, typeof siteId);
+      await TLPBackend.put(`teachers/remove-site/${uniqueKey}`, { siteId });
+      sites.splice(index, 1);
+      // setSiteList(sites);
     } catch (err) {
       console.log(err.message);
     }
@@ -84,14 +80,14 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     if (sectionTitle === TEACHER) {
       return (
         <td key={ind}>
-          {item.map(i => (
+          {item.map((site, index) => (
             <Badge
-              key={i.siteId}
+              key={site.siteId}
               bg="dark"
               style={{ cursor: 'pointer', marginLeft: '0.5em' }}
-              onClick={() => deleteSite(i.siteId, item, i)}
+              onClick={() => deleteSite(site.siteId, item, index)}
             >
-              {i.siteName}
+              {site.siteName}
               <FaTrashAlt color="red" cursor="pointer" />
             </Badge>
           ))}
@@ -143,16 +139,15 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           return <td key={ind}>{item}</td>;
         })}
       </tr>
-      <EditMasterTeacherModal
-        isOpen={
-          modalIsOpen === TEACHER
-        } /* Since this is a generic section, you must first check the sectionTitle to ensure that the correct modal is triggered */
-        setIsOpen={setModalOpen}
-        teacherId={uniqueKey}
-      />
-      <EditAdminModal isOpen={modalIsOpen === ADMIN} setIsOpen={setModalOpen} adminId={uniqueKey} />
       {sectionTitle === TEACHER && (
         <>
+          <EditMasterTeacherModal
+            isOpen={
+              modalIsOpen === TEACHER
+            } /* Since this is a generic section, you must first check the sectionTitle to ensure that the correct modal is triggered */
+            setIsOpen={setModalOpen}
+            teacherId={uniqueKey}
+          />
           <ResetPasswordModal
             userId={uniqueKey}
             isOpen={modalIsOpen === RESET}
@@ -164,6 +159,13 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
             teacherId={uniqueKey}
           />
         </>
+      )}
+      {sectionTitle === ADMIN && (
+        <EditAdminModal
+          isOpen={modalIsOpen === ADMIN}
+          setIsOpen={setModalOpen}
+          adminId={uniqueKey}
+        />
       )}
     </>
   );

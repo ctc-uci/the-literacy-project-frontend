@@ -19,6 +19,22 @@ const AdminView = () => {
   const updateSortBy = option => {
     setSortBy(option);
   };
+
+  // Sorting function for name using the sort by value in the body data
+  const compareNames = (user1, user2) => {
+    const u1 = user1.sortBy.toLowerCase();
+    const u2 = user2.sortBy.toLowerCase();
+
+    switch (sortBy) {
+      case 'A-Z':
+        return u1 < u2 ? -1 : 1;
+      case 'Z-A':
+        return u1 < u2 ? 1 : -1;
+      default:
+        return u1 < u2 ? -1 : 1;
+    }
+  };
+
   const theadData = [
     {
       headerTitle: 'Name',
@@ -39,11 +55,12 @@ const AdminView = () => {
   const parseTableData = data => {
     const allAdmins = [];
     data.forEach(admObj => {
-      const { firstName, lastName, email } = admObj;
-      const userId = admObj.userId ? admObj.userId : admObj.inviteId;
+      const { firstName, lastName, email, userId, inviteId } = admObj;
+      const id = userId || inviteId;
       allAdmins.push({
-        id: userId,
+        id,
         items: [`${firstName} ${lastName}`, email, admObj],
+        sortBy: `${lastName} ${firstName}`,
       });
     });
     setBodyData(allAdmins);
@@ -110,7 +127,7 @@ const AdminView = () => {
         <Table
           sectionTitle={SECTIONS.ADMIN}
           theadData={theadData}
-          tbodyData={tbodyData}
+          tbodyData={tbodyData.sort(compareNames)}
           statusCol={2}
           tbodyColIsBadge={[]}
         />
