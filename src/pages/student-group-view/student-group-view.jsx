@@ -9,9 +9,11 @@ import Graph from '../../components/Graph/Graph';
 import styles from './student-group-view.module.css';
 import Footer from '../../components/Footer/Footer';
 import EditStudentGroupModal from '../../components/EditStudentGroupModal/EditStudentGroupModal';
+import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 
 const StudentGroupView = () => {
   const studentGroupId = useParams().groupId;
+  const [studentGroupName, setStudentGroupName] = useState();
   const [siteId, setSiteId] = useState();
   const [masterTeacherId, setMasterTeacherId] = useState();
   const [siteName, setSiteName] = useState('');
@@ -21,11 +23,16 @@ const StudentGroupView = () => {
   const [testScores, setTestScores] = useState({});
   const [error, setError] = useState(null);
   const [editStudentGroupIsOpen, setEditStudentGroupIsOpen] = useState(false);
+  const schoolYears = ['2021-2022', '2022-2023', '2023-2024'];
+  const [schoolYear, setSchoolYear] = useState();
+  const schoolCycles = [1, 2, 3, 4];
+  const [schoolCycle, setSchoolCycle] = useState();
+  const dropdownDisabled = true;
 
-  const getStudentFirstNames = students => {
+  const getStudentNames = students => {
     const studentList = [];
     if (students) {
-      students.forEach(s => studentList.push(`${s.firstName} ${s.lastName}`));
+      students.forEach(s => studentList.push([s.studentId, `${s.firstName} ${s.lastName}`]));
     }
     return studentList;
   };
@@ -37,12 +44,15 @@ const StudentGroupView = () => {
       },
     });
     if (studentGroupRes.status === 200) {
+      setStudentGroupName(studentGroupRes.data.name);
       setSiteId(studentGroupRes.data.siteId);
       setMeetingTime(
         `${studentGroupRes.data.meetingDay} ${parseTime(studentGroupRes.data.meetingTime)}`,
       );
-      setStudentGroupList(getStudentFirstNames(studentGroupRes.data.students));
+      setStudentGroupList(getStudentNames(studentGroupRes.data.students));
       setMasterTeacherId(studentGroupRes.data.masterTeacherId);
+      setSchoolYear(`${studentGroupRes.data.year}-${studentGroupRes.data.year + 1}`);
+      setSchoolCycle(studentGroupRes.data.cycle);
     } else {
       setSiteId(-1);
       setError(error);
@@ -91,7 +101,7 @@ const StudentGroupView = () => {
             </Link>
           </div>
           <div className={styles['float-right-section']}>
-            <h1>Student Group {studentGroupId}</h1>
+            <h1>{studentGroupName}</h1>
           </div>
         </div>
         <div className={`d-flex ${styles['dropdown-container']}`}>
@@ -99,26 +109,32 @@ const StudentGroupView = () => {
             <Form.Label className={styles['custom-form-label']}>
               <h4>School Year</h4>
             </Form.Label>
-            <Form.Select className={styles['custom-form-select']}>
-              <option>2021-22</option>
-              <option>2022-23</option>
-            </Form.Select>
+            {typeof schoolYear === 'string' ? (
+              <DropdownMenu
+                choices={schoolYears}
+                current={schoolYear}
+                setFn={setSchoolYear}
+                disabled={dropdownDisabled}
+              />
+            ) : null}
             <Form.Label className={styles['custom-form-label']}>
               <h4>Cycle</h4>
             </Form.Label>
-            <Form.Select className={styles['custom-form-select']}>
-              <option>Cycle 1</option>
-              <option>Cycle 2</option>
-              <option>Cycle 3</option>
-              <option>Cycle 4</option>
-            </Form.Select>
+            {typeof schoolCycle === 'string' ? (
+              <DropdownMenu
+                choices={schoolCycles}
+                current={schoolCycle}
+                setFn={setSchoolCycle}
+                disabled={dropdownDisabled}
+              />
+            ) : null}
           </div>
         </div>
       </div>
       <div id={styles['page-container']}>
         <div id={styles['student-group-container']}>
           <div className={styles['header-section']}>
-            <h2 className={styles['student-group-header']}>Student Group {studentGroupId}</h2>
+            <h2 className={styles['student-group-header']}>{studentGroupName}</h2>
             <Button
               variant="warning"
               className={styles['edit-group-btn']}
@@ -148,7 +164,13 @@ const StudentGroupView = () => {
             <h3 className={styles['section-header']}>Students Assigned</h3>
             <Container fluid>
               {studentGroupList.map(student => {
-                return <StudentProfileBox key={student} studentName={student} />;
+                return (
+                  <StudentProfileBox
+                    key={student}
+                    studentId={student[0]}
+                    studentName={student[1]}
+                  />
+                );
               })}
             </Container>
           </div>
@@ -157,7 +179,7 @@ const StudentGroupView = () => {
           <h2>Overall Group Data </h2>
           <div id={styles['student-group-chart']}>
             <Graph
-              title={`Average Scores for Student Group ${studentGroupId}`}
+              title={`Average Scores for ${studentGroupName}`}
               xLabels={['Attitudinal', 'Academic']}
               preData={testScores.pre}
               postData={testScores.post}
