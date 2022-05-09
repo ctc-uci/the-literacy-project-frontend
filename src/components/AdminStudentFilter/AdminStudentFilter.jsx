@@ -1,54 +1,54 @@
 import { React, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Form } from 'react-bootstrap';
-import styles from './StudentFilter.module.css';
+import styles from './AdminStudentFilter.module.css';
 
-function StudentFilter(props) {
-  const { isOpen, setIsOpen, states, filters, setFilters } = props;
+function AdminStudentFilter(props) {
+  const { isOpen, setIsOpen, areas, filters, setFilters } = props;
   // const [showActive, setShowActive] = useState(!filters.active);
   // const [showInactive, setShowInactive] = useState(!filters.inactive);
-  const [showStates, setShowStates] = useState([]);
+  const [showAreas, setShowAreas] = useState([]);
 
   useEffect(() => {
-    if (filters.states) {
-      // There is a filter for the states
-      setShowStates(
-        states
-          .map(state => {
-            return { areaState: state };
-          }) // Convert stats to a mocked list of area objects
-          .filter(filters.states) // Apply the states filter to the list
-          .map(area => area.areaState), // Convert the areas back to a list of strings
+    if (filters.areas) {
+      // There is a filter for the areas
+      setShowAreas(
+        areas
+          .map(area => {
+            return { areaName: area };
+          }) // Convert area names to a mocked list of area objects
+          .filter(filters.areas) // Apply the areas filter to the list
+          .map(area => area.areaName), // Convert the areas back to a list of strings
       );
     } else {
-      // There is no filter for the states
-      // setShowStates to the full list of states
-      setShowStates(states);
+      // There is no filter for the areas
+      // setShowAreas to the full list of areas
+      setShowAreas(areas);
     }
-  }, [states]);
+  }, [areas]);
 
   /**
-   * @returns true if all states are checked
+   * @returns true if all areas are checked
    */
-  const areAllStatesChecked = () => {
-    return states.length === showStates.length;
+  const areAllAreasChecked = () => {
+    return areas.length === showAreas.length;
   };
 
-  const toggleState = state => {
-    if (showStates.includes(state)) {
-      setShowStates(showStates.filter(s => s !== state));
+  const toggleArea = area => {
+    if (showAreas.includes(area)) {
+      setShowAreas(showAreas.filter(a => a !== area));
     } else {
-      setShowStates([...showStates, state]);
+      setShowAreas([...showAreas, area]);
     }
   };
 
-  const toggleAllStates = () => {
-    if (areAllStatesChecked()) {
-      // Remove all states
-      setShowStates([]);
+  const toggleAllAreas = () => {
+    if (areAllAreasChecked()) {
+      // Remove all areas
+      setShowAreas([]);
     } else {
-      // Add all states
-      setShowStates(states);
+      // Add all areas
+      setShowAreas(areas);
     }
   };
 
@@ -57,21 +57,21 @@ function StudentFilter(props) {
   const resetFilters = () => {
     // setShowActive(true);
     // setShowInactive(false);
-    setShowStates(states);
+    setShowAreas(areas);
   };
 
   const applyFilters = () => {
-    // For each value (states, active, inactive), check if it is checked
+    // For each value (areas, active, inactive), check if it is checked
     // If it is checked, we don't need to filter
     // If it is not checked, we need to provide a function to filter it out
-    const statesFilter = areAllStatesChecked() ? null : area => showStates.includes(area.areaState);
+    const areasFilter = areAllAreasChecked() ? null : area => showAreas.includes(area.areaName);
     // const activeFilter = showActive ? null : area => !area.active;
     // const inactiveFilter = showInactive ? null : area => area.active;
 
     // Update the filters
     setFilters({
       ...filters,
-      states: statesFilter,
+      areas: areasFilter,
       // active: activeFilter,
       // inactive: inactiveFilter,
     });
@@ -86,30 +86,30 @@ function StudentFilter(props) {
         <Modal.Title>Filter</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form.Group className="mb-3" controlId="filter.state">
-          <div className={styles['state-label-row']}>
+        <Form.Group className="mb-3" controlId="filter.area">
+          <div className={styles['area-label-row']}>
             <Form.Label>
-              <b>State</b>
+              <b>Area</b>
             </Form.Label>
             <Form.Check
               type="checkbox"
-              label="All States"
-              checked={areAllStatesChecked()}
-              onChange={toggleAllStates}
+              label="All Areas"
+              checked={areAllAreasChecked()}
+              onChange={toggleAllAreas}
             />
           </div>
           <div className={styles.checkboxes}>
-            {states.map(state => {
-              const check = showStates.includes(state);
+            {areas.map(area => {
+              const check = showAreas.includes(area);
               return (
                 <Form.Check
                   type="checkbox"
-                  label={state}
+                  label={area}
                   className={styles['form-check']}
-                  key={state}
+                  key={area}
                   checked={check}
                   onChange={() => {
-                    toggleState(state);
+                    toggleArea(area);
                   }}
                 />
               );
@@ -148,12 +148,12 @@ function StudentFilter(props) {
   );
 }
 
-StudentFilter.propTypes = {
+AdminStudentFilter.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  states: PropTypes.arrayOf(PropTypes.string).isRequired,
+  areas: PropTypes.arrayOf(PropTypes.string).isRequired,
   filters: PropTypes.oneOfType([PropTypes.object]).isRequired,
   setFilters: PropTypes.func.isRequired,
 };
 
-export default StudentFilter;
+export default AdminStudentFilter;
