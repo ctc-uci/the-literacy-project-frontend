@@ -8,29 +8,53 @@ import styles from './CreateSiteModal.module.css';
 import { TLPBackend } from '../../common/utils';
 import '../../common/vars.css';
 
-const schema = yup
-  .object({
-    siteName: yup.string().required('Please enter a site name.'),
-    addressStreet: yup.string().required('Address street is required.'),
-    addressApt: yup.string(),
-    addressCity: yup.string().required(),
-    addressZip: yup.number().required(),
-    primaryFirstName: yup.string().required(),
-    primaryLastName: yup.string().required(),
-    primaryTitle: yup.string(),
-    primaryEmail: yup.string().required(),
-    primaryPhone: yup.string().required(),
-    secondaryFirstName: yup.string(),
-    secondaryLastName: yup.string(),
-    secondaryTitle: yup.string(),
-    secondaryEmail: yup.string(),
-    secondaryPhone: yup.string(),
-    notes: yup.string(),
-  })
-  .required();
-
 const CreateSiteModal = ({ areaId }) => {
-  const { register, handleSubmit } = useForm({
+  // Regex for phone number validation in 1234567890 format
+  const phoneNumberReg = /^[0-9]{3}[0-9]{3}[0-9]{4}$/;
+
+  const schema = yup
+    .object()
+    .shape(
+      {
+        siteName: yup.string().required('Please enter a site name.'),
+        addressStreet: yup.string().required('Address street is required.'),
+        addressApt: yup.string(),
+        addressCity: yup.string().required('City is required.'),
+        addressZip: yup
+          .number()
+          .required('Zip code is required.')
+          .typeError('Zip code must be a number.'),
+        primaryFirstName: yup.string().required('First name is required.'),
+        primaryLastName: yup.string().required('Last name is required.'),
+        primaryTitle: yup.string(),
+        primaryEmail: yup
+          .string()
+          .email('Email must be a valid email address')
+          .required('Email is required.'),
+        primaryPhone: yup
+          .string()
+          .required('Phone number is required.')
+          .matches(phoneNumberReg, 'Phone number is not valid.'),
+        secondaryFirstName: yup.string(),
+        secondaryLastName: yup.string(),
+        secondaryTitle: yup.string(),
+        secondaryEmail: yup.string().email('Email must be a valid email address'),
+        secondaryPhone: yup.string().when('secondaryPhone', {
+          is: number => typeof number !== 'undefined' && number.length !== 0,
+          then: yup.string().matches(phoneNumberReg, 'Phone number is not valid.'),
+          otherwise: yup.string(),
+        }),
+        notes: yup.string(),
+      },
+      [['secondaryPhone', 'secondaryPhone']],
+    )
+    .required();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
     delayError: 750,
   });
@@ -95,22 +119,29 @@ const CreateSiteModal = ({ areaId }) => {
                   <input
                     style={{ width: '255px' }}
                     type="text"
-                    className="form-control"
+                    className={`form-control ${errors.siteName ? `is-invalid` : ''}`}
                     name="siteName"
                     placeholder="i.e. Lakeview Middle School"
                     {...register('siteName')}
                   />
+                  <div className={`text-danger ${styles['err-msg']}`}>
+                    {errors.siteName?.message ?? <>{'\u00A0'}</>}
+                  </div>
                 </label>
                 <label className={styles.label} htmlFor="address-street">
                   Street Address<span style={{ color: '#e32' }}>*</span>
                   <input
                     style={{ width: '255px' }}
                     type="text"
-                    className={`form-control ${styles['page-inputs']}`}
+                    className={`form-control ${styles['page-inputs']}
+                              ${errors.addressStreet ? `is-invalid` : ''}`}
                     name="addressStreet"
                     placeholder="ie 123 Playa Dr"
                     {...register('addressStreet')}
                   />
+                  <div className={`text-danger ${styles['err-msg']}`}>
+                    {errors.addressStreet?.message ?? <>{'\u00A0'}</>}
+                  </div>
                 </label>
                 <label className={styles.label} htmlFor="apt-suite-etc">
                   Apt, suite, etc
@@ -128,11 +159,15 @@ const CreateSiteModal = ({ areaId }) => {
                     City<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="text"
-                      className={`form-control ${styles['addr-small-field']}`}
+                      className={`form-control ${styles['addr-small-field']}
+                                ${errors.addressCity ? `is-invalid` : ''}`}
                       name="addressCity"
                       placeholder="Irvine"
                       {...register('addressCity')}
                     />
+                    <div className={`text-danger ${styles['err-msg']}`}>
+                      {errors.addressCity?.message ?? <>{'\u00A0'}</>}
+                    </div>
                   </label>
                   <label style={{ padding: 10 }} htmlFor="address-zip">
                     Zip Code<span style={{ color: '#e32' }}>*</span>
@@ -144,11 +179,15 @@ const CreateSiteModal = ({ areaId }) => {
                         }
                       }}
                       maxLength={9}
-                      className={`form-control ${styles['addr-small-field']}`}
+                      className={`form-control ${styles['addr-small-field']}
+                                ${errors.addressZip ? `is-invalid` : ''}`}
                       name="address-zip"
                       placeholder="ie 92614"
                       {...register('addressZip')}
                     />
+                    <div className={`text-danger ${styles['err-msg']}`}>
+                      {errors.addressZip?.message ?? <>{'\u00A0'}</>}
+                    </div>
                   </label>
                 </div>
               </Col>
@@ -161,11 +200,14 @@ const CreateSiteModal = ({ areaId }) => {
                     First Name<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${errors.primaryFirstName ? `is-invalid` : ''}`}
                       name="primaryName"
                       placeholder="First Name"
                       {...register('primaryFirstName')}
                     />
+                    <div className={`text-danger ${styles['err-msg']}`}>
+                      {errors.primaryFirstName?.message ?? <>{'\u00A0'}</>}
+                    </div>
                   </label>
                 </Col>
                 <Col lg={3}>
@@ -173,11 +215,14 @@ const CreateSiteModal = ({ areaId }) => {
                     Last Name<span style={{ color: '#e32' }}>*</span>
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${errors.primaryLastName ? `is-invalid` : ''}`}
                       name="primaryName"
                       placeholder="Last Name"
                       {...register('primaryLastName')}
                     />
+                    <div className={`text-danger ${styles['err-msg']}`}>
+                      {errors.primaryLastName?.message ?? <>{'\u00A0'}</>}
+                    </div>
                   </label>
                 </Col>
                 <Col lg={5}>
@@ -200,11 +245,14 @@ const CreateSiteModal = ({ areaId }) => {
                   <input
                     style={{ width: '255px' }}
                     type="email"
-                    className="form-control"
+                    className={`form-control ${errors.primaryEmail ? `is-invalid` : ''}`}
                     name="primaryEmail"
                     placeholder="email@gmail.com"
                     {...register('primaryEmail')}
                   />
+                  <div className={`text-danger ${styles['err-msg']}`}>
+                    {errors.primaryEmail?.message ?? <>{'\u00A0'}</>}
+                  </div>
                 </label>
                 <label className={styles.label} htmlFor="primary-phone">
                   Phone Number<span style={{ color: '#e32' }}>*</span>
@@ -218,11 +266,14 @@ const CreateSiteModal = ({ areaId }) => {
                       }
                     }}
                     maxLength={10}
-                    className="form-control"
+                    className={`form-control ${errors.primaryPhone ? `is-invalid` : ''}`}
                     name="primaryPhone"
                     placeholder="1233332410"
                     {...register('primaryPhone')}
                   />
+                  <div className={`text-danger ${styles['err-msg']}`}>
+                    {errors.primaryPhone?.message ?? <>{'\u00A0'}</>}
+                  </div>
                 </label>
               </Col>
             </div>
@@ -273,17 +324,20 @@ const CreateSiteModal = ({ areaId }) => {
                   <input
                     style={{ width: '255px' }}
                     type="email"
-                    className="form-control"
+                    className={`form-control ${errors.secondaryEmail ? `is-invalid` : ''}`}
                     name="secondaryEmail"
                     placeholder="email@gmail.com"
                     {...register('secondaryEmail')}
                   />
+                  <div className={`text-danger ${styles['err-msg']}`}>
+                    {errors.secondaryEmail?.message ?? <>{'\u00A0'}</>}
+                  </div>
                 </label>
                 <label className={styles.label} htmlFor="secondary-phone">
                   Phone Number
                   <input
                     style={{ width: '255px' }}
-                    className="form-control"
+                    className={`form-control ${errors.secondaryPhone ? `is-invalid` : ''}`}
                     type="number"
                     // Phone #s are <= 10 digits
                     onInput={e => {
@@ -295,6 +349,9 @@ const CreateSiteModal = ({ areaId }) => {
                     placeholder="1233332401"
                     {...register('secondaryPhone')}
                   />
+                  <div className={`text-danger ${styles['err-msg']}`}>
+                    {errors.secondaryPhone?.message ?? <>{'\u00A0'}</>}
+                  </div>
                 </label>
               </Col>
             </div>
@@ -304,7 +361,7 @@ const CreateSiteModal = ({ areaId }) => {
                 <textarea
                   style={{ width: '700px' }}
                   className="form-control"
-                  placeholder="notes"
+                  placeholder="Notes"
                   name="notes"
                   {...register('notes')}
                 />
