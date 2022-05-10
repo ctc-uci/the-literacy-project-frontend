@@ -223,6 +223,10 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     });
   };
 
+  const delStudentGroup = () => {
+    TLPBackend.delete(`/student-groups/${studentGroupId}`);
+  };
+
   const debouncedUpdateName = debounce(updateName, 800);
 
   const StudentBadges = () => (
@@ -360,6 +364,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
             setIsOpen={setWarningModalIsOpen}
             name={studentGroupInfo.groupName}
             body="studentGroup"
+            deleteFunc={delStudentGroup}
           />
           <div className={styles['edit-student-group-save-button']}>
             <Button variant="primary" onClick={() => updateGroup()}>
