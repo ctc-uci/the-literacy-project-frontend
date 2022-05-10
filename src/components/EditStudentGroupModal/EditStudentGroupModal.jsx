@@ -10,6 +10,7 @@ import styles from './EditStudentGroupModal.module.css';
 import { TLPBackend } from '../../common/utils';
 
 import StudentGroupDropdown from './StudentGroupDropdown';
+import WarningModal from '../WarningModal/WarningModal';
 
 const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) => {
   const schoolYears = ['2021-2022', '2022-2023', '2023-2024'];
@@ -23,6 +24,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     'Saturdays',
     'Sundays',
   ];
+  const [WarningModalIsOpen, setWarningModalIsOpen] = useState(false);
 
   const [studentGroupInfo, setStudentGroupInfo] = useState({
     groupName: 'Default Group Name',
@@ -348,11 +350,17 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
       </Modal.Body>
       <Modal.Footer>
         <div className={styles['edit-student-group-modal-footer']}>
-          <div className={styles['edit-student-group-cancel-button']}>
-            <Button variant="secondary" onClick={() => closeModal()}>
-              Cancel
+          <div className={styles['edit-student-group-delete-button']}>
+            <Button variant="danger" onClick={() => setWarningModalIsOpen(true)}>
+              Delete
             </Button>
           </div>
+          <WarningModal
+            isOpen={WarningModalIsOpen}
+            setIsOpen={setWarningModalIsOpen}
+            name={studentGroupInfo.groupName}
+            body="studentGroup"
+          />
           <div className={styles['edit-student-group-save-button']}>
             <Button variant="primary" onClick={() => updateGroup()}>
               Save
