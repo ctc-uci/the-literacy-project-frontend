@@ -63,27 +63,19 @@ const MasterTeacherTableView = () => {
     },
   ];
 
-  const contactInfo = (email, phoneNumber) => {
-    return (
-      <div>
-        <div>{email}</div>
-        <div>{phoneNumber}</div>
-      </div>
-    );
-  };
-
   // get data to show in the table
   const parseTableData = data => {
     const allTeachers = [];
 
     data.forEach(teacherObj => {
-      const { firstName, lastName, email, phoneNumber, sites, notes } = teacherObj;
-      const userId = teacherObj.userId ? teacherObj.userId : teacherObj.inviteId;
+      const { firstName, lastName, email, phoneNumber, sites, notes, userId, inviteId } =
+        teacherObj;
+      const id = userId || inviteId;
       allTeachers.push({
-        id: userId,
+        id,
         items: [
           `${firstName} ${lastName}`,
-          contactInfo(email, phoneNumber),
+          { email, phoneNumber },
           sites || [],
           teacherObj, // used to show active status and resend invite if needed
           null, // empty placeholder for reset password to make sure there is something for each column

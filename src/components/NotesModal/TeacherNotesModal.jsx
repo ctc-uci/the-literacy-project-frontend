@@ -4,19 +4,16 @@ import PropTypes from 'prop-types';
 import styles from './NotesModal.module.css';
 import { TLPBackend } from '../../common/utils';
 
-const TeacherNotesModal = ({ isOpen, setIsOpen, teacherId, teacherName, notes, setNote, data }) => {
+const TeacherNotesModal = ({ isOpen, setIsOpen, teacherId, teacherName, notes, setNotes }) => {
   const handleNoteChange = e => {
-    setNote(e.target.value);
+    setNotes(e.target.value);
   };
 
   // sends a PUT request to update teacher's notes and close modal
   // also update the data in the frontend
   const updateNote = async () => {
-    await TLPBackend.put(`/teachers/${teacherId}`, { notes });
+    await TLPBackend.put(`/teachers/update-notes/${teacherId}`, { notes });
     setIsOpen(false);
-    // update the teacher's note
-    // eslint-disable-next-line no-param-reassign
-    data[data.length - 1] = notes;
   };
 
   return (
@@ -41,7 +38,10 @@ const TeacherNotesModal = ({ isOpen, setIsOpen, teacherId, teacherName, notes, s
       </Modal.Body>
 
       <Modal.Footer className="border-0">
-        <Button onClick={() => setIsOpen(false)} className="btn-danger">
+        <Button
+          onClick={() => setIsOpen(false)}
+          style={{ backgroundColor: 'var(--color-gray-blue-muted)' }}
+        >
           Cancel
         </Button>
         <Button onClick={updateNote}>Save Changes</Button>
@@ -50,18 +50,13 @@ const TeacherNotesModal = ({ isOpen, setIsOpen, teacherId, teacherName, notes, s
   );
 };
 
-TeacherNotesModal.defaultProps = {
-  data: [],
-};
-
 TeacherNotesModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   teacherId: PropTypes.number.isRequired,
   teacherName: PropTypes.string.isRequired,
   notes: PropTypes.string.isRequired,
-  setNote: PropTypes.func.isRequired,
-  data: PropTypes.arrayOf(PropTypes.any),
+  setNotes: PropTypes.func.isRequired,
 };
 
 export default TeacherNotesModal;

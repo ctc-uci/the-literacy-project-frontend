@@ -12,8 +12,8 @@ import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { nanoid } from 'nanoid';
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
-import InviteEmail from '../../components/InviteEmail/InviteEmail';
-import LoginEmail from '../../components/LoginEmail/LoginEmail';
+import InviteEmail from '../../components/EmailTemplates/InviteEmail';
+import LoginEmail from '../../components/EmailTemplates/LoginEmail';
 import { TLPBackend, auth, sendEmail } from '../utils';
 import { AUTH_ROLES, USER_STATUS } from '../config';
 
@@ -110,8 +110,18 @@ const sendPasswordReset = async email => {
  * @param {string} firstName
  * @param {string} lastName
  * @param {string} phoneNumber
+ * @param {string} notes
+ *  @param {string} oldInviteId NanoID; passed if updating an existing invite
  */
-const sendInviteLink = async (position, email, firstName, lastName, phoneNumber) => {
+const sendInviteLink = async (
+  position,
+  email,
+  firstName,
+  lastName,
+  phoneNumber,
+  notes,
+  oldInviteId = null,
+) => {
   const inviteId = nanoid();
   const url = `${process.env.REACT_APP_FRONTEND_HOST}:${process.env.REACT_APP_FRONTEND_PORT}/emailAction?mode=inviteUser&inviteID=${inviteId}`;
 
@@ -123,6 +133,8 @@ const sendInviteLink = async (position, email, firstName, lastName, phoneNumber)
       firstName,
       lastName,
       phoneNumber,
+      notes,
+      oldInviteId,
     });
 
     await sendEmail(email, <InviteEmail url={url} />);

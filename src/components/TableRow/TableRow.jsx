@@ -17,9 +17,10 @@ const NOTES = 'Notes';
 
 const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   const [modalIsOpen, setModalOpen] = useState('');
-
+  const currEmail = data[1]?.email; // the original email to check against if changing
+  const [email, setEmail] = useState(currEmail);
   // used to for master teacher note
-  const [noteModalText, setNoteModalText] = useState('');
+  const [notes, setNoteModalText] = useState(sectionTitle === TEACHER ? data[5] : '');
 
   const userName = data[0];
   const addBadgeStyles = {
@@ -45,11 +46,6 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     return item;
   };
 
-  const setNotes = note => {
-    setNoteModalText(note);
-    setModalOpen(NOTES);
-  };
-
   const displayAsButton = item => {
     if (sectionTitle === STUDENT)
       return (
@@ -62,8 +58,8 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
         </Button>
       );
     if (sectionTitle === TEACHER) {
-      return item !== '' ? (
-        <FaPenSquare cursor="pointer" size="2em" onClick={() => setNotes(item)} />
+      return notes !== '' ? (
+        <FaPenSquare cursor="pointer" size="2em" onClick={() => setModalOpen(NOTES)} />
       ) : (
         <FaPlusSquare cursor="pointer" size="2em" onClick={() => setModalOpen(NOTES)} />
       );
@@ -94,10 +90,18 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           if (ind === 0) {
             return <td key={ind}>{displayPencilAndLink(item)}</td>;
           }
+          if (ind === 1 && (sectionTitle === ADMIN || sectionTitle === TEACHER)) {
+            return (
+              <td key={ind}>
+                <div>{email}</div>
+                {item.phoneNumber ? <div>{item.phoneNumber}</div> : null}
+              </td>
+            );
+          }
           if (statusCol === ind) {
             return (
               <td key={item}>
-                <StatusCell data={item} />
+                <StatusCell data={item} setEmail={setEmail} />
               </td>
             );
           }
@@ -144,9 +148,8 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
             setIsOpen={setModalOpen}
             teacherId={uniqueKey}
             teacherName={userName}
-            notes={noteModalText}
-            setNote={setNoteModalText}
-            data={data}
+            notes={notes}
+            setNotes={setNoteModalText}
           />
         </>
       )}

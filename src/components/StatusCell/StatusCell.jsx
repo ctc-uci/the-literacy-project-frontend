@@ -1,47 +1,62 @@
-import { React, useEffect, useState } from 'react';
+import { React, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './StatusCell.module.css';
 import { sendInviteLink, sendLoginLink } from '../../common/auth/auth_utils';
 import { AUTH_ROLES, USER_STATUS } from '../../common/config';
+import ResendConfirmationModal from '../ResendEmailModals/ResendConfirmationModal';
+import ResendEmailInputModal from '../ResendEmailModals/ResendEmailInputModal';
 
-const StatusCell = ({ data }) => {
-  const [expireTime, setExpireTime] = useState();
+const StatusCell = ({ data, setEmail }) => {
   const status = data.active ? data.active : USER_STATUS.PENDING;
   const { position, email, firstName, lastName, phoneNumber } = data;
+  const [wrongEmailModalOpen, setWrongEmailModalOpen] = useState(false);
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
   const resendEmail = async () => {
     // admins get a new invite email
     if (position === AUTH_ROLES.ADMIN_ROLE) {
-      console.log('resending invite');
       await sendInviteLink(position, email, firstName, lastName, phoneNumber);
-      // update expiration time to 7 days if sending invite is successful
-      setExpireTime(7);
     }
     // master teachers get email to the website
     else {
-      console.log('master teacher invite');
       await sendLoginLink(email);
     }
+    setConfirmModalOpen(true);
   };
-
-  useEffect(() => {
-    // only admin invites have an expiration date
-    if (position === AUTH_ROLES.ADMIN_ROLE) {
-      const expire = new Date(data.expireTime);
-      setExpireTime(Math.floor((expire - Date.now()) / (1000 * 3600 * 24)));
-    }
-  }, []);
 
   if (status === USER_STATUS.PENDING) {
     return (
       <div style={{ fontWeight: 'bold' }}>
-        <div style={{ color: '#17A2B8' }}>Account Pending</div>
-        {position === AUTH_ROLES.ADMIN_ROLE && (
-          <div style={{ color: '#e53e3e' }}>({expireTime} day(s) until link expiration)</div>
-        )}
-        <button type="button" className={styles['resend-email']} onClick={resendEmail}>
+        <div style={{ color: 'var(--color-teal)' }}>Account Pending</div>
+        <button
+          type="button"
+          className={styles['email-button']}
+          onClick={resendEmail}
+          style={{ color: 'var(--color-blue)' }}
+        >
           Resend Email
         </button>
+        <br />
+        <button
+          type="button"
+          className={styles['email-button']}
+          onClick={() => setWrongEmailModalOpen(true)}
+          style={{ color: 'var(--color-light-red)' }}
+        >
+          Sent to the Wrong Email?
+        </button>
+        <ResendConfirmationModal
+          isOpen={confirmModalOpen}
+          setIsOpen={setConfirmModalOpen}
+          position={position}
+        />
+        <ResendEmailInputModal
+          isOpen={wrongEmailModalOpen}
+          setIsOpen={setWrongEmailModalOpen}
+          setEmail={setEmail}
+          setConfirmModalOpen={setConfirmModalOpen}
+          data={data}
+        />
       </div>
     );
   }
@@ -71,6 +86,7 @@ StatusCell.propTypes = {
     active: PropTypes.string,
     expireTime: PropTypes.string,
   }).isRequired,
+  setEmail: PropTypes.func.isRequired,
 };
 
 export default StatusCell;

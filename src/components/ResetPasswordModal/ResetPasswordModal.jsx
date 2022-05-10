@@ -39,7 +39,7 @@ const ResetPasswordModal = ({ userId, isOpen, setIsOpen }) => {
       });
       setIsOpen(false);
     } catch (err) {
-      setErrorMessage(err.message);
+      setErrorMessage(err.response.data);
     }
   };
 
@@ -99,7 +99,10 @@ const ResetPasswordModal = ({ userId, isOpen, setIsOpen }) => {
       </Modal.Body>
 
       <Modal.Footer className="border-0">
-        <Button onClick={() => setIsOpen(false)} className="btn-danger">
+        <Button
+          onClick={() => setIsOpen(false)}
+          style={{ backgroundColor: 'var(--color-gray-blue-muted)' }}
+        >
           Cancel
         </Button>
         <Button onClick={handleSubmitPass(handleSubmit)}>Save Changes</Button>

@@ -59,7 +59,7 @@ const AdminView = () => {
       const id = userId || inviteId;
       allAdmins.push({
         id,
-        items: [`${firstName} ${lastName}`, email, admObj],
+        items: [`${firstName} ${lastName}`, { email }, admObj],
         sortBy: `${lastName} ${firstName}`,
       });
     });
