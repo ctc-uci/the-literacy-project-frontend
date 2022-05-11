@@ -79,3 +79,7 @@ input[type='number'] {
   border: 1px solid #e53e3e;
   width: 90%;
 }
+
+.err-msg {
+  margin-left: 1em;
+}
