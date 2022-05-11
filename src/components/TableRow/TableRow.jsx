@@ -5,6 +5,7 @@ import { FaTrashAlt, FaPlus, FaPencilAlt } from 'react-icons/fa';
 import '../../common/vars.css';
 import EditMasterTeacherModal from '../EditMasterTeacherModal/EditMasterTeacherModal';
 import EditAdminModal from '../EditAdminModal/EditAdminModal';
+import StudentScoreModal from '../StudentScoreModal/StudentScoreModal';
 
 const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   const [modalIsOpen, setModalOpen] = useState('');
@@ -105,6 +106,11 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
         isOpen={modalIsOpen === 'Admin'}
         setIsOpen={setModalOpen}
         adminId={uniqueKey}
+      />
+      <StudentScoreModal
+        isOpen={modalIsOpen === 'Students'}
+        setIsOpen={setModalOpen}
+        studentId={uniqueKey}
       />
     </>
   );

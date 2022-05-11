@@ -24,7 +24,7 @@ const SitesTable = ({ areaId }) => {
     {
       headerTitle: 'Status',
       headerPopover:
-        "<p><strong style='color:#28a745'>Active:</strong> This user is active in the current cycle. They have full access and can log in.</p> <p><strong style='color:#5f758d'>Inactive:</strong> This user is inactive in the current cycle. They cannot log in until an admin user reactivates their account.</p> <p><strong style='color:#17a2b8'>Email Sent:</strong> An email sign up link was sent. They have not set up their account yet.",
+        "<p><strong style='color:#28a745'>Active:</strong> This site is currently actively participating in the TLP program.</p> <p><strong style='color:#5f758d'>Inactive:</strong> This site is currently not participating in the TLP program. Data is still available to view from past cycles.</p>",
     },
     {
       headerTitle: 'Site Name',
