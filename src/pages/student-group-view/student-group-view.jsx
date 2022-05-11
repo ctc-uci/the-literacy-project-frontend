@@ -107,7 +107,7 @@ const StudentGroupView = () => {
         <div className={`d-flex ${styles['dropdown-container']}`}>
           <div className={`d-flex ${styles['float-right-section']}`}>
             <Form.Label className={styles['custom-form-label']}>
-              <h4>School Year</h4>
+              <h4 className={styles['dropdown-labels']}>School Year</h4>
             </Form.Label>
             {typeof schoolYear === 'string' ? (
               <DropdownMenu
@@ -118,7 +118,7 @@ const StudentGroupView = () => {
               />
             ) : null}
             <Form.Label className={styles['custom-form-label']}>
-              <h4>Cycle</h4>
+              <h4 className={styles['dropdown-labels']}>Cycle</h4>
             </Form.Label>
             {typeof schoolCycle === 'string' ? (
               <DropdownMenu
@@ -162,7 +162,7 @@ const StudentGroupView = () => {
           </div>
           <div id={styles['students-assigned-section']}>
             <h3 className={styles['section-header']}>Students Assigned</h3>
-            <Container fluid>
+            <Container fluid className={styles['student-box']}>
               {studentGroupList.map(student => {
                 return (
                   <StudentProfileBox

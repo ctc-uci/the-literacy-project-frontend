@@ -82,11 +82,11 @@ const WarningModal = ({ isOpen, setIsOpen, name, body, deleteFunc }) => {
           {bodies[body]}
         </Modal.Body>
         <Modal.Footer>
-          <Button className={styles.buttons} variant="danger" onClick={deleteCloseModal}>
-            Yes, Delete
-          </Button>
           <Button className={styles.buttons} variant="primary" onClick={closeModal}>
             Cancel
+          </Button>
+          <Button className={styles.buttons} variant="danger" onClick={deleteCloseModal}>
+            Yes, Delete
           </Button>
         </Modal.Footer>
       </Modal>

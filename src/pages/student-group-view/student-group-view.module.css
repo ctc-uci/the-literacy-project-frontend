@@ -88,6 +88,10 @@
   margin-left: 0.5em;
 }
 
+.dropdown-labels{
+  margin-right: 5px;
+}
+
 .float-right-section {
   margin-left: auto;
 }

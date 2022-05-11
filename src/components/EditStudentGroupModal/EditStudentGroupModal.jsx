@@ -160,6 +160,11 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
 
   const closeModal = () => setIsOpen(false);
 
+  const closeModalOpenWarning = () => {
+    closeModal();
+    setWarningModalIsOpen(true);
+  };
+
   const editStudentGroupData = () => {
     TLPBackend.put(`/student-groups/${studentGroupId}`, {
       name: studentGroupInfo.groupName,
@@ -354,8 +359,13 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
       </Modal.Body>
       <Modal.Footer>
         <div className={styles['edit-student-group-modal-footer']}>
+          <div className={styles['edit-student-group-cancel-button']}>
+            <Button variant="secondary" onClick={() => closeModal()}>
+              Cancel
+            </Button>
+          </div>
           <div className={styles['edit-student-group-delete-button']}>
-            <Button variant="danger" onClick={() => setWarningModalIsOpen(true)}>
+            <Button variant="danger" onClick={() => closeModalOpenWarning()}>
               Delete
             </Button>
           </div>
