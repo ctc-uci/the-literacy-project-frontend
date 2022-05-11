@@ -181,6 +181,12 @@ const AdminStudentsView = () => {
         return filters.years.includes(year); // check if year in the years to keep
       });
     }
+    if (filters.grades) {
+      updatedData = updatedData.filter(student => {
+        const grade = student.items[2]; // items[2] is grade
+        return filters.grades.includes(grade); // check if grade in the grades to keep
+      });
+    }
     return updatedData;
   };
 
@@ -220,12 +226,21 @@ const AdminStudentsView = () => {
     // items[7] is school year
     return tbodyData
       .reduce((acc, student) => {
-        if (
-          student.items[7] &&
-          student.items[7] !== 'N/A' &&
-          !acc.includes(student.items[7].slice(0, 7))
-        ) {
+        if (student.items[7] && !acc.includes(student.items[7].slice(0, 7))) {
           acc.push(student.items[7].slice(0, 7));
+        }
+        return acc;
+      }, [])
+      .sort();
+  }
+
+  // Get all student grade levels
+  function getGrades() {
+    // items[2] is grade level
+    return tbodyData
+      .reduce((acc, student) => {
+        if (student.items[2] && !acc.includes(student.items[2])) {
+          acc.push(student.items[2]);
         }
         return acc;
       }, [])
@@ -268,6 +283,7 @@ const AdminStudentsView = () => {
               areas={getAreas()}
               sites={getSites()}
               years={getSchoolYears()}
+              grades={getGrades()}
               filters={filters}
               setFilters={setFilters}
             />

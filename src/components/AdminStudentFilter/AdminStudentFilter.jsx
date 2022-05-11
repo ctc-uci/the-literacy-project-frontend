@@ -4,10 +4,11 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import styles from './AdminStudentFilter.module.css';
 
 function AdminStudentFilter(props) {
-  const { isOpen, setIsOpen, areas, sites, years, filters, setFilters } = props;
+  const { isOpen, setIsOpen, areas, sites, years, grades, filters, setFilters } = props;
   const [showAreas, setShowAreas] = useState([]);
   const [showSites, setShowSites] = useState([]);
   const [showYears, setShowYears] = useState([]);
+  const [showGrades, setShowGrades] = useState([]);
 
   useEffect(() => {
     if (filters.areas) {
@@ -46,7 +47,7 @@ function AdminStudentFilter(props) {
         years
           .map(year => {
             return { enrolledYear: year };
-          }) // Convert year names to a mocked list of year objects
+          }) // Convert years to a mocked list of year objects
           .filter(year => showYears.includes(year.enrolledYear)) // Apply the years filter to the list
           .map(year => year.enrolledYear), // Convert the years back to a list of strings
       );
@@ -55,7 +56,22 @@ function AdminStudentFilter(props) {
       // setShowYears to the full list of years
       setShowYears(years);
     }
-  }, [areas, sites, years]);
+    if (filters.grades) {
+      // There is a filter for grades
+      setShowGrades(
+        grades
+          .map(grade => {
+            return { gradeLevel: grade };
+          }) // Convert grade levels to a mocked list of grade objects
+          .filter(grade => showGrades.includes(grade.gradeLevel)) // Apply the grades filter to the list
+          .map(grade => grade.gradeLevel), // Convert the grades back to a list of strings
+      );
+    } else {
+      // There is no filter for the grades
+      // setShowGrades to the full list of grades
+      setShowGrades(grades);
+    }
+  }, [areas, sites, years, grades]);
 
   /**
    * @returns true if all areas are checked
@@ -76,6 +92,13 @@ function AdminStudentFilter(props) {
    */
   const areAllYearsChecked = () => {
     return years.length === showYears.length;
+  };
+
+  /**
+   * @returns true if all grades are checked
+   */
+  const areAllGradesChecked = () => {
+    return grades.length === showGrades.length;
   };
 
   const toggleArea = area => {
@@ -99,6 +122,14 @@ function AdminStudentFilter(props) {
       setShowYears(showYears.filter(y => y !== year));
     } else {
       setShowYears([...showYears, year]);
+    }
+  };
+
+  const toggleGrade = grade => {
+    if (showGrades.includes(grade)) {
+      setShowGrades(showGrades.filter(g => g !== grade));
+    } else {
+      setShowGrades([...showGrades, grade]);
     }
   };
 
@@ -132,21 +163,33 @@ function AdminStudentFilter(props) {
     }
   };
 
+  const toggleAllGrades = () => {
+    if (areAllGradesChecked()) {
+      // Remove all grades
+      setShowGrades([]);
+    } else {
+      // Add all grades
+      setShowGrades(grades);
+    }
+  };
+
   // Reset all filters
   // This sets each value back to checked
   const resetFilters = () => {
     setShowAreas(areas);
     setShowSites(sites);
     setShowYears(years);
+    setShowGrades(grades);
   };
 
   const applyFilters = () => {
-    // For each filter (areas, sites, years), check if it is checked
+    // For each filter (areas, sites, years, grades), check if it is checked
     // If it is checked, we don't need to filter
     // If it is not checked, we need to provide a list of things to keep
     const areasFilter = areAllAreasChecked() ? areas : showAreas;
     const sitesFilter = areAllSitesChecked() ? sites : showSites;
     const yearsFilter = areAllYearsChecked() ? years : showYears;
+    const gradesFilter = areAllGradesChecked() ? grades : showGrades;
 
     // Update the filters
     setFilters({
@@ -154,6 +197,7 @@ function AdminStudentFilter(props) {
       areas: areasFilter,
       sites: sitesFilter,
       years: yearsFilter,
+      grades: gradesFilter,
     });
 
     // Close the modal
@@ -256,6 +300,36 @@ function AdminStudentFilter(props) {
             })}
           </div>
         </Form.Group>
+        <Form.Group className="mb-3" controlId="filter.grade">
+          <div className={styles['label-row']}>
+            <Form.Label>
+              <b>Grade Level</b>
+            </Form.Label>
+            <Form.Check
+              type="checkbox"
+              label="All Grades"
+              checked={areAllGradesChecked()}
+              onChange={toggleAllGrades}
+            />
+          </div>
+          <div className={styles.checkboxes}>
+            {grades.map(grade => {
+              const check = showGrades.includes(grade);
+              return (
+                <Form.Check
+                  type="checkbox"
+                  label={grade}
+                  className={styles['form-check']}
+                  key={grade}
+                  checked={check}
+                  onChange={() => {
+                    toggleGrade(grade);
+                  }}
+                />
+              );
+            })}
+          </div>
+        </Form.Group>
       </Modal.Body>
       <Modal.Footer className={styles['button-row']}>
         <Button onClick={resetFilters}>Reset Filters</Button>
@@ -273,6 +347,7 @@ AdminStudentFilter.propTypes = {
   areas: PropTypes.arrayOf(PropTypes.string).isRequired,
   sites: PropTypes.arrayOf(PropTypes.string).isRequired,
   years: PropTypes.arrayOf(PropTypes.string).isRequired,
+  grades: PropTypes.arrayOf(PropTypes.string).isRequired,
   filters: PropTypes.arrayOf([PropTypes.object]).isRequired,
   setFilters: PropTypes.func.isRequired,
 };
