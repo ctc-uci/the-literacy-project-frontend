@@ -41,10 +41,8 @@ const ResendEmailInputModal = ({ isOpen, setIsOpen, setEmail, setConfirmModalOpe
       }
       // update email in TLP User table + firebase
       else {
-        const res = await TLPBackend.put(`/teachers/update-invite/${id}`, { email: newEmail });
-        console.log(res.data);
+        await TLPBackend.put(`/teachers/update-invite/${id}`, { email: newEmail });
         await sendLoginLink(newEmail);
-        console.log('TEACHER', newEmail);
       }
       reset({ newEmail: '' });
       setIsOpen(false);
@@ -78,6 +76,7 @@ const ResendEmailInputModal = ({ isOpen, setIsOpen, setEmail, setConfirmModalOpe
                 type="text"
                 {...register('newEmail')}
                 className={`form-control ${errors.newEmail ? 'is-invalid' : ''}`}
+                // onChange={() => setErrorMessage('')}
               />
             </div>
           </label>

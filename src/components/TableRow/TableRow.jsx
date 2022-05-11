@@ -9,6 +9,7 @@ import StatusCell from '../StatusCell/StatusCell';
 import ResetPasswordModal from '../ResetPasswordModal/ResetPasswordModal';
 import TeacherNotesModal from '../NotesModal/TeacherNotesModal';
 import TeacherTableSiteCell from '../TeacherTableSiteCell/TeacherTableSiteCell';
+import CommonAlert from '../../common/CommonAlert/CommonAlert';
 import { SECTIONS } from '../../common/config';
 
 const { ADMIN, TEACHER, STUDENT } = SECTIONS;
@@ -17,6 +18,11 @@ const NOTES = 'Notes';
 
 const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   const [modalIsOpen, setModalOpen] = useState('');
+  const [alertState, setAlertState] = useState({
+    variant: 'success',
+    message: '', // alert is used for resending email, resetting password, and updating notes
+    open: false,
+  });
   const currEmail = data[1]?.email; // the original email to check against if changing
   const [email, setEmail] = useState(currEmail);
   // used to for master teacher note
@@ -101,7 +107,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           if (statusCol === ind) {
             return (
               <td key={item}>
-                <StatusCell data={item} setEmail={setEmail} />
+                <StatusCell data={item} setEmail={setEmail} setAlertState={setAlertState} />
               </td>
             );
           }
@@ -140,8 +146,10 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           />
           <ResetPasswordModal
             userId={uniqueKey}
+            userName={userName}
             isOpen={modalIsOpen === RESET}
             setIsOpen={setModalOpen}
+            setAlertState={setAlertState}
           />
           <TeacherNotesModal
             isOpen={modalIsOpen === NOTES}
@@ -150,6 +158,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
             teacherName={userName}
             notes={notes}
             setNotes={setNoteModalText}
+            setAlertState={setAlertState}
           />
         </>
       )}
@@ -160,6 +169,13 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           adminId={uniqueKey}
         />
       )}
+      <CommonAlert
+        variant={alertState.variant}
+        open={alertState.open}
+        setOpen={val => setAlertState({ ...alertState, open: val })}
+      >
+        {alertState.message}
+      </CommonAlert>
     </>
   );
 };

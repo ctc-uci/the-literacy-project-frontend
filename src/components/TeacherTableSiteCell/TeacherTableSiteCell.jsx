@@ -27,7 +27,7 @@ const TeacherTableSiteCell = ({ teacherId, item }) => {
           onClick={() => deleteSite(site.siteId, index)}
         >
           {site.siteName}
-          <FaTrashAlt color="red" cursor="pointer" />
+          <FaTrashAlt color="red" cursor="pointer" style={{ marginLeft: '0.5em' }} />
         </Badge>
       ))}
     </>

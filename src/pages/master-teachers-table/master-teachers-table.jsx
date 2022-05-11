@@ -110,7 +110,7 @@ const MasterTeacherTableView = () => {
     <div className={styles['master-teacher-container']}>
       <div className={styles['table-view']}>
         <div className={styles['table-header']}>
-          <h3>MasterTeacher</h3>
+          <h3>Master Teacher</h3>
           <Button className={styles['export-button']} variant="primary">
             Export to CSV
           </Button>

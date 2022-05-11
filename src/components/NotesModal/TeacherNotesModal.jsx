@@ -4,7 +4,15 @@ import PropTypes from 'prop-types';
 import styles from './NotesModal.module.css';
 import { TLPBackend } from '../../common/utils';
 
-const TeacherNotesModal = ({ isOpen, setIsOpen, teacherId, teacherName, notes, setNotes }) => {
+const TeacherNotesModal = ({
+  isOpen,
+  setIsOpen,
+  teacherId,
+  teacherName,
+  notes,
+  setNotes,
+  setAlertState,
+}) => {
   const handleNoteChange = e => {
     setNotes(e.target.value);
   };
@@ -14,6 +22,11 @@ const TeacherNotesModal = ({ isOpen, setIsOpen, teacherId, teacherName, notes, s
   const updateNote = async () => {
     await TLPBackend.put(`/teachers/update-notes/${teacherId}`, { notes });
     setIsOpen(false);
+    setAlertState({
+      variant: 'success',
+      message: `Notes successfully added for ${teacherName}`,
+      open: true,
+    });
   };
 
   return (
@@ -57,6 +70,7 @@ TeacherNotesModal.propTypes = {
   teacherName: PropTypes.string.isRequired,
   notes: PropTypes.string.isRequired,
   setNotes: PropTypes.func.isRequired,
+  setAlertState: PropTypes.func.isRequired,
 };
 
 export default TeacherNotesModal;

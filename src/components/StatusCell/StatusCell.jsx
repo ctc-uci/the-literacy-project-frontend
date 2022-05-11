@@ -3,25 +3,37 @@ import PropTypes from 'prop-types';
 import styles from './StatusCell.module.css';
 import { sendInviteLink, sendLoginLink } from '../../common/auth/auth_utils';
 import { AUTH_ROLES, USER_STATUS } from '../../common/config';
-import ResendConfirmationModal from '../ResendEmailModals/ResendConfirmationModal';
 import ResendEmailInputModal from '../ResendEmailModals/ResendEmailInputModal';
 
-const StatusCell = ({ data, setEmail }) => {
+const StatusCell = ({ data, setEmail, setAlertState }) => {
   const status = data.active ? data.active : USER_STATUS.PENDING;
   const { position, email, firstName, lastName, phoneNumber } = data;
   const [wrongEmailModalOpen, setWrongEmailModalOpen] = useState(false);
-  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const name = `${firstName} ${lastName}`;
 
   const resendEmail = async () => {
-    // admins get a new invite email
-    if (position === AUTH_ROLES.ADMIN_ROLE) {
-      await sendInviteLink(position, email, firstName, lastName, phoneNumber);
+    try {
+      // admins get a new invite email
+      if (position === AUTH_ROLES.ADMIN_ROLE) {
+        await sendInviteLink(position, email, firstName, lastName, phoneNumber);
+      }
+      // master teachers get email to the website
+      else {
+        await sendLoginLink(email);
+      }
+      setAlertState({
+        variant: 'success',
+        message: `Invite Email successfully resent for ${name}`,
+        open: true,
+      });
+    } catch (err) {
+      setAlertState({
+        variant: 'danger',
+        // message: `Unable to resend email for ${name}`,
+        message: err.message,
+        open: true,
+      });
     }
-    // master teachers get email to the website
-    else {
-      await sendLoginLink(email);
-    }
-    setConfirmModalOpen(true);
   };
 
   if (status === USER_STATUS.PENDING) {
@@ -45,16 +57,15 @@ const StatusCell = ({ data, setEmail }) => {
         >
           Sent to the Wrong Email?
         </button>
-        <ResendConfirmationModal
+        {/* <ResendConfirmationModal
           isOpen={confirmModalOpen}
           setIsOpen={setConfirmModalOpen}
           position={position}
-        />
+        /> */}
         <ResendEmailInputModal
           isOpen={wrongEmailModalOpen}
           setIsOpen={setWrongEmailModalOpen}
           setEmail={setEmail}
-          setConfirmModalOpen={setConfirmModalOpen}
           data={data}
         />
       </div>
@@ -87,6 +98,7 @@ StatusCell.propTypes = {
     expireTime: PropTypes.string,
   }).isRequired,
   setEmail: PropTypes.func.isRequired,
+  setAlertState: PropTypes.func.isRequired,
 };
 
 export default StatusCell;

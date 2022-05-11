@@ -9,7 +9,7 @@ import styles from './ResetPasswordModal.module.css';
 import InformationPopover from '../Popover/InformationPopover';
 import { TLPBackend, passwordRulesTooltipText, passwordRegExp } from '../../common/utils';
 
-const ResetPasswordModal = ({ userId, isOpen, setIsOpen }) => {
+const ResetPasswordModal = ({ userId, userName, isOpen, setIsOpen, setAlertState }) => {
   const [newPasswordShown, setNewPasswordShown] = useState(false);
   const [checkPasswordShown, setCheckPasswordShown] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -38,6 +38,11 @@ const ResetPasswordModal = ({ userId, isOpen, setIsOpen }) => {
         newPassword: data.newPassword,
       });
       setIsOpen(false);
+      setAlertState({
+        variant: 'success',
+        message: `Password was successfully reset for ${userName}`,
+        open: true,
+      });
     } catch (err) {
       setErrorMessage(err.response.data);
     }
@@ -113,8 +118,10 @@ const ResetPasswordModal = ({ userId, isOpen, setIsOpen }) => {
 
 ResetPasswordModal.propTypes = {
   userId: PropTypes.number.isRequired,
+  userName: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
+  setAlertState: PropTypes.func.isRequired,
 };
 
 export default ResetPasswordModal;
