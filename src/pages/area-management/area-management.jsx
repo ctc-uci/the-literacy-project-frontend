@@ -10,7 +10,7 @@ import {
   Form,
 } from 'react-bootstrap';
 import { BsPeople, BsFilterRight, BsFilter } from 'react-icons/bs';
-import { TLPBackend, calculateScores } from '../../common/utils';
+import { TLPBackend, calculateScores, formatSchoolYear } from '../../common/utils';
 import styles from './area-management.module.css';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
@@ -196,7 +196,7 @@ const AreaManagement = () => {
                 <h2>School Year</h2>
                 <DropdownButton
                   variant="outline-secondary"
-                  title={schoolYear}
+                  title={schoolYear === 'All' ? schoolYear : formatSchoolYear(schoolYear)}
                   className={styles['school-year-dropdown']}
                 >
                   {getSchoolYears().map(year => (
@@ -206,7 +206,7 @@ const AreaManagement = () => {
                       }}
                       key={year}
                     >
-                      {year}
+                      {year === 'All' ? year : `${formatSchoolYear(year)}`}
                     </Dropdown.Item>
                   ))}
                 </DropdownButton>
