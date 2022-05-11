@@ -15,6 +15,12 @@
   gap: 1rem;
 }
 
+.site-label-row {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 .button-row {
   display: flex;
   flex-direction: row;

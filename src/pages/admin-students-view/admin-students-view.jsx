@@ -150,24 +150,45 @@ const AdminStudentsView = () => {
   const applyFilters = data => {
     let updatedData = data;
     if (filters.areas) {
-      updatedData = data.filter(row => {
-        const areaName = row.items[6];
+      updatedData = updatedData.filter(student => {
+        const areaName = student.items[6]; // items[6] is area
         return filters.areas.includes(areaName); // check if area name in the areas to keep
+      });
+    }
+    if (filters.sites) {
+      updatedData = updatedData.filter(student => {
+        const siteName = student.items[1]; // items[1] is site
+        return filters.sites.includes(siteName); // check if site name in the sites to keep
       });
     }
     return updatedData;
   };
 
+  // Applies search criteria, then filters, then sorts
   const displayData = data => {
     return applyFilters(search(data)).sort(compareNames);
   };
 
+  // Get all areas that have students
   function getAreas() {
     // items[6] is area name
     return tbodyData
       .reduce((acc, student) => {
         if (student.items[6] && !acc.includes(student.items[6])) {
           acc.push(student.items[6]);
+        }
+        return acc;
+      }, [])
+      .sort();
+  }
+
+  // Get all sites that have students
+  function getSites() {
+    // items[1] is site name
+    return tbodyData
+      .reduce((acc, student) => {
+        if (student.items[1] && !acc.includes(student.items[1])) {
+          acc.push(student.items[1]);
         }
         return acc;
       }, [])
@@ -208,6 +229,7 @@ const AdminStudentsView = () => {
               isOpen={filterModalIsOpen}
               setIsOpen={setFilterModalIsOpen}
               areas={getAreas()}
+              sites={getSites()}
               filters={filters}
               setFilters={setFilters}
             />
