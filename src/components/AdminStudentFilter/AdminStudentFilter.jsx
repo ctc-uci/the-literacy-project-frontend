@@ -4,9 +4,10 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import styles from './AdminStudentFilter.module.css';
 
 function AdminStudentFilter(props) {
-  const { isOpen, setIsOpen, areas, sites, filters, setFilters } = props;
+  const { isOpen, setIsOpen, areas, sites, years, filters, setFilters } = props;
   const [showAreas, setShowAreas] = useState([]);
   const [showSites, setShowSites] = useState([]);
+  const [showYears, setShowYears] = useState([]);
 
   useEffect(() => {
     if (filters.areas) {
@@ -32,14 +33,29 @@ function AdminStudentFilter(props) {
             return { siteName: site };
           }) // Convert site names to a mocked list of site objects
           .filter(site => showSites.includes(site.siteName)) // Apply the sites filter to the list
-          .map(site => site.siteName), // Convert the areas back to a list of strings
+          .map(site => site.siteName), // Convert the sites back to a list of strings
       );
     } else {
       // There is no filter for the sites
       // setShowSites to the full list of sites
       setShowSites(sites);
     }
-  }, [areas, sites]);
+    if (filters.years) {
+      // There is a filter for years
+      setShowYears(
+        years
+          .map(year => {
+            return { enrolledYear: year };
+          }) // Convert year names to a mocked list of year objects
+          .filter(year => showYears.includes(year.enrolledYear)) // Apply the years filter to the list
+          .map(year => year.enrolledYear), // Convert the years back to a list of strings
+      );
+    } else {
+      // There is no filter for the years
+      // setShowYears to the full list of years
+      setShowYears(years);
+    }
+  }, [areas, sites, years]);
 
   /**
    * @returns true if all areas are checked
@@ -55,6 +71,13 @@ function AdminStudentFilter(props) {
     return sites.length === showSites.length;
   };
 
+  /**
+   * @returns true if all years are checked
+   */
+  const areAllYearsChecked = () => {
+    return years.length === showYears.length;
+  };
+
   const toggleArea = area => {
     if (showAreas.includes(area)) {
       setShowAreas(showAreas.filter(a => a !== area));
@@ -68,6 +91,14 @@ function AdminStudentFilter(props) {
       setShowSites(showSites.filter(s => s !== site));
     } else {
       setShowSites([...showSites, site]);
+    }
+  };
+
+  const toggleYear = year => {
+    if (showYears.includes(year)) {
+      setShowYears(showYears.filter(y => y !== year));
+    } else {
+      setShowYears([...showYears, year]);
     }
   };
 
@@ -91,25 +122,38 @@ function AdminStudentFilter(props) {
     }
   };
 
+  const toggleAllYears = () => {
+    if (areAllYearsChecked()) {
+      // Remove all years
+      setShowYears([]);
+    } else {
+      // Add all years
+      setShowYears(years);
+    }
+  };
+
   // Reset all filters
   // This sets each value back to checked
   const resetFilters = () => {
     setShowAreas(areas);
     setShowSites(sites);
+    setShowYears(years);
   };
 
   const applyFilters = () => {
-    // For each value (areas, sites), check if it is checked
+    // For each filter (areas, sites, years), check if it is checked
     // If it is checked, we don't need to filter
     // If it is not checked, we need to provide a list of things to keep
     const areasFilter = areAllAreasChecked() ? areas : showAreas;
     const sitesFilter = areAllSitesChecked() ? sites : showSites;
+    const yearsFilter = areAllYearsChecked() ? years : showYears;
 
     // Update the filters
     setFilters({
       ...filters,
       areas: areasFilter,
       sites: sitesFilter,
+      years: yearsFilter,
     });
 
     // Close the modal
@@ -123,9 +167,9 @@ function AdminStudentFilter(props) {
       </Modal.Header>
       <Modal.Body>
         <Form.Group className="mb-3" controlId="filter.area">
-          <div className={styles['area-label-row']}>
+          <div className={styles['label-row']}>
             <Form.Label>
-              <b>Area</b>
+              <b>Areas</b>
             </Form.Label>
             <Form.Check
               type="checkbox"
@@ -153,9 +197,9 @@ function AdminStudentFilter(props) {
           </div>
         </Form.Group>
         <Form.Group className="mb-3" controlId="filter.site">
-          <div className={styles['site-label-row']}>
+          <div className={styles['label-row']}>
             <Form.Label>
-              <b>Site</b>
+              <b>Sites</b>
             </Form.Label>
             <Form.Check
               type="checkbox"
@@ -182,6 +226,36 @@ function AdminStudentFilter(props) {
             })}
           </div>
         </Form.Group>
+        <Form.Group className="mb-3" controlId="filter.year">
+          <div className={styles['label-row']}>
+            <Form.Label>
+              <b>Enrolled Years</b>
+            </Form.Label>
+            <Form.Check
+              type="checkbox"
+              label="All Years"
+              checked={areAllYearsChecked()}
+              onChange={toggleAllYears}
+            />
+          </div>
+          <div className={styles.checkboxes}>
+            {years.map(year => {
+              const check = showYears.includes(year);
+              return (
+                <Form.Check
+                  type="checkbox"
+                  label={year}
+                  className={styles['form-check']}
+                  key={year}
+                  checked={check}
+                  onChange={() => {
+                    toggleYear(year);
+                  }}
+                />
+              );
+            })}
+          </div>
+        </Form.Group>
       </Modal.Body>
       <Modal.Footer className={styles['button-row']}>
         <Button onClick={resetFilters}>Reset Filters</Button>
@@ -198,6 +272,7 @@ AdminStudentFilter.propTypes = {
   setIsOpen: PropTypes.func.isRequired,
   areas: PropTypes.arrayOf(PropTypes.string).isRequired,
   sites: PropTypes.arrayOf(PropTypes.string).isRequired,
+  years: PropTypes.arrayOf(PropTypes.string).isRequired,
   filters: PropTypes.arrayOf([PropTypes.object]).isRequired,
   setFilters: PropTypes.func.isRequired,
 };

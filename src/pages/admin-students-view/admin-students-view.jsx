@@ -175,6 +175,12 @@ const AdminStudentsView = () => {
         return filters.sites.includes(siteName); // check if site name in the sites to keep
       });
     }
+    if (filters.years) {
+      updatedData = updatedData.filter(student => {
+        const year = student.items[7].slice(0, 7); // items[7] is year
+        return filters.years.includes(year); // check if year in the years to keep
+      });
+    }
     return updatedData;
   };
 
@@ -203,6 +209,23 @@ const AdminStudentsView = () => {
       .reduce((acc, student) => {
         if (student.items[1] && !acc.includes(student.items[1])) {
           acc.push(student.items[1]);
+        }
+        return acc;
+      }, [])
+      .sort();
+  }
+
+  // Get all School Years with students
+  function getSchoolYears() {
+    // items[7] is school year
+    return tbodyData
+      .reduce((acc, student) => {
+        if (
+          student.items[7] &&
+          student.items[7] !== 'N/A' &&
+          !acc.includes(student.items[7].slice(0, 7))
+        ) {
+          acc.push(student.items[7].slice(0, 7));
         }
         return acc;
       }, [])
@@ -244,6 +267,7 @@ const AdminStudentsView = () => {
               setIsOpen={setFilterModalIsOpen}
               areas={getAreas()}
               sites={getSites()}
+              years={getSchoolYears()}
               filters={filters}
               setFilters={setFilters}
             />
