@@ -17,7 +17,6 @@ const StudentScoreModal = ({ isOpen, setIsOpen, studentId }) => {
 
   useEffect(async () => {
     if (isOpen) {
-      console.log('fetching data');
       const res = await TLPBackend.get(`/students/${studentId}`, {
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +40,6 @@ const StudentScoreModal = ({ isOpen, setIsOpen, studentId }) => {
       </Modal.Header>
       <Modal.Body>
         <div className={styles.graphWrapper}>
-          {/* {JSON.stringify(studentScores, null, 2)} */}
           {studentScores ? (
             <Graph
               xLabels={['Attitudinal', 'Academic']}
