@@ -1,6 +1,7 @@
 .checkboxes {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-left: 1rem;
 }
