@@ -28,11 +28,7 @@ const AdminStudentsView = () => {
       headerPopover: '',
     },
     {
-      headerTitle: 'Home Teacher',
-      headerPopover: '',
-    },
-    {
-      headerTitle: 'Ethnicity',
+      headerTitle: 'Grade',
       headerPopover: '',
     },
     {
@@ -40,7 +36,11 @@ const AdminStudentsView = () => {
       headerPopover: '',
     },
     {
-      headerTitle: 'Grade',
+      headerTitle: 'Home Teacher',
+      headerPopover: '',
+    },
+    {
+      headerTitle: 'Ethnicity',
       headerPopover: '',
     },
     {
@@ -78,6 +78,19 @@ const AdminStudentsView = () => {
     return [site, area, schoolYearAndCycle];
   };
 
+  const formatGrade = grade => {
+    if (grade === 1) {
+      return '1st';
+    }
+    if (grade === 2) {
+      return '2nd';
+    }
+    if (grade === 3) {
+      return '3rd';
+    }
+    return `${grade}th`;
+  };
+
   useEffect(async () => {
     const res = await TLPBackend.get(`/students`, {
       headers: {
@@ -109,15 +122,16 @@ const AdminStudentsView = () => {
     const eth = formatEthnicity(ethnicity);
     const [site, area, schoolYearAndCycle] = formatSiteInfo(siteName, areaName, year, cycle);
     const ht = homeTeacher || 'Not recorded';
+    const grd = formatGrade(grade);
     tbodyData.push({
       id: studentObj.studentId,
       items: [
         `${lastName}, ${firstName}`,
         site,
+        grd,
+        capitalize(gender),
         ht,
         eth,
-        capitalize(gender),
-        grade,
         area,
         schoolYearAndCycle,
         'View Scores',
