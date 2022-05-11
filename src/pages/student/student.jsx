@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BsPencil, BsBackspace, BsCheck2All } from 'react-icons/bs';
 import { Table, Button, DropdownButton, Dropdown, Form, Alert, CloseButton } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
+import Select from 'react-select';
 import Graph from '../../components/Graph/Graph';
 import Footer from '../../components/Footer/Footer';
 import styles from './student.module.css';
@@ -53,7 +54,9 @@ const StudentView = () => {
       name: student.studentGroupName,
       groupId: student.studentGroupId,
     };
-    tempStudentData.studentEthnicity = student.ethnicity;
+    tempStudentData.studentEthnicity = student.ethnicity.map(item => {
+      return { value: item, label: item };
+    });
     tempStudentData.studentGender = student.gender;
     tempStudentData.studentHomeTeacher = student.homeTeacher;
     setEditStudentData(tempStudentData);
@@ -67,7 +70,9 @@ const StudentView = () => {
       grade: editStudentData.studentGrade,
       homeTeacher: editStudentData.studentHomeTeacher,
       studentGroupId: editStudentData.studentGroup.groupId,
-      ethnicity: editStudentData.studentEthnicity,
+      ethnicity: editStudentData.studentEthnicity.map(item => {
+        return item.value;
+      }),
     };
 
     TLPBackend.put(`/students/${studentId}`, editedData, {
@@ -146,12 +151,15 @@ const StudentView = () => {
               6: '6th Grade',
             },
             ethnicityOptions: [
-              'white',
-              'black',
-              'asian',
-              'latinx',
-              'american indian or alaska native',
-              'non-specified',
+              { value: 'white', label: 'white' },
+              { value: 'black', label: 'black' },
+              { value: 'asian', label: 'asian' },
+              { value: 'latinx', label: 'latinx' },
+              {
+                value: 'american indian or alaska native',
+                label: 'american indian or alaska native',
+              },
+              { value: 'non-specified', label: 'non-specified' },
             ],
             genderOptions: ['male', 'female', 'non-specified'],
             studentGroups: [...resOptions.data],
@@ -293,22 +301,16 @@ const StudentView = () => {
                       </DropdownButton>
                     </td>
                     <td>
-                      <Form.Control
-                        as="select"
+                      <Select
+                        options={editOptions.ethnicityOptions}
+                        isMulti
                         value={editStudentData.studentEthnicity}
-                        multiple
-                        onChange={e => {
+                        onChange={value => {
                           const tempStudentData = { ...editStudentData };
-                          tempStudentData.studentEthnicity = [].slice
-                            .call(e.target.selectedOptions)
-                            .map(item => item.value);
+                          tempStudentData.studentEthnicity = value;
                           setEditStudentData(tempStudentData);
                         }}
-                      >
-                        {editOptions.ethnicityOptions.map(ethnicity => {
-                          return <option key={ethnicity}>{ethnicity}</option>;
-                        })}
-                      </Form.Control>
+                      />
                     </td>
                     <td>
                       <DropdownButton
