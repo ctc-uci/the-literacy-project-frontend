@@ -16,6 +16,10 @@
   margin-bottom: 0.5em;
 }
 
+.student-box {
+  margin-bottom: 20px;
+}
+
 .edit-group-btn {
   margin-left: 1em;
   float: inline-end;

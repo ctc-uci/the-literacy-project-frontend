@@ -165,11 +165,14 @@ const StudentGroupView = () => {
             <Container fluid className={styles['student-box']}>
               {studentGroupList.map(student => {
                 return (
-                  <StudentProfileBox
-                    key={student}
-                    studentId={student[0]}
-                    studentName={student[1]}
-                  />
+                  // eslint-disable-next-line react/jsx-key
+                  <div className={styles['student-box']}>
+                    <StudentProfileBox
+                      key={student}
+                      studentId={student[0]}
+                      studentName={student[1]}
+                    />
+                  </div>
                 );
               })}
             </Container>
