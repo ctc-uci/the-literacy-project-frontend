@@ -113,8 +113,12 @@ const AreaManagement = () => {
     return areaResponseData
       .reduce(
         (acc, area) => {
-          if (area.year && !acc.includes(area.year)) {
-            acc.push(area.year);
+          if (area.years) {
+            area.years.forEach(year => {
+              if (!acc.includes(year)) {
+                acc.push(year);
+              }
+            });
           }
           return acc;
         },
@@ -138,7 +142,8 @@ const AreaManagement = () => {
   const updateSchoolYear = newSchoolYear => {
     setSchoolYear(newSchoolYear);
 
-    const schoolYearFilter = newSchoolYear === 'All' ? null : area => area.year === newSchoolYear;
+    const schoolYearFilter =
+      newSchoolYear === 'All' ? null : area => area.years && area.years.includes(newSchoolYear);
 
     setFilters({
       ...filters,
