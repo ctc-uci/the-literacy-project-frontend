@@ -108,6 +108,27 @@ export const calculateScores = data => {
   return scores;
 };
 
+// Calculate the attitudinal and academic pre and post average scores
+// for a single student. Returns object with calculated scores
+export const calculateSingleStudentScores = data => {
+  const MAX_ASSESSMENT_SCORE = 93;
+  const MAX_ATTITUDE_SCORE = 80;
+
+  const preAttitude = (data?.pretestR?.reduce((tot, a) => tot + a, 0) / MAX_ATTITUDE_SCORE) * 100;
+  const postAttitude = (data?.posttestR?.reduce((tot, a) => tot + a, 0) / MAX_ATTITUDE_SCORE) * 100;
+  const preAssessment =
+    (data?.pretestA?.reduce((tot, a) => tot + a, 0) / MAX_ASSESSMENT_SCORE) * 100;
+  const postAssessment =
+    (data?.posttestA?.reduce((tot, a) => tot + a, 0) / MAX_ASSESSMENT_SCORE) * 100;
+
+  return {
+    preAttitude,
+    postAttitude,
+    preAssessment,
+    postAssessment,
+  };
+};
+
 const average = arr => {
   return arr.reduce((a, b) => a + b) / arr.length;
 };
