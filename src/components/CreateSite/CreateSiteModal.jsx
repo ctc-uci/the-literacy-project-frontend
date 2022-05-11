@@ -10,7 +10,9 @@ import '../../common/vars.css';
 
 const CreateSiteModal = ({ areaId }) => {
   // Regex for phone number validation in 1234567890 format
-  const phoneNumberReg = /^[0-9]{3}[0-9]{3}[0-9]{4}$/;
+  const phoneNumberReg = /^[0-9]{10}$/;
+  // Regex for zip code validation in 00000 format
+  const zipCodeReg = /^[0-9]{5}$/;
 
   const schema = yup
     .object()
@@ -21,9 +23,9 @@ const CreateSiteModal = ({ areaId }) => {
         addressApt: yup.string(),
         addressCity: yup.string().required('City is required.'),
         addressZip: yup
-          .number()
+          .string()
           .required('Zip code is required.')
-          .typeError('Zip code must be a number.'),
+          .matches(zipCodeReg, 'Zip Code is not valid.'),
         primaryFirstName: yup.string().required('First name is required.'),
         primaryLastName: yup.string().required('Last name is required.'),
         primaryTitle: yup.string(),
@@ -143,7 +145,11 @@ const CreateSiteModal = ({ areaId }) => {
                     {errors.addressStreet?.message ?? <>{'\u00A0'}</>}
                   </div>
                 </label>
-                <label className={styles.label} htmlFor="apt-suite-etc">
+                <label
+                  className={styles.label}
+                  htmlFor="apt-suite-etc"
+                  style={{ 'padding-bottom': '20px' }}
+                >
                   Apt, suite, etc
                   <input
                     style={{ width: '255px' }}
@@ -174,8 +180,8 @@ const CreateSiteModal = ({ areaId }) => {
                     <input
                       type="number"
                       onInput={e => {
-                        if (e.target.value.length > 9) {
-                          e.target.value = e.target.value.slice(0, 9);
+                        if (e.target.value.length > 5) {
+                          e.target.value = e.target.value.slice(0, 5);
                         }
                       }}
                       maxLength={9}
@@ -279,7 +285,7 @@ const CreateSiteModal = ({ areaId }) => {
             </div>
             <h3 className={styles['optional-subtitles']}>Secondary Contact</h3>
             <div className={styles['input-area']}>
-              <Row>
+              <Row style={{ 'padding-bottom': '20px' }}>
                 <Col lg={3}>
                   <label className={styles.label} htmlFor="secondary-name">
                     First Name
