@@ -67,6 +67,7 @@ const StatusCell = ({ data, setEmail, setAlertState }) => {
           setIsOpen={setWrongEmailModalOpen}
           setEmail={setEmail}
           data={data}
+          setAlertState={setAlertState}
         />
       </div>
     );

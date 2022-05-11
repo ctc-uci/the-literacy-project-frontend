@@ -4,7 +4,7 @@ import { Badge } from 'react-bootstrap';
 import { FaTrashAlt } from 'react-icons/fa';
 import { TLPBackend } from '../../common/utils';
 
-const TeacherTableSiteCell = ({ teacherId, item }) => {
+const TeacherTableSiteCell = ({ teacherId, item, setAlertState }) => {
   const [siteList, setSiteList] = useState(item);
 
   // remove a site from the teacher site relation
@@ -13,7 +13,11 @@ const TeacherTableSiteCell = ({ teacherId, item }) => {
       await TLPBackend.put(`teachers/remove-site/${teacherId}`, { siteId });
       setSiteList(siteList.filter((data, i) => i !== index));
     } catch (err) {
-      console.log(err.message);
+      setAlertState({
+        variant: 'danger',
+        message: err.response.data,
+        open: true,
+      });
     }
   };
 
@@ -42,6 +46,7 @@ TeacherTableSiteCell.propTypes = {
       siteName: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  setAlertState: PropTypes.func.isRequired,
 };
 
 export default TeacherTableSiteCell;

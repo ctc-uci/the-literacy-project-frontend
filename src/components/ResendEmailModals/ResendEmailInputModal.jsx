@@ -9,7 +9,7 @@ import { TLPBackend } from '../../common/utils';
 import { sendInviteLink, sendLoginLink } from '../../common/auth/auth_utils';
 import styles from './ResendModal.module.css';
 
-const ResendEmailInputModal = ({ isOpen, setIsOpen, setEmail, setConfirmModalOpen, data }) => {
+const ResendEmailInputModal = ({ isOpen, setIsOpen, setEmail, setAlertState, data }) => {
   const { userId, inviteId, position, email, firstName, lastName, phoneNumber, notes } = data;
   const [errorMessage, setErrorMessage] = useState('');
   // used to update the email in the backend if necessary
@@ -46,7 +46,11 @@ const ResendEmailInputModal = ({ isOpen, setIsOpen, setEmail, setConfirmModalOpe
       }
       reset({ newEmail: '' });
       setIsOpen(false);
-      setConfirmModalOpen(true);
+      setAlertState({
+        variant: 'success',
+        message: `Successfully updated the email for ${firstName} ${lastName}`,
+        open: true,
+      });
       // eslint-disable-next-line no-param-reassign
       data.email = newEmail;
       setEmail(newEmail);
@@ -100,7 +104,7 @@ ResendEmailInputModal.propTypes = {
   setEmail: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  setConfirmModalOpen: PropTypes.func.isRequired,
+  setAlertState: PropTypes.func.isRequired,
   data: PropTypes.shape({
     position: PropTypes.string,
     email: PropTypes.string,

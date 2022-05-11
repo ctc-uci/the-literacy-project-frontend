@@ -78,7 +78,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     if (sectionTitle === TEACHER) {
       return (
         <td key={ind}>
-          <TeacherTableSiteCell teacherId={uniqueKey} item={item} />
+          <TeacherTableSiteCell teacherId={uniqueKey} item={item} setAlertState={setAlertState} />
           <Badge style={addBadgeStyles} onClick={() => setModalOpen(SECTIONS.TEACHER)}>
             Add Site <FaPlus cursor="pointer" />
           </Badge>
