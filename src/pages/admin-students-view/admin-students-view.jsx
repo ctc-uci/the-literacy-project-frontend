@@ -6,12 +6,15 @@ import '../../common/vars.css';
 import styles from './admin-students-view.module.css';
 import Table from '../../components/Table/Table';
 import { TLPBackend, capitalize, formatSchoolYear } from '../../common/utils';
+import AdminStudentFilter from '../../components/AdminStudentFilter/AdminStudentFilter';
 
 const AdminStudentsView = () => {
   const [studentList, setStudentList] = useState([]);
   const [error, setError] = useState(null);
   const [sortBy, setSortBy] = useState('A-Z');
   const [searchText, setSearchText] = useState('');
+  const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
+  const [filters, setFilters] = useState({});
 
   const sorts = ['A-Z', 'Z-A'];
 
@@ -124,7 +127,7 @@ const AdminStudentsView = () => {
 
   // Compares two names alphabetically
   const compareNames = (field1, field2) => {
-    const f1 = field1.items[0].toLowerCase(); // items[0] gives the Name
+    const f1 = field1.items[0].toLowerCase(); // items[0] gives the student name
     const f2 = field2.items[0].toLowerCase();
 
     switch (sortBy) {
@@ -144,9 +147,32 @@ const AdminStudentsView = () => {
     });
   };
 
-  const displayData = data => {
-    return search(data).sort(compareNames);
+  const applyFilters = data => {
+    let updatedData = data;
+    if (filters.areas) {
+      updatedData = data.filter(row => {
+        const areaName = row.items[6];
+        return filters.areas.includes(areaName); // check if area name in the areas to keep
+      });
+    }
+    return updatedData;
   };
+
+  const displayData = data => {
+    return applyFilters(search(data)).sort(compareNames);
+  };
+
+  function getAreas() {
+    // items[6] is area name
+    return tbodyData
+      .reduce((acc, student) => {
+        if (student.items[6] && !acc.includes(student.items[6])) {
+          acc.push(student.items[6]);
+        }
+        return acc;
+      }, [])
+      .sort();
+  }
 
   return (
     <div className={styles['student-container']}>
@@ -171,9 +197,20 @@ const AdminStudentsView = () => {
             </Button>
           </div>
           <div className={styles['inner-ctrl']}>
-            <Button className={styles['filter-button']} variant="primary">
+            <Button
+              className={styles['filter-button']}
+              variant="primary"
+              onClick={() => setFilterModalIsOpen(true)}
+            >
               Filter By <FaFilter cursor="pointer" />
             </Button>
+            <AdminStudentFilter
+              isOpen={filterModalIsOpen}
+              setIsOpen={setFilterModalIsOpen}
+              areas={getAreas()}
+              filters={filters}
+              setFilters={setFilters}
+            />
           </div>
           <div className={styles['inner-ctrl']}>
             <DropdownButton

@@ -5,8 +5,6 @@ import styles from './AdminStudentFilter.module.css';
 
 function AdminStudentFilter(props) {
   const { isOpen, setIsOpen, areas, filters, setFilters } = props;
-  // const [showActive, setShowActive] = useState(!filters.active);
-  // const [showInactive, setShowInactive] = useState(!filters.inactive);
   const [showAreas, setShowAreas] = useState([]);
 
   useEffect(() => {
@@ -17,7 +15,7 @@ function AdminStudentFilter(props) {
           .map(area => {
             return { areaName: area };
           }) // Convert area names to a mocked list of area objects
-          .filter(filters.areas) // Apply the areas filter to the list
+          .filter(area => showAreas.includes(area.areaName)) // Apply the areas filter to the list
           .map(area => area.areaName), // Convert the areas back to a list of strings
       );
     } else {
@@ -55,25 +53,19 @@ function AdminStudentFilter(props) {
   // Reset all filters
   // This sets each value back to checked
   const resetFilters = () => {
-    // setShowActive(true);
-    // setShowInactive(false);
     setShowAreas(areas);
   };
 
   const applyFilters = () => {
-    // For each value (areas, active, inactive), check if it is checked
+    // For each value (areas), check if it is checked
     // If it is checked, we don't need to filter
-    // If it is not checked, we need to provide a function to filter it out
-    const areasFilter = areAllAreasChecked() ? null : area => showAreas.includes(area.areaName);
-    // const activeFilter = showActive ? null : area => !area.active;
-    // const inactiveFilter = showInactive ? null : area => area.active;
+    // If it is not checked, we need to provide a list of things to keep
+    const areasFilter = areAllAreasChecked() ? areas : showAreas;
 
     // Update the filters
     setFilters({
       ...filters,
       areas: areasFilter,
-      // active: activeFilter,
-      // inactive: inactiveFilter,
     });
 
     // Close the modal
@@ -116,27 +108,6 @@ function AdminStudentFilter(props) {
             })}
           </div>
         </Form.Group>
-        {/* <Form.Group className="mb-3" controlId="filter.state">
-          <Form.Label>
-            <b>Area Status</b>
-          </Form.Label>
-          <div className={styles.checkboxes}>
-            <Form.Check
-              type="checkbox"
-              label="Active"
-              className={styles['form-check']}
-              checked={showActive}
-              onChange={() => setShowActive(!showActive)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Inactive"
-              className={styles['form-check']}
-              checked={showInactive}
-              onChange={() => setShowInactive(!showInactive)}
-            />
-          </div>
-        </Form.Group> */}
       </Modal.Body>
       <Modal.Footer className={styles['button-row']}>
         <Button onClick={resetFilters}>Reset Filters</Button>
@@ -152,7 +123,7 @@ AdminStudentFilter.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   areas: PropTypes.arrayOf(PropTypes.string).isRequired,
-  filters: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  filters: PropTypes.arrayOf([PropTypes.object]).isRequired,
   setFilters: PropTypes.func.isRequired,
 };
 
