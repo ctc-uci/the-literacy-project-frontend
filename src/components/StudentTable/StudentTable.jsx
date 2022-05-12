@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './StudentTable.module.css';
 
@@ -32,9 +33,9 @@ const StudentTable = ({ data }) => {
                 <h6>{s.siteName}</h6>
               </td>
               <td className={styles['view-group-col']}>
-                <Button variant="primary" className={styles['view-group-btn']}>
-                  View Profile
-                </Button>
+                <Link to={`/student/${s.studentId}`}>
+                  <Button className={styles['view-profile-btn']}>View Profile</Button>
+                </Link>
               </td>
             </tr>
           );
