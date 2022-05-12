@@ -190,7 +190,7 @@ const AdminStudentsView = () => {
     }
     if (filters.years) {
       updatedData = updatedData.filter(student => {
-        const year = student.items[7].slice(0, 7); // items[7] is year
+        const year = student.items[8].slice(0, 7); // items[8] is year
         return filters.years.includes(year); // check if year in the years to keep
       });
     }
@@ -236,11 +236,11 @@ const AdminStudentsView = () => {
 
   // Get all School Years with students
   function getSchoolYears() {
-    // items[7] is school year
+    // items[8] is school year
     return tbodyData
       .reduce((acc, student) => {
-        if (student.items[7] && !acc.includes(student.items[7].slice(0, 7))) {
-          acc.push(student.items[7].slice(0, 7));
+        if (student.items[8] && !acc.includes(student.items[8].slice(0, 7))) {
+          acc.push(student.items[8].slice(0, 7));
         }
         return acc;
       }, [])
