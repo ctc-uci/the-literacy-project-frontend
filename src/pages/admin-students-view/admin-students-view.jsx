@@ -11,7 +11,7 @@ import AdminStudentFilter from '../../components/AdminStudentFilter/AdminStudent
 const AdminStudentsView = () => {
   const [studentList, setStudentList] = useState([]);
   const [error, setError] = useState(null);
-  const [sortBy, setSortBy] = useState('A-Z');
+  const [sortBy, setSortBy] = useState('A - Z');
   const [searchText, setSearchText] = useState('');
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [filters, setFilters] = useState({});
@@ -158,9 +158,9 @@ const AdminStudentsView = () => {
     const f2 = field2.items[0].toLowerCase();
 
     switch (sortBy) {
-      case 'A-Z':
+      case 'A - Z':
         return f1 < f2 ? -1 : 1;
-      case 'Z-A':
+      case 'Z - A':
         return f1 < f2 ? 1 : -1;
       default:
         return f1 < f2 ? -1 : 1;
@@ -176,6 +176,12 @@ const AdminStudentsView = () => {
 
   const applyFilters = data => {
     let updatedData = data;
+    if (filters.states) {
+      updatedData = updatedData.filter(student => {
+        const stateName = student.items[7]; // items[7] is state
+        return filters.states.includes(stateName); // check if state name in the states to keep
+      });
+    }
     if (filters.areas) {
       updatedData = updatedData.filter(student => {
         const areaName = student.items[6]; // items[6] is area
@@ -207,6 +213,19 @@ const AdminStudentsView = () => {
   const displayData = data => {
     return applyFilters(search(data)).sort(compareNames);
   };
+
+  // Get all states that have students
+  function getStates() {
+    // items[7] is state name
+    return tbodyData
+      .reduce((acc, student) => {
+        if (student.items[7] && !acc.includes(student.items[7])) {
+          acc.push(student.items[7]);
+        }
+        return acc;
+      }, [])
+      .sort();
+  }
 
   // Get all areas that have students
   function getAreas() {
@@ -292,6 +311,7 @@ const AdminStudentsView = () => {
             <AdminStudentFilter
               isOpen={filterModalIsOpen}
               setIsOpen={setFilterModalIsOpen}
+              states={getStates()}
               areas={getAreas()}
               sites={getSites()}
               years={getSchoolYears()}

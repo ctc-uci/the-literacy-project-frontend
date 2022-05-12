@@ -4,13 +4,29 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import styles from './AdminStudentFilter.module.css';
 
 function AdminStudentFilter(props) {
-  const { isOpen, setIsOpen, areas, sites, years, grades, filters, setFilters } = props;
+  const { isOpen, setIsOpen, states, areas, sites, years, grades, filters, setFilters } = props;
+  const [showStates, setShowStates] = useState([]);
   const [showAreas, setShowAreas] = useState([]);
   const [showSites, setShowSites] = useState([]);
   const [showYears, setShowYears] = useState([]);
   const [showGrades, setShowGrades] = useState([]);
 
   useEffect(() => {
+    if (filters.states) {
+      // There is a filter for the states
+      setShowStates(
+        states
+          .map(state => {
+            return { stateName: state };
+          }) // Convert state names to a mocked list of states objects
+          .filter(state => showStates.includes(state.stateName)) // Apply the states filter to the list
+          .map(state => state.stateName), // Convert the states back to a list of strings
+      );
+    } else {
+      // There is no filter for the states
+      // setShowStates to the full list of states
+      setShowStates(states);
+    }
     if (filters.areas) {
       // There is a filter for the areas
       setShowAreas(
@@ -71,7 +87,14 @@ function AdminStudentFilter(props) {
       // setShowGrades to the full list of grades
       setShowGrades(grades);
     }
-  }, [areas, sites, years, grades]);
+  }, [states, areas, sites, years, grades]);
+
+  /**
+   * @returns true if all states are checked
+   */
+  const areAllStatesChecked = () => {
+    return states.length === showStates.length;
+  };
 
   /**
    * @returns true if all areas are checked
@@ -99,6 +122,14 @@ function AdminStudentFilter(props) {
    */
   const areAllGradesChecked = () => {
     return grades.length === showGrades.length;
+  };
+
+  const toggleState = state => {
+    if (showStates.includes(state)) {
+      setShowStates(showStates.filter(a => a !== state));
+    } else {
+      setShowStates([...showStates, state]);
+    }
   };
 
   const toggleArea = area => {
@@ -130,6 +161,16 @@ function AdminStudentFilter(props) {
       setShowGrades(showGrades.filter(g => g !== grade));
     } else {
       setShowGrades([...showGrades, grade]);
+    }
+  };
+
+  const toggleAllStates = () => {
+    if (areAllStatesChecked()) {
+      // Remove all states
+      setShowStates([]);
+    } else {
+      // Add all states
+      setShowStates(states);
     }
   };
 
@@ -176,6 +217,7 @@ function AdminStudentFilter(props) {
   // Reset all filters
   // This sets each value back to checked
   const resetFilters = () => {
+    setShowStates(states);
     setShowAreas(areas);
     setShowSites(sites);
     setShowYears(years);
@@ -183,9 +225,10 @@ function AdminStudentFilter(props) {
   };
 
   const applyFilters = () => {
-    // For each filter (areas, sites, years, grades), check if it is checked
+    // For each filter (states, areas, sites, years, grades), check if it is checked
     // If it is checked, we don't need to filter
     // If it is not checked, we need to provide a list of things to keep
+    const statesFilter = areAllStatesChecked() ? states : showStates;
     const areasFilter = areAllAreasChecked() ? areas : showAreas;
     const sitesFilter = areAllSitesChecked() ? sites : showSites;
     const yearsFilter = areAllYearsChecked() ? years : showYears;
@@ -194,6 +237,7 @@ function AdminStudentFilter(props) {
     // Update the filters
     setFilters({
       ...filters,
+      states: statesFilter,
       areas: areasFilter,
       sites: sitesFilter,
       years: yearsFilter,
@@ -210,6 +254,36 @@ function AdminStudentFilter(props) {
         <Modal.Title>Filter</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <Form.Group className="mb-3" controlId="filter.state">
+          <div className={styles['label-row']}>
+            <Form.Label>
+              <b>States</b>
+            </Form.Label>
+            <Form.Check
+              type="checkbox"
+              label="All States"
+              checked={areAllStatesChecked()}
+              onChange={toggleAllStates}
+            />
+          </div>
+          <div className={styles.checkboxes}>
+            {states.map(state => {
+              const check = showStates.includes(state);
+              return (
+                <Form.Check
+                  type="checkbox"
+                  label={state}
+                  className={styles['form-check']}
+                  key={state}
+                  checked={check}
+                  onChange={() => {
+                    toggleState(state);
+                  }}
+                />
+              );
+            })}
+          </div>
+        </Form.Group>
         <Form.Group className="mb-3" controlId="filter.area">
           <div className={styles['label-row']}>
             <Form.Label>
@@ -344,6 +418,7 @@ function AdminStudentFilter(props) {
 AdminStudentFilter.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
+  states: PropTypes.arrayOf(PropTypes.string).isRequired,
   areas: PropTypes.arrayOf(PropTypes.string).isRequired,
   sites: PropTypes.arrayOf(PropTypes.string).isRequired,
   years: PropTypes.arrayOf(PropTypes.string).isRequired,
