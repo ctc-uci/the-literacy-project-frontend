@@ -16,6 +16,10 @@
   margin-bottom: 0.5em;
 }
 
+.student-box {
+  margin-bottom: 20px;
+}
+
 .edit-group-btn {
   margin-left: 1em;
   float: inline-end;
@@ -86,6 +90,10 @@
 
 .custom-form-label {
   margin-left: 0.5em;
+}
+
+.dropdown-labels {
+  margin-right: 5px;
 }
 
 .float-right-section {

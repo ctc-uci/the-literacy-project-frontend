@@ -1,5 +1,6 @@
 import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
+import { Modal } from 'react-bootstrap';
 import './EditStudentModal.css';
 
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
@@ -30,8 +31,8 @@ const EditStudentModal = ({ isOpen, setIsOpen }) => {
   const cycles = ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
   const [cycle, setCycle] = useState('Default Cycle');
 
-  return isOpen ? (
-    <>
+  return (
+    <Modal show={isOpen} onHide={setIsOpen(false)}>
       <div className="edit-student-modal">
         <div className="edit-student-modal-top-bar">
           {/* create the title and the x button
@@ -101,8 +102,8 @@ const EditStudentModal = ({ isOpen, setIsOpen }) => {
           </button>
         </div>
       </div>
-    </>
-  ) : null;
+    </Modal>
+  );
 };
 
 EditStudentModal.propTypes = {

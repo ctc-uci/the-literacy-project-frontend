@@ -11,6 +11,7 @@ import TeacherNotesModal from '../NotesModal/TeacherNotesModal';
 import { SECTIONS } from '../../common/config';
 import AddNoteIcon from '../../assets/icons/AddNote.svg';
 import EditNoteIcon from '../../assets/icons/EditNote.svg';
+import StudentScoreModal from '../StudentScoreModal/StudentScoreModal';
 
 const { ADMIN, TEACHER, STUDENT } = SECTIONS;
 const RESET = 'Reset Password'; // used to open reset password and edit note modal modal
@@ -181,6 +182,11 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol, setAle
           adminId={uniqueKey}
         />
       )}
+      <StudentScoreModal
+        isOpen={modalIsOpen === 'Students'}
+        setIsOpen={setModalOpen}
+        studentId={uniqueKey}
+      />
     </>
   );
 };
