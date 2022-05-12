@@ -8,6 +8,9 @@ import MasterTeacherTableView from '../master-teachers-table/master-teachers-tab
 const PeopleView = () => {
   return (
     <div className={styles['people-container']}>
+      <div className={styles.header}>
+        <h1>People</h1>
+      </div>
       <Tabs defaultActiveKey="staff">
         <Tab eventKey="staff" title="Staff">
           <AdminView />

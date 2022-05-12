@@ -16,7 +16,7 @@ const AdminStudentsView = () => {
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [filters, setFilters] = useState({});
 
-  const sorts = ['A-Z', 'Z-A'];
+  const sorts = ['A - Z', 'Z - A'];
 
   const theadData = [
     {
@@ -250,7 +250,6 @@ const AdminStudentsView = () => {
   return (
     <div className={styles['student-container']}>
       <div className={styles['ctrl-group']}>
-        <div className={styles['inner-ctrl']} />
         <div className={styles['inner-ctrl']}>
           <div className={styles.search}>
             <InputGroup input={searchText} onChange={inputHandler}>
