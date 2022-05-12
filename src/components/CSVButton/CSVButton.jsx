@@ -5,226 +5,150 @@ import { CSVLink } from 'react-csv';
 import { TLPBackend } from '../../common/utils';
 import styles from './CSVButton.module.css';
 
-const CSVButton = ({ type, areaID, siteID }) => {
+const CSVButton = ({ type, areaId, siteId }) => {
   const [studentResponseData, setStudentResponseData] = useState([]);
+  // const [siteInfo, setSiteInfo] = useState({});
+  // const [fileName, setFileName] = useState('');
 
   // Creates CSV file headers
   function createHeaders() {
-    if (type === 'allAreas') {
-      return [
-        'Area ID',
-        'Student ID',
-        'First Name',
-        'Last Name',
-        'Grade',
-        'Home Teacher',
-        'Gender',
-        'Ethnicity',
-        'Student Group ID',
-        'Post-Test A',
-        'Post-Test A Notes',
-        'Post-Test R',
-        'Post-Test R Notes',
-        'Pre-Test A',
-        'Pre-Test A Notes',
-        'Pre-Test R',
-        'Pre-Test R Notes',
-      ];
-    }
-    if (type === 'area') {
-      return [
-        'Area ID',
-        'Student ID',
-        'First Name',
-        'Last Name',
-        'Grade',
-        'Home Teacher',
-        'Gender',
-        'Ethnicity',
-        'Student Group ID',
-        'Post-Test A',
-        'Post-Test A Notes',
-        'Post-Test R',
-        'Post-Test R Notes',
-        'Pre-Test A',
-        'Pre-Test A Notes',
-        'Pre-Test R',
-        'Pre-Test R Notes',
-      ];
-    }
     if (type === 'site') {
       return [
-        'Site ID',
-        'Student ID',
-        'First Name',
-        'Last Name',
-        'Grade',
-        'Home Teacher',
-        'Gender',
-        'Ethnicity',
-        'Student Group ID',
-        'Post-Test A',
-        'Post-Test A Notes',
-        'Post-Test R',
-        'Post-Test R Notes',
-        'Pre-Test A',
-        'Pre-Test A Notes',
-        'Pre-Test R',
-        'Pre-Test R Notes',
+        'Site Name',
+        'Area Name',
+        'Site Status',
+        'Addresss Line',
+        'Apt, suite, etc.',
+        'City',
+        'State',
+        'ZIP Code',
+        'First Name (Primary Contact)',
+        'Last Name (Primary Contact)',
+        'Title (Primary Contact)',
+        'Email (Primary Contact)',
+        'Phone Number (Primary Contact)',
+        'First Name (Secondary Contact)',
+        'Last Name (Secondary Contact)',
+        'Title (Secondary Contact)',
+        'Email (Secondary Contact)',
+        'Phone Number (Secondary Contact)',
+        'Notes',
       ];
     }
-    return [];
+
+    return [
+      'Area Name',
+      'Site Name',
+      'First Name',
+      'Last Name',
+      'Grade',
+      'Home Teacher',
+      'Gender',
+      'Ethnicity',
+      'Student Group Name',
+      'Pre-Test Academic',
+      'Pre-Test Attitudinal',
+      'Post-Test Academic',
+      'Post-Test Attitudinal',
+    ];
   }
 
   function mapResponse() {
-    if (type === 'allAreas') {
-      return studentResponseData.map(student => [
-        student.areaId,
-        student.studentId,
-        student.firstName,
-        student.lastName,
-        student.grade,
-        student.homeTeacher,
-        student.gender,
-        student.ethnicity,
-        student.studentGroupId,
-        student.posttestA,
-        student.posttestANotes,
-        student.posttestR,
-        student.posttestRNotes,
-        student.pretestA,
-        student.pretestANotes,
-        student.pretestR,
-        student.pretestRNotes,
-      ]);
-    }
-    if (type === 'area') {
-      return studentResponseData.map(student => [
-        student.areaId,
-        student.studentId,
-        student.firstName,
-        student.lastName,
-        student.grade,
-        student.homeTeacher,
-        student.gender,
-        student.ethnicity,
-        student.studentGroupId,
-        student.posttestA,
-        student.posttestANotes,
-        student.posttestR,
-        student.posttestRNotes,
-        student.pretestA,
-        student.pretestANotes,
-        student.pretestR,
-        student.pretestRNotes,
-      ]);
-    }
     if (type === 'site') {
-      return studentResponseData.map(student => [
-        student.siteId,
-        student.studentId,
-        student.firstName,
-        student.lastName,
-        student.grade,
-        student.homeTeacher,
-        student.gender,
-        student.ethnicity,
-        student.studentGroupId,
-        student.posttestA,
-        student.posttestANotes,
-        student.posttestR,
-        student.posttestRNotes,
-        student.pretestA,
-        student.pretestANotes,
-        student.pretestR,
-        student.pretestRNotes,
-      ]);
+      // console.log(siteInfo);
+      return [];
+      // return [
+      //   siteInfo.siteName,
+      //   siteInfo.areaName,
+      //   siteInfo.active,
+      //   siteInfo.addressStreet,
+      //   siteInfo.addressApt,
+      //   siteInfo.addressCity,
+      //   siteInfo.addressState,
+      //   siteInfo.addressZip,
+      //   siteInfo.primaryContactInfo.firstName,
+      //   siteInfo.primaryContactInfo.lastName,
+      //   siteInfo.primaryContactInfo.title,
+      //   siteInfo.primaryContactInfo.email,
+      //   siteInfo.primaryContactInfo.phone,
+      //   siteInfo.secondContactInfo.firstName,
+      //   siteInfo.secondContactInfo.lastName,
+      //   siteInfo.secondContactInfo.title,
+      //   siteInfo.secondContactInfo.email,
+      //   siteInfo.secondContactInfo.phone,
+      //   siteInfo.notes,
+      // ];
     }
-    return [];
+
+    console.log(studentResponseData);
+    return studentResponseData.map(student => [
+      student.areaName,
+      student.siteName,
+      student.firstName,
+      student.lastName,
+      student.grade,
+      student.homeTeacher,
+      student.gender,
+      student.ethnicity,
+      student.studentGroupName,
+      student.pretestA,
+      student.pretestR,
+      student.posttestA,
+      student.posttestR,
+    ]);
   }
 
   const CSVReport = {
     data: studentResponseData,
     headers: createHeaders(),
-    filename: 'Areas_Report.csv',
+    filename: `Area_Report.csv`,
   };
 
   const addAssociatedSiteToArea = async resData => {
-    async function fetchStudentsByAllAreas() {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const element of resData) {
-        TLPBackend.get(`/students/area/${element.areaId}`)
-          .then(res => {
-            res.data.forEach(student => {
-              // eslint-disable-next-line no-param-reassign
-              student.areaId = element.areaId;
-            });
-            if (res.data.length !== 0) {
-              studentResponseData.push(...res.data);
-            }
-          })
-          .catch(() => {
-            /* TODO document why this arrow function is empty */
-          });
-      }
+    // let name;
+    async function fetchStudents() {
+      studentResponseData.push(...resData);
+      // if (type === 'area' && resData) {
+      //   name = resData[0].areaName;
+      // }
     }
 
-    async function fetchStudentsByArea() {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const element of resData) {
-        TLPBackend.get(`/students/site/${element.siteId}`)
-          .then(res => {
-            res.data.forEach(student => {
-              // eslint-disable-next-line no-param-reassign
-              student.areaId = areaID;
-            });
-            if (res.data.length !== 0) {
-              studentResponseData.push(...res.data);
-            }
-          })
-          .catch(() => {
-            /* TODO document why this arrow function is empty */
-          });
-      }
+    async function fetchSites() {
+      // siteInfo.push(...resData);
+      // name = siteInfo.siteName;
     }
 
-    async function fetchStudentsBySite() {
-      resData.forEach(student => {
-        // eslint-disable-next-line no-param-reassign
-        student.siteId = siteID;
-      });
-      if (resData.length !== 0) {
-        studentResponseData.push(...resData);
-      }
-    }
-
-    if (type === 'allAreas') {
-      await fetchStudentsByAllAreas();
-    }
-    if (type === 'area') {
-      await fetchStudentsByArea();
-    }
     if (type === 'site') {
-      await fetchStudentsBySite();
+      fetchSites();
+    } else {
+      await fetchStudents();
     }
     setTimeout(() => {
       setStudentResponseData(mapResponse());
-    }, 2000);
+      // if (type === 'site') {
+      //   setSiteInfo(mapResponse());
+      // } else {
+      //   setStudentResponseData(mapResponse());
+      // }
+
+      // setFileName(name);
+    }, 1000);
   };
 
   useEffect(() => {
     async function fetchStudents() {
       try {
         if (type === 'allAreas') {
-          const areasResponse = await TLPBackend.get('/areas');
+          const areasResponse = await TLPBackend.get('/students');
           addAssociatedSiteToArea(areasResponse.data);
+          // setSiteInfo('Full_Report');
         }
-        if (type === 'area') {
-          const sitesResponse = await TLPBackend.get(`/sites/area/${areaID}`);
+        if (type === 'area' && areaId) {
+          const sitesResponse = await TLPBackend.get(`/students/area/${areaId}`);
           addAssociatedSiteToArea(sitesResponse.data);
         }
-        if (type === 'site') {
-          const siteResponse = await TLPBackend.get(`/students/site/${siteID}`);
+        if (type === 'site' && siteId) {
+          const siteResponse = await TLPBackend.get(`/sites/${siteId}`);
           addAssociatedSiteToArea(siteResponse.data);
         }
       } catch (err) {
@@ -250,9 +174,9 @@ const CSVButton = ({ type, areaID, siteID }) => {
 CSVButton.propTypes = {
   type: PropTypes.string.isRequired,
   // eslint-disable-next-line react/require-default-props
-  areaID: PropTypes.number,
+  areaId: PropTypes.number,
   // eslint-disable-next-line react/require-default-props
-  siteID: PropTypes.number,
+  siteId: PropTypes.number,
 };
 
 export default CSVButton;

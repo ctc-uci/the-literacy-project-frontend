@@ -121,7 +121,7 @@ const AreaView = () => {
             <div>
               <h2>{areaName} Data</h2>
             </div>
-            <CSVButton type="area" areaID={Number.parseInt(areaId, 10)} />
+            <CSVButton type="area" areaId={Number.parseInt(areaId, 10)} />
           </div>
           <Card className={styles.stats}>
             <p>

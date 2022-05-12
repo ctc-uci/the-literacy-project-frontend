@@ -454,7 +454,7 @@ const ViewSite = ({ siteId }) => {
             </div>
             <div className={styles['title-csv']}>
               <h3 className={styles['optional-subtitles']}>Site Status</h3>
-              <CSVButton type="site" siteID={Number.parseInt(siteId, 10)} />
+              <CSVButton type="site" siteId={Number.parseInt(siteId, 10)} />
             </div>
             <div className={styles['input-area']}>
               <Col md={5}>
