@@ -32,3 +32,47 @@
 .buttons {
   color: var(--text-color-white);
 }
+
+.modalSave {
+  background-color: #3288c4;
+  color: #fdfdfd;
+}
+
+.phoneNumField,
+.emailField {
+  width: 100%;
+}
+
+.fNameField {
+  width: 40%;
+  margin-right: 5%;
+}
+
+.lNameField {
+  width: 55%;
+}
+
+.modalTitle {
+  margin-left: 40%;
+}
+
+.err-msg {
+  margin-left: 1em;
+}
+
+.requiredSubtitles::after {
+  color: #e32;
+  content: ' *';
+  display: inline;
+}
+
+/* all the text areas */
+.requiredSubtitles {
+  font-family: Calibri, 'sans-serif';
+  font-size: 16px;
+  padding-left: 2px;
+}
+
+.undoChanges {
+  cursor: pointer;
+}

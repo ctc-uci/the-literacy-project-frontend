@@ -14,14 +14,33 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  // This teacher data will be populated, but may be changed using the form
+  // const [teacherData, setTeacherData] = useState({
+  //   firstName: '',
+  //   lastName: '',
+  //   phoneNumber: '',
+  //   email: '',
+  // });
+  // Copy of initial teachehr data for undo functionality
+  // const [initialTeacherData, setInitialTeacherData] = useState({
+  //   firstName: '',
+  //   lastName: '',
+  //   phoneNumber: '',
+  //   email: '',
+  //   active: '',
+  // });
   const [status, setStatus] = useState('');
-  const [warningOpen, setWarningOpen] = useState(false);
-  const teacherName = `${firstName} ${lastName}`;
-
   const [sites, setSites] = useState([]);
   const removeSite = e => {
     const name = e.target.getAttribute('name');
     setSites(sites.filter(site => site !== name));
+  };
+  // const teacherName = `${teacherData.firstName} ${teacherData.lastName}`;
+  const teacherName = `${firstName} ${lastName}`;
+
+  const [warningOpen, setWarningOpen] = useState(false);
+  const openWarningModal = () => {
+    setWarningOpen(!warningOpen);
   };
 
   const closeModal = () => {
@@ -41,16 +60,12 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     closeModal();
   };
 
-  const openWarningModal = () => {
-    setWarningOpen(!warningOpen);
-  };
-
-  const deleteMasterTeacher = async () => {
-    // TODO: Figure out what to do if it fails
-    await TLPBackend.delete(`/teachers/${teacherId}`);
-    reloadPage();
-    setIsOpen(false);
-  };
+  // const deleteMasterTeacher = async () => {
+  //   // TODO: Figure out what to do if it fails
+  //   await TLPBackend.delete(`/teachers/${teacherId}`);
+  //   reloadPage();
+  //   setIsOpen(false);
+  // };
 
   useEffect(async () => {
     if (!isOpen) return;
@@ -79,7 +94,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
         setIsOpen={setWarningOpen}
         name={teacherName}
         body="teacher"
-        deleteFunc={deleteMasterTeacher}
+        // deleteFunc={deleteMasterTeacher}
       />
       <Modal show={isOpen} onHide={() => setIsOpen(false)}>
         <Modal.Header closeButton>
