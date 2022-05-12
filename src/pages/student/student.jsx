@@ -55,7 +55,10 @@ const StudentView = () => {
       groupId: student.studentGroupId,
     };
     tempStudentData.studentEthnicity = student.ethnicity.map(item => {
-      return { value: item, label: item };
+      if (item === 'american indian or alaska native') {
+        return { value: item, label: 'American Indian or Alaska Native' };
+      }
+      return { value: item, label: item.charAt(0).toUpperCase() + item.slice(1) };
     });
     tempStudentData.studentGender = student.gender;
     tempStudentData.studentHomeTeacher = student.homeTeacher;
@@ -151,18 +154,20 @@ const StudentView = () => {
               6: '6th Grade',
             },
             ethnicityOptions: [
-              { value: 'white', label: 'white' },
-              { value: 'black', label: 'black' },
-              { value: 'asian', label: 'asian' },
-              { value: 'latinx', label: 'latinx' },
+              { value: 'white', label: 'White' },
+              { value: 'black', label: 'Black' },
+              { value: 'asian', label: 'Asian' },
+              { value: 'latinx', label: 'Latinx' },
               {
                 value: 'american indian or alaska native',
-                label: 'american indian or alaska native',
+                label: 'American Indian or Alaska Native',
               },
-              { value: 'non-specified', label: 'non-specified' },
+              { value: 'non-specified', label: 'Non-specified' },
             ],
             genderOptions: ['male', 'female', 'non-specified'],
-            studentGroups: [...resOptions.data],
+            studentGroups: resOptions.data.filter(item => {
+              return item.cycle === res.data.cycle && item.year === res.data.year;
+            }),
           });
         })
         .catch(() => {
@@ -247,7 +252,18 @@ const StudentView = () => {
                     <td>{student.grade ? editOptions.gradeOptions[student.grade] : '-'}</td>
                     <td>{student.siteName ? student.siteName : '-'}</td>
                     <td>{student.studentGroupName ? student.studentGroupName : '-'}</td>
-                    <td>{student.ethnicity !== [] ? student.ethnicity.join(', ') : '-'}</td>
+                    <td>
+                      {student.ethnicity.length > 0
+                        ? student.ethnicity
+                            .map(item => {
+                              if (item === 'american indian or alaska native') {
+                                return 'American Indian or Alaska Native';
+                              }
+                              return item.charAt(0).toUpperCase() + item.slice(1);
+                            })
+                            .join(', ')
+                        : '-'}
+                    </td>
                     <td>{student.gender ? student.gender : '-'}</td>
                     <td>{student.homeTeacher ? student.homeTeacher : '-'}</td>
                   </tr>

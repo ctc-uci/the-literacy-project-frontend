@@ -125,7 +125,7 @@ ReactDOM.render(
                 <ProtectedRoute
                   Component={StudentView}
                   redirectPath="/access-denied"
-                  roles={[ADMIN_ROLE, USER_ROLE]}
+                  roles={[USER_ROLE]}
                 />
               }
             />
