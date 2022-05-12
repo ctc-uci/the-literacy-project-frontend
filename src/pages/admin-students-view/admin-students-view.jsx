@@ -48,6 +48,10 @@ const AdminStudentsView = () => {
       headerPopover: '',
     },
     {
+      headerTitle: 'State',
+      headerPopover: '',
+    },
+    {
       headerTitle: 'School Year/Cycle',
       headerPopover: '',
     },
@@ -69,13 +73,14 @@ const AdminStudentsView = () => {
     return eth.slice(0, -2);
   };
 
-  const formatSiteInfo = (siteName, areaName, year, cycle) => {
+  const formatSiteInfo = (siteName, areaName, areaState, year, cycle) => {
     const site = siteName || 'No assigned site';
     const area = areaName || 'No assigned area';
+    const state = areaState || 'N/A';
     let schoolYearAndCycle = year ? formatSchoolYear(year) : 'N/A';
     schoolYearAndCycle = cycle ? `${schoolYearAndCycle}/Cycle ${cycle}` : 'N/A';
 
-    return [site, area, schoolYearAndCycle];
+    return [site, area, state, schoolYearAndCycle];
   };
 
   const formatGrade = grade => {
@@ -113,6 +118,7 @@ const AdminStudentsView = () => {
       siteName,
       ethnicity,
       areaName,
+      areaState,
       year,
       cycle,
       homeTeacher,
@@ -120,7 +126,13 @@ const AdminStudentsView = () => {
       grade,
     } = studentObj;
     const eth = formatEthnicity(ethnicity);
-    const [site, area, schoolYearAndCycle] = formatSiteInfo(siteName, areaName, year, cycle);
+    const [site, area, state, schoolYearAndCycle] = formatSiteInfo(
+      siteName,
+      areaName,
+      areaState,
+      year,
+      cycle,
+    );
     const ht = homeTeacher || 'Not recorded';
     const grd = formatGrade(grade);
     tbodyData.push({
@@ -133,6 +145,7 @@ const AdminStudentsView = () => {
         ht,
         eth,
         area,
+        state,
         schoolYearAndCycle,
         'View Scores',
       ],
