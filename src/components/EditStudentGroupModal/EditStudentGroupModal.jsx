@@ -214,14 +214,6 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
   };
 
   useEffect(async () => {
-    console.log('isopen', isOpen);
-  }, [isOpen]);
-
-  useEffect(async () => {
-    console.log('warning', WarningModalIsOpen);
-  }, [WarningModalIsOpen]);
-
-  useEffect(async () => {
     await getStudentGroupData();
   }, []);
 
