@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dropdown, DropdownButton, InputGroup, FormControl } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import { FaPlus, FaFilter } from 'react-icons/fa';
 import Table from '../../components/Table/Table';
 import CreateMasterTeacherModal from '../../components/CreateMasterTeacherModal/CreateMasterTeacherModal';
@@ -7,7 +8,7 @@ import { TLPBackend } from '../../common/utils';
 import { SECTIONS } from '../../common/config';
 import styles from './master-teachers-table.module.css';
 
-const MasterTeacherTableView = () => {
+const MasterTeacherTableView = ({ setAlertState }) => {
   const [createModalIsOpen, setCreateModalOpen] = useState(false);
   const [tbodyData, setBodyData] = useState([]);
   const [sortBy, setSortBy] = useState('A-Z');
@@ -71,17 +72,18 @@ const MasterTeacherTableView = () => {
       const { firstName, lastName, email, phoneNumber, sites, notes, userId, inviteId } =
         teacherObj;
       const id = userId || inviteId;
+      const name = `${lastName}, ${firstName}`;
       allTeachers.push({
         id,
         items: [
-          `${firstName} ${lastName}`,
+          name,
           { email, phoneNumber },
           sites || [],
           teacherObj, // used to show active status and resend invite if needed
           null, // empty placeholder for reset password to make sure there is something for each column
           notes || '',
         ],
-        sortBy: `${lastName} ${firstName}`,
+        sortBy: name,
       });
     });
     setBodyData(allTeachers);
@@ -144,11 +146,20 @@ const MasterTeacherTableView = () => {
           tbodyData={tbodyData.sort(compareNames)}
           statusCol={3}
           tbodyColIsBadge={[2]}
+          setAlertState={setAlertState}
         />
         <CreateMasterTeacherModal isOpen={createModalIsOpen} setIsOpen={setCreateModalOpen} />
       </div>
     </div>
   );
+};
+
+MasterTeacherTableView.defaultProps = {
+  setAlertState: null,
+};
+
+MasterTeacherTableView.propTypes = {
+  setAlertState: PropTypes.func,
 };
 
 export default MasterTeacherTableView;

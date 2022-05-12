@@ -1,40 +1,14 @@
 import { React, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './StatusCell.module.css';
-import { sendInviteLink, sendLoginLink } from '../../common/auth/auth_utils';
-import { AUTH_ROLES, USER_STATUS } from '../../common/config';
+import { USER_STATUS } from '../../common/config';
 import ResendEmailInputModal from '../ResendEmailModals/ResendEmailInputModal';
+import ResendConfirmationModal from '../ResendEmailModals/ResendConfirmationModal';
 
 const StatusCell = ({ data, setEmail, setAlertState }) => {
   const status = data.active ? data.active : USER_STATUS.PENDING;
-  const { position, email, firstName, lastName, phoneNumber } = data;
   const [wrongEmailModalOpen, setWrongEmailModalOpen] = useState(false);
-  const name = `${firstName} ${lastName}`;
-
-  const resendEmail = async () => {
-    try {
-      // admins get a new invite email
-      if (position === AUTH_ROLES.ADMIN_ROLE) {
-        await sendInviteLink(position, email, firstName, lastName, phoneNumber);
-      }
-      // master teachers get email to the website
-      else {
-        await sendLoginLink(email);
-      }
-      setAlertState({
-        variant: 'success',
-        message: `Invite Email successfully resent for ${name}`,
-        open: true,
-      });
-    } catch (err) {
-      setAlertState({
-        variant: 'danger',
-        // message: `Unable to resend email for ${name}`,
-        message: err.message,
-        open: true,
-      });
-    }
-  };
+  const [resendConfirmModalOpen, setResendConfirmModalOpen] = useState(false);
 
   if (status === USER_STATUS.PENDING) {
     return (
@@ -43,7 +17,7 @@ const StatusCell = ({ data, setEmail, setAlertState }) => {
         <button
           type="button"
           className={styles['email-button']}
-          onClick={resendEmail}
+          onClick={() => setResendConfirmModalOpen(true)}
           style={{ color: 'var(--color-blue)' }}
         >
           Resend Email
@@ -57,11 +31,12 @@ const StatusCell = ({ data, setEmail, setAlertState }) => {
         >
           Sent to the Wrong Email?
         </button>
-        {/* <ResendConfirmationModal
-          isOpen={confirmModalOpen}
-          setIsOpen={setConfirmModalOpen}
-          position={position}
-        /> */}
+        <ResendConfirmationModal
+          isOpen={resendConfirmModalOpen}
+          setIsOpen={setResendConfirmModalOpen}
+          data={data}
+          setAlertState={setAlertState}
+        />
         <ResendEmailInputModal
           isOpen={wrongEmailModalOpen}
           setIsOpen={setWrongEmailModalOpen}

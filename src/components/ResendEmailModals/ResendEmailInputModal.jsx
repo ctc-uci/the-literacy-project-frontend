@@ -67,20 +67,19 @@ const ResendEmailInputModal = ({ isOpen, setIsOpen, setEmail, setAlertState, dat
 
   return (
     <Modal show={isOpen} onHide={closeModal} centered>
-      <Modal.Header className="border-0 pb-0" closeButton>
+      <Modal.Header className={`border-0 pb-0 ${styles.space}`} closeButton>
         <Modal.Title>Update Email</Modal.Title>
       </Modal.Header>
 
-      <Modal.Body>
+      <Modal.Body className={styles.space}>
         <form onSubmit={handleSubmit(handleEmailInputSubmit)}>
-          <label style={{ width: '100%', padding: '1em 1em 0 1em' }} htmlFor="password">
+          <label style={{ width: '100%' }} htmlFor="email-input">
             Please enter the new email for this user
-            <div className={styles['password-input']}>
+            <div className={styles['email-input']}>
               <input
                 type="text"
                 {...register('newEmail')}
                 className={`form-control ${errors.newEmail ? 'is-invalid' : ''}`}
-                // onChange={() => setErrorMessage('')}
               />
             </div>
           </label>

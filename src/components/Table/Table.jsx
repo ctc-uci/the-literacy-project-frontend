@@ -4,7 +4,14 @@ import TableRow from '../TableRow/TableRow';
 import TableHead from '../TableHead/TableHead';
 import styles from './Table.module.css';
 
-const Table = ({ theadData, tbodyData, tbodyColIsBadge, sectionTitle, statusCol }) => {
+const Table = ({
+  theadData,
+  tbodyData,
+  tbodyColIsBadge,
+  sectionTitle,
+  statusCol,
+  setAlertState,
+}) => {
   return (
     <table className={styles.table}>
       <thead className={styles['table-head']}>
@@ -25,6 +32,7 @@ const Table = ({ theadData, tbodyData, tbodyColIsBadge, sectionTitle, statusCol 
               colIsBadge={tbodyColIsBadge}
               sectionTitle={sectionTitle}
               statusCol={statusCol}
+              setAlertState={setAlertState}
             />
           );
         })}
@@ -39,6 +47,7 @@ Table.defaultProps = {
   tbodyColIsBadge: [],
   sectionTitle: '',
   statusCol: -1,
+  setAlertState: null,
 };
 
 Table.propTypes = {
@@ -52,6 +61,7 @@ Table.propTypes = {
   tbodyColIsBadge: PropTypes.arrayOf(PropTypes.number),
   sectionTitle: PropTypes.string,
   statusCol: PropTypes.number,
+  setAlertState: PropTypes.func,
 };
 
 export default Table;

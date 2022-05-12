@@ -1,28 +1,24 @@
 import { React, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Button } from 'react-bootstrap';
-import { FaPlus, FaPencilAlt, FaPlusSquare, FaPenSquare } from 'react-icons/fa';
+import { FaPencilAlt } from 'react-icons/fa';
 import '../../common/vars.css';
 import EditMasterTeacherModal from '../EditMasterTeacherModal/EditMasterTeacherModal';
 import EditAdminModal from '../EditAdminModal/EditAdminModal';
 import StatusCell from '../StatusCell/StatusCell';
 import ResetPasswordModal from '../ResetPasswordModal/ResetPasswordModal';
 import TeacherNotesModal from '../NotesModal/TeacherNotesModal';
-import TeacherTableSiteCell from '../TeacherTableSiteCell/TeacherTableSiteCell';
-import CommonAlert from '../../common/CommonAlert/CommonAlert';
 import { SECTIONS } from '../../common/config';
+import AddNoteIcon from '../../assets/icons/AddNote.svg';
+import EditNoteIcon from '../../assets/icons/EditNote.svg';
 
 const { ADMIN, TEACHER, STUDENT } = SECTIONS;
 const RESET = 'Reset Password'; // used to open reset password and edit note modal modal
 const NOTES = 'Notes';
 
-const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
+const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol, setAlertState }) => {
   const [modalIsOpen, setModalOpen] = useState('');
-  const [alertState, setAlertState] = useState({
-    variant: 'success',
-    message: '', // alert is used for resending email, resetting password, and updating notes
-    open: false,
-  });
+
   const currEmail = data[1]?.email; // the original email to check against if changing
   const [email, setEmail] = useState(currEmail);
   // used to for master teacher note
@@ -33,6 +29,10 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
     cursor: 'pointer',
     marginLeft: '0.5em',
     backgroundColor: '#17A2B8',
+  };
+  const noteIconStyles = {
+    backgroundColor: 'transparent',
+    border: 'none',
   };
 
   const displayPencilAndLink = item => {
@@ -64,23 +64,31 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
         </Button>
       );
     if (sectionTitle === TEACHER) {
-      return notes !== '' ? (
-        <FaPenSquare cursor="pointer" size="2em" onClick={() => setModalOpen(NOTES)} />
-      ) : (
-        <FaPlusSquare cursor="pointer" size="2em" onClick={() => setModalOpen(NOTES)} />
+      return (
+        <Button style={noteIconStyles} onClick={() => setModalOpen(NOTES)}>
+          {notes !== '' ? (
+            <img alt="edit note" src={EditNoteIcon} />
+          ) : (
+            <img alt="add note" src={AddNoteIcon} />
+          )}
+        </Button>
       );
     }
     return item;
   };
 
-  // for teachers, display names of all sites they are in with the option to remove that site + add site button
   const displayBadgeCell = (item, ind) => {
+    // for teachers, display names of all sites they are in with the option to remove that site + add site button
     if (sectionTitle === TEACHER) {
       return (
         <td key={ind}>
-          <TeacherTableSiteCell teacherId={uniqueKey} item={item} setAlertState={setAlertState} />
+          {item.map(site => (
+            <Badge key={site.siteId} bg="dark" style={{ marginLeft: '0.5em' }}>
+              {site.siteName}
+            </Badge>
+          ))}
           <Badge style={addBadgeStyles} onClick={() => setModalOpen(SECTIONS.TEACHER)}>
-            Add Site <FaPlus cursor="pointer" />
+            Edit Sites <FaPencilAlt style={{ marginLeft: '5px' }} />
           </Badge>
         </td>
       );
@@ -91,7 +99,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
   /* eslint-disable react/no-array-index-key */
   return (
     <>
-      <tr>
+      <tr style={{ height: '120px' }}>
         {data.map((item, ind) => {
           if (ind === 0) {
             return <td key={ind}>{displayPencilAndLink(item)}</td>;
@@ -112,7 +120,11 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
             );
           }
           if (ind === data.length - 1) {
-            return <td key={ind}>{displayAsButton(item)}</td>;
+            return (
+              <td key={ind} style={{ textAlign: 'center' }}>
+                {displayAsButton(item)}
+              </td>
+            );
           }
           // reset password button
           if (ind === 4 && sectionTitle === TEACHER) {
@@ -169,13 +181,6 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           adminId={uniqueKey}
         />
       )}
-      <CommonAlert
-        variant={alertState.variant}
-        open={alertState.open}
-        setOpen={val => setAlertState({ ...alertState, open: val })}
-      >
-        {alertState.message}
-      </CommonAlert>
     </>
   );
 };
@@ -187,6 +192,7 @@ TableRow.defaultProps = {
   colIsBadge: [],
   sectionTitle: '',
   statusCol: -1,
+  setAlertState: null,
 };
 
 TableRow.propTypes = {
@@ -195,6 +201,7 @@ TableRow.propTypes = {
   colIsBadge: PropTypes.arrayOf(PropTypes.number),
   sectionTitle: PropTypes.string,
   statusCol: PropTypes.number,
+  setAlertState: PropTypes.func,
 };
 
 export default TableRow;

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dropdown, DropdownButton, InputGroup, FormControl } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 import CreateAdminModal from '../../components/CreateAdminModal/CreateAdminModal';
 import styles from './admin.module.css';
@@ -7,7 +8,7 @@ import Table from '../../components/Table/Table';
 import { TLPBackend } from '../../common/utils';
 import { SECTIONS } from '../../common/config';
 
-const AdminView = () => {
+const AdminView = ({ setAlertState }) => {
   const [modalIsOpen, setModalOpen] = useState(false);
   const [tbodyData, setBodyData] = useState([]);
   const [sortBy, setSortBy] = useState('A-Z');
@@ -57,10 +58,11 @@ const AdminView = () => {
     data.forEach(admObj => {
       const { firstName, lastName, email, userId, inviteId } = admObj;
       const id = userId || inviteId;
+      const name = `${lastName}, ${firstName}`;
       allAdmins.push({
         id,
-        items: [`${firstName} ${lastName}`, { email }, admObj],
-        sortBy: `${lastName} ${firstName}`,
+        items: [name, { email }, admObj],
+        sortBy: name,
       });
     });
     setBodyData(allAdmins);
@@ -130,11 +132,20 @@ const AdminView = () => {
           tbodyData={tbodyData.sort(compareNames)}
           statusCol={2}
           tbodyColIsBadge={[]}
+          setAlertState={setAlertState}
         />
         <CreateAdminModal isOpen={modalIsOpen} setIsOpen={setModalOpen} />
       </div>
     </div>
   );
+};
+
+AdminView.defaultProps = {
+  setAlertState: null,
+};
+
+AdminView.propTypes = {
+  setAlertState: PropTypes.func,
 };
 
 export default AdminView;
