@@ -238,6 +238,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
 
   const delStudentGroup = () => {
     TLPBackend.delete(`/student-groups/${studentGroupId}`);
+    window.location.replace('/');
   };
 
   const debouncedUpdateName = debounce(updateName, 800);
