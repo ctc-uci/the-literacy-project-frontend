@@ -214,6 +214,14 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
   };
 
   useEffect(async () => {
+    console.log('isopen', isOpen);
+  }, [isOpen]);
+
+  useEffect(async () => {
+    console.log('warning', WarningModalIsOpen);
+  }, [WarningModalIsOpen]);
+
+  useEffect(async () => {
     await getStudentGroupData();
   }, []);
 
@@ -271,119 +279,128 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
   };
 
   return (
-    <Modal show={isOpen} onHide={closeModal} dialogClassName={styles['modal-content']}>
-      <Modal.Header dialogClassName={styles['edit-student-group-modal-header']}>
-        <Modal.Title dialogClassName={styles['edit-student-group-modal-top-bar-title']}>
-          Edit Student Group
-        </Modal.Title>
-        <CloseButton onClick={() => closeModal()} />
-      </Modal.Header>
-      {/* <div className={styles['edit-student-group-modal-top-bar']}>
-        <div className={styles['edit-student-group-modal-top-bar-title']}>Edit Student Group</div>
-      </div> */}
-      <Modal.Body>
-        <div className={styles['edit-student-group-modal-body']}>
-          <div className={styles['edit-student-group-modal-field-desc']}>Group Name</div>
-          <input
-            className={styles['modal-text-input']}
-            type="text"
-            defaultValue={studentGroupInfo.groupName}
-            onChange={debouncedUpdateName}
-          />
-          <div className={styles['edit-student-group-modal-field-desc']}>School Cycle</div>
-          <div className={styles['edit-student-group-school-cycle']}>
-            <StudentGroupDropdown
-              choices={schoolYears}
-              current={studentGroupInfo.schoolYear}
-              setFn={eventKey =>
-                setStudentGroupInfo({
-                  ...studentGroupInfo,
-                  schoolYear: eventKey,
-                })
-              }
-            />
-            <StudentGroupDropdown
-              choices={schoolCycles}
-              current={studentGroupInfo.schoolCycle}
-              setFn={eventKey =>
-                setStudentGroupInfo({
-                  ...studentGroupInfo,
-                  schoolCycle: eventKey,
-                })
-              }
-            />
-          </div>
-          <div className={styles['edit-student-group-modal-field-desc']}>Meeting Time</div>
-          <div className={styles['edit-student-group-meeting']}>
-            <StudentGroupDropdown
-              choices={meetingDays}
-              current={studentGroupInfo.meetingDay}
-              setFn={eventKey =>
-                setStudentGroupInfo({
-                  ...studentGroupInfo,
-                  meetingDay: eventKey,
-                })
-              }
-            />
+    <>
+      <Modal show={isOpen} onHide={closeModal} dialogClassName={styles['modal-content']}>
+        <Modal.Header dialogClassName={styles['edit-student-group-modal-header']}>
+          <Modal.Title dialogClassName={styles['edit-student-group-modal-top-bar-title']}>
+            Edit Student Group
+          </Modal.Title>
+          <CloseButton onClick={() => closeModal()} />
+        </Modal.Header>
+        {/* <div className={styles['edit-student-group-modal-top-bar']}>
+          <div className={styles['edit-student-group-modal-top-bar-title']}>Edit Student Group</div>
+        </div> */}
+        <Modal.Body>
+          <div className={styles['edit-student-group-modal-body']}>
+            <div className={styles['edit-student-group-modal-field-desc']}>Group Name</div>
             <input
-              className={styles['time-input']}
-              type="time"
-              min="00:00"
-              max="23:59"
-              value={studentGroupInfo.meetingTime}
-              onChange={event =>
-                setStudentGroupInfo({
-                  ...studentGroupInfo,
-                  meetingTime: event.target.value,
-                })
-              }
+              className={styles['modal-text-input']}
+              type="text"
+              defaultValue={studentGroupInfo.groupName}
+              onChange={debouncedUpdateName}
             />
+            <div className={styles['edit-student-group-modal-field-desc']}>School Cycle</div>
+            <div className={styles['edit-student-group-school-cycle']}>
+              <StudentGroupDropdown
+                choices={schoolYears}
+                current={studentGroupInfo.schoolYear}
+                setFn={eventKey =>
+                  setStudentGroupInfo({
+                    ...studentGroupInfo,
+                    schoolYear: eventKey,
+                  })
+                }
+              />
+              <StudentGroupDropdown
+                choices={schoolCycles}
+                current={studentGroupInfo.schoolCycle}
+                setFn={eventKey =>
+                  setStudentGroupInfo({
+                    ...studentGroupInfo,
+                    schoolCycle: eventKey,
+                  })
+                }
+              />
+            </div>
+            <div className={styles['edit-student-group-modal-field-desc']}>Meeting Time</div>
+            <div className={styles['edit-student-group-meeting']}>
+              <StudentGroupDropdown
+                choices={meetingDays}
+                current={studentGroupInfo.meetingDay}
+                setFn={eventKey =>
+                  setStudentGroupInfo({
+                    ...studentGroupInfo,
+                    meetingDay: eventKey,
+                  })
+                }
+              />
+              <input
+                className={styles['time-input']}
+                type="time"
+                min="00:00"
+                max="23:59"
+                value={studentGroupInfo.meetingTime}
+                onChange={event =>
+                  setStudentGroupInfo({
+                    ...studentGroupInfo,
+                    meetingTime: event.target.value,
+                  })
+                }
+              />
+            </div>
+            <div className={styles['edit-student-group-modal-field-desc']}>Add/Remove Students</div>
+            <div className={styles['edit-student-group-badges']}>
+              {currentStudentsLoaded ? <StudentBadges /> : null}
+            </div>
+            {possibleStudentsLoaded ? (
+              <Select
+                options={Object.keys(possibleStudents).map(studentId => ({
+                  value: studentId,
+                  label: `${possibleStudents[studentId].firstName} ${possibleStudents[studentId].lastName}`,
+                }))}
+                onChange={opt => addToCurrentStudents(opt.value)}
+                placeholder="Select Students"
+                styles={selectStyles}
+                className={styles['students-select']}
+              />
+            ) : null}
           </div>
-          <div className={styles['edit-student-group-modal-field-desc']}>Add/Remove Students</div>
-          <div className={styles['edit-student-group-badges']}>
-            {currentStudentsLoaded ? <StudentBadges /> : null}
-          </div>
-          {possibleStudentsLoaded ? (
-            <Select
-              options={Object.keys(possibleStudents).map(studentId => ({
-                value: studentId,
-                label: `${possibleStudents[studentId].firstName} ${possibleStudents[studentId].lastName}`,
-              }))}
-              onChange={opt => addToCurrentStudents(opt.value)}
-              placeholder="Select Students"
-              styles={selectStyles}
-              className={styles['students-select']}
+        </Modal.Body>
+        <Modal.Footer>
+          <div className={styles['edit-student-group-modal-footer']}>
+            <div className={styles['edit-student-group-cancel-button']}>
+              <Button variant="secondary" onClick={() => closeModal()}>
+                Cancel
+              </Button>
+            </div>
+            <div className={styles['edit-student-group-delete-button']}>
+              <Button variant="danger" onClick={() => closeModalOpenWarning()}>
+                Delete
+              </Button>
+            </div>
+            <WarningModal
+              isOpen={WarningModalIsOpen}
+              setIsOpen={setWarningModalIsOpen}
+              name={studentGroupInfo.groupName}
+              body="studentGroup"
+              deleteFunc={delStudentGroup}
             />
-          ) : null}
-        </div>
-      </Modal.Body>
-      <Modal.Footer>
-        <div className={styles['edit-student-group-modal-footer']}>
-          <div className={styles['edit-student-group-cancel-button']}>
-            <Button variant="secondary" onClick={() => closeModal()}>
-              Cancel
-            </Button>
+            <div className={styles['edit-student-group-save-button']}>
+              <Button variant="primary" onClick={() => updateGroup()}>
+                Save
+              </Button>
+            </div>
           </div>
-          <div className={styles['edit-student-group-delete-button']}>
-            <Button variant="danger" onClick={() => closeModalOpenWarning()}>
-              Delete
-            </Button>
-          </div>
-          <WarningModal
-            isOpen={WarningModalIsOpen}
-            setIsOpen={setWarningModalIsOpen}
-            name={studentGroupInfo.groupName}
-            body="studentGroup"
-            deleteFunc={delStudentGroup}
-          />
-          <div className={styles['edit-student-group-save-button']}>
-            <Button variant="primary" onClick={() => updateGroup()}>
-              Save
-            </Button>
-          </div>
-        </div>
-      </Modal.Footer>
-    </Modal>
+        </Modal.Footer>
+      </Modal>
+      <WarningModal
+        isOpen={WarningModalIsOpen}
+        setIsOpen={setWarningModalIsOpen}
+        name={studentGroupInfo.groupName}
+        body="studentGroup"
+        deleteFunc={delStudentGroup}
+      />
+    </>
   );
 };
 
