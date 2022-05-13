@@ -53,22 +53,12 @@ const StudentGroupView = () => {
       setMasterTeacherId(studentGroupRes.data.masterTeacherId);
       setSchoolYear(`${studentGroupRes.data.year}-${studentGroupRes.data.year + 1}`);
       setSchoolCycle(studentGroupRes.data.cycle);
-    } else {
-      setSiteId(-1);
-      setError(error);
-    }
-
-    const sitesRes = await TLPBackend.get(`/sites/${siteId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (sitesRes.status === 200) {
-      setSiteName(sitesRes.data.siteName);
+      setSiteName(studentGroupRes.data.siteName);
       setSiteAddress(
-        `${sitesRes.data.addressStreet},  ${sitesRes.data.addressCity} ${sitesRes.data.addressZip}`,
+        `${studentGroupRes.data.addressStreet}, ${studentGroupRes.data.addressCity} ${studentGroupRes.data.addressZip}`,
       );
     } else {
+      setSiteId(-1);
       setSiteName('');
       setError(error);
     }
