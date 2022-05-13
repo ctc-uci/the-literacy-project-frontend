@@ -74,7 +74,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
             ...studentGroupData.students.map(student => ({ [student.studentId]: student })),
           ),
         );
-        // Students originally in group (initially same as current), stored as object
+        // Students originally in group (initially same as currentStudents), stored as object
         setOriginalStudents(
           Object.assign(
             {},
@@ -153,7 +153,6 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     Object.getOwnPropertyNames(originalStudents).forEach(id => {
       if (!Object.hasOwnProperty.call(currentStudents, Number(id))) {
         removedStudents.push(originalStudents[id].studentId);
-        // removedStudentsObj[id] = originalStudents[id];
       }
     });
 
@@ -161,7 +160,6 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     Object.getOwnPropertyNames(currentStudents).forEach(id => {
       if (!Object.hasOwnProperty.call(originalStudents, Number(id))) {
         addedStudents.push(currentStudents[id].studentId);
-        // addedStudentsObj[id] = currentStudents[id];
       }
     });
   };
