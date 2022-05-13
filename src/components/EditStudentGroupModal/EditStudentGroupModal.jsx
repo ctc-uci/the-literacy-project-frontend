@@ -37,7 +37,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
 
   // Students currently in the group
   const [currentStudents, setCurrentStudents] = useState();
-  const [currentStudentsLoaded, setCurrentStudentsLoaded] = useState(false);
+  const [currentStudentsLoaded, setCurrentStudentsLoaded] = useState();
   // Students in the system that are not in the group
   const [possibleStudents, setPossibleStudents] = useState();
   const [possibleStudentsLoaded, setPossibleStudentsLoaded] = useState(false);
@@ -62,22 +62,30 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
         meetingDay: `${studentGroupData.meetingDay}s`,
         meetingTime: studentGroupData.meetingTime,
       });
-      // Students already in group, stored as object
-      const currStudentsObj = Object.assign(
-        {},
-        ...studentGroupData.students.map(student => ({ [student.studentId]: student })),
-      );
-      // Students originally in group (initially same as current), stored as object
-      const origStudentsObj = Object.assign(
-        {},
-        ...studentGroupData.students.map(student => ({ [student.studentId]: student })),
-      );
-      setCurrentStudents(currStudentsObj);
-      setOriginalStudents(origStudentsObj);
-      // Set loaded to true so all students can be filtered
+
+      if (studentGroupData.students === null) {
+        setCurrentStudents({});
+        setOriginalStudents({});
+      } else {
+        // Students already in group, stored as object
+        setCurrentStudents(
+          Object.assign(
+            {},
+            ...studentGroupData.students.map(student => ({ [student.studentId]: student })),
+          ),
+        );
+        // Students originally in group (initially same as current), stored as object
+        setOriginalStudents(
+          Object.assign(
+            {},
+            ...studentGroupData.students.map(student => ({ [student.studentId]: student })),
+          ),
+        );
+      }
+
+      // Set loaded to true so all possible students can be filtered/found
       setCurrentStudentsLoaded(true);
     } catch (err) {
-      // console.error(err);
       // setError(err);
     }
   };
@@ -280,9 +288,6 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
           </Modal.Title>
           <CloseButton onClick={() => closeModal()} />
         </Modal.Header>
-        {/* <div className={styles['edit-student-group-modal-top-bar']}>
-          <div className={styles['edit-student-group-modal-top-bar-title']}>Edit Student Group</div>
-        </div> */}
         <Modal.Body>
           <div className={styles['edit-student-group-modal-body']}>
             <div className={styles['edit-student-group-modal-field-desc']}>Group Name</div>
@@ -313,6 +318,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
                     schoolCycle: eventKey,
                   })
                 }
+                errorState
               />
             </div>
             <div className={styles['edit-student-group-modal-field-desc']}>Meeting Time</div>
@@ -326,6 +332,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
                     meetingDay: eventKey,
                   })
                 }
+                errorState
               />
               <input
                 className={styles['time-input']}

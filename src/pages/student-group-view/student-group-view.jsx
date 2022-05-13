@@ -25,7 +25,7 @@ const StudentGroupView = () => {
   const [editStudentGroupIsOpen, setEditStudentGroupIsOpen] = useState(false);
   const schoolYears = ['2021-2022', '2022-2023', '2023-2024'];
   const [schoolYear, setSchoolYear] = useState();
-  const schoolCycles = [1, 2, 3, 4];
+  const schoolCycles = ['1', '2', '3', '4'];
   const [schoolCycle, setSchoolCycle] = useState();
   const dropdownDisabled = true;
 
@@ -137,7 +137,7 @@ const StudentGroupView = () => {
             <EditStudentGroupModal
               siteId={siteId}
               // teacherId={masterTeacherId}
-              studentGroupId={studentGroupId}
+              studentGroupId={Number(studentGroupId)}
               isOpen={editStudentGroupIsOpen}
               setIsOpen={setEditStudentGroupIsOpen}
             />

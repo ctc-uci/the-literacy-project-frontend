@@ -64,7 +64,7 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
 
   // Get possible student groups
   useEffect(async () => {
-    console.log(siteId);
+    // console.log(siteId);
     const res = await TLPBackend.get(`student-groups/site/${siteId}`, {
       headers: {
         'Content-Type': 'application/json',
