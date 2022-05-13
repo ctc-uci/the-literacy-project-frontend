@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BsPencil, BsBackspace, BsCheck2All } from 'react-icons/bs';
 import { Table, Button, DropdownButton, Dropdown, Form, Alert, CloseButton } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
+import Select from 'react-select';
 import Graph from '../../components/Graph/Graph';
 import Footer from '../../components/Footer/Footer';
 import styles from './student.module.css';
@@ -22,6 +23,7 @@ const StudentView = () => {
     studentGrade: null,
     studentGroup: null,
     studentEthnicity: null,
+    studentGender: null,
     studentHomeTeacher: null,
   });
   // const [editOptions, setEditOptions] = useState({});
@@ -52,7 +54,13 @@ const StudentView = () => {
       name: student.studentGroupName,
       groupId: student.studentGroupId,
     };
-    tempStudentData.studentEthnicity = student.ethnicity;
+    tempStudentData.studentEthnicity = student.ethnicity.map(item => {
+      if (item === 'american indian or alaska native') {
+        return { value: item, label: 'American Indian or Alaska Native' };
+      }
+      return { value: item, label: item.charAt(0).toUpperCase() + item.slice(1) };
+    });
+    tempStudentData.studentGender = student.gender;
     tempStudentData.studentHomeTeacher = student.homeTeacher;
     setEditStudentData(tempStudentData);
   };
@@ -61,11 +69,13 @@ const StudentView = () => {
     const editedData = {
       firstName: student.firstName,
       lastName: student.lastName,
-      gender: student.gender,
+      gender: editStudentData.studentGender,
       grade: editStudentData.studentGrade,
       homeTeacher: editStudentData.studentHomeTeacher,
       studentGroupId: editStudentData.studentGroup.groupId,
-      ethnicity: [editStudentData.studentEthnicity],
+      ethnicity: editStudentData.studentEthnicity.map(item => {
+        return item.value;
+      }),
     };
 
     TLPBackend.put(`/students/${studentId}`, editedData, {
@@ -144,14 +154,20 @@ const StudentView = () => {
               6: '6th Grade',
             },
             ethnicityOptions: [
-              'white',
-              'black',
-              'asian',
-              'latinx',
-              'american indian or alaska native',
-              'non-specified',
+              { value: 'white', label: 'White' },
+              { value: 'black', label: 'Black' },
+              { value: 'asian', label: 'Asian' },
+              { value: 'latinx', label: 'Latinx' },
+              {
+                value: 'american indian or alaska native',
+                label: 'American Indian or Alaska Native',
+              },
+              { value: 'non-specified', label: 'Non-specified' },
             ],
-            studentGroups: [...resOptions.data],
+            genderOptions: ['male', 'female', 'non-specified'],
+            studentGroups: resOptions.data.filter(item => {
+              return item.cycle === res.data.cycle && item.year === res.data.year;
+            }),
           });
         })
         .catch(() => {
@@ -226,6 +242,7 @@ const StudentView = () => {
                   <th>Site</th>
                   <th>Student Group</th>
                   <th>Ethnicity</th>
+                  <th>Gender</th>
                   <th>Home Teacher</th>
                 </tr>
               </thead>
@@ -235,7 +252,19 @@ const StudentView = () => {
                     <td>{student.grade ? editOptions.gradeOptions[student.grade] : '-'}</td>
                     <td>{student.siteName ? student.siteName : '-'}</td>
                     <td>{student.studentGroupName ? student.studentGroupName : '-'}</td>
-                    <td>{student.ethnicity !== [] ? student.ethnicity.join(', ') : '-'}</td>
+                    <td>
+                      {student.ethnicity.length > 0
+                        ? student.ethnicity
+                            .map(item => {
+                              if (item === 'american indian or alaska native') {
+                                return 'American Indian or Alaska Native';
+                              }
+                              return item.charAt(0).toUpperCase() + item.slice(1);
+                            })
+                            .join(', ')
+                        : '-'}
+                    </td>
+                    <td>{student.gender ? student.gender : '-'}</td>
                     <td>{student.homeTeacher ? student.homeTeacher : '-'}</td>
                   </tr>
                 ) : (
@@ -288,21 +317,33 @@ const StudentView = () => {
                       </DropdownButton>
                     </td>
                     <td>
+                      <Select
+                        options={editOptions.ethnicityOptions}
+                        isMulti
+                        value={editStudentData.studentEthnicity}
+                        onChange={value => {
+                          const tempStudentData = { ...editStudentData };
+                          tempStudentData.studentEthnicity = value;
+                          setEditStudentData(tempStudentData);
+                        }}
+                      />
+                    </td>
+                    <td>
                       <DropdownButton
                         variant="outline-secondary"
-                        title={editStudentData.studentEthnicity}
+                        title={editStudentData.studentGender}
                       >
-                        {editOptions.ethnicityOptions.map(ethnicity => {
+                        {editOptions.genderOptions.map(gender => {
                           return (
                             <Dropdown.Item
-                              key={ethnicity}
+                              key={gender}
                               onClick={() => {
                                 const tempStudentData = { ...editStudentData };
-                                tempStudentData.studentEthnicity = ethnicity;
+                                tempStudentData.studentGender = gender;
                                 setEditStudentData(tempStudentData);
                               }}
                             >
-                              {ethnicity}
+                              {gender}
                             </Dropdown.Item>
                           );
                         })}

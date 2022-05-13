@@ -152,8 +152,14 @@ AreaDropdown.propTypes = {
   //     site_count: PropTypes.number,
   //   }),
   // ),
-  areaStats: PropTypes.oneOfType([PropTypes.object]),
-  areaSites: PropTypes.arrayOf(PropTypes.object),
+  areaStats: PropTypes.oneOfType([
+    PropTypes.shape({
+      student_count: PropTypes.number,
+      master_teacher_count: PropTypes.number,
+      site_count: PropTypes.number,
+    }),
+  ]),
+  areaSites: PropTypes.arrayOf(PropTypes.shape({})),
   editable: PropTypes.bool,
   hideSitesLink: PropTypes.bool,
 };
