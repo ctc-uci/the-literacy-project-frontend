@@ -6,7 +6,7 @@ import Select from 'react-select';
 import Graph from '../../components/Graph/Graph';
 import Footer from '../../components/Footer/Footer';
 import styles from './student.module.css';
-import { TLPBackend } from '../../common/utils';
+import { TLPBackend, capitalize } from '../../common/utils';
 
 const StudentView = () => {
   const { studentId } = useParams();
@@ -60,7 +60,7 @@ const StudentView = () => {
       }
       return { value: item, label: item.charAt(0).toUpperCase() + item.slice(1) };
     });
-    tempStudentData.studentGender = student.gender;
+    tempStudentData.studentGender = capitalize(student.gender);
     tempStudentData.studentHomeTeacher = student.homeTeacher;
     setEditStudentData(tempStudentData);
   };
@@ -69,7 +69,7 @@ const StudentView = () => {
     const editedData = {
       firstName: student.firstName,
       lastName: student.lastName,
-      gender: editStudentData.studentGender,
+      gender: editStudentData.studentGender.toLowerCase(),
       grade: editStudentData.studentGrade,
       homeTeacher: editStudentData.studentHomeTeacher,
       studentGroupId: editStudentData.studentGroup.groupId,
@@ -264,7 +264,7 @@ const StudentView = () => {
                             .join(', ')
                         : '-'}
                     </td>
-                    <td>{student.gender ? student.gender : '-'}</td>
+                    <td>{student.gender ? capitalize(student.gender) : '-'}</td>
                     <td>{student.homeTeacher ? student.homeTeacher : '-'}</td>
                   </tr>
                 ) : (
@@ -343,7 +343,7 @@ const StudentView = () => {
                                 setEditStudentData(tempStudentData);
                               }}
                             >
-                              {gender}
+                              {capitalize(gender)}
                             </Dropdown.Item>
                           );
                         })}
