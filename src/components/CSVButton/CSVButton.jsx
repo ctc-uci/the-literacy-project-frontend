@@ -7,6 +7,7 @@ import styles from './CSVButton.module.css';
 
 const CSVButton = ({ type, areaId, siteId }) => {
   const [studentResponseData, setStudentResponseData] = useState([]);
+  const [siteInfo, setSiteInfo] = useState([]);
   const [fileName, setFileName] = useState('');
 
   // Creates CSV file headers
@@ -53,29 +54,10 @@ const CSVButton = ({ type, areaId, siteId }) => {
   }
 
   function mapResponse() {
+    console.log(type);
     if (type === 'site') {
-      // console.log('in map response', studentResponseData);
-      return studentResponseData.map(student => [
-        student.siteName,
-        student.areaName,
-        student.active,
-        student.addressStreet,
-        student.addressApt,
-        student.addressCity,
-        student.addressState,
-        student.addressZip,
-        student.primaryContactInfo.firstName,
-        student.primaryContactInfo.lastName,
-        student.primaryContactInfo.title,
-        student.primaryContactInfo.email,
-        student.primaryContactInfo.phone,
-        student.secondContactInfo.firstName,
-        student.secondContactInfo.lastName,
-        student.secondContactInfo.title,
-        student.secondContactInfo.email,
-        student.secondContactInfo.phone,
-        student.notes,
-      ]);
+      console.log('in map response', [studentResponseData]);
+      return [studentResponseData];
     }
 
     return studentResponseData.map(student => [
@@ -96,20 +78,56 @@ const CSVButton = ({ type, areaId, siteId }) => {
   }
 
   const CSVReport = {
-    data: studentResponseData,
+    data: type === 'site' ? siteInfo : studentResponseData,
     headers: createHeaders(),
     filename: fileName,
   };
 
   const addAssociatedSiteToArea = async resData => {
+    let site;
     async function fetchStudents() {
       studentResponseData.push(...resData);
     }
 
-    await fetchStudents();
+    async function fetchSites() {
+      site = [
+        [
+          resData.siteName,
+          resData.areaName,
+          resData.active,
+          resData.addressStreet,
+          resData.addressApt,
+          resData.addressCity,
+          resData.addressState,
+          resData.addressZip,
+          resData.primaryContactInfo.firstName,
+          resData.primaryContactInfo.lastName,
+          resData.primaryContactInfo.title,
+          resData.primaryContactInfo.email,
+          resData.primaryContactInfo.phone,
+          resData.secondContactInfo.firstName,
+          resData.secondContactInfo.lastName,
+          resData.secondContactInfo.title,
+          resData.secondContactInfo.email,
+          resData.secondContactInfo.phone,
+          resData.notes,
+        ],
+      ];
+    }
+
+    if (type === 'site') {
+      await fetchSites();
+    } else {
+      await fetchStudents();
+    }
+
     setTimeout(() => {
-      setStudentResponseData(mapResponse());
-    }, 1000);
+      if (type === 'site') {
+        setSiteInfo(site);
+      } else {
+        setStudentResponseData(mapResponse());
+      }
+    }, 200);
   };
 
   useEffect(() => {
@@ -128,7 +146,6 @@ const CSVButton = ({ type, areaId, siteId }) => {
         }
         if (type === 'site' && siteId) {
           const siteResponse = await TLPBackend.get(`/sites/${siteId}`);
-          // console.log(siteResponse.data);
           setFileName(`${siteResponse.data.siteName}_Data.csv`);
           addAssociatedSiteToArea(siteResponse.data);
         }
