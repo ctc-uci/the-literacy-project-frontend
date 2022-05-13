@@ -16,7 +16,6 @@ const CSVButton = ({ type, areaId, siteId }) => {
       return [
         'Site Name',
         'Area Name',
-        'Site Status',
         'Addresss Line',
         'Apt, suite, etc.',
         'City',
@@ -53,14 +52,31 @@ const CSVButton = ({ type, areaId, siteId }) => {
     ];
   }
 
-  function mapResponse() {
-    console.log(type);
+  function mapResponse(resData) {
     if (type === 'site') {
-      console.log('in map response', [studentResponseData]);
-      return [studentResponseData];
+      return [
+        resData.siteName,
+        resData.areaName,
+        resData.addressStreet,
+        resData.addressApt,
+        resData.addressCity,
+        resData.addressState,
+        resData.addressZip,
+        resData.primaryContactInfo.firstName,
+        resData.primaryContactInfo.lastName,
+        resData.primaryContactInfo.title,
+        resData.primaryContactInfo.email,
+        resData.primaryContactInfo.phone,
+        resData.secondContactInfo.firstName,
+        resData.secondContactInfo.lastName,
+        resData.secondContactInfo.title,
+        resData.secondContactInfo.email,
+        resData.secondContactInfo.phone,
+        resData.notes,
+      ];
     }
 
-    return studentResponseData.map(student => [
+    return resData.map(student => [
       student.areaName,
       student.siteName,
       student.firstName,
@@ -84,35 +100,15 @@ const CSVButton = ({ type, areaId, siteId }) => {
   };
 
   const addAssociatedSiteToArea = async resData => {
-    let site;
+    const site = [];
+    const students = [];
+
     async function fetchStudents() {
-      studentResponseData.push(...resData);
+      students.push(...resData);
     }
 
     async function fetchSites() {
-      site = [
-        [
-          resData.siteName,
-          resData.areaName,
-          resData.active,
-          resData.addressStreet,
-          resData.addressApt,
-          resData.addressCity,
-          resData.addressState,
-          resData.addressZip,
-          resData.primaryContactInfo.firstName,
-          resData.primaryContactInfo.lastName,
-          resData.primaryContactInfo.title,
-          resData.primaryContactInfo.email,
-          resData.primaryContactInfo.phone,
-          resData.secondContactInfo.firstName,
-          resData.secondContactInfo.lastName,
-          resData.secondContactInfo.title,
-          resData.secondContactInfo.email,
-          resData.secondContactInfo.phone,
-          resData.notes,
-        ],
-      ];
+      site.push(mapResponse(resData));
     }
 
     if (type === 'site') {
@@ -125,7 +121,7 @@ const CSVButton = ({ type, areaId, siteId }) => {
       if (type === 'site') {
         setSiteInfo(site);
       } else {
-        setStudentResponseData(mapResponse());
+        setStudentResponseData(mapResponse(students));
       }
     }, 200);
   };
@@ -135,7 +131,7 @@ const CSVButton = ({ type, areaId, siteId }) => {
       try {
         if (type === 'allAreas') {
           const areasResponse = await TLPBackend.get('/students');
-          setFileName('All_Areas.csv');
+          setFileName('All_Areas_Report.csv');
           addAssociatedSiteToArea(areasResponse.data);
         }
         if (type === 'area' && areaId) {
