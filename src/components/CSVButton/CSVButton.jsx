@@ -7,8 +7,7 @@ import styles from './CSVButton.module.css';
 
 const CSVButton = ({ type, areaId, siteId }) => {
   const [studentResponseData, setStudentResponseData] = useState([]);
-  // const [siteInfo, setSiteInfo] = useState({});
-  // const [fileName, setFileName] = useState('');
+  const [fileName, setFileName] = useState('');
 
   // Creates CSV file headers
   function createHeaders() {
@@ -55,32 +54,30 @@ const CSVButton = ({ type, areaId, siteId }) => {
 
   function mapResponse() {
     if (type === 'site') {
-      // console.log(siteInfo);
-      return [];
-      // return [
-      //   siteInfo.siteName,
-      //   siteInfo.areaName,
-      //   siteInfo.active,
-      //   siteInfo.addressStreet,
-      //   siteInfo.addressApt,
-      //   siteInfo.addressCity,
-      //   siteInfo.addressState,
-      //   siteInfo.addressZip,
-      //   siteInfo.primaryContactInfo.firstName,
-      //   siteInfo.primaryContactInfo.lastName,
-      //   siteInfo.primaryContactInfo.title,
-      //   siteInfo.primaryContactInfo.email,
-      //   siteInfo.primaryContactInfo.phone,
-      //   siteInfo.secondContactInfo.firstName,
-      //   siteInfo.secondContactInfo.lastName,
-      //   siteInfo.secondContactInfo.title,
-      //   siteInfo.secondContactInfo.email,
-      //   siteInfo.secondContactInfo.phone,
-      //   siteInfo.notes,
-      // ];
+      // console.log('in map response', studentResponseData);
+      return studentResponseData.map(student => [
+        student.siteName,
+        student.areaName,
+        student.active,
+        student.addressStreet,
+        student.addressApt,
+        student.addressCity,
+        student.addressState,
+        student.addressZip,
+        student.primaryContactInfo.firstName,
+        student.primaryContactInfo.lastName,
+        student.primaryContactInfo.title,
+        student.primaryContactInfo.email,
+        student.primaryContactInfo.phone,
+        student.secondContactInfo.firstName,
+        student.secondContactInfo.lastName,
+        student.secondContactInfo.title,
+        student.secondContactInfo.email,
+        student.secondContactInfo.phone,
+        student.notes,
+      ]);
     }
 
-    console.log(studentResponseData);
     return studentResponseData.map(student => [
       student.areaName,
       student.siteName,
@@ -101,37 +98,17 @@ const CSVButton = ({ type, areaId, siteId }) => {
   const CSVReport = {
     data: studentResponseData,
     headers: createHeaders(),
-    filename: `Area_Report.csv`,
+    filename: fileName,
   };
 
   const addAssociatedSiteToArea = async resData => {
-    // let name;
     async function fetchStudents() {
       studentResponseData.push(...resData);
-      // if (type === 'area' && resData) {
-      //   name = resData[0].areaName;
-      // }
     }
 
-    async function fetchSites() {
-      // siteInfo.push(...resData);
-      // name = siteInfo.siteName;
-    }
-
-    if (type === 'site') {
-      fetchSites();
-    } else {
-      await fetchStudents();
-    }
+    await fetchStudents();
     setTimeout(() => {
       setStudentResponseData(mapResponse());
-      // if (type === 'site') {
-      //   setSiteInfo(mapResponse());
-      // } else {
-      //   setStudentResponseData(mapResponse());
-      // }
-
-      // setFileName(name);
     }, 1000);
   };
 
@@ -140,15 +117,19 @@ const CSVButton = ({ type, areaId, siteId }) => {
       try {
         if (type === 'allAreas') {
           const areasResponse = await TLPBackend.get('/students');
+          setFileName('All_Areas.csv');
           addAssociatedSiteToArea(areasResponse.data);
-          // setSiteInfo('Full_Report');
         }
         if (type === 'area' && areaId) {
           const sitesResponse = await TLPBackend.get(`/students/area/${areaId}`);
+          const areaName = await TLPBackend.get(`/areas/${areaId}`);
+          setFileName(`${areaName.data.areaName}_Report.csv`);
           addAssociatedSiteToArea(sitesResponse.data);
         }
         if (type === 'site' && siteId) {
           const siteResponse = await TLPBackend.get(`/sites/${siteId}`);
+          // console.log(siteResponse.data);
+          setFileName(`${siteResponse.data.siteName}_Data.csv`);
           addAssociatedSiteToArea(siteResponse.data);
         }
       } catch (err) {
