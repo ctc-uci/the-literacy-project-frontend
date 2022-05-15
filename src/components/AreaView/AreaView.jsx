@@ -59,12 +59,9 @@ const AreaView = () => {
   }, []);
 
   const [schoolYear, setSchoolYear] = useState('2020-21');
-  // const [schoolYearChoices, setSchoolYearChoices] = useState(['2020-21', '2019-20']);
   const schoolYearChoices = ['2020-21', '2019-20'];
   const [cycle, setCycle] = useState('Cycle 1');
-  // const [cycleChoices, setCycleChoices] = useState(['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4']);
   const cycleChoices = ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
-  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <div>
@@ -99,22 +96,8 @@ const AreaView = () => {
                 />
               </div>
             </div>
-            <div className={styles.search_sites_container}>
-              <input
-                type="text"
-                className={styles.site_search_bar}
-                placeholder="Search Sites"
-                defaultValue={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-              />
-              <Button variant="primary" className={styles.site_search_button}>
-                Search
-              </Button>
-            </div>
           </div>
-          {/* <div className="site-container"> */}
           <SitesTable areaId={Number.parseInt(areaId, 10)} />
-          {/* </div> */}
         </div>
         <div className="data">
           <div className={styles.sidebar_data_text}>

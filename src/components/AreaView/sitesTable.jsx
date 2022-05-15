@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Col } from 'react-bootstrap';
+import { Col, Dropdown, DropdownButton, InputGroup, FormControl } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BsJournalText, BsPlus, BsFilter } from 'react-icons/bs';
 import { TLPBackend } from '../../common/utils';
@@ -18,6 +18,10 @@ import NotesModal from '../NotesModal/NotesModal';
 
 const SitesTable = ({ areaId }) => {
   const statusChoices = ['Active', 'Inactive'];
+  const [sortBy, setSortBy] = useState('A - Z');
+  const [searchText, setSearchText] = useState('');
+
+  const sorts = ['A - Z', 'Z - A'];
 
   // Table headers
   const theadData = [
@@ -83,7 +87,6 @@ const SitesTable = ({ areaId }) => {
     // For each site, get teachers
     const res = await Promise.all(
       fetchedSites.map(async site => {
-        // console.log(site);
         const { data: siteTeachers } = await TLPBackend.get(`/teachers/site/${site.siteId}`);
         return {
           id: site.siteId,
@@ -119,6 +122,38 @@ const SitesTable = ({ areaId }) => {
     buildTable();
   }, []);
 
+  // Compares two site names alphabetically
+  const compareSiteNames = (field1, field2) => {
+    const f1 = field1.items[1].toLowerCase(); // items[1] gives the site name
+    const f2 = field2.items[1].toLowerCase();
+
+    switch (sortBy) {
+      case 'A - Z':
+        return f1 < f2 ? -1 : 1;
+      case 'Z - A':
+        return f1 < f2 ? 1 : -1;
+      default:
+        return f1 < f2 ? -1 : 1;
+    }
+  };
+
+  const inputHandler = e => {
+    setSearchText(e.target.value.toLowerCase());
+  };
+
+  // searches through data for matching site name to query
+  const search = data => {
+    return data.filter(row => {
+      const name = row.items[1].toLowerCase(); // items[1] is site name
+      return name.includes(searchText);
+    });
+  };
+
+  // Applies search criteria, then filters, then sorts
+  const displayData = data => {
+    return search(data).sort(compareSiteNames);
+  };
+
   return (
     <div>
       {/* creates the functionality above the table */}
@@ -131,23 +166,44 @@ const SitesTable = ({ areaId }) => {
         </Link>
         {tableData.length !== 0 && (
           <>
-            <input type="text" className={styles.sites_filter_input} placeholder="Search" />
-            {/* TODO: Will need different sorts for these filter/sort buttons */}
+            <div className={styles.search}>
+              <InputGroup input={searchText} onChange={inputHandler}>
+                <FormControl
+                  className={styles['search-bar']}
+                  placeholder="Search Sites"
+                  aria-label="Search"
+                  aria-describedby="search-icon"
+                />
+              </InputGroup>
+            </div>
             <div className={styles.sort}>
               <button type="button" className={`btn btn-primary ${styles.filter_by_btn}`}>
                 Filter By
                 <BsFilter className={styles.filter_by_icon} />
               </button>
-              <button type="button" className={`btn btn-primary ${styles.sort_by_btn}`}>
-                Sort By: A-Z
-              </button>
+              <DropdownButton
+                className={styles['dropdown-button']}
+                id="dropdown-basic-button"
+                title={`Sort By: ${sortBy}`}
+              >
+                {sorts.map(sort => (
+                  <Dropdown.Item
+                    onClick={() => {
+                      setSortBy(sort);
+                    }}
+                    key={sort}
+                  >
+                    {sort}
+                  </Dropdown.Item>
+                ))}
+              </DropdownButton>
             </div>
           </>
         )}
       </div>
       {tableData.length !== 0 ? (
-        // Plugs table headers and data into Table
-        <Table theadData={theadData} tbodyData={tableData} />
+        // Plugs table headers and data into Table, applying search/sort/filter
+        <Table theadData={theadData} tbodyData={displayData(tableData)} />
       ) : (
         <div className={styles.arrow}>
           <Col md={{ span: 7, offset: 1 }} className={styles.emptyArea}>
