@@ -16,10 +16,16 @@ import NotesModal from '../NotesModal/NotesModal';
 // to be passed elsewhere is messy, just pass the data
 // to a component that can render everything
 
-const SitesTable = ({ areaId }) => {
+const SitesTable = ({ areaId, year, cycle }) => {
   const statusChoices = ['Active', 'Inactive'];
   const [sortBy, setSortBy] = useState('A - Z');
   const [searchText, setSearchText] = useState('');
+  const [modalShow, setModalShow] = useState(false);
+  const [currSite, setCurrSite] = useState(0);
+  const [active, setActive] = useState(true);
+
+  console.log(year);
+  console.log(cycle);
 
   const sorts = ['A - Z', 'Z - A'];
 
@@ -48,9 +54,6 @@ const SitesTable = ({ areaId }) => {
     },
   ];
 
-  const [modalShow, setModalShow] = useState(false);
-  const [currSite, setCurrSite] = useState(0);
-
   // additionalInfo + siteNotes are static buttons to be put per row. TODO - make this dynamic
   const additionalInfo = siteId => (
     <Link to={`/sites/${siteId}`}>
@@ -74,10 +77,13 @@ const SitesTable = ({ areaId }) => {
     );
 
   // Callback for setting site active status
-  const updateSiteStatus = async (newChoice, site) => {
-    const newStatus = newChoice === 'Active';
-    await TLPBackend.put(`/sites/${site.siteId}`, {
-      active: newStatus,
+  const updateSiteStatus = async (newChoice, siteId) => {
+    console.log(`active: ${active}`);
+    console.log(`choice: ${newChoice}`);
+    console.log(newChoice === 'Active');
+    setActive(newChoice === 'Active');
+    await TLPBackend.put(`/sites/${siteId}`, {
+      active,
     });
   };
 
@@ -88,15 +94,16 @@ const SitesTable = ({ areaId }) => {
     const res = await Promise.all(
       fetchedSites.map(async site => {
         const { data: siteTeachers } = await TLPBackend.get(`/teachers/site/${site.siteId}`);
+        setActive(site.active);
         return {
           id: site.siteId,
           items: [
             <DropdownMenu
               key={site.siteId}
               choices={statusChoices}
-              current={site.active ? 'Active' : 'Inactive'}
+              current={active ? 'Active' : 'Inactive'}
               setFn={newChoice => {
-                updateSiteStatus(newChoice, site);
+                updateSiteStatus(newChoice, site.siteId);
               }}
               innerClass={styles.site_dropdown_inner}
               buttonClass={`${styles.site_dropdown_button} ${
@@ -120,7 +127,7 @@ const SitesTable = ({ areaId }) => {
 
   useEffect(async () => {
     buildTable();
-  }, []);
+  }, [active]);
 
   // Compares two site names alphabetically
   const compareSiteNames = (field1, field2) => {
@@ -148,6 +155,17 @@ const SitesTable = ({ areaId }) => {
       return name.includes(searchText);
     });
   };
+
+  // const applyFilters = data => {
+  //   let updatedData = data;
+  //   if (filters.states) {
+  //     updatedData = updatedData.filter(student => {
+  //       const stateName = student.items[7]; // items[7] is state
+  //       return filters.states.includes(stateName); // check if state name in the states to keep
+  //     });
+  //   }
+  //   return updatedData;
+  // };
 
   // Applies search criteria, then filters, then sorts
   const displayData = data => {
@@ -218,6 +236,8 @@ const SitesTable = ({ areaId }) => {
 
 SitesTable.propTypes = {
   areaId: PropTypes.number.isRequired,
+  year: PropTypes.string.isRequired,
+  cycle: PropTypes.string.isRequired,
 };
 
 export default SitesTable;

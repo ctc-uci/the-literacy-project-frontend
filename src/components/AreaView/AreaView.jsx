@@ -144,7 +144,7 @@ const AreaView = () => {
               </DropdownButton>
             </div>
           </div>
-          <SitesTable areaId={Number.parseInt(areaId, 10)} />
+          <SitesTable areaId={Number.parseInt(areaId, 10)} year={schoolYear} cycle={cycle} />
         </div>
         <div className="data">
           <div className={styles.sidebar_data_text}>
