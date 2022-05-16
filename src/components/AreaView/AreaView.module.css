@@ -26,13 +26,24 @@
   text-decoration: none;
 }
 
-.select_school_year_container {
-  width: 36%;
-  height: 40px;
-  margin-right: 10px;
-  margin-top: 10px;
-  margin-bottom: auto;
-  justify-content: flex-start !important;
+.school-year-container {
+  display: flex;
+  align-items: center;
+}
+
+.school-year-dropdown {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.cycle-container {
+  display: flex;
+  align-items: center;
+}
+
+.cycle-dropdown {
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
 .select_cycle_container {
@@ -43,19 +54,10 @@
   justify-content: flex-start !important;
 }
 
-.school_year_header,
 .cycle_header {
   font-size: 24px;
   line-height: 1.5;
   text-decoration: none;
-}
-
-.school_year_header {
-  min-width: 120px;
-}
-
-.search_option_dropdown_inner {
-  padding: 2px 2px 2px 5px;
 }
 
 .search_query_filters {
@@ -112,8 +114,6 @@
   margin-bottom: 30px;
   text-align: center;
   align-items: center;
-  /* position: absolute;
-  right: 50px; */
 }
 
 .sidebar_data_text {
