@@ -12,7 +12,14 @@ import { TLPBackend } from '../../common/utils';
 import StudentGroupDropdown from './StudentGroupDropdown';
 import WarningModal from '../WarningModal/WarningModal';
 
-const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) => {
+const EditStudentGroupModal = ({
+  siteId,
+  studentGroupId,
+  groupUpdated,
+  setGroupUpdated,
+  isOpen,
+  setIsOpen,
+}) => {
   const schoolYears = ['2021-2022', '2022-2023', '2023-2024'];
   const schoolCycles = ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
   const meetingDays = [
@@ -98,8 +105,11 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     });
     try {
       const filteredStudents = systemStudents.data.filter(
-        // Possible students includes students who are not currently assigned to the group
+        // Possible students includes students who are not in the student group AND either
+        // 1) are not assigned to a student group or
+        // 2) are within the same site as the group being edited
         studentObj =>
+          (studentObj.studentGroupId === null || studentObj.siteId === siteId) &&
           !Object.keys(currentStudents).some(
             s => currentStudents[s].studentId === studentObj.studentId,
           ),
@@ -171,57 +181,50 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     setWarningModalIsOpen(true);
   };
 
-  const editStudentGroupData = () => {
-    TLPBackend.put(`/student-groups/${studentGroupId}`, {
-      name: studentGroupInfo.groupName,
-      year: Number(studentGroupInfo.schoolYear.slice(0, 4)),
-      cycle: studentGroupInfo.schoolCycle.slice(6),
-      masterTeacherId: studentGroupInfo.masterTeacherId,
-      siteId,
-      meetingDay: studentGroupInfo.meetingDay.slice(0, -1),
-      meetingTime: studentGroupInfo.meetingTime,
-    })
-      .then(() => {
-        closeModal();
-      })
-      .catch(() => {
-        closeModal();
+  // TODO: Change .then and .catch to try/catch instead!!!
+  const editStudentGroupData = async () => {
+    try {
+      await TLPBackend.put(`/student-groups/${studentGroupId}`, {
+        name: studentGroupInfo.groupName,
+        year: Number(studentGroupInfo.schoolYear.slice(0, 4)),
+        cycle: studentGroupInfo.schoolCycle.slice(6),
+        masterTeacherId: studentGroupInfo.masterTeacherId,
+        siteId,
+        meetingDay: studentGroupInfo.meetingDay.slice(0, -1),
+        meetingTime: studentGroupInfo.meetingTime,
       });
+      closeModal();
+    } catch (err) {
+      closeModal();
+    }
   };
 
-  const editStudentGroupStudents = () => {
-    TLPBackend.put(`/students/update-bulk`, {
-      studentIds: addedStudents,
-      studentGroupId,
-    })
-      .then(() => {
-        closeModal();
-      })
-      .catch(() => {
-        closeModal();
+  const editStudentGroupStudents = async () => {
+    try {
+      await TLPBackend.put(`/students/update-bulk`, {
+        studentIds: addedStudents,
+        studentGroupId,
       });
-
-    TLPBackend.put(`/students/update-bulk`, {
-      studentIds: removedStudents,
-      studentGroupId: null,
-    })
-      .then(() => {
-        closeModal();
-      })
-      .catch(() => {
-        closeModal();
+      await TLPBackend.put(`/students/update-bulk`, {
+        studentIds: removedStudents,
+        studentGroupId: null,
       });
+      closeModal();
+    } catch (err) {
+      closeModal();
+    }
   };
 
-  const updateGroup = () => {
+  const updateGroup = async () => {
     findMovedStudents();
-    editStudentGroupData();
-    editStudentGroupStudents();
+    await editStudentGroupData();
+    await editStudentGroupStudents();
+    setGroupUpdated(groupUpdated + 1);
   };
 
   useEffect(async () => {
     await getStudentGroupData();
-  }, []);
+  }, [groupUpdated]);
 
   useEffect(async () => {
     await getPossibleStudents();
@@ -405,6 +408,8 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
 EditStudentGroupModal.propTypes = {
   siteId: PropTypes.number.isRequired,
   studentGroupId: PropTypes.number.isRequired,
+  groupUpdated: PropTypes.number.isRequired,
+  setGroupUpdated: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
 };

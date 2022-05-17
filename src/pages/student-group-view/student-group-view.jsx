@@ -27,6 +27,9 @@ const StudentGroupView = () => {
   const [schoolYear, setSchoolYear] = useState();
   const schoolCycles = ['1', '2', '3', '4'];
   const [schoolCycle, setSchoolCycle] = useState();
+  // const [currentStudents, setCurrentStudents] = useState()
+  const [groupUpdated, setGroupUpdated] = useState(0); // number of times group has been updated by a set of update/insert/delete students call
+  // const [studentProfileBoxes, setStudentProfileBoxes] = useState();
   const dropdownDisabled = true;
 
   const getStudentNames = students => {
@@ -38,6 +41,9 @@ const StudentGroupView = () => {
   };
 
   useEffect(async () => {
+    if (siteId === null) {
+      return;
+    }
     const studentGroupRes = await TLPBackend.get(`/student-groups/${studentGroupId}`, {
       headers: {
         'Content-Type': 'application/json',
@@ -74,7 +80,18 @@ const StudentGroupView = () => {
       setTestScores({});
       setError(error);
     }
-  }, [siteId]);
+    console.log('request');
+    console.log(groupUpdated);
+  }, [siteId, groupUpdated]);
+
+  const studentProfileBoxes = studentGroupList.map(student => {
+    return (
+      // eslint-disable-next-line react/jsx-key
+      <div className={styles['student-box']}>
+        <StudentProfileBox key={student} studentId={student[0]} studentName={student[1]} />
+      </div>
+    );
+  });
 
   return (
     <div>
@@ -140,6 +157,8 @@ const StudentGroupView = () => {
               studentGroupId={Number(studentGroupId)}
               isOpen={editStudentGroupIsOpen}
               setIsOpen={setEditStudentGroupIsOpen}
+              groupUpdated={groupUpdated}
+              setGroupUpdated={setGroupUpdated}
             />
           ) : null}
           <div id={styles['site-info-section']}>
@@ -153,7 +172,7 @@ const StudentGroupView = () => {
           <div id={styles['students-assigned-section']}>
             <h3 className={styles['section-header']}>Students Assigned</h3>
             <Container fluid className={styles['student-box']}>
-              {studentGroupList.map(student => {
+              {/* {studentGroupList.map(student => {
                 return (
                   // eslint-disable-next-line react/jsx-key
                   <div className={styles['student-box']}>
@@ -164,7 +183,8 @@ const StudentGroupView = () => {
                     />
                   </div>
                 );
-              })}
+              })} */}
+              {studentProfileBoxes}
             </Container>
           </div>
         </div>
