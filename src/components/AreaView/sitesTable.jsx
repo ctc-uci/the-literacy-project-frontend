@@ -1,13 +1,10 @@
 import { React, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Dropdown, DropdownButton, InputGroup, FormControl } from 'react-bootstrap';
+import { Col, Dropdown, DropdownButton, InputGroup, Form, FormControl } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BsJournalText, BsPlus, BsFilter } from 'react-icons/bs';
 import { TLPBackend } from '../../common/utils';
-
 import styles from './sitesTable.module.css';
-
-import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 import Table from '../Table/Table';
 import NotesModal from '../NotesModal/NotesModal';
 
@@ -17,15 +14,10 @@ import NotesModal from '../NotesModal/NotesModal';
 // to a component that can render everything
 
 const SitesTable = ({ areaId, year, cycle }) => {
-  const statusChoices = ['Active', 'Inactive'];
   const [sortBy, setSortBy] = useState('A - Z');
   const [searchText, setSearchText] = useState('');
   const [modalShow, setModalShow] = useState(false);
   const [currSite, setCurrSite] = useState(0);
-  const [active, setActive] = useState(true);
-
-  console.log(year);
-  console.log(cycle);
 
   const sorts = ['A - Z', 'Z - A'];
 
@@ -34,7 +26,7 @@ const SitesTable = ({ areaId, year, cycle }) => {
     {
       headerTitle: 'Status',
       headerPopover:
-        "<p><strong style='color:#28a745'>Active:</strong> This site is currently actively participating in the TLP program.</p> <p><strong style='color:#5f758d'>Inactive:</strong> This site is currently not participating in the TLP program. Data is still available to view from past cycles.</p>",
+        "<p><strong style='color:#28a745'>Active:</strong> This site is currently actively participating in the TLP program.</p> <p><strong style='color:red'>Inactive:</strong> This site is currently not participating in the TLP program. Data is still available to view from past cycles.</p>",
     },
     {
       headerTitle: 'Site Name',
@@ -77,14 +69,28 @@ const SitesTable = ({ areaId, year, cycle }) => {
     );
 
   // Callback for setting site active status
-  const updateSiteStatus = async (newChoice, siteId) => {
-    console.log(`active: ${active}`);
-    console.log(`choice: ${newChoice}`);
-    console.log(newChoice === 'Active');
-    setActive(newChoice === 'Active');
-    await TLPBackend.put(`/sites/${siteId}`, {
-      active,
+  const updateSiteStatus = (newChoice, siteId) => {
+    TLPBackend.put(`/sites/${siteId}`, {
+      active: newChoice === 'Active',
+    }).then(() => {
+      window.location.reload(true);
     });
+  };
+
+  // Remove duplicate year/cycle combinations for a site
+  const reduceYearsAndCycles = data => {
+    const seen = {};
+    const output = [];
+    data.forEach(yearAndCycle => {
+      if (yearAndCycle.year && yearAndCycle.cycle) {
+        const item = [yearAndCycle.year, yearAndCycle.cycle];
+        if (seen[item] !== true) {
+          seen[item] = true;
+          output.push([yearAndCycle.year, yearAndCycle.cycle]);
+        }
+      }
+    });
+    return output;
   };
 
   const [tableData, setTableData] = useState([]);
@@ -93,23 +99,25 @@ const SitesTable = ({ areaId, year, cycle }) => {
     // For each site, get teachers
     const res = await Promise.all(
       fetchedSites.map(async site => {
+        reduceYearsAndCycles(site.yearsAndCycles);
         const { data: siteTeachers } = await TLPBackend.get(`/teachers/site/${site.siteId}`);
-        setActive(site.active);
         return {
           id: site.siteId,
           items: [
-            <DropdownMenu
-              key={site.siteId}
-              choices={statusChoices}
-              current={active ? 'Active' : 'Inactive'}
-              setFn={newChoice => {
-                updateSiteStatus(newChoice, site.siteId);
-              }}
-              innerClass={styles.site_dropdown_inner}
-              buttonClass={`${styles.site_dropdown_button} ${
-                site.active ? styles.active_site_dd : ''
-              }`}
-            />,
+            <Form.Group key={site.siteId} className="mb-3" controlId="editArea.status">
+              <Form.Select
+                onChange={e => updateSiteStatus(e.target.value, site.siteId)}
+                defaultValue={site.active ? 'Active' : 'Inactive'}
+                style={site.active ? { color: 'green' } : { color: 'red' }}
+              >
+                <option style={{ color: 'green' }} value="Active">
+                  Active
+                </option>
+                <option style={{ color: 'red' }} value="Inactive">
+                  Inactive
+                </option>
+              </Form.Select>
+            </Form.Group>,
             site.siteName,
             teacherString(siteTeachers),
             <BsJournalText
@@ -118,6 +126,7 @@ const SitesTable = ({ areaId, year, cycle }) => {
               className={styles.notes_icon}
             />,
             additionalInfo(site.siteId),
+            // yearsAndCycles,
           ],
         };
       }),
@@ -127,7 +136,7 @@ const SitesTable = ({ areaId, year, cycle }) => {
 
   useEffect(async () => {
     buildTable();
-  }, [active]);
+  }, []);
 
   // Compares two site names alphabetically
   const compareSiteNames = (field1, field2) => {
@@ -156,20 +165,28 @@ const SitesTable = ({ areaId, year, cycle }) => {
     });
   };
 
-  // const applyFilters = data => {
-  //   let updatedData = data;
-  //   if (filters.states) {
-  //     updatedData = updatedData.filter(student => {
-  //       const stateName = student.items[7]; // items[7] is state
-  //       return filters.states.includes(stateName); // check if state name in the states to keep
-  //     });
-  //   }
-  //   return updatedData;
-  // };
+  const applyFilters = data => {
+    const updatedData = data;
+    const schoolYear = year;
+    const schoolCycle = cycle;
+    schoolYear.includes(schoolCycle); // random code so eslint stops complaining
+    return updatedData;
+    // console.log(updatedData);
+    // if (year !== 'All') {
+    //   updatedData = data.filter(site => {
+    //     const yearsAndCycles = site.items[5]; // items 5 is year/cycle
+    //     console.log(yearsAndCycles);
+    //     const yrs = yearsAndCycles.map(arr => arr[0]);
+    //     return yrs.includes(year);
+    //   });
+    //   console.log(updatedData);
+    // }
+    // return updatedData; // slice to get rid of year/cycle at the end
+  };
 
   // Applies search criteria, then filters, then sorts
   const displayData = data => {
-    return search(data).sort(compareSiteNames);
+    return applyFilters(search(data)).sort(compareSiteNames);
   };
 
   return (
