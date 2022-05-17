@@ -7,7 +7,7 @@ const ViewEditSitePage = () => {
 
   return (
     <div>
-      <ViewEditSite siteId={siteId} />
+      <ViewEditSite siteId={Number.parseInt(siteId, 10)} />
     </div>
   );
 };

@@ -17,7 +17,7 @@
   text-align: left;
   width: 95%;
   background-color: white;
-  border: 1px solid #80BDFF;
+  border: 1px solid #80bdff;
   box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
   outline: none;
   border-radius: 10px;
@@ -31,8 +31,8 @@
   background-color: white;
   border: 1px solid #ced4da;
   border-radius: 10px;
-  color: #6C757D;
-  border: solid 1px #E53E3E;
+  color: #6c757d;
+  border: solid 1px #e53e3e;
   padding: 0.75em 1em 0.75em 1em;
 }
 
@@ -40,14 +40,13 @@
   text-align: left;
   width: 95%;
   background-color: white;
-  border: 1px solid #80BDFF;
+  border: 1px solid #80bdff;
   box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
   outline: none;
   border-radius: 10px;
   color: #6c757d;
   padding: 0.75em 1em 0.75em 1em;
 }
-
 
 .dropdown-toggle::after {
   display: none !important;

@@ -18,6 +18,7 @@ import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
 import Graph from '../../components/Graph/Graph';
+import CSVButton from '../../components/CSVButton/CSVButton';
 import AreaManagementFilter from '../../components/AreaManagementFilter/AreaManagementFilter';
 
 const AreaManagement = () => {
@@ -29,7 +30,6 @@ const AreaManagement = () => {
   const [sortBy, setSortBy] = useState('A-Z');
   const [testScores, setTestScores] = useState({});
   const [error, setError] = useState(null);
-
   const sorts = ['A-Z', 'Z-A'];
 
   function getFilters() {
@@ -295,15 +295,11 @@ const AreaManagement = () => {
             <div style={{ paddingBottom: '20px' }}>{displayAreas()}</div>
           </div>
           <div className={styles['sites-data']}>
+            {' '}
             <p>
               <strong>All Area Data</strong>
             </p>
-            <Button
-              variant="primary"
-              className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
-            >
-              Export to CSV
-            </Button>
+            <CSVButton type="allAreas" />
             <Card className={styles['area-data-stats']}>
               <p>
                 <BsPeople /> 40 Students
