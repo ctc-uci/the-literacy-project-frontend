@@ -2,6 +2,10 @@
   padding: 20px;
 }
 
+.pie-chart-container {
+  display: flex;
+}
+
 .export-button {
   background-color: var(--color-dark-blue-muted);
   color: var(--text-color-white);

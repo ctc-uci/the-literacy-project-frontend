@@ -1,6 +1,9 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect } from 'react';
 import { Button, Dropdown, DropdownButton, InputGroup, FormControl } from 'react-bootstrap';
 import { FaFilter } from 'react-icons/fa';
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import PieChart from '../../components/PieChart/PieChart';
 import '../../custom.scss';
 import '../../common/vars.css';
 import styles from './admin-students-view.module.css';
@@ -15,8 +18,36 @@ const AdminStudentsView = () => {
   const [searchText, setSearchText] = useState('');
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [filters, setFilters] = useState({});
+  const [pieChartFilter, setPieChartFilter] = useState('Grade');
+  const [pieChartData, setPieChartData] = useState([0, 0, 0, 0, 0, 0]);
 
   const sorts = ['A - Z', 'Z - A'];
+
+  const pieChartLabels = {
+    Grade: ['1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade'],
+    Ethnicity: [
+      'White',
+      'Black',
+      'Asian',
+      'Latinx',
+      'American Indian or Alaska Native',
+      'Non-specified',
+    ],
+    Gender: ['Male', 'Female', 'Other'],
+  };
+
+  // const pieChartBackgroundColor = {
+  //   Grade: ['rgb(98, 190, 119)', 'rgb()', '3rd Grade', '4th Grade', '5th Grade', '6th Grade'],
+  //   Ethnicity: [
+  //     'White',
+  //     'Black',
+  //     'Asian',
+  //     'Latinx',
+  //     'American Indian or Alaska Native',
+  //     'Non-specified',
+  //   ],
+  //   Gender: ['Male', 'Female', 'Other'],
+  // };
 
   const theadData = [
     {
@@ -104,6 +135,8 @@ const AdminStudentsView = () => {
     });
     if (res.status === 200) {
       setStudentList(res.data);
+      // eslint-disable-next-line no-use-before-define
+      filterPieData(res.data, pieChartFilter);
     } else {
       setStudentList([]);
       setError(error);
@@ -227,6 +260,73 @@ const AdminStudentsView = () => {
       .sort();
   }
 
+  const filterPieData = (studentData, direction) => {
+    const newChartData = [];
+    if (direction === 'Grade') {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const gradeLabel of [1, 2, 3, 4, 5, 6]) {
+        newChartData.push(
+          studentData.filter((prev, curr) => {
+            if (studentData[curr].grade === gradeLabel) {
+              return prev + 1;
+            }
+            return 0;
+          }, 0).length,
+        );
+      }
+    } else if (direction === 'Ethnicity') {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const ethnicityLabel of pieChartLabels.Ethnicity) {
+        newChartData.push(
+          studentData.filter((prev, curr) => {
+            if (studentData[curr].ethnicity.includes(ethnicityLabel.toLowerCase())) {
+              return prev + 1;
+            }
+            return 0;
+          }, 0).length,
+        );
+      }
+    } else {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const genderLabel of pieChartLabels.Gender) {
+        newChartData.push(
+          studentData.filter((prev, curr) => {
+            if (studentData[curr].gender === genderLabel.toLowerCase()) {
+              return prev + 1;
+            }
+            return 0;
+          }, 0).length,
+        );
+      }
+    }
+    console.log(newChartData);
+    setPieChartData(newChartData);
+  };
+
+  const filterPieDataChangeLeft = () => {
+    let newDirection = pieChartFilter;
+    if (pieChartFilter === 'Grade') {
+      setPieChartFilter('Ethnicity');
+      newDirection = 'Ethnicity';
+    } else if (pieChartFilter === 'Gender') {
+      setPieChartFilter('Grade');
+      newDirection = 'Grade';
+    }
+    filterPieData(studentList, newDirection);
+  };
+
+  const filterPieDataChangeRight = () => {
+    let newDirection = pieChartFilter;
+    if (pieChartFilter === 'Grade') {
+      setPieChartFilter('Gender');
+      newDirection = 'Gender';
+    } else if (pieChartFilter === 'Ethnicity') {
+      setPieChartFilter('Grade');
+      newDirection = 'Grade';
+    }
+    filterPieData(studentList, newDirection);
+  };
+
   // Get all areas that have students
   function getAreas() {
     // items[6] is area name
@@ -281,6 +381,47 @@ const AdminStudentsView = () => {
 
   return (
     <div className={styles['student-container']}>
+      <div className={styles['pie-chart-container']}>
+        <div className={styles['pie-chart-filter-group']}>
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+          <div className={styles['pie-chart-filter-link']} onClick={filterPieDataChangeLeft}>
+            {() => {
+              if (pieChartFilter !== 'Ethnicity') {
+                if (pieChartFilter === 'Grade') {
+                  return 'Ethnicity';
+                }
+                return 'Grade';
+              }
+              return '';
+            }}
+            {pieChartFilter !== 'Ethnicity' ? <BsChevronLeft /> : <></>}
+          </div>
+        </div>
+        <PieChart
+          labels={pieChartLabels.pieChartFilter}
+          title={pieChartFilter}
+          dataPoints={pieChartData}
+          backgroundColor={[]}
+          legendPosition="top"
+        />
+        <div className={styles['pie-chart-filter-group']}>
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+          <div className={styles['pie-chart-filter-link']} onClick={filterPieDataChangeRight}>
+            {() => {
+              if (pieChartFilter !== 'Gender') {
+                if (pieChartFilter === 'Grade') {
+                  return 'Gender';
+                }
+                return 'Grade';
+              }
+              return '';
+            }}
+            {pieChartFilter !== 'Gender' ? <BsChevronRight /> : <></>}
+          </div>
+        </div>
+      </div>
       <div className={styles['ctrl-group']}>
         <div className={styles['inner-ctrl']}>
           <div className={styles.search}>
