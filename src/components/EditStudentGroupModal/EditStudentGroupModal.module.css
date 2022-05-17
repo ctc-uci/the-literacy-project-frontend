@@ -42,6 +42,10 @@
   margin: 0 1em 0 0;
 }
 
+.edit-student-group-delete-button {
+  margin: 0 1em 0 0;
+}
+
 .edit-student-group-save-button {
   margin: 0 1em 0 0;
 }
@@ -91,7 +95,7 @@
   text-align: left;
   padding: 0.5em 0 0.5em 1em;
   width: 98%;
-  border: 1px solid #80BDFF;
+  border: 1px solid #80bdff;
   box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
   outline: none;
   line-height: 32px;
@@ -169,7 +173,7 @@
   width: 50%;
   height: 49px;
   border-radius: 10px;
-  border: 1px solid #80BDFF;
+  border: 1px solid #80bdff;
   box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
   outline: none;
   padding: 0px 15px 0px 15px;

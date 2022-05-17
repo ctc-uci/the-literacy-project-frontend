@@ -145,16 +145,14 @@ AreaDropdown.propTypes = {
   areaName: PropTypes.string,
   areaState: PropTypes.string,
   areaActive: PropTypes.bool,
-  // areaStats: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     student_count: PropTypes.number,
-  //     master_teacher_count: PropTypes.number,
-  //     site_count: PropTypes.number,
-  //   }),
-  // ),
-  areaStats: PropTypes.oneOfType([PropTypes.object]),
-  // eslint-disable-next-line react/forbid-prop-types
-  areaSites: PropTypes.arrayOf(PropTypes.object),
+  areaStats: PropTypes.oneOfType([
+    PropTypes.shape({
+      student_count: PropTypes.number,
+      master_teacher_count: PropTypes.number,
+      site_count: PropTypes.number,
+    }),
+  ]),
+  areaSites: PropTypes.arrayOf(PropTypes.shape({})),
   editable: PropTypes.bool,
   hideSitesLink: PropTypes.bool,
 };

@@ -82,17 +82,17 @@ const WarningModal = ({ isOpen, setIsOpen, name, body, deleteFunc }) => {
           {bodies[body]}
         </Modal.Body>
         <Modal.Footer>
-          <Button className={styles.buttons} variant="danger" onClick={deleteCloseModal}>
-            Yes, Delete
-          </Button>
           <Button className={styles.buttons} variant="primary" onClick={closeModal}>
             Cancel
+          </Button>
+          <Button className={styles.buttons} variant="danger" onClick={deleteCloseModal}>
+            Yes, Delete
           </Button>
         </Modal.Footer>
       </Modal>
       {showAlert ? (
         <div className="center-block">
-          <Alert variant="success" className={styles['alert-custom']}>
+          <Alert variant="danger" className={styles['alert-custom']}>
             Successfully deleted {name}.{' '}
             <CloseButton
               className={styles['alert-close-btn']}

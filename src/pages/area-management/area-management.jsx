@@ -10,7 +10,7 @@ import {
   Form,
 } from 'react-bootstrap';
 import { BsPeople, BsFilterRight, BsFilter } from 'react-icons/bs';
-import { TLPBackend, calculateScores } from '../../common/utils';
+import { TLPBackend, calculateScores, formatSchoolYear } from '../../common/utils';
 import styles from './area-management.module.css';
 import Plus from '../../assets/icons/plus.svg';
 import CreateAreaModal from '../../components/CreateAreaModal/CreateAreaModal';
@@ -113,8 +113,12 @@ const AreaManagement = () => {
     return areaResponseData
       .reduce(
         (acc, area) => {
-          if (area.year && !acc.includes(area.year)) {
-            acc.push(area.year);
+          if (area.years) {
+            area.years.forEach(year => {
+              if (!acc.includes(year)) {
+                acc.push(year);
+              }
+            });
           }
           return acc;
         },
@@ -138,7 +142,8 @@ const AreaManagement = () => {
   const updateSchoolYear = newSchoolYear => {
     setSchoolYear(newSchoolYear);
 
-    const schoolYearFilter = newSchoolYear === 'All' ? null : area => area.year === newSchoolYear;
+    const schoolYearFilter =
+      newSchoolYear === 'All' ? null : area => area.years && area.years.includes(newSchoolYear);
 
     setFilters({
       ...filters,
@@ -191,7 +196,7 @@ const AreaManagement = () => {
                 <h2>School Year</h2>
                 <DropdownButton
                   variant="outline-secondary"
-                  title={schoolYear}
+                  title={schoolYear === 'All' ? schoolYear : formatSchoolYear(schoolYear)}
                   className={styles['school-year-dropdown']}
                 >
                   {getSchoolYears().map(year => (
@@ -201,7 +206,7 @@ const AreaManagement = () => {
                       }}
                       key={year}
                     >
-                      {year}
+                      {year === 'All' ? year : `${formatSchoolYear(year)}`}
                     </Dropdown.Item>
                   ))}
                 </DropdownButton>
