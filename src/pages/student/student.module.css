@@ -13,8 +13,7 @@
   font-size: calc(1em - 2px);
   text-decoration: none;
 }
-.student-information-section {
-}
+
 .student-information-section__title-button-wrapper {
   display: flex;
   justify-content: space-between;
@@ -22,7 +21,12 @@
 .student-information-section__title-button-wrapper h2 {
   margin: 0;
 }
-.student-information-section__student-info-table-container {
+.student-information-section__title-and-delete {
+  display: flex;
+  justify-content: left;
+}
+.delete-button {
+  margin-left: 10px;
 }
 .student-information-section__student-info-table-container table {
   margin: 10px 0;
@@ -110,8 +114,6 @@
   border-radius: 10px;
   filter: blur(1px) drop-shadow(0px 4px 4px #6a91bc);
   margin-bottom: 10px;
-}
-.links-card__title {
 }
 
 @media (max-width: 1025px) {
