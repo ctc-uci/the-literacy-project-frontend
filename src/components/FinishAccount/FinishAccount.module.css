@@ -97,12 +97,13 @@
   cursor: pointer;
   color: #212529 !important;
   left: -1.5em !important;
-  top: 1em;
+  top: 0.5em;
 }
 
 .password-input {
   display: inline-flex;
   width: 100%;
+  margin-left: -15px;
 }
 
 .button {

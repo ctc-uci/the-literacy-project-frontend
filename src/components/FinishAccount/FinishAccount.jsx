@@ -181,7 +181,7 @@ const FinishAccount = ({ inviteId, data }) => {
             <h3 className={styles['required-subtitles']}>Password</h3>
             <div className={styles['input-area']}>
               <Col mg={5}>
-                <label htmlFor="newPassword">
+                <label className={styles.label} htmlFor="newPassword">
                   New Password
                   <span id={styles['password-rules']}>
                     <InformationPopover
@@ -209,7 +209,7 @@ const FinishAccount = ({ inviteId, data }) => {
                 <div className={`text-danger ${styles['err-msg']}`}>
                   {errorsPass.newPassword?.message}
                 </div>
-                <label htmlFor="reenterNewPassword">
+                <label className={styles.label} htmlFor="reenterNewPassword">
                   Re-enter Password
                   <div className={styles['password-input']}>
                     <input
