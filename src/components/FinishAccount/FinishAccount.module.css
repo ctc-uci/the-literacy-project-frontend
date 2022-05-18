@@ -1,112 +1,128 @@
 .site-form {
-    display: block;
-  }
-  
-  .form-wrapper {
-    border: 1px solid #b3b3b3;
-    border-radius: 5px;
-    align-items: left;
-  }
-  
-  .form-header {
-    height: 90px;
-    background-color: rgba(178, 178, 178, 0.5);
-  }
-  
-  .form-title {
-    font-size: 28px;
-    padding-left: 20px;
-    padding-top: 25px;
-  }
-  
-  .logo-wrapper {
-    align-items: center;
-    justify-content: center;
-    display: flex;
-  }
-  
-  .logo {
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -o-crisp-edges;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;
-    width: 200px;
-    height: 200px;
-    padding-bottom: 50px;
-  }
-  
-  .welcome-wrapper {
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    font-weight: 400;
-    font-size: 20px;
-    padding-left: 60px;
-    padding-right: 60px;
-    padding-top: 30px;
-  }
-  
-  .optional-subtitles {
-    color: #003459;
-    font-weight: 700;
-    font-size: 24px;
-    padding-top: 20px;
-    padding-left: 30px;
-  }
-  
-  .input-area {
-    font-size: 16px;
-    padding: 0px 30px 10px 50px;
-  }
-  
-  .label {
-    padding-top: 10px;
-    color: #1a4767;
-    font-weight: 700;
-    font-size: 20px;
-  }
-  
-  .required-subtitles {
-    color: #003459;
-    font-weight: 700;
-    font-size: 24px;
-    padding-top: 20px;
-    padding-left: 30px;
-  }
-  
-  .required-subtitles::after {
-    color: #e32;
-    content: ' *';
-    display: inline;
-  }
-  
-  #password-rules {
-    height: 2.5vh;
-    margin-left: 0.3em;
-  }
-  
-  .input-custom {
-    margin-left: 1em;
-    margin-bottom: 1em;
-    width: 250px;
-  }
-  
-  .eye-icon {
-    position: relative;
-    cursor: pointer;
-    color: #212529 !important;
-    left: -1.5em !important;
-    top: 1em;
-  }
-  
-  .password-input {
-    display: inline-flex;
-    width: 100%;
-  }
-  
-  .button {
-    text-align: right;
-    margin-right: 100px;
-  }
-  
+  display: block;
+}
+
+.form-wrapper {
+  border: 1px solid #b3b3b3;
+  border-radius: 5px;
+  align-items: left;
+}
+
+.form-header {
+  height: 90px;
+  background-color: rgba(178, 178, 178, 0.5);
+}
+
+.form-title {
+  font-size: 28px;
+  padding-left: 20px;
+  padding-top: 25px;
+}
+
+.logo-wrapper {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.logo {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+  width: 200px;
+  height: 200px;
+  padding-bottom: 50px;
+}
+
+.welcome-wrapper {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  font-weight: 400;
+  font-size: 20px;
+  padding-left: 60px;
+  padding-right: 60px;
+  padding-top: 30px;
+}
+
+.optional-subtitles {
+  color: #003459;
+  font-weight: 700;
+  font-size: 24px;
+  padding-top: 20px;
+  padding-left: 30px;
+}
+
+.input-area {
+  font-size: 16px;
+  padding: 0px 30px 10px 50px;
+}
+
+.label {
+  padding-top: 10px;
+  color: #1a4767;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.required-subtitles {
+  color: #003459;
+  font-weight: 700;
+  font-size: 24px;
+  padding-top: 20px;
+  padding-left: 30px;
+}
+
+.required-subtitles::after {
+  color: #e32;
+  content: ' *';
+  display: inline;
+}
+
+#password-rules {
+  height: 2.5vh;
+  margin-left: 0.3em;
+}
+
+.input-custom {
+  margin-left: 1em;
+  margin-bottom: 1em;
+  width: 250px;
+}
+
+.eye-icon {
+  position: relative;
+  cursor: pointer;
+  color: #212529 !important;
+  left: -1.5em !important;
+  top: 1em;
+}
+
+.password-input {
+  display: inline-flex;
+  width: 100%;
+}
+
+.button {
+  text-align: right;
+  margin-right: 100px;
+}
+
+.success-wrapper {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  color: #28a745;
+  font-size: 55px;
+}
+
+.body {
+  font-size: 20px;
+  width: 500px;
+}

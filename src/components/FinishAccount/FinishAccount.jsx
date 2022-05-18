@@ -4,6 +4,7 @@ import { Container, Col, Row } from 'react-bootstrap';
 import { FaEye } from 'react-icons/fa';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import InformationPopover from '../Popover/InformationPopover';
 import styles from './FinishAccount.module.css';
@@ -11,31 +12,19 @@ import logo from '../../assets/tlp.png';
 import { finishAccountSetUp } from '../../common/auth/auth_utils';
 
 const FinishAccount = ({ inviteId, data }) => {
-  const [password, setPassword] = useState();
-  /*
-  const [checkPassword, setCheckPassword] = useState();
-  const [errorMessage, setErrorMessage] = useState();
-  const [confirmationMessage, setConfirmationMessage] = useState();
+  const navigate = useNavigate();
+  const [success, setSuccess] = useState(false);
 
-  const handleResetPassword = async e => {
-    try {
-      e.preventDefault();
-      setErrorMessage('');
-      if (password !== checkPassword) {
-        throw new Error("Passwords don't match");
-      }
-      await finishAccountSetUp(inviteId, password);
-
-      setConfirmationMessage(
-        'Your account is set up. You can now login in with your email and password',
-      );
-      setErrorMessage('');
-      setPassword('');
-    } catch (err) {
-      setErrorMessage(err.message);
-    }
+  const onSubmit = async newData => {
+    finishAccountSetUp(
+      newData.firstName,
+      newData.lastName,
+      newData.phoneNumber,
+      inviteId,
+      newData.newPassword,
+    );
+    setSuccess(!success);
   };
-  */
 
   const passwordRulesTooltipText =
     '\u2022 Must be at least 8 characters long' +
@@ -58,7 +47,9 @@ const FinishAccount = ({ inviteId, data }) => {
 
   const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,255}$/;
   const passValidationSchema = Yup.object().shape({
-    currentPassword: Yup.string().required('Current password is required'),
+    firstName: Yup.string().required(),
+    lastName: Yup.string().required(),
+    phoneNumber: Yup.string(),
     newPassword: Yup.string()
       .required('Please enter your new password')
       .matches(passwordRegExp, 'Password is invalid'),
@@ -68,20 +59,61 @@ const FinishAccount = ({ inviteId, data }) => {
   });
 
   const {
-    register: registerPass,
+    register,
     handleSubmit,
     formState: { errors: errorsPass },
   } = useForm({
     resolver: yupResolver(passValidationSchema),
   });
 
+  const goToLogin = () => {
+    navigate('/login');
+  };
+
+  if (success) {
+    return (
+      <Container>
+        <div className={styles['logo-wrapper']}>
+          <img src={logo} alt={logo} className={styles.logo} />
+        </div>
+        <div className={styles['success-wrapper']}>
+          <div className={styles.header}>Account Creation Successful</div>
+          <div className={styles.body}>
+            <p>
+              You have successfully created your admin account. If you made a mistake in the
+              previous page, you can change it in the settings page.
+            </p>
+            <p>
+              <Link to="/help" style={{ color: 'inherit', fontStyle: 'italic' }}>
+                Here
+              </Link>{' '}
+              is a helpful guide to help you navigate the site.
+            </p>
+          </div>
+          <button
+            className="btn"
+            type="button"
+            onClick={goToLogin}
+            style={{
+              backgroundColor: '#FFD350',
+              color: 'var(--text-color-black)',
+              width: '160px',
+              marginTop: '20px',
+            }}
+          >
+            Go to Dashboard
+          </button>
+        </div>
+      </Container>
+    );
+  }
   return (
     <Container>
       <div className={styles['logo-wrapper']}>
         <img src={logo} alt={logo} className={styles.logo} />
       </div>
       <Col md={{ span: 8, offset: 2 }}>
-        <form className={`form-group ${styles['site-form']}`} onSubmit={handleResetPassword}>
+        <form className={`form-group ${styles['site-form']}`} onSubmit={handleSubmit(onSubmit)}>
           <div className={styles['form-wrapper']}>
             <div className={styles['form-header']}>
               <h2 className={styles['form-title']}>Sign Up Confirmation</h2>
@@ -96,13 +128,23 @@ const FinishAccount = ({ inviteId, data }) => {
                 <Col md={3}>
                   <label className={styles.label} htmlFor="first-name">
                     First Name<span style={{ color: '#e32' }}>*</span>
-                    <input type="text" className="form-control" defaultValue={data.firstName} />
+                    <input
+                      type="text"
+                      className="form-control"
+                      defaultValue={data.firstName}
+                      {...register('firstName')}
+                    />
                   </label>
                 </Col>
                 <Col md={3}>
                   <label className={styles.label} htmlFor="last-name">
                     Last Name<span style={{ color: '#e32' }}>*</span>
-                    <input type="text" className="form-control" defaultValue={data.lastName} />
+                    <input
+                      type="text"
+                      className="form-control"
+                      defaultValue={data.lastName}
+                      {...register('lastName')}
+                    />
                   </label>
                 </Col>
               </Row>
@@ -125,6 +167,7 @@ const FinishAccount = ({ inviteId, data }) => {
                     className="form-control"
                     defaultValue={data.phoneNumber}
                     placeholder="(123) 456-7890"
+                    {...register('phoneNumber')}
                   />
                 </label>
               </Col>
@@ -148,14 +191,18 @@ const FinishAccount = ({ inviteId, data }) => {
                       className={`form-control ${errorsPass.newPassword ? 'is-invalid' : ''} ${
                         styles['input-custom']
                       }`}
+                      {...register('newPassword')}
                     />
                     <FaEye
                       className={styles['eye-icon']}
                       color="black"
-                      onClick={toggleReenterPasswordVisibility}
+                      onClick={toggleNewPasswordVisibility}
                     />
                   </div>
                 </label>
+                <div className={`text-danger ${styles['err-msg']}`}>
+                  {errorsPass.newPassword?.message}
+                </div>
                 <label htmlFor="reenterNewPassword">
                   Re-enter Password
                   <div className={styles['password-input']}>
@@ -163,7 +210,7 @@ const FinishAccount = ({ inviteId, data }) => {
                       id="reenterNewPassword"
                       name="reenterNewPassword"
                       type={reenterPasswordShown ? 'text' : 'password'}
-                      {...registerPass('reenterNewPassword')}
+                      {...register('reenterNewPassword')}
                       className={`form-control ${
                         errorsPass.reenterNewPassword ? 'is-invalid' : ''
                       } ${styles['input-custom']}`}
@@ -175,6 +222,9 @@ const FinishAccount = ({ inviteId, data }) => {
                     />
                   </div>
                 </label>
+                <div className={`text-danger ${styles['err-msg']}`}>
+                  {errorsPass.reenterNewPassword?.message}
+                </div>
               </Col>
             </div>
             <div className={styles.button}>

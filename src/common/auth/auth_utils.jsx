@@ -140,7 +140,7 @@ const sendInviteLink = async (position, email, firstName, lastName, phoneNumber)
  * @param {string} inviteId The inviteId from invite email
  * @param {string} password New password for account
  */
-const finishAccountSetUp = async (inviteId, password) => {
+const finishAccountSetUp = async (firstName, lastName, phoneNumber, inviteId, password) => {
   const res = await TLPBackend.post(`tlp-users/complete-creation`, { inviteId, password });
   const { data } = res;
   await createUserInDB(
@@ -148,9 +148,9 @@ const finishAccountSetUp = async (inviteId, password) => {
     data.email,
     password,
     data.firebaseId,
-    data.firstName,
-    data.lastName,
-    data.phoneNumber,
+    firstName,
+    lastName,
+    phoneNumber,
     inviteId,
   );
 };
