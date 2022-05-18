@@ -81,15 +81,17 @@ const SitesTable = ({ areaId, year, cycle }) => {
   const reduceYearsAndCycles = data => {
     const seen = {};
     const output = [];
-    data.forEach(yearAndCycle => {
-      if (yearAndCycle.year && yearAndCycle.cycle) {
-        const item = [yearAndCycle.year, yearAndCycle.cycle];
-        if (seen[item] !== true) {
-          seen[item] = true;
-          output.push([yearAndCycle.year, yearAndCycle.cycle]);
+    if (data !== null) {
+      data.forEach(yearAndCycle => {
+        if (yearAndCycle.year && yearAndCycle.cycle) {
+          const item = [yearAndCycle.year, yearAndCycle.cycle];
+          if (seen[item] !== true) {
+            seen[item] = true;
+            output.push([yearAndCycle.year, yearAndCycle.cycle]);
+          }
         }
-      }
-    });
+      });
+    }
     return output;
   };
 
