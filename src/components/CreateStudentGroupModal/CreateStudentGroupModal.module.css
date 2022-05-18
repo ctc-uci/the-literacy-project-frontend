@@ -90,7 +90,7 @@
   text-align: left;
   padding: 0.5em 0 0.5em 1em;
   width: 98%;
-  border: 1px solid #80BDFF;
+  border: 1px solid #80bdff;
   box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
   outline: none;
   line-height: 32px;
@@ -106,7 +106,7 @@
   padding: 0.5em 0 0.5em 1em;
   width: 98%;
   border-radius: 10px;
-  border: 1px solid #E53E3E;
+  border: 1px solid #e53e3e;
   line-height: 32px;
   font-family: var(font-family), Helvetica, Arial, sans-serif;
   font-size: 1em;
@@ -118,7 +118,7 @@
   text-align: left;
   padding: 0.5em 0 0.5em 1em;
   width: 98%;
-  border: 1px solid #80BDFF;
+  border: 1px solid #80bdff;
   box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
   outline: none;
   line-height: 32px;
@@ -154,50 +154,49 @@
   width: 50%;
   height: 49px;
   border-radius: 10px;
-  border: 1px solid #80BDFF;
+  border: 1px solid #80bdff;
   box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
   outline: none;
   padding: 0em 0.5em 0em 1em;
   color: #6c757d;
 }
 
-
 .time-input-error {
   width: 50%;
   height: 49px;
   border-radius: 10px;
-  border: 1px solid #E53E3E;
+  border: 1px solid #e53e3e;
   padding: 0em 0.5em 0em 1em;
-  color: #6C757D;
+  color: #6c757d;
 }
 
 .students-select:focus {
-  border: 1px solid #80BDFF;
+  border: 1px solid #80bdff;
   box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
   outline: none;
 }
 
 .school-year-err-message {
-  color: #E53E3E;
+  color: #e53e3e;
   font-size: 0.8em;
   padding: 0.25em 0 0 0.5em;
 }
 
 .school-cycle-err-message {
-  color: #E53E3E;
+  color: #e53e3e;
   font-size: 0.8em;
   padding: 0.25em 2em 0 0;
   margin: 0 2.5em 0 0;
 }
 
 .meeting-day-err-message {
-  color: #E53E3E;
+  color: #e53e3e;
   font-size: 0.8em;
   padding: 0.25em 0 0 0.5em;
 }
 
 .meeting-time-err-message {
-  color: #E53E3E;
+  color: #e53e3e;
   font-size: 0.8em;
   padding: 0.25em 2em 0 0;
   margin: 0 1.75em 0 0;
