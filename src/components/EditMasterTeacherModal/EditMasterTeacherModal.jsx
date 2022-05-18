@@ -25,6 +25,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     lastName: '',
     phoneNumber: '',
     email: '',
+    notes: '',
   });
   // Copy of initial teacher data for undo functionality
   // eslint-disable-next-line no-unused-vars
@@ -35,6 +36,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     email: '',
     active: '',
     siteList: [],
+    notes: '',
   });
   // eslint-disable-next-line no-unused-vars
   const [errorMessage, setErrorMessage] = useState(null);
@@ -153,9 +155,9 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
           'Content-Type': 'application/json',
         },
       });
-      const { firstName, lastName, phoneNumber, email, active } = res.data;
-      setInitialTeacherData({ firstName, lastName, phoneNumber, email, siteList: sites });
-      setTeacherData({ firstName, lastName, phoneNumber, email });
+      const { firstName, lastName, phoneNumber, email, active, notes } = res.data;
+      setInitialTeacherData({ firstName, lastName, phoneNumber, email, siteList: sites, notes });
+      setTeacherData({ firstName, lastName, phoneNumber, email, notes });
       setSites(res.data.sites);
       setStatus(active);
       reset({ firstName, lastName, email, phoneNumber });
@@ -270,14 +272,15 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
               <Form.Group className="mb-3" controlId="editTeacherAccount.assignSite">
                 <Form.Label>Assign Site(s)</Form.Label>
                 <div>
-                  {sites.map(site => {
-                    return (
-                      // eslint-disable-next-line react/jsx-key
-                      <Badge bg="secondary" className={styles['site-badge']}>
-                        <BsX cursor="pointer" name={site} onClick={removeSite} /> {site}
-                      </Badge>
-                    );
-                  })}
+                  {sites !== null &&
+                    sites.map(site => {
+                      return (
+                        // eslint-disable-next-line react/jsx-key
+                        <Badge bg="secondary" className={styles['site-badge']}>
+                          <BsX cursor="pointer" name={site} onClick={removeSite} /> {site}
+                        </Badge>
+                      );
+                    })}
                 </div>
                 <Form.Select
                   onChange={({ target }) => {
@@ -294,7 +297,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
               </Form.Group>
               <Form.Group className="mb-3" controlId="editTeacherAccount.notes">
                 <Form.Label>Notes</Form.Label>
-                <Form.Control as="textarea" rows={3} />
+                <Form.Control as="textarea" rows={3} defaultValue={teacherData.notes} />
               </Form.Group>
             </div>
           </Modal.Body>

@@ -84,7 +84,9 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
     throw new Error(
       'Your account is currently not active. Please contact administration for more information.',
     );
-  }
+  } // else if (user.data.active === USER_STATUS.PENDING) {
+  //   await TLPBackend.post(`/tlp-users/${auth.currentUser.uid}`);
+  // }
 
   cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
   cookies.set(cookieKeys.POSITION, user.data.position, cookieConfig);
@@ -212,4 +214,5 @@ export {
   confirmVerifyEmail,
   finishAccountSetUp,
   updateUserPassword,
+  createUserInDB,
 };

@@ -2,6 +2,7 @@ import { React, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { Modal, Button, Form, Badge } from 'react-bootstrap';
 import { BsX } from 'react-icons/bs';
+import { FaEye } from 'react-icons/fa';
 
 // Forms
 import { useForm } from 'react-hook-form';
@@ -10,8 +11,8 @@ import * as yup from 'yup';
 
 import styles from './CreateMasterTeacherModal.module.css';
 import ConfirmMasterTeacherModal from '../ConfirmMasterTeacherModal/ConfirmMasterTeacherModal';
-// import { AUTH_ROLES } from '../../common/config';
-// import { sendInviteLink } from '../../common/auth/auth_utils';
+import InformationPopover from '../Popover/InformationPopover';
+import { passwordRulesTooltipText, passwordRegExp, TLPBackend } from '../../common/utils';
 // import { reloadPage } from '../../common/utils';
 
 const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
@@ -25,12 +26,17 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
   //   phoneNumber: '',
   //   sites: [],
   // });
+  const [passwordShown, setPasswordShown] = useState(false);
+  const [reenterPasswordShown, setReenterPasswordShown] = useState(false);
+  const [notes, setNotes] = useState('');
 
   const removeSite = e => {
     const name = e.target.getAttribute('name');
     // setTeacherData({ ...teacherData, sites: sites.filter(siteName => siteName !== name) });
     setSites(sites.filter(siteName => siteName !== name));
   };
+
+  const phoneNumRegex = /^\d{10}$/;
 
   const schema = yup
     .object({
@@ -40,7 +46,18 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
         .required('Email is required'),
       firstName: yup.string().required('First name is required'),
       lastName: yup.string().required('Last name is required'),
-      phoneNumber: yup.string().required('Phone number is required'),
+      phoneNumber: yup
+        .string()
+        .required('Phone number is required')
+        .matches(phoneNumRegex, 'Phone number must be 10 digits'),
+      password: yup
+        .string()
+        .required('Password is required')
+        .matches(passwordRegExp, 'Password does not meet requirements'),
+      reenterPassword: yup
+        .string()
+        .required('Password is required')
+        .oneOf([yup.ref('password'), null], 'Passwords do not match'),
     })
     .required();
 
@@ -48,39 +65,41 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
     delayError: 750,
   });
 
-  const closeModal = () => setIsOpen(false);
+  const closeModal = () => {
+    // clear all fields and clear any error messages
+    reset({ firstName: '', lastName: '', phoneNumber: '', password: '', reenterPassword: '' });
+    setErrorMessage('');
+    setIsOpen(false);
+  };
 
-  // const sendEmailSuccessSequence = () => {
-  //   setIsOpen(false);
-  //   setConfirmModalOpen(true);
-  // };
+  const sendEmailSuccessSequence = () => {
+    closeModal();
+    setConfirmModalOpen(true);
+  };
 
-  // TODO FINISH ONSUBMIT
-  const onSubmit = data => {
+  const onSubmit = async data => {
+    setErrorMessage('');
     try {
-      console.log(data);
+      const { firstName, lastName, phoneNumber, email, password } = data;
+      await TLPBackend.post('/teachers', {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        password,
+        notes,
+      });
+      sendEmailSuccessSequence();
     } catch (err) {
       setErrorMessage(err.message);
     }
   };
-
-  // const handleSubmit = async e => {
-  //   try {
-  //     e.preventDefault();
-  //     await sendInviteLink(AUTH_ROLES.USER_ROLE, email, firstName, lastName, phoneNumber);
-  //     setErrorMessage('');
-  //     setEmail('');
-  //     sendEmailSuccessSequence();
-  //     reloadPage();
-  //   } catch (err) {
-  //     setErrorMessage(err.message);
-  //   }
-  // };
 
   return (
     <>
@@ -123,7 +142,7 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
                   {errors.lastName?.message ?? <>{'\u00A0'}</>}
                 </div>
               </label>
-              <label htmlFor="email" className={styles.emailField}>
+              <label htmlFor="email" className={styles.fullInputField}>
                 <h3 className={styles.requiredSubtitles}>Email</h3>
                 <input
                   type="email"
@@ -136,21 +155,72 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
                   {errors.email?.message ?? <>{'\u00A0'}</>}
                 </div>
               </label>
-              <div>
-                <label htmlFor="phone-number" className={styles.phoneNumField}>
-                  <h3 className={styles.requiredSubtitles}>Phone Number</h3>
-                  <input
-                    type="text"
-                    name="phoneNumber"
-                    placeholder="Phone Number"
-                    className={`form-control ${errors.phoneNumber ? `is-invalid` : ''}`}
-                    {...register('phoneNumber')}
-                  />
-                </label>
-                <div className={`text-danger ${styles['err-msg']}`}>
-                  {errors.phoneNumber?.message ?? <>{'\u00A0'}</>}
-                </div>
+              <label htmlFor="phone-number" className={styles.fullInputField}>
+                <h3 className={styles.requiredSubtitles}>Phone Number</h3>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  placeholder="Phone Number"
+                  className={`form-control ${errors.phoneNumber ? `is-invalid` : ''}`}
+                  {...register('phoneNumber')}
+                />
+              </label>
+              <div className={`text-danger ${styles['err-msg']}`}>
+                {errors.phoneNumber?.message ?? <>{'\u00A0'}</>}
               </div>
+
+              <label htmlFor="password" className={styles.fullInputField}>
+                <h3 className={styles.requiredSubtitles}>
+                  Password{' '}
+                  <span className={styles['password-popover']}>
+                    <InformationPopover
+                      bodyText={passwordRulesTooltipText}
+                      header="Password Rules"
+                    />
+                  </span>
+                </h3>
+                <div className={styles['password-input']}>
+                  <input
+                    type={passwordShown ? 'text' : 'password'}
+                    name="password"
+                    placeholder="Password"
+                    className={`form-control ${styles['input-custom']} ${
+                      errors.password ? `is-invalid` : ''
+                    }`}
+                    {...register('password')}
+                  />
+                  <FaEye
+                    className={styles['eye-icon']}
+                    onClick={() => setPasswordShown(!passwordShown)}
+                  />
+                </div>
+              </label>
+              <div className={`text-danger ${styles['err-msg']}`}>
+                {errors.password?.message ?? <>{'\u00A0'}</>}
+              </div>
+
+              <label htmlFor="reenter-password" className={styles.fullInputField}>
+                <h3 className={styles.requiredSubtitles}>Re-enter Password</h3>
+                <div className={styles['password-input']}>
+                  <input
+                    type={reenterPasswordShown ? 'text' : 'password'}
+                    name="reenter-password"
+                    placeholder="Password"
+                    className={`form-control ${styles['input-custom']} ${
+                      errors.password ? `is-invalid` : ''
+                    }`}
+                    {...register('reenterPassword')}
+                  />
+                  <FaEye
+                    className={styles['eye-icon']}
+                    onClick={() => setReenterPasswordShown(!reenterPasswordShown)}
+                  />
+                </div>
+              </label>
+              <div className={`text-danger ${styles['err-msg']}`}>
+                {errors.reenterPassword?.message ?? <>{'\u00A0'}</>}
+              </div>
+
               <Form.Group className="mb-3" controlId="createTeacherAccount.assignSite">
                 <Form.Label>Assign Site(s)</Form.Label>
                 <div>
@@ -176,6 +246,17 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
                   <option value="School Three">School Three</option>
                 </Form.Select>
               </Form.Group>
+
+              <label htmlFor="notes" className={styles.fullInputField}>
+                <h3 className={styles.subtitles}>Notes</h3>
+                <input
+                  type="text"
+                  name="notes"
+                  placeholder="Enter some notes here"
+                  className="form-control"
+                  onChange={e => setNotes(e.target.value)}
+                />
+              </label>
             </div>
           </Modal.Body>
 
