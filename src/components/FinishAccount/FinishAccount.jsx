@@ -10,6 +10,7 @@ import InformationPopover from '../Popover/InformationPopover';
 import styles from './FinishAccount.module.css';
 import logo from '../../assets/tlp.png';
 import { finishAccountSetUp } from '../../common/auth/auth_utils';
+import { ADMIN_USER_GUIDE } from '../../common/utils';
 
 const FinishAccount = ({ inviteId, data }) => {
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ const FinishAccount = ({ inviteId, data }) => {
             </p>
             <p>
               <a
-                href="https://docs.google.com/document/d/1RptqDXI3-Cv0BQaudzE9ap1WhVBW1ClYItJkxR3spQI/edit#heading=h.i72cuwymd8eb"
+                href={ADMIN_USER_GUIDE}
                 target="_blank"
                 rel="noreferrer noopener"
                 style={{ color: 'inherit', fontStyle: 'italic' }}

@@ -8,6 +8,7 @@ import styles from './NavigationBar.module.css';
 import { logout, useNavigate } from '../../common/auth/auth_utils';
 import { Cookies, withCookies, cookieKeys } from '../../common/auth/cookie_utils';
 import { AUTH_ROLES } from '../../common/config';
+import { ADMIN_USER_GUIDE, MT_USER_GUIDE } from '../../common/utils';
 
 const NavigationBar = ({ cookies }) => {
   const navigate = useNavigate();
@@ -48,7 +49,12 @@ const NavigationBar = ({ cookies }) => {
                 <Nav.Link href="/settings" style={{ color: 'white' }}>
                   Settings
                 </Nav.Link>
-                <Nav.Link href="/help" style={{ color: 'white' }}>
+                <Nav.Link
+                  href={ADMIN_USER_GUIDE}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  style={{ color: 'white' }}
+                >
                   Help
                 </Nav.Link>
               </Nav>
@@ -69,7 +75,12 @@ const NavigationBar = ({ cookies }) => {
                 <Nav.Link href="/settings" style={{ color: 'white' }}>
                   Settings
                 </Nav.Link>
-                <Nav.Link href="/help" style={{ color: 'white' }}>
+                <Nav.Link
+                  href={MT_USER_GUIDE}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  style={{ color: 'white' }}
+                >
                   Help
                 </Nav.Link>
               </Nav>

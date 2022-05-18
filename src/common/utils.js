@@ -4,6 +4,11 @@ import { getAuth } from 'firebase/auth';
 import { renderEmail } from 'react-html-email';
 import { cookieKeys, cookieConfig } from './auth/cookie_utils';
 
+const ADMIN_USER_GUIDE =
+  'https://docs.google.com/document/d/1RptqDXI3-Cv0BQaudzE9ap1WhVBW1ClYItJkxR3spQI/edit#heading=h.i72cuwymd8eb';
+const MT_USER_GUIDE =
+  'https://docs.google.com/document/d/1MNoU_GbLX8xV2t28pBLt-mbR2XbVwiOENNtLZSSECU0/edit?usp=sharing';
+
 const baseURL = `${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`;
 
 const TLPBackend = axios.create({
@@ -287,4 +292,4 @@ const reloadPage = () => window.location.reload();
 
 addAuthInterceptor(TLPBackend);
 
-export { auth, TLPBackend, formatDate, reloadPage, scrollToTop };
+export { auth, TLPBackend, formatDate, reloadPage, scrollToTop, ADMIN_USER_GUIDE, MT_USER_GUIDE };
