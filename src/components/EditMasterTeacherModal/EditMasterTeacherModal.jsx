@@ -15,10 +15,6 @@ import WarningModal from '../WarningModal/WarningModal';
 const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [showEditMasterTeacherAlert, setShowEditMasterTeacherAlert] = useState(false);
 
-  // const [email, setEmail] = useState('');
-  // const [firstName, setFirstName] = useState('');
-  // const [lastName, setLastName] = useState('');
-  // const [phoneNumber, setPhoneNumber] = useState('');
   // This teacher data will be populated, but may be changed using the form
   const [teacherData, setTeacherData] = useState({
     firstName: '',
@@ -28,26 +24,25 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     notes: '',
   });
   // Copy of initial teacher data for undo functionality
-  // eslint-disable-next-line no-unused-vars
   const [initialTeacherData, setInitialTeacherData] = useState({
     firstName: '',
     lastName: '',
     phoneNumber: '',
     email: '',
+    notes: '',
     active: '',
     siteList: [],
-    notes: '',
   });
-  // eslint-disable-next-line no-unused-vars
   const [errorMessage, setErrorMessage] = useState(null);
   const [status, setStatus] = useState('');
   const [sites, setSites] = useState([]);
-  const removeSite = e => {
-    const name = e.target.getAttribute('name');
-    setSites(sites.filter(site => site !== name));
-  };
+  const [possibleSites, setPossibleSites] = useState([]);
   const teacherName = `${teacherData.firstName} ${teacherData.lastName}`;
-  // const teacherName = `${firstName} ${lastName}`;
+
+  const removeSite = siteId => {
+    setPossibleSites([...possibleSites, sites.find(site => site.siteId === siteId)]);
+    setSites(sites.filter(site => site.siteId !== siteId));
+  };
 
   const [warningOpen, setWarningOpen] = useState(false);
   const openWarningModal = () => {
@@ -65,16 +60,19 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   //   setErrorMessage('');
   // };
 
-  const updateMasterTeacherData = async () => {
-    const { firstName, lastName, phoneNumber, email } = teacherData;
+  const updateMasterTeacherData = async data => {
+    const { firstName, lastName, phoneNumber, email, notes } = data;
     await TLPBackend.put(`/teachers/${teacherId}`, {
       firstName,
       lastName,
       phoneNumber,
       email,
+      notes,
       active: status.toLowerCase(),
     });
+    // TODO: Make MTs table refresh instead of reloading page
     reloadPage();
+    setErrorMessage('');
     closeModal();
   };
 
@@ -103,6 +101,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
       firstName: yup.string().required('First name is required'),
       lastName: yup.string().required('Last name is required'),
       phoneNumber: yup.string().required('Phone number is required'),
+      notes: yup.string(),
     })
     .required();
 
@@ -118,27 +117,50 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
 
   const onSubmit = async data => {
     try {
-      const { firstName, lastName, phoneNumber, email } = data;
-      await TLPBackend.put(`/teachers/${teacherId}`, {
-        firstName,
-        lastName,
-        phoneNumber,
-        email,
-        active: status.toLowerCase(),
-      });
-      // setTeacherData({ firstName, lastName, email, phoneNumber });
-      setErrorMessage('');
-      closeModal();
+      // console.log(data);
+      await updateMasterTeacherData(data);
+      // TODO Update sites on backend with added/removed MT
     } catch (err) {
       setErrorMessage(err.message);
     }
   };
 
+  const getMasterTeacherData = async () => {
+    const res = await TLPBackend.get(`/teachers/all/${teacherId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const { firstName, lastName, phoneNumber, email, notes, active } = res.data[0];
+    setInitialTeacherData({
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      notes,
+      siteList: res.data[0].sites,
+    });
+    setTeacherData({ firstName, lastName, phoneNumber, email, notes });
+    setSites(res.data[0].sites);
+    setStatus(active);
+    reset({ firstName, lastName, email, phoneNumber, notes });
+  };
+
+  const getSitesWithoutMT = async () => {
+    const res = await TLPBackend.get(`/sites/no-master-teacher`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    setPossibleSites(res.data);
+  };
+
+  // TODO FIX
   const deleteMasterTeacher = async () => {
     try {
       await TLPBackend.delete(`/teachers/${teacherId}`);
       // TODO: Don't reload page, add an alert for edited
-      reloadPage();
+      // reloadPage();
       setIsOpen(false);
     } catch (err) {
       setErrorMessage(err.message);
@@ -150,23 +172,8 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     if (!isOpen) return;
 
     try {
-      const res = await TLPBackend.get(`/teachers/${teacherId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const { firstName, lastName, phoneNumber, email, active, notes } = res.data;
-      setInitialTeacherData({ firstName, lastName, phoneNumber, email, siteList: sites, notes });
-      setTeacherData({ firstName, lastName, phoneNumber, email, notes });
-      setSites(res.data.sites);
-      setStatus(active);
-      reset({ firstName, lastName, email, phoneNumber });
-      // const mtData = res.data;
-      // setEmail(mtData.email);
-      // setFirstName(mtData.firstName);
-      // setLastName(mtData.lastName);
-      // setPhoneNumber(mtData.phoneNumber);
-      // setStatus(mtData.active);
+      await getMasterTeacherData();
+      await getSitesWithoutMT();
     } catch (err) {
       setErrorMessage(err);
     }
@@ -193,8 +200,8 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                 <input
                   type="text"
                   name="firstName"
-                  key={teacherData.firstName}
-                  defaultValue={teacherData.firstName}
+                  key={initialTeacherData.firstName}
+                  defaultValue={initialTeacherData.firstName}
                   className={`form-control ${errors.firstName ? `is-invalid` : ''}`}
                   {...register('firstName')}
                 />
@@ -207,8 +214,8 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                 <input
                   type="text"
                   name="lastName"
-                  key={teacherData.lastName}
-                  defaultValue={teacherData.lastName}
+                  key={initialTeacherData.lastName}
+                  defaultValue={initialTeacherData.lastName}
                   className={`form-control ${errors.lastName ? `is-invalid` : ''}`}
                   {...register('lastName')}
                 />
@@ -225,7 +232,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  value={teacherData.email}
+                  value={initialTeacherData.email}
                   className="form-control"
                 />
               </label>
@@ -236,8 +243,8 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                     type="text"
                     name="phoneNumber"
                     placeholder="Phone Number"
-                    key={teacherData.phoneNumber}
-                    defaultValue={teacherData.phoneNumber}
+                    key={initialTeacherData.phoneNumber}
+                    defaultValue={initialTeacherData.phoneNumber}
                     className={`form-control ${errors.phoneNumber ? `is-invalid` : ''}`}
                     {...register('phoneNumber')}
                   />
@@ -245,7 +252,6 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                 <div className={`text-danger ${styles['err-msg']}`}>
                   {errors.phoneNumber?.message ?? <>{'\u00A0'}</>}
                 </div>
-                {/* {JSON.stringify(errors)} */}
               </div>
               <label htmlFor="active" className={styles.emailField}>
                 <h3 className={styles.requiredSubtitles}>Status</h3>
@@ -268,44 +274,66 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                   </Form.Label>
                 ) : null}
               </label>
-              {/* TODO: Sites need to be populated and updated correctly */}
               <Form.Group className="mb-3" controlId="editTeacherAccount.assignSite">
                 <Form.Label>Assign Site(s)</Form.Label>
                 <div>
-                  {sites !== null &&
-                    sites.map(site => {
-                      return (
-                        // eslint-disable-next-line react/jsx-key
-                        <Badge bg="secondary" className={styles['site-badge']}>
-                          <BsX cursor="pointer" name={site} onClick={removeSite} /> {site}
-                        </Badge>
-                      );
-                    })}
+                  {sites?.map(site => {
+                    return (
+                      // eslint-disable-next-line react/jsx-key
+                      <Badge bg="secondary" className={styles['site-badge']}>
+                        <BsX
+                          cursor="pointer"
+                          name={site.siteName}
+                          onClick={() => {
+                            removeSite(site.siteId);
+                          }}
+                        />
+                        {site.siteName}
+                      </Badge>
+                    );
+                  })}
                 </div>
                 <Form.Select
                   onChange={({ target }) => {
                     if (target.value !== 'Select Site...' && !sites.includes(target.value)) {
-                      setSites([...sites, target.value]);
+                      setSites([
+                        ...sites,
+                        possibleSites.find(site => site.siteId === Number(target.value)),
+                      ]);
+                      setPossibleSites(
+                        possibleSites.filter(site => site.siteId !== Number(target.value)),
+                      );
                     }
                   }}
                 >
                   <option>Select Site...</option>
-                  <option value="School One">School One</option>
-                  <option value="School Two">School Two</option>
-                  <option value="School Three">School Three</option>
+                  {possibleSites?.map(site => (
+                    <option key={site.siteId} value={site.siteId}>
+                      {site.siteName}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
-              <Form.Group className="mb-3" controlId="editTeacherAccount.notes">
-                <Form.Label>Notes</Form.Label>
-                <Form.Control as="textarea" rows={3} defaultValue={teacherData.notes} />
-              </Form.Group>
+              <label htmlFor="notes" className={styles.notesField}>
+                <h3 className={styles.optionalSubtitles}>Notes</h3>
+                <textarea
+                  type="text"
+                  name="notes"
+                  key={teacherData.notes}
+                  defaultValue={teacherData.notes}
+                  className={`form-control ${errors.notes ? `is-invalid` : ''} ${
+                    styles.notesInput
+                  }`}
+                  {...register('notes')}
+                />
+              </label>
             </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="danger" className={styles.button} onClick={openWarningModal}>
               Delete
             </Button>
-            <Button variant="primary" className={styles.button} onClick={updateMasterTeacherData}>
+            <Button variant="primary" className={styles.button} type="submit">
               Save Changes
             </Button>
           </Modal.Footer>

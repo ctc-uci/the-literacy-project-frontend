@@ -39,7 +39,8 @@
 }
 
 .phoneNumField,
-.emailField {
+.emailField,
+.notesField {
   width: 100%;
 }
 
@@ -67,7 +68,8 @@
 }
 
 /* all the text areas */
-.requiredSubtitles {
+.requiredSubtitles,
+.optionalSubtitles {
   font-family: Calibri, 'sans-serif';
   font-size: 16px;
   padding-left: 2px;
