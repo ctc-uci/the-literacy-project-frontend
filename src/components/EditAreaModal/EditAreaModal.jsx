@@ -75,7 +75,10 @@ const EditAreaModal = props => {
               <Form.Control
                 placeholder="Area Name"
                 defaultValue={areaName}
-                onChange={({ target }) => setName(target.value)}
+                onChange={({ target }) => {
+                  setName(target.value);
+                  setNameExists(false);
+                }}
                 className={nameExists ? styles.error : ''}
               />
               {nameExists ? <p className={styles['error-msg']}> {name} already exists </p> : null}
