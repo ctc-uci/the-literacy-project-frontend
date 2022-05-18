@@ -4,7 +4,7 @@ import { Container, Col, Row } from 'react-bootstrap';
 import { FaEye } from 'react-icons/fa';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import InformationPopover from '../Popover/InformationPopover';
 import styles from './FinishAccount.module.css';
@@ -84,9 +84,14 @@ const FinishAccount = ({ inviteId, data }) => {
               previous page, you can change it in the settings page.
             </p>
             <p>
-              <Link to="/help" style={{ color: 'inherit', fontStyle: 'italic' }}>
+              <a
+                href="https://docs.google.com/document/d/1RptqDXI3-Cv0BQaudzE9ap1WhVBW1ClYItJkxR3spQI/edit#heading=h.i72cuwymd8eb"
+                target="_blank"
+                rel="noreferrer noopener"
+                style={{ color: 'inherit', fontStyle: 'italic' }}
+              >
                 Here
-              </Link>{' '}
+              </a>{' '}
               is a helpful guide to help you navigate the site.
             </p>
           </div>
