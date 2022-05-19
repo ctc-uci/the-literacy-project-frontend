@@ -14,6 +14,16 @@ import WarningModal from '../WarningModal/WarningModal';
 
 const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [showEditMasterTeacherAlert, setShowEditMasterTeacherAlert] = useState(false);
+  const closeModal = () => {
+    setIsOpen(false);
+    setShowEditMasterTeacherAlert(true);
+  };
+
+  // const closeModalNoAlert = () => {
+  //   setIsOpen(false);
+  //   setShowEditMasterTeacherAlert(false);
+  //   setErrorMessage('');
+  // };
 
   // This teacher data will be populated, but may be changed using the form
   const [teacherData, setTeacherData] = useState({
@@ -34,31 +44,21 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     siteList: [],
   });
   const [errorMessage, setErrorMessage] = useState(null);
-  const [status, setStatus] = useState('');
+  // const [status, setStatus] = useState('');
   const [sites, setSites] = useState([]);
   const [possibleSites, setPossibleSites] = useState([]);
   const teacherName = `${teacherData.firstName} ${teacherData.lastName}`;
 
   const removeSite = siteId => {
-    setPossibleSites([...possibleSites, sites.find(site => site.siteId === siteId)]);
+    setPossibleSites([...(possibleSites ?? []), sites.find(site => site.siteId === siteId)]);
     setSites(sites.filter(site => site.siteId !== siteId));
   };
 
   const [warningOpen, setWarningOpen] = useState(false);
   const openWarningModal = () => {
-    setWarningOpen(!warningOpen);
-  };
-
-  const closeModal = () => {
+    setWarningOpen(true);
     setIsOpen(false);
-    setShowEditMasterTeacherAlert(true);
   };
-
-  // const closeModalNoAlert = () => {
-  //   setIsOpen(false);
-  //   setShowEditMasterTeacherAlert(false);
-  //   setErrorMessage('');
-  // };
 
   const updateMasterTeacherData = async data => {
     const { firstName, lastName, phoneNumber, email, notes } = data;
@@ -67,41 +67,60 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
       lastName,
       phoneNumber,
       email,
-      notes,
-      active: status.toLowerCase(),
+      notes: notes ?? '',
+      active: initialTeacherData.active.toLowerCase(),
     });
+    setTeacherData({ firstName, lastName, phoneNumber, email });
     // TODO: Make MTs table refresh instead of reloading page
-    reloadPage();
+    // reloadPage();
     setErrorMessage('');
-    closeModal();
+  };
+
+  const assignSites = async (before, after) => {
+    if (!before && !after) {
+      return;
+    }
+    const removedSites = before.filter(site => !after.includes(site));
+    const newSites = after.filter(site => !before.includes(site));
+    await Promise.all(
+      newSites.map(ns =>
+        TLPBackend.post(`/teachers/add-site/${teacherId}`, { siteId: Number(ns.siteId) }),
+      ),
+    );
+    await Promise.all(
+      removedSites.map(rs =>
+        TLPBackend.delete(`/teachers/remove-site/${teacherId}`, {
+          data: { siteId: Number(rs.siteId) },
+        }),
+      ),
+    );
   };
 
   // TODO: Get undo functionality working for MT edits
-  // const undoChanges = async () => {
-  //   try {
-  //     const { firstName, lastName, phoneNumber, email, active } = initialTeacherData;
-  //     await TLPBackend.put(`/teachers/${teacherId}`, {
-  //       firstName,
-  //       lastName,
-  //       phoneNumber,
-  //       email,
-  //       active,
-  //     });
-  //     setTeacherData({ firstName, lastName, email, phoneNumber });
-  //     setStatus(active);
-  //     setErrorMessage('');
-  //     setShowEditMasterTeacherAlert(false);
-  //   } catch (err) {
-  //     setErrorMessage(err.message);
-  //   }
-  // };
+  const undoChanges = async () => {
+    try {
+      const { firstName, lastName, phoneNumber, email, notes } = initialTeacherData;
+      await TLPBackend.put(`/teachers/${teacherId}`, {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        notes: notes ?? '',
+        active: initialTeacherData.active.toLowerCase(),
+      });
+      setTeacherData({ firstName, lastName, email, phoneNumber, notes: notes ?? '' });
+      setErrorMessage('');
+      setShowEditMasterTeacherAlert(false);
+    } catch (err) {
+      setErrorMessage(err.message);
+    }
+  };
 
   const schema = yup
     .object({
       firstName: yup.string().required('First name is required'),
       lastName: yup.string().required('Last name is required'),
       phoneNumber: yup.string().required('Phone number is required'),
-      notes: yup.string(),
     })
     .required();
 
@@ -117,9 +136,10 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
 
   const onSubmit = async data => {
     try {
-      // console.log(data);
+      console.log(data);
+      await assignSites(initialTeacherData.siteList, sites);
       await updateMasterTeacherData(data);
-      // TODO Update sites on backend with added/removed MT
+      closeModal();
     } catch (err) {
       setErrorMessage(err.message);
     }
@@ -137,12 +157,13 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
       lastName,
       phoneNumber,
       email,
-      notes,
-      siteList: res.data[0].sites,
+      active,
+      notes: notes ?? '',
+      siteList: res.data[0].sites ?? [],
     });
-    setTeacherData({ firstName, lastName, phoneNumber, email, notes });
-    setSites(res.data[0].sites);
-    setStatus(active);
+    setTeacherData({ firstName, lastName, phoneNumber, email, notes: notes ?? '' });
+    setSites(res.data[0].sites ?? []);
+    // setStatus(active);
     reset({ firstName, lastName, email, phoneNumber, notes });
   };
 
@@ -155,12 +176,10 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     setPossibleSites(res.data);
   };
 
-  // TODO FIX
   const deleteMasterTeacher = async () => {
     try {
       await TLPBackend.delete(`/teachers/${teacherId}`);
-      // TODO: Don't reload page, add an alert for edited
-      // reloadPage();
+      reloadPage();
       setIsOpen(false);
     } catch (err) {
       setErrorMessage(err.message);
@@ -253,7 +272,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                   {errors.phoneNumber?.message ?? <>{'\u00A0'}</>}
                 </div>
               </div>
-              <label htmlFor="active" className={styles.emailField}>
+              {/* <label htmlFor="active" className={styles.emailField}>
                 <h3 className={styles.requiredSubtitles}>Status</h3>
                 <select
                   name="active"
@@ -273,7 +292,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                     them.
                   </Form.Label>
                 ) : null}
-              </label>
+              </label> */}
               <Form.Group className="mb-3" controlId="editTeacherAccount.assignSite">
                 <Form.Label>Assign Site(s)</Form.Label>
                 <div>
@@ -295,9 +314,9 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                 </div>
                 <Form.Select
                   onChange={({ target }) => {
-                    if (target.value !== 'Select Site...' && !sites.includes(target.value)) {
+                    if (target.value !== 'Select Site...' && !sites?.includes(target.value)) {
                       setSites([
-                        ...sites,
+                        ...(sites ?? []),
                         possibleSites.find(site => site.siteId === Number(target.value)),
                       ]);
                       setPossibleSites(
@@ -342,9 +361,13 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
       {showEditMasterTeacherAlert ? (
         <Alert variant="primary" className={styles['alert-custom']}>
           {`Updated ${teacherData.firstName} ${teacherData.lastName}'s information.`}{' '}
-          <Alert.Link href="/" className={styles['alert-link-custom']}>
+          <span
+            aria-hidden
+            className={`alert-link-custom underline ${styles.undoChanges}`}
+            onClick={undoChanges}
+          >
             UNDO
-          </Alert.Link>
+          </span>
           <CloseButton
             className={styles['alert-close-btn']}
             onClick={() => setShowEditMasterTeacherAlert(false)}
