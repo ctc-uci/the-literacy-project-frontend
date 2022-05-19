@@ -7,6 +7,7 @@ import styles from './admin-students-view.module.css';
 import Table from '../../components/Table/Table';
 import { TLPBackend, capitalize, formatSchoolYear } from '../../common/utils';
 import AdminStudentFilter from '../../components/AdminStudentFilter/AdminStudentFilter';
+import CSVButton from '../../components/CSVButton/CSVButton';
 
 const AdminStudentsView = () => {
   const [studentList, setStudentList] = useState([]);
@@ -296,9 +297,7 @@ const AdminStudentsView = () => {
         </div>
         <div style={{ float: 'right' }}>
           <div className={styles['inner-ctrl']}>
-            <Button className={styles['export-button']} variant="primary">
-              Export to CSV
-            </Button>
+            <CSVButton type="student" />
           </div>
           <div className={styles['inner-ctrl']}>
             <Button

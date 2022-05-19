@@ -60,6 +60,7 @@ const MasterTeacherTableView = () => {
         tbodyData={tbodyData}
         tbodyColIsBadge={[2]}
         statusCol={3}
+        type="mt"
       />
     </div>
   );

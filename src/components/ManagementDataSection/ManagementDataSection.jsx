@@ -9,6 +9,7 @@ import Table from '../Table/Table';
 import InformationPopover from '../Popover/InformationPopover';
 import CreateMasterTeacherModal from '../CreateMasterTeacherModal/CreateMasterTeacherModal';
 import CreateAdminModal from '../CreateAdminModal/CreateAdminModal';
+import CSVButton from '../CSVButton/CSVButton';
 
 const ManagementDataSection = ({
   sectionTitle,
@@ -18,6 +19,7 @@ const ManagementDataSection = ({
   headerText,
   tbodyColIsBadge,
   statusCol,
+  type,
 }) => {
   let popover;
   if (hasHeader) {
@@ -45,9 +47,7 @@ const ManagementDataSection = ({
             {sectionTitle}
             {popover}
           </h1>
-          <Button className={styles['export-button']} variant="primary">
-            Export to CSV
-          </Button>
+          <CSVButton type={type} />
         </>
       );
     }
@@ -169,6 +169,7 @@ ManagementDataSection.propTypes = {
   headerText: PropTypes.string,
   tbodyColIsBadge: PropTypes.arrayOf(PropTypes.number),
   statusCol: PropTypes.number,
+  type: PropTypes.string.isRequired,
 };
 
 export default ManagementDataSection;

@@ -53,6 +53,7 @@ const AdminView = () => {
         theadData={theadData}
         tbodyData={tbodyData}
         statusCol={2}
+        type="admin"
       />
     </div>
   );
