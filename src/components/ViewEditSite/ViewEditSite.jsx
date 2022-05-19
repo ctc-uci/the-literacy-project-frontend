@@ -9,6 +9,7 @@ import states from 'states-us';
 import styles from './ViewEditSite.module.css';
 import WarningModal from '../WarningModal/WarningModal';
 import { TLPBackend } from '../../common/utils';
+import CSVButton from '../CSVButton/CSVButton';
 import '../../common/vars.css';
 
 const s = states.filter(x => !x.territory);
@@ -173,7 +174,9 @@ const ViewSite = ({ siteId }) => {
                 <div className={styles['form-header']}>
                   <h2 className={styles['form-title']}>{siteInfo.siteName}</h2>
                 </div>
-                <h3 className={styles['optional-subtitles']}>Site Status</h3>
+                <div className={styles['title-csv']}>
+                  <h3 className={styles['optional-subtitles']}>Site Status</h3>
+                </div>
                 <div className={styles['input-area']}>
                   <Col md={5}>
                     <>{/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}</>
@@ -513,7 +516,10 @@ const ViewSite = ({ siteId }) => {
             <div className={styles['form-header']}>
               <h2 className={styles['form-title']}>{siteInfo.siteName}</h2>
             </div>
-            <h3 className={styles['optional-subtitles']}>Site Status</h3>
+            <div className={styles['title-csv']}>
+              <h3 className={styles['optional-subtitles']}>Site Status</h3>
+              <CSVButton type="site" siteId={Number.parseInt(siteId, 10)} />
+            </div>
             <div className={styles['input-area']}>
               <Col md={5}>
                 <p>
@@ -525,6 +531,7 @@ const ViewSite = ({ siteId }) => {
                 </p>
               </Col>
             </div>
+
             <h3 className={styles['optional-subtitles']}>Basic Information</h3>
             <div className={styles['input-area']}>
               <Col md={5}>

@@ -103,3 +103,21 @@
 .inactive_site_dd {
   color: var(--color-red);
 }
+
+.dropdown-button button {
+  color: var(--text-color-white);
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  width: 300px;
+  margin-left: 10px;
+}
+.search-bar {
+  margin: 0 !important;
+}
+#search-icon {
+  border-left: none !important;
+  background-color: #fff !important;
+}

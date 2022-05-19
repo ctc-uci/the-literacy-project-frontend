@@ -161,7 +161,9 @@ ManagementDataSection.defaultProps = {
 
 ManagementDataSection.propTypes = {
   sectionTitle: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
   theadData: PropTypes.arrayOf(PropTypes.object),
+  // eslint-disable-next-line react/forbid-prop-types
   tbodyData: PropTypes.arrayOf(PropTypes.object),
   hasHeader: PropTypes.bool,
   headerText: PropTypes.string,

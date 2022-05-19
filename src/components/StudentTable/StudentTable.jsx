@@ -50,7 +50,7 @@ StudentTable.defaultProps = {
 };
 
 StudentTable.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object),
+  data: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default StudentTable;

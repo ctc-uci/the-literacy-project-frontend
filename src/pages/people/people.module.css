@@ -1,7 +1,10 @@
 .people-container {
-  padding: 5vh 8vw;
+  color: black;
+  padding-left: 150px;
+  padding-right: 150px;
+  padding-top: 50px;
 }
 
-.page-title {
-  margin-bottom: 1em;
+.header {
+  padding-bottom: 25px;
 }

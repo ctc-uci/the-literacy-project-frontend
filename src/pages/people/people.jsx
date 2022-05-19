@@ -15,7 +15,9 @@ const PeopleView = () => {
 
   return (
     <div className={styles['people-container']}>
-      <h2 className={styles['page-title']}>People</h2>
+      <div className={styles.header}>
+        <h1>People</h1>
+      </div>
       <Tabs defaultActiveKey="staff">
         <Tab eventKey="staff" title="Staff">
           <AdminView setAlertState={setAlertState} />

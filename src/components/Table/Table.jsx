@@ -57,7 +57,7 @@ Table.propTypes = {
       headerPopover: PropTypes.string,
     }),
   ),
-  tbodyData: PropTypes.arrayOf(PropTypes.object),
+  tbodyData: PropTypes.arrayOf(PropTypes.shape({})),
   tbodyColIsBadge: PropTypes.arrayOf(PropTypes.number),
   sectionTitle: PropTypes.string,
   statusCol: PropTypes.number,
