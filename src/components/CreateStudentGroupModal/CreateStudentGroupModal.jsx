@@ -11,7 +11,14 @@ import { TLPBackend } from '../../common/utils';
 
 import StudentGroupDropdown from '../EditStudentGroupModal/StudentGroupDropdown';
 
-const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
+const CreateStudentGroupModal = ({
+  siteId,
+  teacherId,
+  isOpen,
+  setIsOpen,
+  groupCreated,
+  setGroupCreated,
+}) => {
   const schoolYears = [
     '2020-2021',
     '2021-2022',
@@ -175,6 +182,7 @@ const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
       studentIds: addedStudents,
       studentGroupId: studentGroupData.data.groupId,
     });
+    setGroupCreated(groupCreated + 1);
     resetModal();
     closeModal();
   };
@@ -360,6 +368,8 @@ CreateStudentGroupModal.propTypes = {
   teacherId: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
+  groupCreated: PropTypes.number.isRequired,
+  setGroupCreated: PropTypes.func.isRequired,
 };
 
 export default CreateStudentGroupModal;
