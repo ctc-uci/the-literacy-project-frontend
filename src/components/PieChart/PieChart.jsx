@@ -8,9 +8,9 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const PieChart = ({ labels, title, dataPoints, backgroundColor, legendPosition }) => {
   const data = {
     labels,
+    color: '#fff',
     datasets: [
       {
-        label: `${title} of Students`,
         data: dataPoints,
         backgroundColor,
       },
@@ -18,9 +18,32 @@ const PieChart = ({ labels, title, dataPoints, backgroundColor, legendPosition }
   };
 
   const options = {
-    legend: {
-      display: true,
-      position: legendPosition,
+    plugins: {
+      title: {
+        display: true,
+        text: `${title} of Students`,
+        font: {
+          size: 18,
+          weight: 'bold',
+        },
+      },
+      datalabels: {
+        color: 'black',
+        formatter: (value, context) => {
+          const datapoints = context.dataset.data;
+          function totalSum(total, datapoint) {
+            return total + datapoint;
+          }
+          const totalValue = datapoints.reduce(totalSum, 0);
+          const percentageValue = ((value / totalValue) * 100).toFixed(1);
+
+          return `${percentageValue}%`;
+        },
+      },
+      legend: {
+        display: true,
+        position: legendPosition,
+      },
     },
   };
 

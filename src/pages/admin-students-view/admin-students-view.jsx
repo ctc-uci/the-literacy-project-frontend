@@ -36,18 +36,17 @@ const AdminStudentsView = () => {
     Gender: ['Male', 'Female', 'Other'],
   };
 
-  // const pieChartBackgroundColor = {
-  //   Grade: ['rgb(98, 190, 119)', 'rgb()', '3rd Grade', '4th Grade', '5th Grade', '6th Grade'],
-  //   Ethnicity: [
-  //     'White',
-  //     'Black',
-  //     'Asian',
-  //     'Latinx',
-  //     'American Indian or Alaska Native',
-  //     'Non-specified',
-  //   ],
-  //   Gender: ['Male', 'Female', 'Other'],
-  // };
+  const pieChartBackgroundColor = {
+    main_colors: [
+      'rgb(98, 190, 119)',
+      'rgb(245, 101, 101)',
+      'rgb(33, 90, 130)',
+      'rgb(255, 179, 30)',
+      'rgb(23, 162, 184)',
+      'rgb(232, 62, 140)',
+    ],
+    other: 'rgb(108, 117, 125)',
+  };
 
   const theadData = [
     {
@@ -299,7 +298,6 @@ const AdminStudentsView = () => {
         );
       }
     }
-    console.log(newChartData);
     setPieChartData(newChartData);
   };
 
@@ -386,38 +384,37 @@ const AdminStudentsView = () => {
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div className={styles['pie-chart-filter-link']} onClick={filterPieDataChangeLeft}>
-            {() => {
-              if (pieChartFilter !== 'Ethnicity') {
-                if (pieChartFilter === 'Grade') {
-                  return 'Ethnicity';
-                }
-                return 'Grade';
-              }
-              return '';
-            }}
             {pieChartFilter !== 'Ethnicity' ? <BsChevronLeft /> : <></>}
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {pieChartFilter !== 'Ethnicity'
+              ? pieChartFilter === 'Grade'
+                ? 'Ethnicity'
+                : 'Grade'
+              : ''}
           </div>
         </div>
-        <PieChart
-          labels={pieChartLabels.pieChartFilter}
-          title={pieChartFilter}
-          dataPoints={pieChartData}
-          backgroundColor={[]}
-          legendPosition="top"
-        />
+        <div className={styles['pie-chart-display']}>
+          <PieChart
+            labels={pieChartLabels[pieChartFilter]}
+            title={pieChartFilter}
+            dataPoints={pieChartData}
+            backgroundColor={pieChartBackgroundColor.main_colors
+              .slice(
+                0,
+                pieChartFilter === 'Grade'
+                  ? pieChartLabels[pieChartFilter].length
+                  : pieChartLabels[pieChartFilter].length - 1,
+              )
+              .concat(pieChartFilter === 'Grade' ? [] : pieChartBackgroundColor.other)}
+            legendPosition="bottom"
+          />
+        </div>
         <div className={styles['pie-chart-filter-group']}>
           {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div className={styles['pie-chart-filter-link']} onClick={filterPieDataChangeRight}>
-            {() => {
-              if (pieChartFilter !== 'Gender') {
-                if (pieChartFilter === 'Grade') {
-                  return 'Gender';
-                }
-                return 'Grade';
-              }
-              return '';
-            }}
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {pieChartFilter !== 'Gender' ? (pieChartFilter === 'Grade' ? 'Gender' : 'Grade') : ''}
             {pieChartFilter !== 'Gender' ? <BsChevronRight /> : <></>}
           </div>
         </div>
