@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import debounce from 'lodash.debounce';
 import { PropTypes } from 'prop-types';
-import { Modal, Button, Badge } from 'react-bootstrap';
+import { Modal, Button, Badge, Alert } from 'react-bootstrap';
 import CloseButton from 'react-bootstrap/CloseButton';
 import { BsXLg } from 'react-icons/bs';
 import Select from 'react-select';
@@ -32,6 +32,7 @@ const EditStudentGroupModal = ({
     'Sundays',
   ];
   const [WarningModalIsOpen, setWarningModalIsOpen] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const [studentGroupInfo, setStudentGroupInfo] = useState({
     groupName: 'Default Group Name',
@@ -220,6 +221,8 @@ const EditStudentGroupModal = ({
     await editStudentGroupData();
     await editStudentGroupStudents();
     setGroupUpdated(groupUpdated + 1);
+    setShowSuccessAlert(true);
+    setTimeout(() => setShowSuccessAlert(false), 5000);
   };
 
   useEffect(async () => {
@@ -401,6 +404,14 @@ const EditStudentGroupModal = ({
         body="studentGroup"
         deleteFunc={delStudentGroup}
       />
+      {showSuccessAlert ? (
+        <div className="center-block">
+          <Alert variant="success" className={styles['alert-custom']}>
+            Student Group successfully updated.
+            <CloseButton className="alert-close-btn" onClick={() => setShowSuccessAlert(false)} />
+          </Alert>
+        </div>
+      ) : null}
     </>
   );
 };
