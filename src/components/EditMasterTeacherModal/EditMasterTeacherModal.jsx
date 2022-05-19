@@ -234,7 +234,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
               </label>
             </div>
             <div>
-              <label htmlFor="email" className={styles.emailField}>
+              {/* <label htmlFor="email" className={styles.emailField}>
                 <h3 className={styles.requiredSubtitles}>Email</h3>
                 <input
                   disabled
@@ -244,7 +244,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                   value={initialTeacherData.email}
                   className="form-control"
                 />
-              </label>
+              </label> */}
               <div>
                 <label htmlFor="phone-number" className={styles.phoneNumField}>
                   <h3 className={styles.requiredSubtitles}>Phone Number</h3>
@@ -323,6 +323,13 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
             </Button>
             <Button variant="primary" className={styles.button} type="submit">
               Save Changes
+            </Button>
+            <Button
+              style={{ backgroundColor: 'var(--color-gray-blue-muted)' }}
+              className={styles.button}
+              onClick={() => setIsOpen(false)}
+            >
+              Cancel
             </Button>
           </Modal.Footer>
         </form>

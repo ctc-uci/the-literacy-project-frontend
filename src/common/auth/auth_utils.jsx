@@ -79,14 +79,23 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
   }
 
   const user = await TLPBackend.get(`/tlp-users/${auth.currentUser.uid}`);
+  const { userId, active, position, numSites } = user.data;
   // if user status is inactive, they cannot log in
-  if (user.data.active !== USER_STATUS.ACTIVE) {
+  if (active === USER_STATUS.INACTIVE) {
     throw new Error(
       'Your account is currently not active. Please contact administration for more information.',
     );
-  } // else if (user.data.active === USER_STATUS.PENDING) {
-  //   await TLPBackend.post(`/tlp-users/${auth.currentUser.uid}`);
-  // }
+  } else if (active === USER_STATUS.PENDING) {
+    // first time logging in
+    // if user is a teacher, check to see if they are assigned a site.
+    // if they are not, they cannot log in
+    if (position === USER_ROLE && parseInt(numSites, 10) < 1) {
+      throw new Error(
+        'You are currently not assigned any sites, so your account is not active. Please contact administration for more information.',
+      );
+    }
+    await TLPBackend.post(`/tlp-users/set-active/${userId}`);
+  }
 
   cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
   cookies.set(cookieKeys.POSITION, user.data.position, cookieConfig);
