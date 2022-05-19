@@ -101,6 +101,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
         notes: notes ?? '',
         active: initialTeacherData.active.toLowerCase(),
       });
+      await assignSites(sites, initialTeacherData.siteList);
       setTeacherData({ firstName, lastName, email, phoneNumber, notes: notes ?? '' });
       setErrorMessage('');
       setShowEditMasterTeacherAlert(false);
@@ -181,6 +182,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     if (!isOpen) return;
 
     try {
+      setShowEditMasterTeacherAlert(false);
       await getMasterTeacherData();
       await getSitesWithoutMT();
     } catch (err) {
