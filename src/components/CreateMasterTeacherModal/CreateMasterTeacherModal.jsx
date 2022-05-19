@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { Modal, Button, Form, Badge } from 'react-bootstrap';
 import { BsX } from 'react-icons/bs';
@@ -19,6 +19,7 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
   const [confirmModalIsOpen, setConfirmModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
   const [sites, setSites] = useState([]);
+  const [possibleSites, setPossibleSites] = useState([]);
   // const [teacherData, setTeacherData] = useState({
   //   email: '',
   //   firstName: '',
@@ -30,13 +31,11 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
   const [reenterPasswordShown, setReenterPasswordShown] = useState(false);
   const [notes, setNotes] = useState('');
 
-  const removeSite = e => {
-    const name = e.target.getAttribute('name');
-    // setTeacherData({ ...teacherData, sites: sites.filter(siteName => siteName !== name) });
-    setSites(sites.filter(siteName => siteName !== name));
+  // add site back to list of possible sites and remove from selected sites
+  const removeSite = siteId => {
+    setPossibleSites([...(possibleSites ?? []), sites.find(site => site.siteId === siteId)]);
+    setSites(sites.filter(site => site.siteId !== siteId));
   };
-
-  const phoneNumRegex = /^\d{10}$/;
 
   const schema = yup
     .object({
@@ -46,10 +45,6 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
         .required('Email is required'),
       firstName: yup.string().required('First name is required'),
       lastName: yup.string().required('Last name is required'),
-      phoneNumber: yup
-        .string()
-        .required('Phone number is required')
-        .matches(phoneNumRegex, 'Phone number must be 10 digits'),
       password: yup
         .string()
         .required('Password is required')
@@ -73,8 +68,9 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
 
   const closeModal = () => {
     // clear all fields and clear any error messages
-    reset({ firstName: '', lastName: '', phoneNumber: '', password: '', reenterPassword: '' });
+    reset({ firstName: '', lastName: '', email: '', password: '', reenterPassword: '' });
     setErrorMessage('');
+    setSites([]);
     setIsOpen(false);
   };
 
@@ -83,23 +79,44 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
     setConfirmModalOpen(true);
   };
 
+  // get all possible site options
+  const getSitesWithoutMT = async () => {
+    const res = await TLPBackend.get(`/sites/no-master-teacher`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    setPossibleSites(res.data);
+  };
+
   const onSubmit = async data => {
     setErrorMessage('');
     try {
-      const { firstName, lastName, phoneNumber, email, password } = data;
+      const { firstName, lastName, email, password } = data;
+      const siteIds = sites.map(s => s.siteId);
       await TLPBackend.post('/teachers', {
         firstName,
         lastName,
-        phoneNumber,
         email,
         password,
         notes,
+        siteIds,
       });
       sendEmailSuccessSequence();
     } catch (err) {
-      setErrorMessage(err.message);
+      setErrorMessage(err.response.data);
     }
   };
+
+  useEffect(async () => {
+    if (!isOpen) return;
+
+    try {
+      await getSitesWithoutMT();
+    } catch (err) {
+      setErrorMessage(err);
+    }
+  }, [isOpen]);
 
   return (
     <>
@@ -155,7 +172,7 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
                   {errors.email?.message ?? <>{'\u00A0'}</>}
                 </div>
               </label>
-              <label htmlFor="phone-number" className={styles.fullInputField}>
+              {/* <label htmlFor="phone-number" className={styles.fullInputField}>
                 <h3 className={styles.requiredSubtitles}>Phone Number</h3>
                 <input
                   type="text"
@@ -167,7 +184,7 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
               </label>
               <div className={`text-danger ${styles['err-msg']}`}>
                 {errors.phoneNumber?.message ?? <>{'\u00A0'}</>}
-              </div>
+              </div> */}
 
               <label htmlFor="password" className={styles.fullInputField}>
                 <h3 className={styles.requiredSubtitles}>
@@ -224,26 +241,41 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
               <Form.Group className="mb-3" controlId="createTeacherAccount.assignSite">
                 <Form.Label>Assign Site(s)</Form.Label>
                 <div>
-                  {sites.map(site => {
+                  {sites?.map(site => {
                     return (
                       // eslint-disable-next-line react/jsx-key
                       <Badge bg="secondary" className={styles['site-badge']}>
-                        <BsX cursor="pointer" name={site} onClick={removeSite} /> {site}
+                        <BsX
+                          cursor="pointer"
+                          name={site.siteName}
+                          onClick={() => {
+                            removeSite(site.siteId);
+                          }}
+                        />
+                        {site.siteName}
                       </Badge>
                     );
                   })}
                 </div>
                 <Form.Select
                   onChange={({ target }) => {
-                    if (target.value !== 'No School Selected' && !sites.includes(target.value)) {
-                      setSites([...sites, target.value]);
+                    if (target.value !== 'Select Site...' && !sites?.includes(target.value)) {
+                      setSites([
+                        ...(sites ?? []),
+                        possibleSites.find(site => site.siteId === Number(target.value)),
+                      ]);
+                      setPossibleSites(
+                        possibleSites.filter(site => site.siteId !== Number(target.value)),
+                      );
                     }
                   }}
                 >
-                  <option>No School Selected</option>
-                  <option value="School One">School One</option>
-                  <option value="School Two">School Two</option>
-                  <option value="School Three">School Three</option>
+                  <option>Select Site...</option>
+                  {possibleSites?.map(site => (
+                    <option key={site.siteId} value={site.siteId}>
+                      {site.siteName}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
 
@@ -260,11 +292,18 @@ const CreateMasterTeacherModal = ({ isOpen, setIsOpen }) => {
             </div>
           </Modal.Body>
 
-          <Modal.Footer>
-            <Button variant="primary" onClick={handleSubmit(onSubmit)}>
-              Send Email
-            </Button>
+          <Modal.Footer className={styles.footer}>
             {errorMessage && <p>{errorMessage}</p>}
+            <Button
+              style={{ backgroundColor: 'var(--color-gray-blue-muted)' }}
+              onClick={closeModal}
+              className={styles.button}
+            >
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleSubmit(onSubmit)} className={styles.button}>
+              Create Account
+            </Button>
           </Modal.Footer>
         </form>
       </Modal>
