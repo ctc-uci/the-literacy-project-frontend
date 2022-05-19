@@ -19,12 +19,6 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     setShowEditMasterTeacherAlert(true);
   };
 
-  // const closeModalNoAlert = () => {
-  //   setIsOpen(false);
-  //   setShowEditMasterTeacherAlert(false);
-  //   setErrorMessage('');
-  // };
-
   // This teacher data will be populated, but may be changed using the form
   const [teacherData, setTeacherData] = useState({
     firstName: '',
@@ -43,8 +37,8 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     active: '',
     siteList: [],
   });
+  // eslint-disable-next-line no-unused-vars
   const [errorMessage, setErrorMessage] = useState(null);
-  // const [status, setStatus] = useState('');
   const [sites, setSites] = useState([]);
   const [possibleSites, setPossibleSites] = useState([]);
   const teacherName = `${teacherData.firstName} ${teacherData.lastName}`;
@@ -96,7 +90,6 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     );
   };
 
-  // TODO: Get undo functionality working for MT edits
   const undoChanges = async () => {
     try {
       const { firstName, lastName, phoneNumber, email, notes } = initialTeacherData;
@@ -136,7 +129,6 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
 
   const onSubmit = async data => {
     try {
-      console.log(data);
       await assignSites(initialTeacherData.siteList, sites);
       await updateMasterTeacherData(data);
       closeModal();
@@ -163,7 +155,6 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     });
     setTeacherData({ firstName, lastName, phoneNumber, email, notes: notes ?? '' });
     setSites(res.data[0].sites ?? []);
-    // setStatus(active);
     reset({ firstName, lastName, email, phoneNumber, notes });
   };
 
@@ -183,7 +174,6 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
       setIsOpen(false);
     } catch (err) {
       setErrorMessage(err.message);
-      console.log(errorMessage);
     }
   };
 
@@ -272,27 +262,6 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
                   {errors.phoneNumber?.message ?? <>{'\u00A0'}</>}
                 </div>
               </div>
-              {/* <label htmlFor="active" className={styles.emailField}>
-                <h3 className={styles.requiredSubtitles}>Status</h3>
-                <select
-                  name="active"
-                  className="form-control"
-                  onChange={e => setStatus(e.target.value)}
-                >
-                  <option selected={status === 'active'} value="active">
-                    Active
-                  </option>
-                  <option selected={status === 'inactive'} value="inactive">
-                    Inactive
-                  </option>
-                </select>
-                {status === 'inactive' ? (
-                  <Form.Label id={styles['status-inactive-text']}>
-                    *** If a teacher is made inactive, their assigned sites will be removed from
-                    them.
-                  </Form.Label>
-                ) : null}
-              </label> */}
               <Form.Group className="mb-3" controlId="editTeacherAccount.assignSite">
                 <Form.Label>Assign Site(s)</Form.Label>
                 <div>
