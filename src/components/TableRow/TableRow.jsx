@@ -183,7 +183,7 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol, setAle
         />
       )}
       <StudentScoreModal
-        isOpen={modalIsOpen === 'Students'}
+        isOpen={modalIsOpen === STUDENT}
         setIsOpen={setModalOpen}
         studentId={uniqueKey}
       />
@@ -203,6 +203,7 @@ TableRow.defaultProps = {
 
 TableRow.propTypes = {
   uniqueKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  // eslint-disable-next-line react/forbid-prop-types
   data: PropTypes.arrayOf(PropTypes.any),
   colIsBadge: PropTypes.arrayOf(PropTypes.number),
   sectionTitle: PropTypes.string,
