@@ -160,7 +160,7 @@ const MasterTeacherView = ({ cookies }) => {
     });
 
     let currYear = null;
-    if (currDay.getMonth() >= 1) {
+    if (currDay.getMonth() > 6) {
       currYear = currDay.getFullYear();
       years.add(formatSchoolYear(currYear));
     } else {

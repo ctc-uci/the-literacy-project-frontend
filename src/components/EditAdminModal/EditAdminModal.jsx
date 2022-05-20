@@ -269,7 +269,7 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
 EditAdminModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  adminId: PropTypes.number.isRequired,
+  adminId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
 export default EditAdminModal;

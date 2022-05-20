@@ -1,24 +1,46 @@
 import { React, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Badge, Button, Form } from 'react-bootstrap';
-import { FaTrashAlt, FaPlus, FaPencilAlt } from 'react-icons/fa';
+import { Badge, Button } from 'react-bootstrap';
+import { FaPencilAlt } from 'react-icons/fa';
 import '../../common/vars.css';
 import EditMasterTeacherModal from '../EditMasterTeacherModal/EditMasterTeacherModal';
 import EditAdminModal from '../EditAdminModal/EditAdminModal';
+import StatusCell from '../StatusCell/StatusCell';
+import ResetPasswordModal from '../ResetPasswordModal/ResetPasswordModal';
+import TeacherNotesModal from '../NotesModal/TeacherNotesModal';
+import { SECTIONS } from '../../common/config';
+import AddNoteIcon from '../../assets/icons/AddNote.svg';
+import EditNoteIcon from '../../assets/icons/EditNote.svg';
 import StudentScoreModal from '../StudentScoreModal/StudentScoreModal';
 
-const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
+const { ADMIN, TEACHER, STUDENT } = SECTIONS;
+const RESET = 'Reset Password'; // used to open reset password and edit note modal modal
+const NOTES = 'Notes';
+
+const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol, setAlertState }) => {
   const [modalIsOpen, setModalOpen] = useState('');
 
+  const currEmail = data[1]?.email; // the original email to check against if changing
+  const [email, setEmail] = useState(currEmail);
+  // used to for master teacher note
+  const [notes, setNoteModalText] = useState(sectionTitle === TEACHER ? data[5] : '');
+
+  const userName = data[0];
   const addBadgeStyles = {
     cursor: 'pointer',
     marginLeft: '0.5em',
+    backgroundColor: '#17A2B8',
+  };
+  const noteIconStyles = {
+    backgroundColor: 'transparent',
+    border: 'none',
   };
 
   const displayPencilAndLink = item => {
-    if (sectionTitle === 'Admin' || sectionTitle === 'Master Teachers')
+    if (sectionTitle === ADMIN || sectionTitle === TEACHER)
       return (
         <>
+          <FaPencilAlt cursor="pointer" onClick={() => setModalOpen(sectionTitle)} />
           <Button
             variant="link"
             onClick={() => setModalOpen(sectionTitle)}
@@ -26,14 +48,13 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           >
             {item}
           </Button>
-          <FaPencilAlt cursor="pointer" onClick={() => setModalOpen(sectionTitle)} />
         </>
       );
     return item;
   };
 
   const displayAsButton = item => {
-    if (sectionTitle === 'Students')
+    if (sectionTitle === STUDENT)
       return (
         <Button
           variant="primary"
@@ -43,70 +64,124 @@ const TableRow = ({ uniqueKey, data, colIsBadge, sectionTitle, statusCol }) => {
           {item}
         </Button>
       );
+    if (sectionTitle === TEACHER) {
+      return (
+        <Button style={noteIconStyles} onClick={() => setModalOpen(NOTES)}>
+          {notes !== '' ? (
+            <img alt="edit note" src={EditNoteIcon} />
+          ) : (
+            <img alt="add note" src={AddNoteIcon} />
+          )}
+        </Button>
+      );
+    }
     return item;
   };
 
-  const styleStatus = val => {
-    if (val === 'active' || val === 'inactive') {
+  const displayBadgeCell = (item, ind) => {
+    // for teachers, display names of all sites they are in with the option to remove that site + add site button
+    if (sectionTitle === TEACHER) {
       return (
-        <Form.Group className="mb-3">
-          <Form.Select style={{ width: '110px' }}>
-            <option value={val}>{val === 'active' ? 'Active' : 'Inactive'}</option>
-            <option>{val === 'active' ? 'Inactive' : 'Active'}</option>
-          </Form.Select>
-        </Form.Group>
+        <td key={ind}>
+          {item.map(site => (
+            <Badge key={site.siteId} bg="dark" style={{ marginLeft: '0.5em' }}>
+              {site.siteName}
+            </Badge>
+          ))}
+          <Badge style={addBadgeStyles} onClick={() => setModalOpen(SECTIONS.TEACHER)}>
+            Edit Sites <FaPencilAlt style={{ marginLeft: '5px' }} />
+          </Badge>
+        </td>
       );
     }
-    return 'Account Pending';
+    return null;
   };
 
   /* eslint-disable react/no-array-index-key */
   return (
     <>
-      <tr>
+      <tr style={{ height: '120px' }}>
         {data.map((item, ind) => {
           if (ind === 0) {
             return <td key={ind}>{displayPencilAndLink(item)}</td>;
           }
-          if (ind === data.length - 1) {
-            return <td key={ind}>{displayAsButton(item)}</td>;
-          }
-          if (colIsBadge.includes(ind)) {
+          if (ind === 1 && (sectionTitle === ADMIN || sectionTitle === TEACHER)) {
             return (
               <td key={ind}>
-                {item !== null && (
-                  <Badge bg="dark" style={{ cursor: 'pointer' }}>
-                    {item} <FaTrashAlt color="red" cursor="pointer" />
-                  </Badge>
-                )}
-                <Badge bg="primary" style={addBadgeStyles}>
-                  Add Site <FaPlus cursor="pointer" />
-                </Badge>
+                <div>{email}</div>
+                {item.phoneNumber ? <div>{item.phoneNumber}</div> : null}
               </td>
             );
           }
           if (statusCol === ind) {
             return (
-              <td key={ind} style={{ color: '#17A2B8' }}>
-                {styleStatus(item)}
+              <td key={item}>
+                <StatusCell data={item} setEmail={setEmail} setAlertState={setAlertState} />
               </td>
             );
+          }
+          if (ind === data.length - 1) {
+            return (
+              <td key={ind} style={{ textAlign: 'center' }}>
+                {displayAsButton(item)}
+              </td>
+            );
+          }
+          // reset password button
+          if (ind === 4 && sectionTitle === TEACHER) {
+            return (
+              <td key={ind}>
+                <Button
+                  style={{ backgroundColor: 'var(--color-gray-blue-muted)' }}
+                  onClick={() => setModalOpen('Reset Password')}
+                >
+                  Reset
+                </Button>
+              </td>
+            );
+          }
+          // badge column for displaying sites
+          // item here should be an object with site id and site name for teacher section
+          if (colIsBadge.includes(ind)) {
+            return displayBadgeCell(item, ind);
           }
           return <td key={ind}>{item}</td>;
         })}
       </tr>
-      <EditMasterTeacherModal
-        isOpen={
-          modalIsOpen === 'Master Teachers'
-        } /* Since this is a generic section, you must first check the sectionTitle to ensure that the correct modal is triggered */
-        setIsOpen={setModalOpen}
-        teacherId={uniqueKey}
-      />
-      <EditAdminModal
-        isOpen={modalIsOpen === 'Admin'}
-        setIsOpen={setModalOpen}
-        adminId={uniqueKey}
-      />
+      {sectionTitle === TEACHER && (
+        <>
+          <EditMasterTeacherModal
+            isOpen={
+              modalIsOpen === TEACHER
+            } /* Since this is a generic section, you must first check the sectionTitle to ensure that the correct modal is triggered */
+            setIsOpen={setModalOpen}
+            teacherId={uniqueKey}
+          />
+          <ResetPasswordModal
+            userId={uniqueKey}
+            userName={userName}
+            isOpen={modalIsOpen === RESET}
+            setIsOpen={setModalOpen}
+            setAlertState={setAlertState}
+          />
+          <TeacherNotesModal
+            isOpen={modalIsOpen === NOTES}
+            setIsOpen={setModalOpen}
+            teacherId={uniqueKey}
+            teacherName={userName}
+            notes={notes}
+            setNotes={setNoteModalText}
+            setAlertState={setAlertState}
+          />
+        </>
+      )}
+      {sectionTitle === ADMIN && (
+        <EditAdminModal
+          isOpen={modalIsOpen === ADMIN}
+          setIsOpen={setModalOpen}
+          adminId={uniqueKey}
+        />
+      )}
       <StudentScoreModal
         isOpen={modalIsOpen === 'Students'}
         setIsOpen={setModalOpen}
@@ -123,14 +198,16 @@ TableRow.defaultProps = {
   colIsBadge: [],
   sectionTitle: '',
   statusCol: -1,
+  setAlertState: null,
 };
 
 TableRow.propTypes = {
-  uniqueKey: PropTypes.number,
-  data: PropTypes.arrayOf(PropTypes.node),
+  uniqueKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  data: PropTypes.arrayOf(PropTypes.any),
   colIsBadge: PropTypes.arrayOf(PropTypes.number),
   sectionTitle: PropTypes.string,
   statusCol: PropTypes.number,
+  setAlertState: PropTypes.func,
 };
 
 export default TableRow;
