@@ -11,9 +11,11 @@ import * as yup from 'yup';
 import styles from './EditMasterTeacherModal.module.css';
 import { TLPBackend, reloadPage } from '../../common/utils';
 import WarningModal from '../WarningModal/WarningModal';
+// import EditMasterTeacherConfirmationModal from '../EditMasterTeacherConfirmationModal/EditMasterTeacherConfirmationModal';
 
 const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [showEditMasterTeacherAlert, setShowEditMasterTeacherAlert] = useState(false);
+  // const [showEditMTConfirmation, setShowEditMTConfirmation] = useState(false);
   const closeModal = () => {
     setIsOpen(false);
     setShowEditMasterTeacherAlert(true);
@@ -128,7 +130,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     delayError: 750,
   });
 
-  const onSubmit = async data => {
+  const finishEdits = async data => {
     try {
       await assignSites(initialTeacherData.siteList, sites);
       await updateMasterTeacherData(data);
@@ -136,6 +138,23 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     } catch (err) {
       setErrorMessage(err.message);
     }
+  };
+
+  const onSubmit = async data => {
+    // if (
+    //   initialTeacherData.siteList
+    //     .map(site => site.siteId)
+    //     .sort()
+    //     .join(',') ===
+    //   sites
+    //     .map(site => site.siteId)
+    //     .sort()
+    //     .join(',')
+    // ) {
+    await finishEdits(data);
+    // } else {
+    //   setShowEditMTConfirmation(true);
+    // }
   };
 
   const getMasterTeacherData = async () => {
@@ -199,6 +218,12 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
         body="teacher"
         deleteFunc={deleteMasterTeacher}
       />
+      {/* <EditMasterTeacherConfirmationModal
+        isOpen={showEditMTConfirmation}
+        setIsOpen={setShowEditMTConfirmation}
+        name={teacherName}
+        onSubmitFunc={async () => { await handleSubmit(finishEdits); }}
+      /> */}
       <Modal show={isOpen} onHide={() => setIsOpen(false)}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Modal.Header closeButton>
