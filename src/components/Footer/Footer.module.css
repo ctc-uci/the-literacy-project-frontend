@@ -1,9 +1,23 @@
+
+.footer{
+  bottom: 0;
+  width: 100em;
+  height: 184px;
+  font-size: 18px;
+}
+
 .button-wrapper {
   padding-left: 150px;
 }
 
 .to-top {
   font-weight: bold;
+  color: var(--color-dark-blue);
+
+}
+
+.italic{
+  font-style: italic;
 }
 
 .button {
@@ -11,19 +25,32 @@
   border: 0;
 }
 
+.top{
+  height: 34px;
+}
+
 .middle {
+  height: 150px;
   background-color: #5f758d;
   color: white;
   font-weight: bold;
   display: flex;
   justify-content: center;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  align-items: center;
+
+}
+
+.bottom{
+  display: flex;
+  height: 52px;
+  flex-direction: column;
+  justify-content: center;
+
 }
 
 .logo {
-  background-color: #e5e5e5;
-  border-radius: 50%;
+  width: 109px;
+  height: 83px;
 }
 
 .copyright {
@@ -34,9 +61,11 @@
 }
 
 .footer-link {
-  all: unset;
+  text-decoration: none;
+  color: white;
 }
 
 .footer-link:hover {
-  all: unset;
+  /* all: unset; */
+  color: white;
 }

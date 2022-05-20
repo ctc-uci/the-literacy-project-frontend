@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import styles from './Footer.module.css';
-import logo from './logo.png';
+import logo from '../../assets/logos/logo-white.png';
 
 const Footer = () => {
   const goTopOfPage = () => {
@@ -9,11 +9,13 @@ const Footer = () => {
   };
 
   return (
-    <div>
-      <Row>
+    <div classNam={styles.footer}>
+      <Row className={styles.top}>
         <div className={styles['button-wrapper']}>
           <button type="button" className={styles.button} onClick={goTopOfPage}>
-            <div className={styles['to-top']}>↑ Back to Top</div>
+            <div className={styles['to-top']}>
+              ↑ <span className={styles.italic}>Back to Top</span>
+            </div>
           </button>
         </div>
       </Row>
@@ -62,7 +64,7 @@ const Footer = () => {
           </div>
         </Col>
       </Row>
-      <Row>
+      <Row className={styles.bottom}>
         <div className={styles.copyright}>
           Copyright © 2017, The Literacy Project. All Rights Reserved.
         </div>

@@ -25,6 +25,7 @@ import StudentGroupView from './pages/student-group-view/student-group-view';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
 import ViewEditSite from './pages/ViewEditSite/ViewEditSitePage';
 import NavigationBar from './components/NavigationBar/NavigationBar';
+import Footer from './components/Footer/Footer';
 
 import ScrollToTop from './common/ScrollToTop';
 
@@ -41,6 +42,14 @@ function NavBarWrapper() {
     </>
   );
 }
+
+// function FooterWrapper() {
+//   return (
+//     <>
+
+//     </>
+//   );
+// }
 
 ReactDOM.render(
   <React.StrictMode>
@@ -169,8 +178,10 @@ ReactDOM.render(
             <Route exact path="/access-denied" element={<AccessDeniedView />} />
             <Route exact path="/not-found" element={<NotFoundView />} />
             <Route exact path="*" element={<Navigate to="/not-found" />} />
+            {/* <Route element={} /> */}
           </Route>
         </Routes>
+        <Footer />
       </Router>
     </CookiesProvider>
   </React.StrictMode>,
