@@ -131,7 +131,8 @@
   padding-bottom: 5px;
 }
 
-.area-data-info > p > img, .area-mt-icon {
+.area-data-info > p > img,
+.area-mt-icon {
   margin-left: -10px;
   margin-right: 10px;
   width: 20px;

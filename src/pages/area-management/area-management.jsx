@@ -18,6 +18,7 @@ import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
 import Graph from '../../components/Graph/Graph';
+import CSVButton from '../../components/CSVButton/CSVButton';
 import AreaManagementFilter from '../../components/AreaManagementFilter/AreaManagementFilter';
 
 const AreaManagement = () => {
@@ -29,7 +30,6 @@ const AreaManagement = () => {
   const [sortBy, setSortBy] = useState('A-Z');
   const [testScores, setTestScores] = useState({});
   const [error, setError] = useState(null);
-
   const sorts = ['A-Z', 'Z-A'];
 
   function getFilters() {
@@ -319,12 +319,7 @@ const AreaManagement = () => {
                   {getAllAreaStats().student_count} Students
                 </p>
               </div>
-              <Button
-                variant="primary"
-                className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
-              >
-                Export to CSV
-              </Button>
+              <CSVButton type="allAreas" />
             </Card>
             <p>All Areas</p>
             <p>Year: 2021-22 Cycle: 1</p>

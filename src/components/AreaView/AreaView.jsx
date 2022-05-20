@@ -1,14 +1,14 @@
 import { React, useState, useEffect } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, DropdownButton, Dropdown } from 'react-bootstrap';
 import { BsPeople } from 'react-icons/bs';
-import { TLPBackend, calculateScores } from '../../common/utils';
-import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
+import { TLPBackend, calculateScores, formatSchoolYear } from '../../common/utils';
 import SitesTable from './sitesTable';
 import styles from './AreaView.module.css';
 import Graph from '../Graph/Graph';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
+import CSVButton from '../CSVButton/CSVButton';
 
 const BackToAllAreas = () => {
   Navigate('/');
@@ -23,6 +23,28 @@ const AreaView = () => {
   const [areaMTNum, setAreaMTNum] = useState(0);
   const [areaSiteNum, setAreaSiteNum] = useState(0);
   const isValues = areaStudentNum === 0 && areaMTNum === 0 && areaSiteNum === 0;
+  const [schoolYear, setSchoolYear] = useState('All');
+  const [schoolYearChoices, setSchoolYearChoices] = useState([]);
+  const [cycle, setCycle] = useState('All');
+  const cycleChoices = ['All', 'Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
+
+  // Get all student school years for this area
+  const getSchoolYears = data => {
+    return data
+      .reduce(
+        (acc, student) => {
+          if (student.year) {
+            if (!acc.includes(student.year)) {
+              acc.push(student.year);
+            }
+          }
+          return acc;
+        },
+        ['All'],
+      )
+      .sort()
+      .reverse();
+  };
 
   // Gets area name from backend; sends user back if area ID is invalid
   useEffect(async () => {
@@ -55,7 +77,6 @@ const AreaView = () => {
         BackToAllAreas();
       }
     } catch (err) {
-      // console.log(err);
       BackToAllAreas();
     }
 
@@ -70,6 +91,7 @@ const AreaView = () => {
 
         // Get Student Count
         setAreaStudentNum(studentScoresRes.data.length);
+        setSchoolYearChoices(getSchoolYears(studentScoresRes.data));
       } else {
         setTestScores('');
         setError(error);
@@ -78,13 +100,21 @@ const AreaView = () => {
     fetchStudents();
   }, []);
 
-  const [schoolYear, setSchoolYear] = useState('2020-21');
-  // const [schoolYearChoices, setSchoolYearChoices] = useState(['2020-21', '2019-20']);
-  const schoolYearChoices = ['2020-21', '2019-20'];
-  const [cycle, setCycle] = useState('Cycle 1');
-  // const [cycleChoices, setCycleChoices] = useState(['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4']);
-  const cycleChoices = ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
-  const [searchQuery, setSearchQuery] = useState('');
+  const updateSchoolYear = newSchoolYear => {
+    setSchoolYear(newSchoolYear);
+
+    // const schoolYearFilter =
+    //   newSchoolYear === 'All' ? null : area => area.years && area.years.includes(newSchoolYear);
+
+    // setFilters({
+    //   ...filters,
+    //   year: schoolYearFilter,
+    // });
+  };
+
+  const updateCycle = newCycle => {
+    setCycle(newCycle);
+  };
 
   return (
     <div>
@@ -97,44 +127,46 @@ const AreaView = () => {
             / {areaName}
           </div>
           <div className={styles.search_query_filters}>
-            <div className={styles.select_school_year_container}>
-              <h1 className={styles.school_year_header}>School Year</h1>
-              <div className={styles.select_school_year}>
-                <DropdownMenu
-                  choices={schoolYearChoices}
-                  current={schoolYear}
-                  setFn={setSchoolYear}
-                  innerClass={styles.search_option_dropdown_inner}
-                />
-              </div>
+            <div className={styles['school-year-container']}>
+              <h3>School Year</h3>
+              <DropdownButton
+                variant="outline-secondary"
+                title={schoolYear === 'All' ? schoolYear : formatSchoolYear(schoolYear)}
+                className={styles['school-year-dropdown']}
+              >
+                {schoolYearChoices.map(year => (
+                  <Dropdown.Item
+                    onClick={() => {
+                      updateSchoolYear(year);
+                    }}
+                    key={year}
+                  >
+                    {year === 'All' ? year : `${formatSchoolYear(year)}`}
+                  </Dropdown.Item>
+                ))}
+              </DropdownButton>
             </div>
-            <div className={styles.select_cycle_container}>
-              <h1 className={styles.cycle_header}>Cycle</h1>
-              <div className={styles.select_cycle}>
-                <DropdownMenu
-                  choices={cycleChoices}
-                  current={cycle}
-                  setFn={setCycle}
-                  innerClass={styles.search_option_dropdown_inner}
-                />
-              </div>
-            </div>
-            <div className={styles.search_sites_container}>
-              <input
-                type="text"
-                className={styles.site_search_bar}
-                placeholder="Search Sites"
-                defaultValue={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-              />
-              <Button variant="primary" className={styles.site_search_button}>
-                Search
-              </Button>
+            <div className={styles['cycle-container']}>
+              <h3>Cycle</h3>
+              <DropdownButton
+                variant="outline-secondary"
+                title={cycle === 'All' ? cycle : cycle}
+                className={styles['cycle-dropdown']}
+              >
+                {cycleChoices.map(c => (
+                  <Dropdown.Item
+                    onClick={() => {
+                      updateCycle(c);
+                    }}
+                    key={c}
+                  >
+                    {c === 'All' ? c : c}
+                  </Dropdown.Item>
+                ))}
+              </DropdownButton>
             </div>
           </div>
-          {/* <div className="site-container"> */}
-          <SitesTable areaId={Number.parseInt(areaId, 10)} />
-          {/* </div> */}
+          <SitesTable areaId={Number.parseInt(areaId, 10)} year={schoolYear} cycle={cycle} />
         </div>
         {isValues ? (
           <div className="data">
@@ -162,12 +194,7 @@ const AreaView = () => {
                   {areaStudentNum} Students
                 </p>
               </div>
-              <Button
-                className={`btn btn-primary ${styles.empty_export_stats_to_csv_btn}`}
-                disabled
-              >
-                Export to CSV
-              </Button>
+              <CSVButton type="area" areaId={Number.parseInt(areaId, 10)} />
             </Card>
           </div>
         ) : (

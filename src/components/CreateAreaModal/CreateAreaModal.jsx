@@ -26,7 +26,7 @@ const CreateAreaModal = ({ isOpen, setIsOpen }) => {
 
     if (areaNames.indexOf(areaName) > -1) {
       // same area name as existing one
-      setAlertText(`[ERROR] area name ${areaName} already exists`);
+      setAlertText(`[ERROR] Area Name ${areaName} already exists`);
       setIsAlertSuccess(false);
       closeModal();
       return;
