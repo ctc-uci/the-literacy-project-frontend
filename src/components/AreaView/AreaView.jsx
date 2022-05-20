@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { Button, Card, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Card, DropdownButton, Dropdown } from 'react-bootstrap';
 import { BsPeople } from 'react-icons/bs';
 import { TLPBackend, calculateScores, formatSchoolYear } from '../../common/utils';
 import SitesTable from './sitesTable';
@@ -223,9 +223,7 @@ const AreaView = () => {
                   {areaStudentNum} Students
                 </p>
               </div>
-              <Button className={`btn btn-primary ${styles.export_stats_to_csv_btn}`}>
-                Export to CSV
-              </Button>
+              <CSVButton type="area" areaId={Number.parseInt(areaId, 10)} />
             </Card>
             <div className={styles.graph_headings}>
               <p>{areaName}</p>
