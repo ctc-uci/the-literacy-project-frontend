@@ -1,0 +1,203 @@
+@import '../../common/vars.css';
+
+.create-student-group-modal {
+  background-color: #fdfdfd;
+  color: #000;
+  font-family: var(font-family), Helvetica, Arial, sans-serif;
+  font-size: 1.2em;
+  font-weight: 400;
+  width: 90%;
+  height: 1000px;
+  border: 1.5px solid #ced4da;
+  border-radius: 10px;
+  position: absolute;
+  top: 10%;
+  left: 25%;
+}
+
+.create-student-group-modal-header {
+  padding: 15px 10px 15px 10px;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1.5px solid #ced4da;
+}
+
+.create-student-group-modal-top-bar-title {
+  font-size: 25px;
+  font: Calibri;
+  text-align: center;
+}
+
+.create-student-group-modal-body {
+  padding: 0 3em 7em 3em;
+}
+
+.create-student-group-modal-footer {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+}
+
+.create-student-group-cancel-button {
+  margin: 0 1em 0 0;
+}
+
+.create-student-group-save-button {
+  margin: 0 1em 0 0;
+}
+
+.create-student-group-school-cycle {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.create-student-group-meeting {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.create-student-group-modal-field-desc {
+  padding: 30px 10px 10px 5px;
+  font-size: 20px;
+}
+
+.create-student-group-badges {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modal-text-input {
+  color: #767676;
+  border-radius: 10px;
+  text-align: left;
+  padding: 0.5em 0 0.5em 1em;
+  width: 98%;
+  border: 1px solid #ced4da;
+  line-height: 32px;
+  font-family: var(font-family), Helvetica, Arial, sans-serif;
+  font-size: 1em;
+}
+
+.modal-text-input:focus {
+  color: #767676;
+  border-radius: 10px;
+  text-align: left;
+  padding: 0.5em 0 0.5em 1em;
+  width: 98%;
+  border: 1px solid #80bdff;
+  box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
+  outline: none;
+  line-height: 32px;
+  font-family: var(font-family), Helvetica, Arial, sans-serif;
+  font-size: 1em;
+}
+
+.modal-text-input-error {
+  border: 1px solid #ced4da;
+  color: #767676;
+  border-radius: 10px;
+  text-align: left;
+  padding: 0.5em 0 0.5em 1em;
+  width: 98%;
+  border-radius: 10px;
+  border: 1px solid #e53e3e;
+  line-height: 32px;
+  font-family: var(font-family), Helvetica, Arial, sans-serif;
+  font-size: 1em;
+}
+
+.modal-text-input-error:focus {
+  color: #767676;
+  border-radius: 10px;
+  text-align: left;
+  padding: 0.5em 0 0.5em 1em;
+  width: 98%;
+  border: 1px solid #80bdff;
+  box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
+  outline: none;
+  line-height: 32px;
+  font-family: var(font-family), Helvetica, Arial, sans-serif;
+  font-size: 1em;
+}
+
+.student-badge {
+  margin-right: 1em;
+  margin-bottom: 1em;
+  background-color: var(--color-gray-white) !important;
+  color: #212529;
+  padding: 10px;
+  padding-right: 15px;
+  font-size: 0.85em;
+}
+
+.student-badge-icon {
+  margin-right: 6px;
+  padding: 2px;
+}
+
+.time-input {
+  width: 50%;
+  height: 49px;
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  padding: 0em 0.5em 0em 1em;
+  color: #6c757d;
+}
+
+.time-input:focus {
+  width: 50%;
+  height: 49px;
+  border-radius: 10px;
+  border: 1px solid #80bdff;
+  box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
+  outline: none;
+  padding: 0em 0.5em 0em 1em;
+  color: #6c757d;
+}
+
+.time-input-error {
+  width: 50%;
+  height: 49px;
+  border-radius: 10px;
+  border: 1px solid #e53e3e;
+  padding: 0em 0.5em 0em 1em;
+  color: #6c757d;
+}
+
+.students-select:focus {
+  border: 1px solid #80bdff;
+  box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.school-year-err-message {
+  color: #e53e3e;
+  font-size: 0.8em;
+  padding: 0.25em 0 0 0.5em;
+}
+
+.school-cycle-err-message {
+  color: #e53e3e;
+  font-size: 0.8em;
+  padding: 0.25em 2em 0 0;
+  margin: 0 2.5em 0 0;
+}
+
+.meeting-day-err-message {
+  color: #e53e3e;
+  font-size: 0.8em;
+  padding: 0.25em 0 0 0.5em;
+}
+
+.meeting-time-err-message {
+  color: #e53e3e;
+  font-size: 0.8em;
+  padding: 0.25em 2em 0 0;
+  margin: 0 1.75em 0 0;
+}

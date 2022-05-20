@@ -26,6 +26,8 @@ import LoginResetPasswordView from './pages/login-reset-password/login-reset-pas
 import ViewEditSite from './pages/ViewEditSite/ViewEditSitePage';
 import NavigationBar from './components/NavigationBar/NavigationBar';
 
+import ScrollToTop from './common/ScrollToTop';
+
 const { ADMIN_ROLE, USER_ROLE } = AUTH_ROLES;
 
 // useNavigate for redirects
@@ -44,6 +46,7 @@ ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/recover-password" exact element={<LoginRecoverPasswordView />} />

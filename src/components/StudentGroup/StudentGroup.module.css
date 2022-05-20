@@ -26,8 +26,12 @@
 }
 
 .body-content {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
-  margin: auto;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .row {

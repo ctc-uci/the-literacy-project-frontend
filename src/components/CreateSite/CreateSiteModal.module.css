@@ -57,7 +57,7 @@ input[type='number'] {
   padding: 0px 30px 10px 50px;
 }
 
-label {
+.label {
   padding-top: 10px;
 }
 
@@ -67,7 +67,7 @@ label {
 
 .input-fields-coalesce-wrapper {
   display: flex;
-  width: 520px;
+  width: 380px;
   justify-content: space-between;
 }
 
@@ -78,4 +78,8 @@ label {
 .addr-small-field-invalid {
   border: 1px solid #e53e3e;
   width: 90%;
+}
+
+.err-msg {
+  margin-left: 1em;
 }

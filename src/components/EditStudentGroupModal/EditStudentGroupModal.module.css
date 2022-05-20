@@ -1,0 +1,181 @@
+@import '../../common/vars.css';
+
+.edit-student-group-modal {
+  background-color: #fdfdfd;
+  color: #000;
+  font-family: var(font-family), Helvetica, Arial, sans-serif;
+  font-size: 1.2em;
+  font-weight: 400;
+  width: 90%;
+  height: 1000px;
+  border: 1.5px solid #ced4da;
+  border-radius: 10px;
+  position: absolute;
+  top: 10%;
+  left: 25%;
+}
+
+.edit-student-group-modal-header {
+  padding: 15px 10px 15px 10px;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1.5px solid #ced4da;
+}
+
+.edit-student-group-modal-top-bar-title {
+  font-size: 25px;
+  font: Calibri;
+  text-align: center;
+}
+
+.edit-student-group-modal-body {
+  padding: 0 3em 7em 3em;
+}
+
+.edit-student-group-modal-footer {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+}
+
+.edit-student-group-cancel-button {
+  margin: 0 1em 0 0;
+}
+
+.edit-student-group-delete-button {
+  margin: 0 1em 0 0;
+}
+
+.edit-student-group-save-button {
+  margin: 0 1em 0 0;
+}
+
+.edit-student-group-school-cycle {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.edit-student-group-meeting {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.edit-student-group-modal-field-desc {
+  padding: 30px 10px 10px 5px;
+  font-size: 20px;
+}
+
+.edit-student-group-badges {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modal-text-input {
+  color: #767676;
+  border-radius: 10px;
+  text-align: left;
+  padding: 0.5em 0 0.5em 1em;
+  width: 98%;
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  line-height: 32px;
+  font-family: var(font-family), Helvetica, Arial, sans-serif;
+  font-size: 1em;
+}
+
+.modal-text-input:focus {
+  color: #767676;
+  border-radius: 10px;
+  text-align: left;
+  padding: 0.5em 0 0.5em 1em;
+  width: 98%;
+  border: 1px solid #80bdff;
+  box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
+  outline: none;
+  line-height: 32px;
+  font-family: var(font-family), Helvetica, Arial, sans-serif;
+  font-size: 1em;
+}
+
+/* .edit-student-group-exit-button {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  background-color: #fdfdfd;
+  border: 0px;
+  font-weight: 800;
+  cursor: pointer;
+} */
+
+/* .edit-student-group-cancel-button {
+  background-color: var(--color-dark-gray);
+  color: #fdfdfd;
+  width: 96px;
+  height: 36px;
+  size: 16px;
+  border-radius: 4px;
+  text-align: center;
+  border-width: 4px;
+  border-color: #fdfdfd;
+  padding: 6px 12px 6px 12px;
+  position: absolute;
+  bottom: 20px;
+  right: 130px;
+  cursor: pointer;
+}
+
+.edit-student-group-save-button {
+  background-color: var(--color-baby-blue);
+  color: #fdfdfd;
+  width: 96px;
+  height: 36px;
+  border-radius: 4px;
+  padding: 6px 12px 12px 12px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  border-width: 1px;
+  border-color: #fdfdfd;
+  cursor: pointer;
+} */
+
+.student-badge {
+  margin-right: 1em;
+  margin-bottom: 1em;
+  background-color: var(--color-gray-white) !important;
+  color: #212529;
+  padding: 10px;
+  padding-right: 15px;
+  font-size: 0.85em;
+}
+
+.student-badge-icon {
+  margin-right: 6px;
+  padding: 2px;
+}
+
+.time-input {
+  width: 50%;
+  height: 49px;
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  padding: 0px 15px 0px 15px;
+  color: #6c757d;
+}
+
+.time-input:focus {
+  width: 50%;
+  height: 49px;
+  border-radius: 10px;
+  border: 1px solid #80bdff;
+  box-shadow: 0px 0px 0px 3.2px rgba(0, 123, 255, 0.25);
+  outline: none;
+  padding: 0px 15px 0px 15px;
+  color: #6c757d;
+}

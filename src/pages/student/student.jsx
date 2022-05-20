@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
 import { BsPencil, BsBackspace, BsCheck2All } from 'react-icons/bs';
 import { Table, Button, DropdownButton, Dropdown, Form, Alert, CloseButton } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import Select from 'react-select';
 import Graph from '../../components/Graph/Graph';
 import Footer from '../../components/Footer/Footer';
 import styles from './student.module.css';
-import { TLPBackend } from '../../common/utils';
+import { TLPBackend, capitalize } from '../../common/utils';
+import WarningModal from '../../components/WarningModal/WarningModal';
 
 const StudentView = () => {
   const { studentId } = useParams();
@@ -18,11 +19,13 @@ const StudentView = () => {
   const [showEditAlert, setShowEditAlert] = useState(false);
   const [alertText, setAlertText] = useState('');
   const [isAlertSuccess, setIsAlertSuccess] = useState(true);
+  const [warningModalIsOpen, setWarningModalIsOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editStudentData, setEditStudentData] = useState({
     studentGrade: null,
     studentGroup: null,
     studentEthnicity: null,
+    studentGender: null,
     studentHomeTeacher: null,
   });
   // const [editOptions, setEditOptions] = useState({});
@@ -53,7 +56,13 @@ const StudentView = () => {
       name: student.studentGroupName,
       groupId: student.studentGroupId,
     };
-    tempStudentData.studentEthnicity = student.ethnicity;
+    tempStudentData.studentEthnicity = student.ethnicity.map(item => {
+      if (item === 'american indian or alaska native') {
+        return { value: item, label: 'American Indian or Alaska Native' };
+      }
+      return { value: item, label: item.charAt(0).toUpperCase() + item.slice(1) };
+    });
+    tempStudentData.studentGender = capitalize(student.gender);
     tempStudentData.studentHomeTeacher = student.homeTeacher;
     setEditStudentData(tempStudentData);
   };
@@ -62,11 +71,13 @@ const StudentView = () => {
     const editedData = {
       firstName: student.firstName,
       lastName: student.lastName,
-      gender: student.gender,
+      gender: editStudentData.studentGender.toLowerCase(),
       grade: editStudentData.studentGrade,
       homeTeacher: editStudentData.studentHomeTeacher,
       studentGroupId: editStudentData.studentGroup.groupId,
-      ethnicity: [editStudentData.studentEthnicity],
+      ethnicity: editStudentData.studentEthnicity.map(item => {
+        return item.value;
+      }),
     };
 
     TLPBackend.put(`/students/${studentId}`, editedData, {
@@ -85,6 +96,11 @@ const StudentView = () => {
         setShowEditAlert(true);
         setIsAlertSuccess(false);
       });
+  };
+
+  const deleteStudent = () => {
+    TLPBackend.delete(`/students/${student.studentId}`);
+    window.location.replace('/');
   };
 
   const calculateTotalPrePostData = resStudentsData => {
@@ -145,14 +161,20 @@ const StudentView = () => {
               6: '6th Grade',
             },
             ethnicityOptions: [
-              'white',
-              'black',
-              'asian',
-              'latinx',
-              'american indian or alaska native',
-              'non-specified',
+              { value: 'white', label: 'White' },
+              { value: 'black', label: 'Black' },
+              { value: 'asian', label: 'Asian' },
+              { value: 'latinx', label: 'Latinx' },
+              {
+                value: 'american indian or alaska native',
+                label: 'American Indian or Alaska Native',
+              },
+              { value: 'non-specified', label: 'Non-specified' },
             ],
-            studentGroups: [...resOptions.data],
+            genderOptions: ['male', 'female', 'non-specified'],
+            studentGroups: resOptions.data.filter(item => {
+              return item.cycle === res.data.cycle && item.year === res.data.year;
+            }),
           });
         })
         .catch(() => {
@@ -180,7 +202,7 @@ const StudentView = () => {
       <div className={styles['student-view']}>
         <section className={styles['student-return-name-section']}>
           <h2>
-            <a href={`/site/${student.siteId}`}>
+            <a href="/">
               <BsBackspace /> Return to {`${student.siteName}`}
             </a>
           </h2>
@@ -191,7 +213,27 @@ const StudentView = () => {
         <section className={styles['student-information-section']}>
           <hr />
           <div className={styles['student-information-section__title-button-wrapper']}>
-            <h2>Student Information</h2>
+            <div className={styles['student-information-section__title-and-delete']}>
+              <h2>Student Information</h2>
+              {editMode ? (
+                <div>
+                  <Button
+                    className={styles['delete-button']}
+                    variant="danger"
+                    onClick={() => setWarningModalIsOpen(true)}
+                  >
+                    Delete Student
+                  </Button>
+                  <WarningModal
+                    isOpen={warningModalIsOpen}
+                    setIsOpen={setWarningModalIsOpen}
+                    name={`${student.firstName} ${student.lastName}`}
+                    body="student"
+                    deleteFunc={deleteStudent}
+                  />
+                </div>
+              ) : null}
+            </div>
             {!editMode ? (
               <Button
                 variant="warning"
@@ -227,6 +269,7 @@ const StudentView = () => {
                   <th>Site</th>
                   <th>Student Group</th>
                   <th>Ethnicity</th>
+                  <th>Gender</th>
                   <th>Home Teacher</th>
                 </tr>
               </thead>
@@ -236,7 +279,19 @@ const StudentView = () => {
                     <td>{student.grade ? editOptions.gradeOptions[student.grade] : '-'}</td>
                     <td>{student.siteName ? student.siteName : '-'}</td>
                     <td>{student.studentGroupName ? student.studentGroupName : '-'}</td>
-                    <td>{student.ethnicity !== [] ? student.ethnicity.join(', ') : '-'}</td>
+                    <td>
+                      {student.ethnicity.length > 0
+                        ? student.ethnicity
+                            .map(item => {
+                              if (item === 'american indian or alaska native') {
+                                return 'American Indian or Alaska Native';
+                              }
+                              return item.charAt(0).toUpperCase() + item.slice(1);
+                            })
+                            .join(', ')
+                        : '-'}
+                    </td>
+                    <td>{student.gender ? capitalize(student.gender) : '-'}</td>
                     <td>{student.homeTeacher ? student.homeTeacher : '-'}</td>
                   </tr>
                 ) : (
@@ -289,21 +344,33 @@ const StudentView = () => {
                       </DropdownButton>
                     </td>
                     <td>
+                      <Select
+                        options={editOptions.ethnicityOptions}
+                        isMulti
+                        value={editStudentData.studentEthnicity}
+                        onChange={value => {
+                          const tempStudentData = { ...editStudentData };
+                          tempStudentData.studentEthnicity = value;
+                          setEditStudentData(tempStudentData);
+                        }}
+                      />
+                    </td>
+                    <td>
                       <DropdownButton
                         variant="outline-secondary"
-                        title={editStudentData.studentEthnicity}
+                        title={editStudentData.studentGender}
                       >
-                        {editOptions.ethnicityOptions.map(ethnicity => {
+                        {editOptions.genderOptions.map(gender => {
                           return (
                             <Dropdown.Item
-                              key={ethnicity}
+                              key={gender}
                               onClick={() => {
                                 const tempStudentData = { ...editStudentData };
-                                tempStudentData.studentEthnicity = ethnicity;
+                                tempStudentData.studentGender = gender;
                                 setEditStudentData(tempStudentData);
                               }}
                             >
-                              {ethnicity}
+                              {capitalize(gender)}
                             </Dropdown.Item>
                           );
                         })}
@@ -406,7 +473,7 @@ const StudentView = () => {
                 id: 3,
                 title: 'Go to Student Group',
                 src: 'links-card__student-group',
-                link: `/student-group/${student.studentGroupId}`,
+                link: `/student-groups/${student.studentGroupId}`,
               },
             ].map(linkObject => {
               return (

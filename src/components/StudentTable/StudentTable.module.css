@@ -1,5 +1,6 @@
-.view-group-btn {
-  color: #ffffff;
+.view-profile-btn {
+  background-color: var(--color-baby-blue);
+  color: var(--text-color-white);
 }
 
 td {

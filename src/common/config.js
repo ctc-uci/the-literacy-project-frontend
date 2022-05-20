@@ -8,5 +8,10 @@ const USER_STATUS = {
   INACTIVE: 'inactive',
   PENDING: 'pending',
 };
+const SECTIONS = {
+  ADMIN: 'Admin',
+  TEACHER: 'Master Teachers',
+  STUDENT: 'Student',
+};
 
-export { AUTH_ROLES, USER_STATUS };
+export { AUTH_ROLES, USER_STATUS, SECTIONS };

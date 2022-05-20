@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
 import styles from './StudentGroup.module.css';
 import { parseTime } from '../../common/utils';
 
 const StudentGroup = ({
+  groupId,
   groupName,
   studentList,
   meetingDay,
@@ -39,9 +41,11 @@ const StudentGroup = ({
                 {meetingDay} {parseTime(meetingTime)}
               </div>
             </div>
-            <Button className={styles['view-group-btn']} variant="primary">
-              View group
-            </Button>
+            <Link to={`/student-groups/${groupId}`}>
+              <Button className={styles['view-group-btn']} variant="primary">
+                View group
+              </Button>
+            </Link>
           </div>
           <div className={styles['body-content']}>
             <h5 className={styles['num-students']}>{studentList.length}</h5>
@@ -53,6 +57,7 @@ const StudentGroup = ({
 };
 
 StudentGroup.propTypes = {
+  groupId: PropTypes.number.isRequired,
   groupName: PropTypes.string.isRequired,
   studentList: PropTypes.arrayOf(String).isRequired,
   meetingDay: PropTypes.string.isRequired,
