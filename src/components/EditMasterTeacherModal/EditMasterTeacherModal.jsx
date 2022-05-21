@@ -11,11 +11,13 @@ import * as yup from 'yup';
 import styles from './EditMasterTeacherModal.module.css';
 import { TLPBackend, reloadPage } from '../../common/utils';
 import WarningModal from '../WarningModal/WarningModal';
-// import EditMasterTeacherConfirmationModal from '../EditMasterTeacherConfirmationModal/EditMasterTeacherConfirmationModal';
+import EditMasterTeacherConfirmationModal from '../EditMasterTeacherConfirmationModal/EditMasterTeacherConfirmationModal';
 
 const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   const [showEditMasterTeacherAlert, setShowEditMasterTeacherAlert] = useState(false);
-  // const [showEditMTConfirmation, setShowEditMTConfirmation] = useState(false);
+  const [showEditMTConfirmation, setShowEditMTConfirmation] = useState(false);
+  // Used to move over react hook form data to EditMTConfirmationModal
+  const [formData, setFormData] = useState({});
   const closeModal = () => {
     setIsOpen(false);
     setShowEditMasterTeacherAlert(true);
@@ -141,20 +143,27 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
   };
 
   const onSubmit = async data => {
-    // if (
-    //   initialTeacherData.siteList
-    //     .map(site => site.siteId)
-    //     .sort()
-    //     .join(',') ===
-    //   sites
-    //     .map(site => site.siteId)
-    //     .sort()
-    //     .join(',')
-    // ) {
-    await finishEdits(data);
-    // } else {
-    //   setShowEditMTConfirmation(true);
-    // }
+    if (
+      initialTeacherData.siteList
+        .map(site => site.siteId)
+        .sort()
+        .join(',') ===
+      sites
+        .map(site => site.siteId)
+        .sort()
+        .join(',')
+    ) {
+      await finishEdits(data);
+    } else {
+      setFormData({
+        ...data,
+        active: initialTeacherData.active.toLowerCase(),
+        beforeSites: initialTeacherData.siteList,
+        afterSites: sites,
+      });
+      setShowEditMTConfirmation(true);
+      setIsOpen(false);
+    }
   };
 
   const getMasterTeacherData = async () => {
@@ -218,12 +227,12 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
         body="teacher"
         deleteFunc={deleteMasterTeacher}
       />
-      {/* <EditMasterTeacherConfirmationModal
+      <EditMasterTeacherConfirmationModal
         isOpen={showEditMTConfirmation}
         setIsOpen={setShowEditMTConfirmation}
-        name={teacherName}
-        onSubmitFunc={async () => { await handleSubmit(finishEdits); }}
-      /> */}
+        teacherId={teacherId}
+        onSubmitData={formData}
+      />
       <Modal show={isOpen} onHide={() => setIsOpen(false)}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Modal.Header closeButton>

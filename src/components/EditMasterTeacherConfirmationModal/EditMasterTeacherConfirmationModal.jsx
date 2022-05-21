@@ -1,67 +1,54 @@
-// import { React, useState } from 'react';
-import { React } from 'react';
+import { React, useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
-// import { Modal, Button, Alert, CloseButton } from 'react-bootstrap';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Alert, CloseButton } from 'react-bootstrap';
 import styles from './EditMasterTeacherConfirmationModal.module.css';
+import { TLPBackend } from '../../common/utils';
 
-const EditMasterTeacherConfirmationModal = ({ isOpen, setIsOpen, name, onSubmitFunc }) => {
+const EditMasterTeacherConfirmationModal = ({ isOpen, setIsOpen, teacherId, onSubmitData }) => {
+  const [name, setName] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [droppedSites, setDroppedSites] = useState([]);
+  const [newSites, setNewSites] = useState([]);
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    const { firstName, lastName, beforeSites, afterSites } = onSubmitData;
+    setName(`${firstName} ${lastName}`);
+    setDroppedSites(beforeSites.filter(site => !afterSites.includes(site)));
+    setNewSites(afterSites.filter(site => !beforeSites.includes(site)));
+  }, [isOpen]);
+
   const closeModal = () => {
     setIsOpen(false);
   };
 
-  // const deleteCloseModal = () => {
-  //   setIsOpen(false);
-  //   setShowAlert(true);
-  // };
-
-  // const bodies = {
-  //   site: (
-  //     <p>
-  //       The site and students in it will no longer be available after deletion.{' '}
-  //       <span className={styles.undo}>You cannot undo this</span>. If you want to keep the sites,
-  //       you can choose to make this site <span className={styles.bold}>inactive</span> instead.
-  //     </p>
-  //   ),
-  //   area: (
-  //     <p>
-  //       The area, sites and students in it will no longer be available after deletion.{' '}
-  //       <span className={styles.undo}>You cannot undo this</span>. If you want to keep the area and
-  //       sites in it, you can choose to make this area <span className={styles.bold}>inactive</span>{' '}
-  //       instead.
-  //     </p>
-  //   ),
-  //   admin: (
-  //     <p>
-  //       The admin will no longer be available after deletion.{' '}
-  //       <span className={styles.undo}>You cannot undo this</span>. Did you want to edit this
-  //       instead?
-  //     </p>
-  //   ),
-  //   teacher: (
-  //     <p>
-  //       The teacher will no longer be available after deletion.{' '}
-  //       <span className={styles.undo}>You cannot undo this</span>. If you want to keep the teacher,
-  //       you can choose to make them <span className={styles.bold}>inactive</span> instead.
-  //     </p>
-  //   ),
-  //   student: (
-  //     <p>
-  //       The student will no longer be available after deletion.{' '}
-  //       <span className={styles.undo}>You cannot undo this</span>. Did you want to edit this
-  //       instead?
-  //     </p>
-  //   ),
-  //   studentGroup: (
-  //     <div>
-  //       <p>
-  //         The student group information will no longer be available after this deletion.*
-  //         <span className={styles.undo}>You cannot undo this</span>.
-  //       </p>
-  //       <p>*You can still access the students in this group after deletion.</p>
-  //     </div>
-  //   ),
-  // };
+  const finishEdits = async data => {
+    const { firstName, lastName, phoneNumber, email, notes, active } = data;
+    await TLPBackend.put(`/teachers/${teacherId}`, {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      notes: notes ?? '',
+      active,
+    });
+    await Promise.all(
+      newSites.map(ns =>
+        TLPBackend.post(`/teachers/add-site/${teacherId}`, { siteId: Number(ns.siteId) }),
+      ),
+    );
+    await Promise.all(
+      droppedSites.map(rs =>
+        TLPBackend.delete(`/teachers/remove-site/${teacherId}`, {
+          data: { siteId: Number(rs.siteId) },
+        }),
+      ),
+    );
+    setShowAlert(true);
+    closeModal();
+  };
 
   return (
     <>
@@ -75,32 +62,77 @@ const EditMasterTeacherConfirmationModal = ({ isOpen, setIsOpen, name, onSubmitF
           <Modal.Title className={styles['modal-title']}>Changed Sites Confirmation</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>
-            <span className={styles.bold}>
-              You have changed the following site assignments for {name} as follows:
-            </span>
-          </p>
+          <div className={styles.centerFlex}>
+            <div className={styles.threeQuarterWidth}>
+              <p>
+                <span className={styles.bold}>
+                  You have changed the following site assignments for {name} as follows:
+                </span>
+              </p>
+              {newSites.length > 0 ? (
+                <>
+                  <div className={styles.leftFlex}>
+                    <p>Added:</p>
+                  </div>
+                  <div className={styles.leftFlex}>
+                    <ul>
+                      {newSites.map(site => (
+                        <li key={site.siteId} className={styles.siteItem}>
+                          {site.siteName}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              ) : null}
+              {droppedSites.length > 0 ? (
+                <>
+                  <div className={styles.leftFlex}>
+                    <p>Dropped:</p>
+                  </div>
+                  <div className={styles.leftFlex}>
+                    <ul>
+                      {droppedSites.map(site => (
+                        <li key={site.siteId} className={styles.siteItem}>
+                          {site.siteName}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              ) : null}
+              <p>
+                If these changes are correct, press{' '}
+                <span className={styles.blue}>Save Changes</span>. If you made a mistake, press{' '}
+                <span className={styles.gray}>Cancel</span>.
+              </p>
+            </div>
+          </div>
         </Modal.Body>
         <Modal.Footer>
           <Button className={styles.buttons} variant="secondary" onClick={closeModal}>
             Cancel
           </Button>
-          <Button className={styles.buttons} variant="primary" onClick={onSubmitFunc}>
+          <Button
+            className={styles.buttons}
+            variant="primary"
+            onClick={() => finishEdits(onSubmitData)}
+          >
             Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
-      {/* {showAlert ? (
+      {showAlert ? (
         <div className="center-block">
           <Alert variant="success" className={styles['alert-custom']}>
-            Successfully deleted {name}.{' '}
+            Successfully edited {name}&apos;s data.{' '}
             <CloseButton
               className={styles['alert-close-btn']}
               onClick={() => setShowAlert(false)}
             />
           </Alert>
         </div>
-      ) : null} */}
+      ) : null}
     </>
   );
 };
@@ -108,8 +140,9 @@ const EditMasterTeacherConfirmationModal = ({ isOpen, setIsOpen, name, onSubmitF
 EditMasterTeacherConfirmationModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  onSubmitFunc: PropTypes.func.isRequired,
+  teacherId: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  onSubmitData: PropTypes.object.isRequired,
 };
 
 export default EditMasterTeacherConfirmationModal;
