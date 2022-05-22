@@ -1,0 +1,38 @@
+.common-table {
+  border-spacing: 0;
+  border-collapse: separate;
+  border: 1px solid #b9b9b9;
+  border-radius: 5px;
+  margin: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.common-table th, td {
+  border: 1px solid #b9b9b9;
+  padding: 5px 0;
+}
+
+.common-table thead {
+  border: 1px solid #b9b9b9;
+  font-weight: bold !important;
+  padding: 5px 0;
+  background: rgba(0, 0, 0, 0.05);
+  height: 60px;
+}
+.common-table thead td:first-child {
+  border-top-left-radius: 5px;
+}
+.common-table thead td:last-child {
+  border-top-right-radius: 5px;
+}
+
+.common-table tbody {
+  background: rgba(255, 255, 255, 0.0001);
+}
+.common-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 5px;
+}
+.common-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 5px;
+}
