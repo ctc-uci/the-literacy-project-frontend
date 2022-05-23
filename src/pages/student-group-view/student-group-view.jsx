@@ -7,7 +7,6 @@ import { TLPBackend, parseTime, calculateScores } from '../../common/utils';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
 import Graph from '../../components/Graph/Graph';
 import styles from './student-group-view.module.css';
-import Footer from '../../components/Footer/Footer';
 import EditStudentGroupModal from '../../components/EditStudentGroupModal/EditStudentGroupModal';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
 
@@ -191,7 +190,6 @@ const StudentGroupView = () => {
           <Button className={styles['export-csv-btn']}> Export to CSV </Button>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import styles from './Footer.module.css';
 import logo from '../../assets/logos/logo-white.png';
 
@@ -19,26 +19,24 @@ const Footer = () => {
           </button>
         </div>
       </Row>
-      <Row className={styles.middle}>
-        <Col md="auto">
-          <div className={styles.wrapper}>
-            <img src={logo} alt={logo} className={styles.logo} />
+      <div className={styles.middle}>
+        <div className={styles['mid-1']}>
+          <img src={logo} alt={logo} className={styles.logo} />
+          <div className={styles['mid-1-text']}>
+            <div>
+              <a
+                href="https://literacyproj.org"
+                target="_blank"
+                rel="noreferrer"
+                className={styles['footer-link']}
+              >
+                https://literacyproj.org
+              </a>
+            </div>
+            <div>124 Tustin Avenue, Suite 103 | Newport Beach, CA 92663</div>
           </div>
-        </Col>
-        <Col sm={4}>
-          <div>
-            <a
-              href="https://literacyproj.org"
-              target="_blank"
-              rel="noreferrer"
-              className={styles['footer-link']}
-            >
-              https://literacyproj.org
-            </a>
-          </div>
-          <div>124 Tustin Avenue, Suite 103 | Newport Beach, CA 92663</div>
-        </Col>
-        <Col md="auto">
+        </div>
+        <div className={styles['mid-2']}>
           {/* TODO: HELP DOCUMENTATION LINK */}
           <div>
             Help Documentation |{' '}
@@ -62,8 +60,8 @@ const Footer = () => {
               Privacy Policy
             </a>
           </div>
-        </Col>
-      </Row>
+        </div>
+      </div>
       <Row className={styles.bottom}>
         <div className={styles.copyright}>
           Copyright © 2017, The Literacy Project. All Rights Reserved.

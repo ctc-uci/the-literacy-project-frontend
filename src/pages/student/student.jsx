@@ -4,7 +4,6 @@ import { Table, Button, DropdownButton, Dropdown, Form, Alert, CloseButton } fro
 import { Link, useParams } from 'react-router-dom';
 import Select from 'react-select';
 import Graph from '../../components/Graph/Graph';
-import Footer from '../../components/Footer/Footer';
 import styles from './student.module.css';
 import { TLPBackend, capitalize } from '../../common/utils';
 
@@ -467,7 +466,6 @@ const StudentView = () => {
           </div>
         </section>
       </div>
-      <Footer />
       {showEditAlert ? (
         <div className="center-block">
           <Alert variant={isAlertSuccess ? 'primary' : 'danger'} className="alert-custom">

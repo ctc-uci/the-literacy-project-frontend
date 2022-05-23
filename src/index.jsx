@@ -43,14 +43,6 @@ function NavBarWrapper() {
   );
 }
 
-// function FooterWrapper() {
-//   return (
-//     <>
-
-//     </>
-//   );
-// }
-
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
@@ -178,10 +170,9 @@ ReactDOM.render(
             <Route exact path="/access-denied" element={<AccessDeniedView />} />
             <Route exact path="/not-found" element={<NotFoundView />} />
             <Route exact path="*" element={<Navigate to="/not-found" />} />
-            {/* <Route element={} /> */}
           </Route>
         </Routes>
-        <Footer />
+        {['/', '/people'].includes(window.location.pathname) && <Footer />}
       </Router>
     </CookiesProvider>
   </React.StrictMode>,
