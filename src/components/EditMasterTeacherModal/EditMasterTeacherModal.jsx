@@ -70,7 +70,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     });
     setTeacherData({ firstName, lastName, phoneNumber, email });
     // TODO: Make MTs table refresh instead of reloading page
-    // reloadPage();
+    reloadPage();
     setErrorMessage('');
   };
 
@@ -87,9 +87,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     );
     await Promise.all(
       removedSites.map(rs =>
-        TLPBackend.delete(`/teachers/remove-site/${teacherId}`, {
-          data: { siteId: Number(rs.siteId) },
-        }),
+        TLPBackend.put(`/teachers/remove-site/${teacherId}`, { siteId: Number(rs.siteId) }),
       ),
     );
   };

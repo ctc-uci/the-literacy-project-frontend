@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { Modal, Button, Alert, CloseButton } from 'react-bootstrap';
 import styles from './EditMasterTeacherConfirmationModal.module.css';
-import { TLPBackend } from '../../common/utils';
+import { TLPBackend, reloadPage } from '../../common/utils';
 
 const EditMasterTeacherConfirmationModal = ({ isOpen, setIsOpen, teacherId, onSubmitData }) => {
   const [name, setName] = useState('');
@@ -41,13 +41,13 @@ const EditMasterTeacherConfirmationModal = ({ isOpen, setIsOpen, teacherId, onSu
     );
     await Promise.all(
       droppedSites.map(rs =>
-        TLPBackend.delete(`/teachers/remove-site/${teacherId}`, {
-          data: { siteId: Number(rs.siteId) },
-        }),
+        TLPBackend.put(`/teachers/remove-site/${teacherId}`, { siteId: Number(rs.siteId) }),
       ),
     );
     setShowAlert(true);
     closeModal();
+    // TODO: Make MTs table refresh instead of reloading page
+    reloadPage();
   };
 
   return (
