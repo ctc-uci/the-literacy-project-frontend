@@ -8,6 +8,37 @@ import CommonTable from '../../common/CommonTable/CommonTable';
 import { TLPBackend, capitalize, formatSchoolYear } from '../../common/utils';
 import AdminStudentFilter from '../../components/AdminStudentFilter/AdminStudentFilter';
 
+const formatEthnicity = ethnicity => {
+  let eth = '';
+  ethnicity.forEach(e => {
+    eth += `${capitalize(e)}, `;
+  });
+  return eth.slice(0, -2);
+};
+
+const formatSiteInfo = (siteName, areaName, areaState, year, cycle) => {
+  const site = siteName || 'No assigned site';
+  const area = areaName || 'No assigned area';
+  const state = areaState || 'N/A';
+  let schoolYearAndCycle = year ? formatSchoolYear(year) : 'N/A';
+  schoolYearAndCycle = cycle ? `${schoolYearAndCycle}/Cycle ${cycle}` : 'N/A';
+
+  return [site, area, state, schoolYearAndCycle];
+};
+
+const formatSchoolYearAndCycle = (year, cycle) => {
+  let schoolYearAndCycle = year ? formatSchoolYear(year) : 'N/A';
+  schoolYearAndCycle = cycle ? `${schoolYearAndCycle}/Cycle ${cycle}` : 'N/A';
+  return schoolYearAndCycle;
+};
+
+const formatGrade = grade =>
+  ({
+    1: '1st',
+    2: '2nd',
+    3: '3rd',
+  }[grade] ?? `${grade}th`);
+
 const AdminStudentsView = () => {
   const [studentList, setStudentList] = useState([]);
   // eslint-disable-next-line no-unused-vars
@@ -33,37 +64,6 @@ const AdminStudentsView = () => {
   const inputHandler = e => {
     setSearchText(e.target.value.toLowerCase());
   };
-
-  const formatEthnicity = ethnicity => {
-    let eth = '';
-    ethnicity.forEach(e => {
-      eth += `${capitalize(e)}, `;
-    });
-    return eth.slice(0, -2);
-  };
-
-  const formatSiteInfo = (siteName, areaName, areaState, year, cycle) => {
-    const site = siteName || 'No assigned site';
-    const area = areaName || 'No assigned area';
-    const state = areaState || 'N/A';
-    let schoolYearAndCycle = year ? formatSchoolYear(year) : 'N/A';
-    schoolYearAndCycle = cycle ? `${schoolYearAndCycle}/Cycle ${cycle}` : 'N/A';
-
-    return [site, area, state, schoolYearAndCycle];
-  };
-
-  const formatSchoolYearAndCycle = (year, cycle) => {
-    let schoolYearAndCycle = year ? formatSchoolYear(year) : 'N/A';
-    schoolYearAndCycle = cycle ? `${schoolYearAndCycle}/Cycle ${cycle}` : 'N/A';
-    return schoolYearAndCycle;
-  };
-
-  const formatGrade = grade =>
-    ({
-      1: '1st',
-      2: '2nd',
-      3: '3rd',
-    }[grade] ?? `${grade}th`);
 
   const tbodyData = [];
   studentList.forEach(studentObj => {
