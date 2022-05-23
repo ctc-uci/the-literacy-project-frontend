@@ -3,64 +3,32 @@ import { Button, Dropdown, DropdownButton, InputGroup, FormControl } from 'react
 import { FaFilter } from 'react-icons/fa';
 import '../../custom.scss';
 import '../../common/vars.css';
-import { SECTIONS } from '../../common/config';
 import styles from './admin-students-view.module.css';
-import Table from '../../components/Table/Table';
+import CommonTable from '../../common/CommonTable/CommonTable';
 import { TLPBackend, capitalize, formatSchoolYear } from '../../common/utils';
 import AdminStudentFilter from '../../components/AdminStudentFilter/AdminStudentFilter';
 
 const AdminStudentsView = () => {
   const [studentList, setStudentList] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
   const [sortBy, setSortBy] = useState('A - Z');
   const [searchText, setSearchText] = useState('');
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [filters, setFilters] = useState({});
 
-  const sorts = ['A - Z', 'Z - A'];
+  useEffect(async () => {
+    try {
+      // TODO: pagination
+      const res = await TLPBackend.get('/students');
+      setStudentList(res.data);
+    } catch (err) {
+      setStudentList([]);
+      setError(err);
+    }
+  }, []);
 
-  const theadData = [
-    {
-      headerTitle: 'Name',
-      headerPopover: '',
-    },
-    {
-      headerTitle: 'Site',
-      headerPopover: '',
-    },
-    {
-      headerTitle: 'Grade',
-      headerPopover: '',
-    },
-    {
-      headerTitle: 'Gender',
-      headerPopover: '',
-    },
-    {
-      headerTitle: 'Home Teacher',
-      headerPopover: '',
-    },
-    {
-      headerTitle: 'Ethnicity',
-      headerPopover: '',
-    },
-    {
-      headerTitle: 'Area',
-      headerPopover: '',
-    },
-    {
-      headerTitle: 'State',
-      headerPopover: '',
-    },
-    {
-      headerTitle: 'School Year/Cycle',
-      headerPopover: '',
-    },
-    {
-      headerTitle: 'View Profile',
-      headerPopover: '',
-    },
-  ];
+  const sorts = ['A - Z', 'Z - A'];
 
   const inputHandler = e => {
     setSearchText(e.target.value.toLowerCase());
@@ -84,32 +52,18 @@ const AdminStudentsView = () => {
     return [site, area, state, schoolYearAndCycle];
   };
 
-  const formatGrade = grade => {
-    if (grade === 1) {
-      return '1st';
-    }
-    if (grade === 2) {
-      return '2nd';
-    }
-    if (grade === 3) {
-      return '3rd';
-    }
-    return `${grade}th`;
+  const formatSchoolYearAndCycle = (year, cycle) => {
+    let schoolYearAndCycle = year ? formatSchoolYear(year) : 'N/A';
+    schoolYearAndCycle = cycle ? `${schoolYearAndCycle}/Cycle ${cycle}` : 'N/A';
+    return schoolYearAndCycle;
   };
 
-  useEffect(async () => {
-    const res = await TLPBackend.get(`/students`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (res.status === 200) {
-      setStudentList(res.data);
-    } else {
-      setStudentList([]);
-      setError(error);
-    }
-  }, []);
+  const formatGrade = grade =>
+    ({
+      1: '1st',
+      2: '2nd',
+      3: '3rd',
+    }[grade] ?? `${grade}th`);
 
   const tbodyData = [];
   studentList.forEach(studentObj => {
@@ -211,6 +165,7 @@ const AdminStudentsView = () => {
   };
 
   // Applies search criteria, then filters, then sorts
+  // eslint-disable-next-line no-unused-vars
   const displayData = data => {
     return applyFilters(search(data)).sort(compareNames);
   };
@@ -280,6 +235,25 @@ const AdminStudentsView = () => {
       .sort();
   }
 
+  const tableRow = student => (
+    <tr key={student.studentId}>
+      <td>
+        {student.firstName} {student.lastName}
+      </td>
+      <td>{student.siteName ?? 'No assigned site'}</td>
+      <td>{formatGrade(student.grade)}</td>
+      <td>{capitalize(student.gender)}</td>
+      <td>{student.homeTeacher ?? 'Not recorded'}</td>
+      <td>{formatEthnicity(student.ethnicity)}</td>
+      <td>{student.areaName ?? 'No assigned area'}</td>
+      <td>{student.areaState ?? 'N/A'}</td>
+      <td>{formatSchoolYearAndCycle(student.year, student.cycle)}</td>
+      <td>
+        <button type="button">View Scores</button>
+      </td>
+    </tr>
+  );
+
   return (
     <div className={styles['student-container']}>
       <div className={styles['ctrl-group']}>
@@ -341,11 +315,24 @@ const AdminStudentsView = () => {
           </div>
         </div>
       </div>
-      <Table
-        theadData={theadData}
-        tbodyData={displayData(tbodyData)}
-        sectionTitle={SECTIONS.STUDENT}
-      />
+      <CommonTable>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Site</th>
+            <th>Grade</th>
+            <th>Gender</th>
+            <th>Home Teacher</th>
+            <th>Ethnicity</th>
+            <th>Area</th>
+            <th>State</th>
+            <th>School Year/Cycle</th>
+            <th>View Profile</th>
+          </tr>
+        </thead>
+        <tbody>{studentList.map(student => tableRow(student))}</tbody>
+      </CommonTable>
+      {JSON.stringify(studentList.slice(0, 5), null, 2)}
     </div>
   );
 };
