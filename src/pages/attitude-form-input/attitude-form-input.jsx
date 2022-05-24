@@ -50,7 +50,7 @@ const AttitudeFormInput = () => {
       <div className={styles['form-wrapper']}>
         <ReturnHeader
           returnText={`Return to ${studentData?.lastName}, ${studentData?.firstName}`}
-          returnLink="/"
+          returnLink={`/student/${studentID}`}
           rightText="Reading Attitude Survey"
         />
         <hr size="1" className={styles.divider} />

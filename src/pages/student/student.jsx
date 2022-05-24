@@ -6,6 +6,7 @@ import Select from 'react-select';
 import Graph from '../../components/Graph/Graph';
 import styles from './student.module.css';
 import { TLPBackend, capitalize } from '../../common/utils';
+import WarningModal from '../../components/WarningModal/WarningModal';
 
 const StudentView = () => {
   const { studentId } = useParams();
@@ -17,6 +18,7 @@ const StudentView = () => {
   const [showEditAlert, setShowEditAlert] = useState(false);
   const [alertText, setAlertText] = useState('');
   const [isAlertSuccess, setIsAlertSuccess] = useState(true);
+  const [warningModalIsOpen, setWarningModalIsOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editStudentData, setEditStudentData] = useState({
     studentGrade: null,
@@ -93,6 +95,11 @@ const StudentView = () => {
         setShowEditAlert(true);
         setIsAlertSuccess(false);
       });
+  };
+
+  const deleteStudent = () => {
+    TLPBackend.delete(`/students/${student.studentId}`);
+    window.location.replace('/');
   };
 
   const calculateTotalPrePostData = resStudentsData => {
@@ -205,7 +212,27 @@ const StudentView = () => {
         <section className={styles['student-information-section']}>
           <hr />
           <div className={styles['student-information-section__title-button-wrapper']}>
-            <h2>Student Information</h2>
+            <div className={styles['student-information-section__title-and-delete']}>
+              <h2>Student Information</h2>
+              {editMode ? (
+                <div>
+                  <Button
+                    className={styles['delete-button']}
+                    variant="danger"
+                    onClick={() => setWarningModalIsOpen(true)}
+                  >
+                    Delete Student
+                  </Button>
+                  <WarningModal
+                    isOpen={warningModalIsOpen}
+                    setIsOpen={setWarningModalIsOpen}
+                    name={`${student.firstName} ${student.lastName}`}
+                    body="student"
+                    deleteFunc={deleteStudent}
+                  />
+                </div>
+              ) : null}
+            </div>
             {!editMode ? (
               <Button
                 variant="warning"

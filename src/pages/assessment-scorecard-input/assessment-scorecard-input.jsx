@@ -50,7 +50,7 @@ const AssessmentScorecardInput = () => {
       <div className={styles['form-wrapper']}>
         <ReturnHeader
           returnText={`Return to ${studentData?.lastName}, ${studentData?.firstName}`}
-          returnLink="/"
+          returnLink={`/student/${studentID}`}
           rightText="Assessment Score Card"
         />
         <hr size="1" className={styles.divider} />
