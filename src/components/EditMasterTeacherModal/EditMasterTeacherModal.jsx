@@ -281,7 +281,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
               </label> */}
               <div>
                 <label htmlFor="phone-number" className={styles.phoneNumField}>
-                  <h3 className={styles.requiredSubtitles}>Phone Number</h3>
+                  <h3 className={styles.optionalSubtitles}>Phone Number</h3>
                   <input
                     type="text"
                     name="phoneNumber"
