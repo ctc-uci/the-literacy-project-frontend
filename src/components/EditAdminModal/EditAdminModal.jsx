@@ -191,17 +191,6 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
                 </div>
               </label>
             </div>
-            <label htmlFor="email" className={styles.emailField}>
-              <h3 className={styles.requiredSubtitles}>Email</h3>
-              <input
-                disabled
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={adminData.email}
-                className="form-control"
-              />
-            </label>
             <div>
               <label htmlFor="phone-number" className={styles.phoneNumField}>
                 <h3 className={styles.requiredSubtitles}>Phone Number</h3>
@@ -218,23 +207,7 @@ const EditAdminModal = ({ isOpen, setIsOpen, adminId }) => {
               <div className={`text-danger ${styles['err-msg']}`}>
                 {errors.phoneNumber?.message ?? <>{'\u00A0'}</>}
               </div>
-              {/* {JSON.stringify(errors)} */}
             </div>
-            <label htmlFor="active" className={styles.emailField}>
-              <h3 className={styles.requiredSubtitles}>Status</h3>
-              <select
-                name="active"
-                className="form-control"
-                onChange={e => setStatus(e.target.value)}
-              >
-                <option selected={status === 'active'} value="Active">
-                  Active
-                </option>
-                <option selected={status === 'inactive'} value="Inactive">
-                  Inactive
-                </option>
-              </select>
-            </label>
           </Modal.Body>
 
           <Modal.Footer>
