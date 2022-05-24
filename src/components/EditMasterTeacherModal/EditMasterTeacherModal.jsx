@@ -116,7 +116,7 @@ const EditMasterTeacherModal = ({ isOpen, setIsOpen, teacherId }) => {
     .object({
       firstName: yup.string().required('First name is required'),
       lastName: yup.string().required('Last name is required'),
-      phoneNumber: yup.string(),
+      phoneNumber: yup.string().matches(/^\d*$/, 'Phone Number should be all digits'),
     })
     .required();
 
