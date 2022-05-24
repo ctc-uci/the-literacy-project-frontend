@@ -16,7 +16,6 @@ import StudentProfileBox from '../../components/StudentProfileBox/StudentProfile
 import StudentTable from '../../components/StudentTable/StudentTable';
 import Graph from '../../components/Graph/Graph';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
-import Footer from '../../components/Footer/Footer';
 import CreateStudentGroupModal from '../../components/CreateStudentGroupModal/CreateStudentGroupModal';
 import CreateStudentModal from '../../components/CreateStudentModal/CreateStudentModal';
 
@@ -413,7 +412,7 @@ const MasterTeacherView = ({ cookies }) => {
           )}
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
