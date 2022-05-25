@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { Card, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Card, DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import { BsPeople } from 'react-icons/bs';
 import { TLPBackend, calculateScores, formatSchoolYear } from '../../common/utils';
 import SitesTable from './sitesTable';
@@ -66,10 +66,14 @@ const AreaView = () => {
 
         // Get Unique Teacher Count
         const count = [];
+        const userIds = [];
         sitesCount.map(async site => {
           const { data: siteTeachers } = await TLPBackend.get(`/teachers/site/${site.siteId}`);
           if (siteTeachers.length !== 0) {
-            count.push(siteTeachers);
+            if (!userIds.includes(siteTeachers[0].userId)) {
+              count.push(siteTeachers);
+              userIds.push(siteTeachers[0].userId);
+            }
           }
           setAreaMTNum([...new Set(count)].length);
         });
@@ -171,8 +175,8 @@ const AreaView = () => {
         {isValues ? (
           <div className="data">
             <Card className={styles.stats}>
-              <p className={styles['area-empty-card-title']}>{areaName} Data Overview</p>
-              <div className={styles['area-empty-card-info']}>
+              <p className={styles['area-card-title']}>{areaName} Data Overview</p>
+              <div className={styles['area-card-info']}>
                 <p>
                   <img
                     className={styles['area-dropdown__open__area_stats__section-icon']}
@@ -194,7 +198,12 @@ const AreaView = () => {
                   {areaStudentNum} Students
                 </p>
               </div>
-              <CSVButton type="area" areaId={Number.parseInt(areaId, 10)} />
+              <Button
+                className={`btn btn-primary ${styles.empty_export_stats_to_csv_btn}`}
+                disabled
+              >
+                Export to CSV
+              </Button>
             </Card>
           </div>
         ) : (
