@@ -237,6 +237,7 @@ const MasterTeacherView = ({ cookies }) => {
     }
     await fetchTeacherData();
   }, []);
+  // }, [studentGroupCreated]);
 
   return (
     <div>

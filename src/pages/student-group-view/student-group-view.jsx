@@ -24,8 +24,11 @@ const StudentGroupView = () => {
   const [editStudentGroupIsOpen, setEditStudentGroupIsOpen] = useState(false);
   const schoolYears = ['2021-2022', '2022-2023', '2023-2024'];
   const [schoolYear, setSchoolYear] = useState();
-  const schoolCycles = [1, 2, 3, 4];
+  const schoolCycles = ['1', '2', '3', '4'];
   const [schoolCycle, setSchoolCycle] = useState();
+  // const [currentStudents, setCurrentStudents] = useState()
+  const [groupUpdated, setGroupUpdated] = useState(0); // number of times group has been updated by a set of update/insert/delete students call
+  // const [studentProfileBoxes, setStudentProfileBoxes] = useState();
   const dropdownDisabled = true;
 
   const getStudentNames = students => {
@@ -37,6 +40,9 @@ const StudentGroupView = () => {
   };
 
   useEffect(async () => {
+    if (siteId === null) {
+      return;
+    }
     const studentGroupRes = await TLPBackend.get(`/student-groups/${studentGroupId}`, {
       headers: {
         'Content-Type': 'application/json',
@@ -52,22 +58,12 @@ const StudentGroupView = () => {
       setMasterTeacherId(studentGroupRes.data.masterTeacherId);
       setSchoolYear(`${studentGroupRes.data.year}-${studentGroupRes.data.year + 1}`);
       setSchoolCycle(studentGroupRes.data.cycle);
-    } else {
-      setSiteId(-1);
-      setError(error);
-    }
-
-    const sitesRes = await TLPBackend.get(`/sites/${siteId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (sitesRes.status === 200) {
-      setSiteName(sitesRes.data.siteName);
+      setSiteName(studentGroupRes.data.siteName);
       setSiteAddress(
-        `${sitesRes.data.addressStreet},  ${sitesRes.data.addressCity} ${sitesRes.data.addressZip}`,
+        `${studentGroupRes.data.addressStreet}, ${studentGroupRes.data.addressCity} ${studentGroupRes.data.addressZip}`,
       );
     } else {
+      setSiteId(-1);
       setSiteName('');
       setError(error);
     }
@@ -83,7 +79,18 @@ const StudentGroupView = () => {
       setTestScores({});
       setError(error);
     }
-  }, [siteId]);
+    console.log('request');
+    console.log(groupUpdated);
+  }, [siteId, groupUpdated]);
+
+  const studentProfileBoxes = studentGroupList.map(student => {
+    return (
+      // eslint-disable-next-line react/jsx-key
+      <div className={styles['student-box']}>
+        <StudentProfileBox key={student} studentId={student[0]} studentName={student[1]} />
+      </div>
+    );
+  });
 
   return (
     <div>
@@ -146,9 +153,11 @@ const StudentGroupView = () => {
             <EditStudentGroupModal
               siteId={siteId}
               // teacherId={masterTeacherId}
-              studentGroupId={studentGroupId}
+              studentGroupId={Number(studentGroupId)}
               isOpen={editStudentGroupIsOpen}
               setIsOpen={setEditStudentGroupIsOpen}
+              groupUpdated={groupUpdated}
+              setGroupUpdated={setGroupUpdated}
             />
           ) : null}
           <div id={styles['site-info-section']}>
@@ -162,7 +171,7 @@ const StudentGroupView = () => {
           <div id={styles['students-assigned-section']}>
             <h3 className={styles['section-header']}>Students Assigned</h3>
             <Container fluid className={styles['student-box']}>
-              {studentGroupList.map(student => {
+              {/* {studentGroupList.map(student => {
                 return (
                   // eslint-disable-next-line react/jsx-key
                   <div className={styles['student-box']}>
@@ -173,7 +182,8 @@ const StudentGroupView = () => {
                     />
                   </div>
                 );
-              })}
+              })} */}
+              {studentProfileBoxes}
             </Container>
           </div>
         </div>
