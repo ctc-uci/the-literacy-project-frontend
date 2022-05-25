@@ -11,6 +11,7 @@ import { TLPBackend } from '../../common/utils';
 
 import StudentGroupDropdown from './StudentGroupDropdown';
 import WarningModal from '../WarningModal/WarningModal';
+import { SCHOOL_YEARS } from '../../common/config';
 
 const EditStudentGroupModal = ({
   siteId,
@@ -20,7 +21,7 @@ const EditStudentGroupModal = ({
   isOpen,
   setIsOpen,
 }) => {
-  const schoolYears = ['2021-2022', '2022-2023', '2023-2024'];
+  const schoolYears = SCHOOL_YEARS;
   const schoolCycles = ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
   const meetingDays = [
     'Mondays',

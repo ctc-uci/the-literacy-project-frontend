@@ -8,30 +8,12 @@ import Select from 'react-select';
 
 import styles from './CreateStudentGroupModal.module.css';
 import { TLPBackend } from '../../common/utils';
+import { SCHOOL_YEARS } from '../../common/config';
 
 import StudentGroupDropdown from '../EditStudentGroupModal/StudentGroupDropdown';
 
-const CreateStudentGroupModal = ({
-  siteId,
-  teacherId,
-  isOpen,
-  setIsOpen,
-  // groupCreated,
-  // setGroupCreated,
-}) => {
-  const schoolYears = [
-    '2020-2021',
-    '2021-2022',
-    '2022-2023',
-    '2023-2024',
-    '2024-2025',
-    '2025-2026',
-    '2026-2027',
-    '2027-2028',
-    '2028-2029',
-    '2029-2030',
-    '2030-2031',
-  ];
+const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
+  const schoolYears = SCHOOL_YEARS;
   const schoolCycles = ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
   const meetingDays = [
     'Mondays',
@@ -194,7 +176,6 @@ const CreateStudentGroupModal = ({
       studentIds: addedStudents,
       studentGroupId: studentGroupData.data.groupId,
     });
-    // setGroupCreated(groupCreated + 1);
     resetModal();
     closeModal();
     setShowAlert(true);
@@ -394,8 +375,6 @@ CreateStudentGroupModal.propTypes = {
   teacherId: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  // groupCreated: PropTypes.number.isRequired,
-  // setGroupCreated: PropTypes.func.isRequired,
 };
 
 export default CreateStudentGroupModal;
