@@ -46,6 +46,7 @@ const EditStudentGroupModal = ({
   // Students currently in the group
   const [currentStudents, setCurrentStudents] = useState();
   const [currentStudentsLoaded, setCurrentStudentsLoaded] = useState();
+
   // Students in the system that are not in the group
   const [possibleStudents, setPossibleStudents] = useState();
   const [possibleStudentsLoaded, setPossibleStudentsLoaded] = useState(false);
@@ -106,16 +107,14 @@ const EditStudentGroupModal = ({
     });
     try {
       const filteredStudents = systemStudents.data.filter(
-        // Possible students includes students who are not in the student group AND either
-        // 1) are not assigned to a student group or
-        // 2) are within the same site as the group being edited
+        // Possible students includes students who are not assigned to a student group
         studentObj =>
-          (studentObj.studentGroupId === null || studentObj.siteId === siteId) &&
+          studentObj.studentGroupId === null &&
           !Object.keys(currentStudents).some(
             s => currentStudents[s].studentId === studentObj.studentId,
           ),
       );
-      // map student objects to objects w/ only id, first name, last name
+      // Map student objects to objects w/ only ID, first name, last name
       const possibleStudentsObj = Object.assign(
         {},
         ...filteredStudents.map(student => ({

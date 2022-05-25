@@ -43,7 +43,6 @@ const MasterTeacherView = ({ cookies }) => {
   const [createStudentGroupIsOpen, setCreateStudentGroupIsOpen] = useState(false);
   const [createStudentIsOpen, setCreateStudentIsOpen] = useState(false);
   const [masterTeacherId, setMasterTeacherId] = useState();
-  const [studentGroupCreated, setStudentGroupCreated] = useState(0);
 
   const filterSchoolYearCycle = async (
     filterOptions,
@@ -238,7 +237,8 @@ const MasterTeacherView = ({ cookies }) => {
       await filterSiteData(initialSite.siteName, initialSite.siteId, data, teacherSites);
     }
     await fetchTeacherData();
-  }, [studentGroupCreated]);
+  }, []);
+  // }, [studentGroupCreated]);
 
   return (
     <div>
@@ -364,8 +364,6 @@ const MasterTeacherView = ({ cookies }) => {
             teacherId={masterTeacherId}
             isOpen={createStudentGroupIsOpen}
             setIsOpen={setCreateStudentGroupIsOpen}
-            groupCreated={studentGroupCreated}
-            setGroupCreated={setStudentGroupCreated}
           />
         ) : null}
         <div className={`${styles.section} ${styles['students-container']}`}>

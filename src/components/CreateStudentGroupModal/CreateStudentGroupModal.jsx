@@ -16,8 +16,8 @@ const CreateStudentGroupModal = ({
   teacherId,
   isOpen,
   setIsOpen,
-  groupCreated,
-  setGroupCreated,
+  // groupCreated,
+  // setGroupCreated,
 }) => {
   const schoolYears = [
     '2020-2021',
@@ -60,6 +60,7 @@ const CreateStudentGroupModal = ({
 
   // Students in the group
   const [currentStudents, setCurrentStudents] = useState([]);
+
   // Students in the system that are not in the group
   const [possibleStudents, setPossibleStudents] = useState();
   const [possibleStudentsLoaded, setPossibleStudentsLoaded] = useState(false);
@@ -67,15 +68,24 @@ const CreateStudentGroupModal = ({
   const [showAlert, setShowAlert] = useState(false);
 
   const getPossibleStudents = async () => {
-    const siteStudents = await TLPBackend.get(`/students`, {
+    const systemStudents = await TLPBackend.get(`/students`, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
     try {
+      const filteredStudents = systemStudents.data.filter(
+        // Possible students include students who are not assigned to a student group
+        studentObj =>
+          studentObj.studentGroupId === null &&
+          !Object.keys(currentStudents).some(
+            s => currentStudents[s].studentId === studentObj.studentId,
+          ),
+      );
+      // Map student objects to objects w/ only ID, first name, last name
       const possibleStudentsObj = Object.assign(
         {},
-        ...siteStudents.data.map(student => ({
+        ...filteredStudents.data.map(student => ({
           [student.studentId]: {
             studentId: student.studentId,
             firstName: student.firstName,
@@ -184,7 +194,7 @@ const CreateStudentGroupModal = ({
       studentIds: addedStudents,
       studentGroupId: studentGroupData.data.groupId,
     });
-    setGroupCreated(groupCreated + 1);
+    // setGroupCreated(groupCreated + 1);
     resetModal();
     closeModal();
     setShowAlert(true);
@@ -384,8 +394,8 @@ CreateStudentGroupModal.propTypes = {
   teacherId: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
-  groupCreated: PropTypes.number.isRequired,
-  setGroupCreated: PropTypes.func.isRequired,
+  // groupCreated: PropTypes.number.isRequired,
+  // setGroupCreated: PropTypes.func.isRequired,
 };
 
 export default CreateStudentGroupModal;
