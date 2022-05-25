@@ -196,7 +196,8 @@ const MasterTeacherView = ({ cookies }) => {
       if (data.length === 0) {
         return;
       }
-
+      const tData = await TLPBackend.get(`/teachers/${teacherId}`);
+      console.log(tData.data);
       // initially selected site is first site that gets returned
       // there has to be at least one site since only teachers that can login are those that are active in at least one student group/site
       const initialSite = {
