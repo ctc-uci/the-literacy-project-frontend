@@ -74,7 +74,7 @@ const CreateStudentGroupModal = ({
       },
     });
     try {
-      const filteredStudents = systemStudents.data.filter(
+      const filteredStudents = await systemStudents.data.filter(
         // Possible students include students who are not assigned to a student group
         studentObj =>
           studentObj.studentGroupId === null &&
@@ -85,7 +85,7 @@ const CreateStudentGroupModal = ({
       // Map student objects to objects w/ only ID, first name, last name
       const possibleStudentsObj = Object.assign(
         {},
-        ...filteredStudents.data.map(student => ({
+        ...filteredStudents.map(student => ({
           [student.studentId]: {
             studentId: student.studentId,
             firstName: student.firstName,
