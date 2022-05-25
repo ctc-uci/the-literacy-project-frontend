@@ -25,6 +25,7 @@ import StudentGroupView from './pages/student-group-view/student-group-view';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
 import ViewEditSite from './pages/ViewEditSite/ViewEditSitePage';
 import NavigationBar from './components/NavigationBar/NavigationBar';
+import Footer from './components/Footer/Footer';
 
 import ScrollToTop from './common/ScrollToTop';
 
@@ -171,6 +172,7 @@ ReactDOM.render(
             <Route exact path="*" element={<Navigate to="/not-found" />} />
           </Route>
         </Routes>
+        {['/', '/people'].includes(window.location.pathname) && <Footer />}
       </Router>
     </CookiesProvider>
   </React.StrictMode>,

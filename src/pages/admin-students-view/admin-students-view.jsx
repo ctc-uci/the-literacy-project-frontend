@@ -3,6 +3,7 @@ import { Button, Dropdown, DropdownButton, InputGroup, FormControl } from 'react
 import { FaFilter } from 'react-icons/fa';
 import '../../custom.scss';
 import '../../common/vars.css';
+import { SECTIONS } from '../../common/config';
 import styles from './admin-students-view.module.css';
 import Table from '../../components/Table/Table';
 import { TLPBackend, capitalize, formatSchoolYear } from '../../common/utils';
@@ -340,7 +341,11 @@ const AdminStudentsView = () => {
           </div>
         </div>
       </div>
-      <Table theadData={theadData} tbodyData={displayData(tbodyData)} sectionTitle="Students" />
+      <Table
+        theadData={theadData}
+        tbodyData={displayData(tbodyData)}
+        sectionTitle={SECTIONS.STUDENT}
+      />
     </div>
   );
 };

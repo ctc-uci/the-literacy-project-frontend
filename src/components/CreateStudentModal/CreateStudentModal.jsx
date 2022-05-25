@@ -30,7 +30,6 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
   const [ethnicity, setEthnicity] = useState('Select Ethnicity');
   const [addedEthnicity, setAddedEthicity] = useState([]);
   const addEthnicity = ethnic => {
-    // console.log(addedEthnicity);
     if (!addedEthnicity.includes(ethnic)) {
       addedEthnicity.push(ethnic);
       setAddedEthicity(addedEthnicity);
@@ -64,7 +63,6 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
 
   // Get possible student groups
   useEffect(async () => {
-    // console.log(siteId);
     const res = await TLPBackend.get(`student-groups/site/${siteId}`, {
       headers: {
         'Content-Type': 'application/json',

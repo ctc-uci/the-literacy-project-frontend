@@ -8,6 +8,11 @@ const USER_STATUS = {
   INACTIVE: 'inactive',
   PENDING: 'pending',
 };
+const SECTIONS = {
+  ADMIN: 'Admin',
+  TEACHER: 'Master Teachers',
+  STUDENT: 'Student',
+};
 
 const SCHOOL_YEARS = [
   '2020-2021',
@@ -23,4 +28,4 @@ const SCHOOL_YEARS = [
   '2030-2031',
 ];
 
-export { AUTH_ROLES, USER_STATUS, SCHOOL_YEARS };
+export { AUTH_ROLES, USER_STATUS, SECTIONS, SCHOOL_YEARS };

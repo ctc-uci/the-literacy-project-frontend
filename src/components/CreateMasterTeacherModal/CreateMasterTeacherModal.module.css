@@ -2,3 +2,77 @@
   margin-right: 1em;
   margin-bottom: 0.5em;
 }
+
+.modalSave {
+  background-color: #3288c4;
+  color: #fdfdfd;
+}
+
+.fullInputField {
+  width: 100%;
+}
+
+.fNameField {
+  width: 40%;
+  margin-right: 5%;
+}
+
+.lNameField {
+  width: 55%;
+}
+
+.modalTitle {
+  margin-left: 40%;
+}
+
+.err-msg {
+  margin-left: 1em;
+}
+
+.requiredSubtitles::after {
+  color: #e32;
+  content: ' *';
+  display: inline;
+}
+
+/* all the text areas */
+.requiredSubtitles,
+.subtitles {
+  font-family: Calibri, 'sans-serif';
+  font-size: 16px;
+  padding-left: 2px;
+}
+
+.undoChanges {
+  cursor: pointer;
+}
+
+.password-popover {
+  height: 20px;
+  width: 20px;
+}
+
+.eye-icon {
+  cursor: pointer;
+  color: #212529 !important;
+  margin: 0 5px;
+}
+
+.password-input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.input-custom {
+  padding-right: 30px;
+}
+
+.button {
+  white-space: nowrap;
+}
+
+.footer {
+  flex-wrap: nowrap;
+}
