@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TLPBackend } from '../../common/utils';
-import Footer from '../../components/Footer/Footer';
 import ReturnHeader from '../../common/ReturnHeader/ReturnHeader';
 import { AttitudeScoreCard, ImprovementGraph } from '../../components/AssessmentForms';
 import styles from './attitude-form-input.module.css';
@@ -78,7 +77,6 @@ const AttitudeFormInput = () => {
           <ImprovementGraph studentData={studentData} />
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

@@ -146,7 +146,7 @@ const CSVButton = ({ type, areaId, siteId }) => {
           addAssociatedSiteToArea(siteResponse.data);
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     }
 
