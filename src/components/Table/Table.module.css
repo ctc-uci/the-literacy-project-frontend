@@ -34,6 +34,7 @@ td {
   font-weight: bold !important;
   padding: 5px 0;
   background: rgba(0, 0, 0, 0.05);
+  height: 60px;
 }
 
 .table-head {

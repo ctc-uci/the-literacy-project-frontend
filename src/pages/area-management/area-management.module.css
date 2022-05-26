@@ -4,7 +4,6 @@
   justify-content: space-between;
   padding: 0px 50px;
   height: calc(100vh - 101px); */
-  height: calc(100vh - 136px);
   padding: 50px 75px;
 }
 .site-container h1 {
@@ -18,19 +17,22 @@
   background-color: var(--color-baby-blue);
   color: var(--text-color-white);
 }
+
 .tlp-button {
   border: none;
-  margin: 0 0 0 10px;
+  margin: 0;
 }
 
 .tlp-button-primary:hover {
   background-color: #2b79b1;
 }
+
 .area-content {
   width: 100%;
   display: flex;
   height: 100%;
 }
+
 .site-container-information {
   padding: 40px 50px 0 50px;
   height: 100%;
@@ -57,6 +59,7 @@
 .search-school {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 .search-school-search-bar {
   margin: 0 !important;
@@ -78,6 +81,7 @@
 .area-button-options-right {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
 .sites-data {
@@ -99,18 +103,41 @@
 }
 
 .area-data-stats {
-  background: #bbcbe2;
+  background: #ffffff;
   border: 1px solid #dfdfdf;
   border-radius: 10px;
   display: flex;
   align-items: flex-start;
   height: auto;
-  width: 200px;
-  padding: 40px;
+  width: 100%;
+  padding: 20px;
   margin: 20px 0;
 }
-.area-data-stats > p {
+
+.area-data-title {
+  font-size: 20px;
+  line-height: 24px;
   margin: 0;
+  font-weight: bold;
+}
+
+.area-data-info {
+  margin: 12px;
+  text-align: left;
+}
+
+.area-data-info > p {
+  margin: 0;
+  font-size: 16px;
+  padding-bottom: 5px;
+}
+
+.area-data-info > p > img,
+.area-mt-icon {
+  margin-left: -10px;
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
 }
 
 .btn-warning {

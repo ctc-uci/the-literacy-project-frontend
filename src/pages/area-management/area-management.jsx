@@ -18,6 +18,7 @@ import AreaDropdown from '../../components/AreaDropdown/AreaDropdown';
 import SchoolIcon from '../../assets/icons/school.svg';
 import TeacherIcon from '../../assets/icons/Teacher.svg';
 import Graph from '../../components/Graph/Graph';
+import CSVButton from '../../components/CSVButton/CSVButton';
 import AreaManagementFilter from '../../components/AreaManagementFilter/AreaManagementFilter';
 
 const AreaManagement = () => {
@@ -29,7 +30,6 @@ const AreaManagement = () => {
   const [sortBy, setSortBy] = useState('A-Z');
   const [students, setStudents] = useState([]);
   const [error, setError] = useState(null);
-
   const sorts = ['A-Z', 'Z-A'];
 
   function getFilters() {
@@ -157,27 +157,34 @@ const AreaManagement = () => {
     return (
       <>
         <Card className={styles['area-data-stats']}>
-          <p>
-            <BsPeople />
-            {areaStats.student_count} Students
+          <p className={styles['area-data-title']}>
+            {filterApplied ? 'Filtered' : 'All'} Areas Data Overview
           </p>
-          <p>
-            <img
-              className={styles['area-dropdown__open__area_stats__section-icon']}
-              src={TeacherIcon}
-              alt="Teacher Icon"
-            />
-            {areaStats.master_teacher_count} Teachers
-          </p>
-          <p>
-            <img
-              className={styles['area-dropdown__open__area_stats__section-icon']}
-              src={SchoolIcon}
-              alt="School Icon"
-            />
-            {areaStats.site_count} Sites
-          </p>
+          <div className={styles['area-data-info']}>
+            <p>
+              <img
+                className={styles['area-dropdown__open__area_stats__section-icon']}
+                src={SchoolIcon}
+                alt="School Icon"
+              />
+              {areaStats.site_count} Sites
+            </p>
+            <p>
+              <img
+                className={styles['area-dropdown__open__area_stats__section-icon']}
+                src={TeacherIcon}
+                alt="Teacher Icon"
+              />
+              {areaStats.master_teacher_count} Teachers
+            </p>
+            <p>
+              <BsPeople className={styles['area-mt-icon']} />
+              {areaStats.student_count} Students
+            </p>
+          </div>
+          <CSVButton type="allAreas" />
         </Card>
+
         <p>{filterApplied ? 'Filtered Areas' : 'All Areas'}</p>
         <p>{schoolYear === 'All' ? 'All Years' : formatSchoolYear(schoolYear)}</p>
         <Card className={styles['sites-graph']}>
@@ -347,18 +354,7 @@ const AreaManagement = () => {
             />
             <div style={{ paddingBottom: '20px' }}>{displayAreas()}</div>
           </div>
-          <div className={styles['sites-data']}>
-            <p>
-              <strong>All Area Data</strong>
-            </p>
-            <Button
-              variant="primary"
-              className={`${styles['tlp-button']} ${styles['tlp-button-primary']}`}
-            >
-              Export to CSV
-            </Button>
-            {displayAreaStats()}
-          </div>
+          <div className={styles['sites-data']}>{displayAreaStats()}</div>
         </div>
       </div>
     </div>
