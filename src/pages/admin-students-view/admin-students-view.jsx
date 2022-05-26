@@ -19,7 +19,11 @@ const AdminStudentsView = () => {
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [filters, setFilters] = useState({});
   const [pieChartFilter, setPieChartFilter] = useState('Grade');
-  const [pieChartData, setPieChartData] = useState([0, 0, 0, 0, 0, 0]);
+  const [pieChartData, setPieChartData] = useState({
+    Grade: [0, 0, 0, 0, 0, 0],
+    Ethnicity: [0, 0, 0, 0, 0, 0],
+    Gender: [0, 0, 0],
+  });
 
   const sorts = ['A - Z', 'Z - A'];
 
@@ -134,8 +138,6 @@ const AdminStudentsView = () => {
     });
     if (res.status === 200) {
       setStudentList(res.data);
-      // eslint-disable-next-line no-use-before-define
-      filterPieData(res.data, pieChartFilter);
     } else {
       setStudentList([]);
       setError(error);
@@ -259,70 +261,20 @@ const AdminStudentsView = () => {
       .sort();
   }
 
-  const filterPieData = (studentData, direction) => {
-    const newChartData = [];
-    if (direction === 'Grade') {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const gradeLabel of [1, 2, 3, 4, 5, 6]) {
-        newChartData.push(
-          studentData.filter((prev, curr) => {
-            if (studentData[curr].grade === gradeLabel) {
-              return prev + 1;
-            }
-            return 0;
-          }, 0).length,
-        );
-      }
-    } else if (direction === 'Ethnicity') {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const ethnicityLabel of pieChartLabels.Ethnicity) {
-        newChartData.push(
-          studentData.filter((prev, curr) => {
-            if (studentData[curr].ethnicity.includes(ethnicityLabel.toLowerCase())) {
-              return prev + 1;
-            }
-            return 0;
-          }, 0).length,
-        );
-      }
-    } else {
-      // eslint-disable-next-line no-restricted-syntax
-      for (const genderLabel of pieChartLabels.Gender) {
-        newChartData.push(
-          studentData.filter((prev, curr) => {
-            if (studentData[curr].gender === genderLabel.toLowerCase()) {
-              return prev + 1;
-            }
-            return 0;
-          }, 0).length,
-        );
-      }
-    }
-    setPieChartData(newChartData);
-  };
-
   const filterPieDataChangeLeft = () => {
-    let newDirection = pieChartFilter;
     if (pieChartFilter === 'Grade') {
       setPieChartFilter('Ethnicity');
-      newDirection = 'Ethnicity';
     } else if (pieChartFilter === 'Gender') {
       setPieChartFilter('Grade');
-      newDirection = 'Grade';
     }
-    filterPieData(studentList, newDirection);
   };
 
   const filterPieDataChangeRight = () => {
-    let newDirection = pieChartFilter;
     if (pieChartFilter === 'Grade') {
       setPieChartFilter('Gender');
-      newDirection = 'Gender';
     } else if (pieChartFilter === 'Ethnicity') {
       setPieChartFilter('Grade');
-      newDirection = 'Grade';
     }
-    filterPieData(studentList, newDirection);
   };
 
   // Get all areas that have students
@@ -397,7 +349,7 @@ const AdminStudentsView = () => {
           <PieChart
             labels={pieChartLabels[pieChartFilter]}
             title={pieChartFilter}
-            dataPoints={pieChartData}
+            dataPoints={pieChartData[pieChartFilter]}
             backgroundColor={pieChartBackgroundColor.main_colors
               .slice(
                 0,
@@ -456,6 +408,7 @@ const AdminStudentsView = () => {
               grades={getGrades()}
               filters={filters}
               setFilters={setFilters}
+              setPieChartData={setPieChartData}
             />
           </div>
           <div className={styles['inner-ctrl']}>

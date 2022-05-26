@@ -2,9 +2,21 @@ import { React, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button, Form } from 'react-bootstrap';
 import styles from './AdminStudentFilter.module.css';
+import { TLPBackend } from '../../common/utils';
 
 function AdminStudentFilter(props) {
-  const { isOpen, setIsOpen, states, areas, sites, years, grades, filters, setFilters } = props;
+  const {
+    isOpen,
+    setIsOpen,
+    states,
+    areas,
+    sites,
+    years,
+    grades,
+    filters,
+    setFilters,
+    setPieChartData,
+  } = props;
   const [showStates, setShowStates] = useState([]);
   const [showAreas, setShowAreas] = useState([]);
   const [showSites, setShowSites] = useState([]);
@@ -88,6 +100,29 @@ function AdminStudentFilter(props) {
       setShowGrades(grades);
     }
   }, [states, areas, sites, years, grades]);
+
+  // Queries for the percentages of gender/ethnicity/grade for every student that is filtered
+  const queryFilterPercentages = appliedFilters => {
+    const payload = {
+      filters: {
+        states: appliedFilters.states,
+        areas: appliedFilters.areas,
+        sites: appliedFilters.sites,
+        years: appliedFilters.years.map(year => {
+          return year.split('-')[0];
+        }),
+        grades: appliedFilters.grades.map(grade => {
+          return parseInt(grade, 10);
+        }),
+      },
+    };
+
+    TLPBackend.get('/students/people/filter', {
+      params: { ...payload.filters },
+    }).then(res => {
+      setPieChartData(res.data);
+    });
+  };
 
   /**
    * @returns true if all states are checked
@@ -236,6 +271,15 @@ function AdminStudentFilter(props) {
 
     // Update the filters
     setFilters({
+      ...filters,
+      states: statesFilter,
+      areas: areasFilter,
+      sites: sitesFilter,
+      years: yearsFilter,
+      grades: gradesFilter,
+    });
+
+    queryFilterPercentages({
       ...filters,
       states: statesFilter,
       areas: areasFilter,
@@ -425,6 +469,7 @@ AdminStudentFilter.propTypes = {
   grades: PropTypes.arrayOf(PropTypes.string).isRequired,
   filters: PropTypes.arrayOf([PropTypes.object]).isRequired,
   setFilters: PropTypes.func.isRequired,
+  setPieChartData: PropTypes.func.isRequired,
 };
 
 export default AdminStudentFilter;
