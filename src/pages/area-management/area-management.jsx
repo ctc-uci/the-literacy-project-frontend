@@ -182,7 +182,6 @@ const AreaManagement = () => {
               {areaStats.student_count} Students
             </p>
           </div>
-          <CSVButton type="allAreas" />
         </Card>
 
         <p>{filterApplied ? 'Filtered Areas' : 'All Areas'}</p>
@@ -354,7 +353,13 @@ const AreaManagement = () => {
             />
             <div style={{ paddingBottom: '20px' }}>{displayAreas()}</div>
           </div>
-          <div className={styles['sites-data']}>{displayAreaStats()}</div>
+          <div className={styles['sites-data']}>
+            <p>
+              <strong>All Area Data</strong>
+            </p>
+            <CSVButton type="allAreas" />
+            {displayAreaStats()}
+          </div>
         </div>
       </div>
     </div>
