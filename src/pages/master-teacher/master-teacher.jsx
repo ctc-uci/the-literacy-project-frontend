@@ -20,13 +20,17 @@ import CreateStudentGroupModal from '../../components/CreateStudentGroupModal/Cr
 import CreateStudentModal from '../../components/CreateStudentModal/CreateStudentModal';
 
 const MasterTeacherView = ({ cookies }) => {
+  const VIEW_ALL = 'All Sites';
+  const ALL_CYCLES = 'All';
+  const cycles = ['1', '2', '3', '4', ALL_CYCLES];
+
   const [allData, setAllData] = useState([]); // all student group data
   const [allSites, setAllSites] = useState({}); // list of sites with associated site id and address
   const [selectedSiteName, setSelectedSiteName] = useState();
   const [selectedSiteId, setSelectedSiteId] = useState();
   const [selectedSiteAddress, setSelectedSiteAddress] = useState();
   const [selectedSchoolYear, setSelectedSchoolYear] = useState();
-  const [selectedCycle, setSelectedCycle] = useState();
+  const [selectedCycle, setSelectedCycle] = useState(ALL_CYCLES);
   const [siteGroups, setSiteGroups] = useState([]); // filtered student groups for site id
   const [studentGroups, setStudentGroups] = useState([]); // filtered student groups additionally on year and cycle
   const [siteStudents, setSiteStudents] = useState([]); // filtered students additionally on year and cycle
@@ -37,8 +41,6 @@ const MasterTeacherView = ({ cookies }) => {
   const [sitePost, setSitePost] = useState([]); // site vs. other TLP
   const [siteToggle, setSiteToggle] = useState(true); // true if want to there are enough options to toggle between
   const [yearToggle, setYearToggle] = useState(true);
-  const VIEW_ALL = 'All Sites';
-  const cycles = ['1', '2', '3', '4', 'All Cycles'];
   const [createStudentGroupIsOpen, setCreateStudentGroupIsOpen] = useState(false);
   const [createStudentIsOpen, setCreateStudentIsOpen] = useState(false);
   const [masterTeacherId, setMasterTeacherId] = useState();
@@ -57,21 +59,20 @@ const MasterTeacherView = ({ cookies }) => {
     // if just cycle is specified, update the cycle
     if (filterOptions.year) {
       year = filterOptions.year.substring(0, 4);
-      const yearGroups = groups.filter(group => group.year === parseInt(year, 10));
-      cycle = '1';
-      yearGroups.forEach(group => {
-        if (group.cycle > cycle) {
-          cycle = group.cycle;
-        }
-      });
+      // const yearGroups = groups.filter(group => group.year === parseInt(year, 10));
+      cycle = ALL_CYCLES;
+      // yearGroups.forEach(group => {
+      //   if (group.cycle > cycle) {
+      //     cycle = group.cycle;
+      //   }
+      // });
     } else {
       cycle = filterOptions?.cycle;
     }
     setSelectedCycle(cycle);
     const filteredGroups = groups.filter(
       group =>
-        group.year === parseInt(year, 10) &&
-        (cycle !== 'All Cycles' ? group.cycle === cycle : true),
+        group.year === parseInt(year, 10) && (cycle !== ALL_CYCLES ? group.cycle === cycle : true),
     );
     setStudentGroups(filteredGroups);
 
@@ -161,6 +162,7 @@ const MasterTeacherView = ({ cookies }) => {
     });
 
     let currYear = null;
+    // if the year is past June, add the new school year to the options
     if (currDay.getMonth() > 6) {
       currYear = currDay.getFullYear();
       years.add(formatSchoolYear(currYear));
@@ -193,7 +195,6 @@ const MasterTeacherView = ({ cookies }) => {
     async function fetchTeacherData() {
       const allStudentData = await TLPBackend.get(`/student-groups/master-teacher/${teacherId}`);
       // all unfiltered data for the MT to user for filtering later
-      // let { data } = allStudentData;
       const { data } = allStudentData;
       setAllData(data);
       console.log('data');
@@ -241,7 +242,8 @@ const MasterTeacherView = ({ cookies }) => {
       setSelectedSiteName(initialSite.siteName);
       setSelectedSiteId(initialSite.siteId);
       setSelectedSiteAddress(initialSite.address);
-      setSiteToggle(Object.keys(teacherSites).length > 2);
+      // display options if more than one site (one option is View All)
+      setSiteToggle(Object.keys(teacherSites).length > 1);
       await filterSiteData(initialSite.siteName, initialSite.siteId, data, teacherSites);
     }
     await fetchTeacherData();
@@ -399,7 +401,8 @@ const MasterTeacherView = ({ cookies }) => {
                   </Button>
                 )}
               </div>
-              {typeof masterTeacherId === 'number' && typeof selectedSiteId === 'number' ? (
+              {typeof masterTeacherId === 'number' &&
+              (typeof selectedSiteId === 'number' || selectedSiteId === undefined) ? (
                 <CreateStudentModal
                   siteId={selectedSiteId}
                   teacherId={masterTeacherId}

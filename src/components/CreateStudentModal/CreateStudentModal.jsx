@@ -12,7 +12,7 @@ import styles from './CreateStudentModal.module.css';
 const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
   const [error, setError] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
-  const [formSubmitted, setFormSubmmited] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const [studentFirstName, setStudentFirstName] = useState('');
   const [studentLastName, setStudentLastName] = useState('');
@@ -28,18 +28,18 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
     'non-specified',
   ];
   const [ethnicity, setEthnicity] = useState('Select Ethnicity');
-  const [addedEthnicity, setAddedEthicity] = useState([]);
+  const [addedEthnicity, setAddedEthnicity] = useState([]);
   const addEthnicity = ethnic => {
     if (!addedEthnicity.includes(ethnic)) {
       addedEthnicity.push(ethnic);
-      setAddedEthicity(addedEthnicity);
+      setAddedEthnicity(addedEthnicity);
     }
     setEthnicity(ethnic);
   };
 
   const removeEthnicity = e => {
     const name = e.target.getAttribute('name');
-    setAddedEthicity(addedEthnicity.filter(ethnic => ethnic !== name));
+    setAddedEthnicity(addedEthnicity.filter(ethnic => ethnic !== name));
   };
 
   const studentGenders = ['Male', 'Female', 'Non-specified'];
@@ -59,15 +59,27 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
 
   const closeModal = () => {
     setIsOpen(false);
+    setAddedEthnicity([]);
   };
 
   // Get possible student groups
   useEffect(async () => {
-    const res = await TLPBackend.get(`student-groups/site/${siteId}`, {
+    if (!isOpen) {
+      return;
+    }
+    // get all possible student groups based on given site
+    let route = `student-groups/site/${siteId}`;
+    // if site not given (All Sites), get all student groups of master teacher
+    if (siteId === null) {
+      route = `student-groups/master-teacher/${teacherId}`;
+    }
+
+    const res = await TLPBackend.get(route, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
+
     if (res.status === 200) {
       const studentGroupData = res.data;
       const masterTeacherGroups = [];
@@ -85,7 +97,7 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
     } else {
       setError(error);
     }
-  }, []);
+  }, [isOpen]);
 
   const createStudent = async () => {
     if (
@@ -95,7 +107,7 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
       studentGrade === 'Select Grade' ||
       studentGroup === 'Select Group'
     ) {
-      setFormSubmmited(true);
+      setFormSubmitted(true);
       return;
     }
 
@@ -161,7 +173,7 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
             <div className={styles['input-area']}>
               <p className={styles.required}>Ethnicity</p>
               <div className={styles['selected-ethnicity']}>
-                {/* buttons to show which ethnicies are already selected and removed when clicked */}
+                {/* buttons to show which ethnicities are already selected and removed when clicked */}
                 {addedEthnicity.map(ethnic => {
                   return (
                     <Badge key={ethnic} text="dark" className={styles['ethnicity-badge']}>
@@ -256,8 +268,12 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
   );
 };
 
+CreateStudentModal.defaultProps = {
+  siteId: null,
+};
+
 CreateStudentModal.propTypes = {
-  siteId: PropTypes.number.isRequired,
+  siteId: PropTypes.number,
   teacherId: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
