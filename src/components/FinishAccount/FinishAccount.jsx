@@ -10,7 +10,7 @@ import InformationPopover from '../Popover/InformationPopover';
 import styles from './FinishAccount.module.css';
 import logo from '../../assets/tlp.png';
 import { finishAccountSetUp } from '../../common/auth/auth_utils';
-import { ADMIN_USER_GUIDE } from '../../common/utils';
+import { ADMIN_USER_GUIDE } from '../../common/config';
 
 const FinishAccount = ({ inviteId, data }) => {
   const navigate = useNavigate();

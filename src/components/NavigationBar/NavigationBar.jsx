@@ -7,8 +7,7 @@ import Image from './tlp.png';
 import styles from './NavigationBar.module.css';
 import { logout, useNavigate } from '../../common/auth/auth_utils';
 import { Cookies, withCookies, cookieKeys } from '../../common/auth/cookie_utils';
-import { AUTH_ROLES } from '../../common/config';
-import { ADMIN_USER_GUIDE, MT_USER_GUIDE } from '../../common/utils';
+import { AUTH_ROLES, ADMIN_USER_GUIDE, MT_USER_GUIDE } from '../../common/config';
 
 const NavigationBar = ({ cookies }) => {
   const navigate = useNavigate();
