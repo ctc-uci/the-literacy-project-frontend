@@ -38,7 +38,7 @@ const MasterTeacherView = ({ cookies }) => {
   const [siteToggle, setSiteToggle] = useState(true); // true if want to there are enough options to toggle between
   const [yearToggle, setYearToggle] = useState(true);
   const VIEW_ALL = 'All Sites';
-  const cycles = ['1', '2', '3', '4'];
+  const cycles = ['1', '2', '3', '4', 'All Cycles'];
   const [createStudentGroupIsOpen, setCreateStudentGroupIsOpen] = useState(false);
   const [createStudentIsOpen, setCreateStudentIsOpen] = useState(false);
   const [masterTeacherId, setMasterTeacherId] = useState();
@@ -69,7 +69,9 @@ const MasterTeacherView = ({ cookies }) => {
     }
     setSelectedCycle(cycle);
     const filteredGroups = groups.filter(
-      group => group.year === parseInt(year, 10) && group.cycle === cycle,
+      group =>
+        group.year === parseInt(year, 10) &&
+        (cycle !== 'All Cycles' ? group.cycle === cycle : true),
     );
     setStudentGroups(filteredGroups);
 
