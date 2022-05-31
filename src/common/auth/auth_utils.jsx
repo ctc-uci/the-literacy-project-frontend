@@ -12,7 +12,8 @@ import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { nanoid } from 'nanoid';
 import { cookieKeys, cookieConfig, clearCookies } from './cookie_utils';
-import InviteEmail from '../../components/InviteEmail/InviteEmail';
+import InviteEmail from '../../components/EmailTemplates/InviteEmail';
+import LoginEmail from '../../components/EmailTemplates/LoginEmail';
 import { TLPBackend, auth, sendEmail } from '../utils';
 import { AUTH_ROLES, USER_STATUS } from '../config';
 
@@ -79,11 +80,22 @@ const logInWithEmailAndPassword = async (email, password, redirectPath, navigate
   }
 
   const user = await TLPBackend.get(`/tlp-users/${auth.currentUser.uid}`);
+  const { userId, active, position, numSites } = user.data;
   // if user status is inactive, they cannot log in
-  if (user.data.active !== USER_STATUS.ACTIVE) {
+  if (active === USER_STATUS.INACTIVE) {
     throw new Error(
       'Your account is currently not active. Please contact administration for more information.',
     );
+  } else if (active === USER_STATUS.PENDING) {
+    // first time logging in
+    // if user is a teacher, check to see if they are assigned a site.
+    // if they are not, they cannot log in
+    if (position === USER_ROLE && parseInt(numSites, 10) < 1) {
+      throw new Error(
+        'You are currently not assigned any sites, so your account is not active. Please contact administration for more information.',
+      );
+    }
+    await TLPBackend.post(`/tlp-users/set-active/${userId}`);
   }
 
   cookies.set(cookieKeys.ACCESS_TOKEN, auth.currentUser.accessToken, cookieConfig);
@@ -104,13 +116,23 @@ const sendPasswordReset = async email => {
 /**
  * Generates a new invite link for user and stores all related information
  * to create the account after invite has been processed.
- * @param {string} position either ADMIN or MASTER TEACHER
+ * @param {string} position should only be ADMIN
  * @param {string} email email to be associated with account
  * @param {string} firstName
  * @param {string} lastName
  * @param {string} phoneNumber
+ * @param {string} notes
+ *  @param {string} oldInviteId NanoID; passed if updating an existing invite
  */
-const sendInviteLink = async (position, email, firstName, lastName, phoneNumber) => {
+const sendInviteLink = async (
+  position,
+  email,
+  firstName,
+  lastName,
+  phoneNumber,
+  notes,
+  oldInviteId = null,
+) => {
   const inviteId = nanoid();
   const url = `${process.env.REACT_APP_FRONTEND_HOST}:${process.env.REACT_APP_FRONTEND_PORT}/emailAction?mode=inviteUser&inviteID=${inviteId}`;
 
@@ -122,6 +144,8 @@ const sendInviteLink = async (position, email, firstName, lastName, phoneNumber)
       firstName,
       lastName,
       phoneNumber,
+      notes,
+      oldInviteId,
     });
 
     await sendEmail(email, <InviteEmail url={url} />);
@@ -130,6 +154,20 @@ const sendInviteLink = async (position, email, firstName, lastName, phoneNumber)
     // remove invite from invite table in backend
     // propagate up error message
     await TLPBackend.delete(`tlp-users/invite/${inviteId}`);
+    throw new Error(err.message);
+  }
+};
+
+/**
+ * Sends email to given email with link to the login page
+ * @param {string} email email to be associated with account
+ */
+const sendLoginLink = async email => {
+  const url = `${process.env.REACT_APP_FRONTEND_HOST}:${process.env.REACT_APP_FRONTEND_PORT}/login`;
+
+  try {
+    await sendEmail(email, <LoginEmail url={url} />);
+  } catch (err) {
     throw new Error(err.message);
   }
 };
@@ -208,8 +246,10 @@ export {
   sendPasswordReset,
   logout,
   sendInviteLink,
+  sendLoginLink,
   confirmNewPassword,
   confirmVerifyEmail,
   finishAccountSetUp,
   updateUserPassword,
+  createUserInDB,
 };

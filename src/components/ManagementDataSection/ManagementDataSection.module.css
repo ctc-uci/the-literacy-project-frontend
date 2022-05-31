@@ -1,8 +1,3 @@
-.export-button {
-  background-color: var(--color-dark-blue-muted);
-  color: var(--text-color-white);
-}
-
 .dropdown-button button {
   color: var(--text-color-white);
 }

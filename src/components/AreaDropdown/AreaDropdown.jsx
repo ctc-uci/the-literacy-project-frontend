@@ -145,13 +145,6 @@ AreaDropdown.propTypes = {
   areaName: PropTypes.string,
   areaState: PropTypes.string,
   areaActive: PropTypes.bool,
-  // areaStats: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     student_count: PropTypes.number,
-  //     master_teacher_count: PropTypes.number,
-  //     site_count: PropTypes.number,
-  //   }),
-  // ),
   areaStats: PropTypes.oneOfType([
     PropTypes.shape({
       student_count: PropTypes.number,
