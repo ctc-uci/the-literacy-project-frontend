@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import debounce from 'lodash.debounce';
 import { PropTypes } from 'prop-types';
-import { Modal, Button, Badge } from 'react-bootstrap';
+import { Modal, Button, Badge, Alert } from 'react-bootstrap';
 import CloseButton from 'react-bootstrap/CloseButton';
 import { BsXLg } from 'react-icons/bs';
 import Select from 'react-select';
@@ -11,9 +11,17 @@ import { TLPBackend } from '../../common/utils';
 
 import StudentGroupDropdown from './StudentGroupDropdown';
 import WarningModal from '../WarningModal/WarningModal';
+import { SCHOOL_YEARS } from '../../common/config';
 
-const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) => {
-  const schoolYears = ['2021-2022', '2022-2023', '2023-2024'];
+const EditStudentGroupModal = ({
+  siteId,
+  studentGroupId,
+  groupUpdated,
+  setGroupUpdated,
+  isOpen,
+  setIsOpen,
+}) => {
+  const schoolYears = SCHOOL_YEARS;
   const schoolCycles = ['Cycle 1', 'Cycle 2', 'Cycle 3', 'Cycle 4'];
   const meetingDays = [
     'Mondays',
@@ -25,6 +33,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     'Sundays',
   ];
   const [WarningModalIsOpen, setWarningModalIsOpen] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const [studentGroupInfo, setStudentGroupInfo] = useState({
     groupName: 'Default Group Name',
@@ -37,7 +46,8 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
 
   // Students currently in the group
   const [currentStudents, setCurrentStudents] = useState();
-  const [currentStudentsLoaded, setCurrentStudentsLoaded] = useState(false);
+  const [currentStudentsLoaded, setCurrentStudentsLoaded] = useState();
+
   // Students in the system that are not in the group
   const [possibleStudents, setPossibleStudents] = useState();
   const [possibleStudentsLoaded, setPossibleStudentsLoaded] = useState(false);
@@ -62,22 +72,30 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
         meetingDay: `${studentGroupData.meetingDay}s`,
         meetingTime: studentGroupData.meetingTime,
       });
-      // Students already in group, stored as object
-      const currStudentsObj = Object.assign(
-        {},
-        ...studentGroupData.students.map(student => ({ [student.studentId]: student })),
-      );
-      // Students originally in group (initially same as current), stored as object
-      const origStudentsObj = Object.assign(
-        {},
-        ...studentGroupData.students.map(student => ({ [student.studentId]: student })),
-      );
-      setCurrentStudents(currStudentsObj);
-      setOriginalStudents(origStudentsObj);
-      // Set loaded to true so all students can be filtered
+
+      if (studentGroupData.students === null) {
+        setCurrentStudents({});
+        setOriginalStudents({});
+      } else {
+        // Students already in group, stored as object
+        setCurrentStudents(
+          Object.assign(
+            {},
+            ...studentGroupData.students.map(student => ({ [student.studentId]: student })),
+          ),
+        );
+        // Students originally in group (initially same as currentStudents), stored as object
+        setOriginalStudents(
+          Object.assign(
+            {},
+            ...studentGroupData.students.map(student => ({ [student.studentId]: student })),
+          ),
+        );
+      }
+
+      // Set loaded to true so all possible students can be filtered/found
       setCurrentStudentsLoaded(true);
     } catch (err) {
-      // console.error(err);
       // setError(err);
     }
   };
@@ -90,13 +108,14 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     });
     try {
       const filteredStudents = systemStudents.data.filter(
-        // Possible students includes students who are not currently assigned to the group
+        // Possible students includes students who are not assigned to a student group
         studentObj =>
+          studentObj.studentGroupId === null &&
           !Object.keys(currentStudents).some(
             s => currentStudents[s].studentId === studentObj.studentId,
           ),
       );
-      // map student objects to objects w/ only id, first name, last name
+      // Map student objects to objects w/ only ID, first name, last name
       const possibleStudentsObj = Object.assign(
         {},
         ...filteredStudents.map(student => ({
@@ -145,7 +164,6 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     Object.getOwnPropertyNames(originalStudents).forEach(id => {
       if (!Object.hasOwnProperty.call(currentStudents, Number(id))) {
         removedStudents.push(originalStudents[id].studentId);
-        // removedStudentsObj[id] = originalStudents[id];
       }
     });
 
@@ -153,7 +171,6 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     Object.getOwnPropertyNames(currentStudents).forEach(id => {
       if (!Object.hasOwnProperty.call(originalStudents, Number(id))) {
         addedStudents.push(currentStudents[id].studentId);
-        // addedStudentsObj[id] = currentStudents[id];
       }
     });
   };
@@ -165,57 +182,52 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
     setWarningModalIsOpen(true);
   };
 
-  const editStudentGroupData = () => {
-    TLPBackend.put(`/student-groups/${studentGroupId}`, {
-      name: studentGroupInfo.groupName,
-      year: Number(studentGroupInfo.schoolYear.slice(0, 4)),
-      cycle: studentGroupInfo.schoolCycle.slice(6),
-      masterTeacherId: studentGroupInfo.masterTeacherId,
-      siteId,
-      meetingDay: studentGroupInfo.meetingDay.slice(0, -1),
-      meetingTime: studentGroupInfo.meetingTime,
-    })
-      .then(() => {
-        closeModal();
-      })
-      .catch(() => {
-        closeModal();
+  // TODO: Change .then and .catch to try/catch instead!!!
+  const editStudentGroupData = async () => {
+    try {
+      await TLPBackend.put(`/student-groups/${studentGroupId}`, {
+        name: studentGroupInfo.groupName,
+        year: Number(studentGroupInfo.schoolYear.slice(0, 4)),
+        cycle: studentGroupInfo.schoolCycle.slice(6),
+        masterTeacherId: studentGroupInfo.masterTeacherId,
+        siteId,
+        meetingDay: studentGroupInfo.meetingDay.slice(0, -1),
+        meetingTime: studentGroupInfo.meetingTime,
       });
+      closeModal();
+    } catch (err) {
+      closeModal();
+    }
   };
 
-  const editStudentGroupStudents = () => {
-    TLPBackend.put(`/students/update-bulk`, {
-      studentIds: addedStudents,
-      studentGroupId,
-    })
-      .then(() => {
-        closeModal();
-      })
-      .catch(() => {
-        closeModal();
+  const editStudentGroupStudents = async () => {
+    try {
+      await TLPBackend.put(`/students/update-bulk`, {
+        studentIds: addedStudents,
+        studentGroupId,
       });
-
-    TLPBackend.put(`/students/update-bulk`, {
-      studentIds: removedStudents,
-      studentGroupId: null,
-    })
-      .then(() => {
-        closeModal();
-      })
-      .catch(() => {
-        closeModal();
+      await TLPBackend.put(`/students/update-bulk`, {
+        studentIds: removedStudents,
+        studentGroupId: null,
       });
+      closeModal();
+    } catch (err) {
+      closeModal();
+    }
   };
 
-  const updateGroup = () => {
+  const updateGroup = async () => {
     findMovedStudents();
-    editStudentGroupData();
-    editStudentGroupStudents();
+    await editStudentGroupData();
+    await editStudentGroupStudents();
+    setGroupUpdated(groupUpdated + 1);
+    setShowSuccessAlert(true);
+    setTimeout(() => setShowSuccessAlert(false), 5000);
   };
 
   useEffect(async () => {
     await getStudentGroupData();
-  }, []);
+  }, [groupUpdated]);
 
   useEffect(async () => {
     await getPossibleStudents();
@@ -280,9 +292,6 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
           </Modal.Title>
           <CloseButton onClick={() => closeModal()} />
         </Modal.Header>
-        {/* <div className={styles['edit-student-group-modal-top-bar']}>
-          <div className={styles['edit-student-group-modal-top-bar-title']}>Edit Student Group</div>
-        </div> */}
         <Modal.Body>
           <div className={styles['edit-student-group-modal-body']}>
             <div className={styles['edit-student-group-modal-field-desc']}>Group Name</div>
@@ -313,6 +322,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
                     schoolCycle: eventKey,
                   })
                 }
+                errorState
               />
             </div>
             <div className={styles['edit-student-group-modal-field-desc']}>Meeting Time</div>
@@ -326,6 +336,7 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
                     meetingDay: eventKey,
                   })
                 }
+                errorState
               />
               <input
                 className={styles['time-input']}
@@ -393,6 +404,14 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
         body="studentGroup"
         deleteFunc={delStudentGroup}
       />
+      {showSuccessAlert ? (
+        <div className="center-block">
+          <Alert variant="success" className={styles['alert-custom']}>
+            Student Group successfully updated.
+            <CloseButton className="alert-close-btn" onClick={() => setShowSuccessAlert(false)} />
+          </Alert>
+        </div>
+      ) : null}
     </>
   );
 };
@@ -400,6 +419,8 @@ const EditStudentGroupModal = ({ siteId, studentGroupId, isOpen, setIsOpen }) =>
 EditStudentGroupModal.propTypes = {
   siteId: PropTypes.number.isRequired,
   studentGroupId: PropTypes.number.isRequired,
+  groupUpdated: PropTypes.number.isRequired,
+  setGroupUpdated: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
 };

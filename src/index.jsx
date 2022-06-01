@@ -25,6 +25,7 @@ import StudentGroupView from './pages/student-group-view/student-group-view';
 import LoginResetPasswordView from './pages/login-reset-password/login-reset-password';
 import ViewEditSite from './pages/ViewEditSite/ViewEditSitePage';
 import NavigationBar from './components/NavigationBar/NavigationBar';
+import Footer from './components/Footer/Footer';
 
 import ScrollToTop from './common/ScrollToTop';
 
@@ -51,6 +52,7 @@ ReactDOM.render(
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/recover-password" exact element={<LoginRecoverPasswordView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
+          <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
           <Route element={<NavBarWrapper />}>
             <Route
               path="/"
@@ -165,12 +167,12 @@ ReactDOM.render(
             />
             {/* <Route path="/area" render={() => Navigate('/area-management')} /> */}
             {/* <Route path="/area/:areaId" element={<AreaDetails />} /> */}
-            <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
             <Route exact path="/access-denied" element={<AccessDeniedView />} />
             <Route exact path="/not-found" element={<NotFoundView />} />
             <Route exact path="*" element={<Navigate to="/not-found" />} />
           </Route>
         </Routes>
+        {['/', '/people'].includes(window.location.pathname) && <Footer />}
       </Router>
     </CookiesProvider>
   </React.StrictMode>,

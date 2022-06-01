@@ -4,7 +4,6 @@ import { TLPBackend } from '../../common/utils';
 import ReturnHeader from '../../common/ReturnHeader/ReturnHeader';
 import { AssessmentScoreCard, ImprovementGraph } from '../../components/AssessmentForms';
 import styles from './assessment-scorecard-input.module.css';
-import Footer from '../../components/Footer/Footer';
 
 const AssessmentScorecardInput = () => {
   const { studentID } = useParams();
@@ -51,7 +50,7 @@ const AssessmentScorecardInput = () => {
       <div className={styles['form-wrapper']}>
         <ReturnHeader
           returnText={`Return to ${studentData?.lastName}, ${studentData?.firstName}`}
-          returnLink="/"
+          returnLink={`/student/${studentID}`}
           rightText="Assessment Score Card"
         />
         <hr size="1" className={styles.divider} />
@@ -78,7 +77,6 @@ const AssessmentScorecardInput = () => {
           <ImprovementGraph studentData={studentData} />
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

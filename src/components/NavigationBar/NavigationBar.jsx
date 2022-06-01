@@ -7,7 +7,7 @@ import Image from './tlp.png';
 import styles from './NavigationBar.module.css';
 import { logout, useNavigate } from '../../common/auth/auth_utils';
 import { Cookies, withCookies, cookieKeys } from '../../common/auth/cookie_utils';
-import { AUTH_ROLES } from '../../common/config';
+import { AUTH_ROLES, ADMIN_USER_GUIDE, MT_USER_GUIDE } from '../../common/config';
 
 const NavigationBar = ({ cookies }) => {
   const navigate = useNavigate();
@@ -22,14 +22,16 @@ const NavigationBar = ({ cookies }) => {
     }
   };
 
+  /*
   const searchForStudent = event => {
     if (event.key === 'Enter') {
       console.log('Need to implement search feature.');
     }
   };
+  */
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar className={styles.nav} expand="lg">
       <Container fluid>
         <Navbar.Brand href="/">
           <img src={Image} width="80" height="55" className={styles['d-inline-block']} alt="" />
@@ -39,21 +41,26 @@ const NavigationBar = ({ cookies }) => {
           {userRole === AUTH_ROLES.ADMIN_ROLE ? (
             <>
               <Nav className="me-auto">
-                <Nav.Link href="/" style={{ color: '#6A91BC' }}>
+                <Nav.Link href="/" style={{ color: 'white' }}>
                   Area Management
                 </Nav.Link>
-                <Nav.Link href="/people" style={{ color: '#6A91BC' }}>
+                <Nav.Link href="/people" style={{ color: 'white' }}>
                   People
                 </Nav.Link>
-                <Nav.Link href="/settings" style={{ color: '#6A91BC' }}>
+                <Nav.Link href="/settings" style={{ color: 'white' }}>
                   Settings
                 </Nav.Link>
-                <Nav.Link href="/help" style={{ color: '#6A91BC' }}>
+                <Nav.Link
+                  href={ADMIN_USER_GUIDE}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  style={{ color: 'white' }}
+                >
                   Help
                 </Nav.Link>
               </Nav>
               <Nav className={styles['mr-auto']}>
-                <Nav.Link style={{ color: '#E53E3E' }} onClick={handleLogOut}>
+                <Nav.Link style={{ color: 'white' }} onClick={handleLogOut}>
                   Logout
                 </Nav.Link>
                 {/* on the off chance there is an error with logging out -- might need a better way to handle showing error */}
@@ -63,13 +70,18 @@ const NavigationBar = ({ cookies }) => {
           ) : (
             <>
               <Nav className="me-auto">
-                <Nav.Link href="/" style={{ color: '#6A91BC' }}>
+                <Nav.Link href="/" style={{ color: 'white' }}>
                   Home
                 </Nav.Link>
-                <Nav.Link href="/settings" style={{ color: '#6A91BC' }}>
+                <Nav.Link href="/settings" style={{ color: 'white' }}>
                   Settings
                 </Nav.Link>
-                <Nav.Link href="/help" style={{ color: '#6A91BC' }}>
+                <Nav.Link
+                  href={MT_USER_GUIDE}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  style={{ color: 'white' }}
+                >
                   Help
                 </Nav.Link>
               </Nav>
@@ -80,13 +92,12 @@ const NavigationBar = ({ cookies }) => {
                     placeholder="Search"
                     aria-label="Search"
                     aria-describedby="search-school-search-icon"
-                    onKeyPress={searchForStudent}
                   />
                   <InputGroup.Text id={styles['student-search-icon']}>
                     <BsSearch />
                   </InputGroup.Text>
                 </InputGroup>
-                <Nav.Link style={{ color: '#E53E3E' }} onClick={handleLogOut}>
+                <Nav.Link style={{ color: 'white' }} onClick={handleLogOut}>
                   Logout
                 </Nav.Link>
                 {/* on the off chance there is an error with logging out -- might need a better way to handle showing error */}
