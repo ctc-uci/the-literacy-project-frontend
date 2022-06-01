@@ -106,7 +106,21 @@ const CSVButton = ({ type, areaId, siteId }) => {
       ]);
     }
     if (type === 'mt') {
-      return resData.map(mt => [mt.firstName, mt.lastName, mt.email, mt.phoneNumber, mt.sites]);
+      const retList = [];
+      resData.map(mt => {
+        const l = [mt.firstName, mt.lastName, mt.email, mt.phoneNumber];
+        const sites = [];
+        if (mt.sites != null) {
+          mt.sites.map(site => {
+            sites.push(site.siteName);
+            return site.siteName;
+          });
+        }
+        l.push(sites);
+        retList.push(l);
+        return l;
+      });
+      return retList;
     }
     if (['allAreas', 'student', 'area'].indexOf(type) !== -1) {
       return resData.map(student => [
