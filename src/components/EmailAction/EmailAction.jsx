@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import ResetPassword from '../ResetPassword/ResetPassword';
 import FinishAccount from '../FinishAccount/FinishAccount';
 import VerifyEmail from '../VerifyEmail/VerifyEmail';
+import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import { TLPBackend } from '../../common/utils';
 
 const EmailAction = ({ redirectPath }) => {
@@ -30,7 +31,7 @@ const EmailAction = ({ redirectPath }) => {
   }, []);
 
   if (isLoading) {
-    return <h1>LOADING...</h1>;
+    return <LoadingScreen />;
   }
   if (mode === 'inviteUser') {
     if (inviteId === null) {

@@ -52,6 +52,7 @@ ReactDOM.render(
           <Route path="/login" exact element={<LoginView />} />
           <Route path="/login/recover-password" exact element={<LoginRecoverPasswordView />} />
           <Route path="/login/reset-password" exact element={<LoginResetPasswordView />} />
+          <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
           <Route element={<NavBarWrapper />}>
             <Route
               path="/"
@@ -166,7 +167,6 @@ ReactDOM.render(
             />
             {/* <Route path="/area" render={() => Navigate('/area-management')} /> */}
             {/* <Route path="/area/:areaId" element={<AreaDetails />} /> */}
-            <Route exact path="/emailAction" element={<EmailAction redirectPath="/" />} />
             <Route exact path="/access-denied" element={<AccessDeniedView />} />
             <Route exact path="/not-found" element={<NotFoundView />} />
             <Route exact path="*" element={<Navigate to="/not-found" />} />

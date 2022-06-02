@@ -28,4 +28,9 @@ const SCHOOL_YEARS = [
   '2030-2031',
 ];
 
-export { AUTH_ROLES, USER_STATUS, SECTIONS, SCHOOL_YEARS };
+const ADMIN_USER_GUIDE =
+  'https://docs.google.com/document/d/1RptqDXI3-Cv0BQaudzE9ap1WhVBW1ClYItJkxR3spQI/edit#heading=h.i72cuwymd8eb';
+const MT_USER_GUIDE =
+  'https://docs.google.com/document/d/1MNoU_GbLX8xV2t28pBLt-mbR2XbVwiOENNtLZSSECU0/edit?usp=sharing';
+
+export { AUTH_ROLES, USER_STATUS, SECTIONS, SCHOOL_YEARS, ADMIN_USER_GUIDE, MT_USER_GUIDE };
