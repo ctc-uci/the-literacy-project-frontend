@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { CSVLink } from 'react-csv';
-import { TLPBackend } from '../../common/utils';
+import { TLPBackend, calculateSingleStudentScores } from '../../common/utils';
 import styles from './CSVButton.module.css';
 
 const CSVButton = ({ type, areaId, siteId }) => {
@@ -41,6 +41,8 @@ const CSVButton = ({ type, areaId, siteId }) => {
       'First Name',
       'Last Name',
       'Grade',
+      'School Year',
+      'Cycle',
       'Home Teacher',
       'Gender',
       'Ethnicity',
@@ -76,21 +78,31 @@ const CSVButton = ({ type, areaId, siteId }) => {
       ];
     }
 
-    return resData.map(student => [
-      student.areaName,
-      student.siteName,
-      student.firstName,
-      student.lastName,
-      student.grade,
-      student.homeTeacher,
-      student.gender,
-      student.ethnicity,
-      student.studentGroupName,
-      student.pretestA,
-      student.pretestR,
-      student.posttestA,
-      student.posttestR,
-    ]);
+    const mapStudents = resData.map(student => {
+      const scores = calculateSingleStudentScores(student);
+      return [
+        student.areaName,
+        student.siteName,
+        student.firstName,
+        student.lastName,
+        student.grade,
+        student.year,
+        student.cycle,
+        student.homeTeacher,
+        student.gender,
+        student.ethnicity,
+        student.studentGroupName,
+        // eslint-disable-next-line no-restricted-globals
+        isNaN(scores.preAssessment) ? '' : `${scores.preAssessment.toFixed(2)}%`,
+        // eslint-disable-next-line no-restricted-globals
+        isNaN(scores.preAttitude) ? '' : `${scores.preAttitude.toFixed(2)}%`,
+        // eslint-disable-next-line no-restricted-globals
+        isNaN(scores.postAssessment) ? '' : `${scores.postAssessment.toFixed(2)}%`,
+        // eslint-disable-next-line no-restricted-globals
+        isNaN(scores.postAttitude) ? '' : `${scores.postAttitude.toFixed(2)}%`,
+      ];
+    });
+    return mapStudents;
   }
 
   const CSVReport = {
