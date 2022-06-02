@@ -60,6 +60,7 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
   const closeModal = () => {
     setIsOpen(false);
     setAddedEthnicity([]);
+    setEthnicity('Select Ethnicity');
   };
 
   // Get possible student groups
@@ -67,11 +68,13 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
     if (!isOpen) {
       return;
     }
-    // get all possible student groups based on given site
-    let route = `student-groups/site/${siteId}`;
+    let route;
     // if site not given (All Sites), get all student groups of master teacher
     if (siteId === null) {
       route = `student-groups/master-teacher/${teacherId}`;
+    } else {
+      // get all possible student groups based on given site
+      route = `student-groups/site/${siteId}`;
     }
 
     const res = await TLPBackend.get(route, {
@@ -91,8 +94,9 @@ const CreateStudentModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
           nameToId[group.name] = group.groupId;
         }
       });
-
+      // mapping student group name to group ID to retrieve later for adding student to group
       setGroupNameToId(nameToId);
+      // options for drop down
       setStudentGroupNames(masterTeacherGroups);
     } else {
       setError(error);

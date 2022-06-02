@@ -201,9 +201,14 @@ const StudentView = () => {
       <div className={styles['student-view']}>
         <section className={styles['student-return-name-section']}>
           <h2>
-            <a href="/">
+            <Link
+              to={{
+                pathname: '/',
+                search: `?siteName=${student.siteName}`,
+              }}
+            >
               <BsBackspace /> Return to {`${student.siteName}`}
-            </a>
+            </Link>
           </h2>
           <h1>
             {student.lastName}, {student.firstName}

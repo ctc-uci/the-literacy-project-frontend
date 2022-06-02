@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { instanceOf } from 'prop-types';
 import { Button } from 'react-bootstrap';
+import { useSearchParams } from 'react-router-dom';
 import styles from './master-teacher.module.css';
 import { withCookies, cookieKeys, Cookies } from '../../common/auth/cookie_utils';
 import {
@@ -10,6 +11,7 @@ import {
   calculateSiteScores,
   formatSchoolYear,
 } from '../../common/utils';
+
 import Plus from '../../assets/icons/plus.svg';
 import StudentGroup from '../../components/StudentGroup/StudentGroup';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
@@ -21,16 +23,19 @@ import CreateStudentModal from '../../components/CreateStudentModal/CreateStuden
 
 const MasterTeacherView = ({ cookies }) => {
   const VIEW_ALL = 'All Sites';
-  const ALL_CYCLES = 'All';
-  const cycles = ['1', '2', '3', '4', ALL_CYCLES];
+  const ALL_OPTION = 'All';
+  const cycles = ['1', '2', '3', '4', ALL_OPTION];
+
+  // to return to dashboard with given config for initial site name
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [allData, setAllData] = useState([]); // all student group data
   const [allSites, setAllSites] = useState({}); // list of sites with associated site id and address
   const [selectedSiteName, setSelectedSiteName] = useState();
   const [selectedSiteId, setSelectedSiteId] = useState();
   const [selectedSiteAddress, setSelectedSiteAddress] = useState();
-  const [selectedSchoolYear, setSelectedSchoolYear] = useState();
-  const [selectedCycle, setSelectedCycle] = useState(ALL_CYCLES);
+  const [selectedSchoolYear, setSelectedSchoolYear] = useState(ALL_OPTION);
+  const [selectedCycle, setSelectedCycle] = useState(ALL_OPTION);
   const [siteGroups, setSiteGroups] = useState([]); // filtered student groups for site id
   const [studentGroups, setStudentGroups] = useState([]); // filtered student groups additionally on year and cycle
   const [siteStudents, setSiteStudents] = useState([]); // filtered students additionally on year and cycle
@@ -55,24 +60,21 @@ const MasterTeacherView = ({ cookies }) => {
     let cycle = selectedCycle;
 
     // allow for optionally passing in year and cycle to change filter
-    // if a year is specified, set the initial cycle to the most recent cycle in that year if available
+    // if a year is specified, set the initial cycle to ALL_O
     // if just cycle is specified, update the cycle
     if (filterOptions.year) {
       year = filterOptions.year.substring(0, 4);
-      // const yearGroups = groups.filter(group => group.year === parseInt(year, 10));
-      cycle = ALL_CYCLES;
-      // yearGroups.forEach(group => {
-      //   if (group.cycle > cycle) {
-      //     cycle = group.cycle;
-      //   }
-      // });
+      cycle = ALL_OPTION;
     } else {
       cycle = filterOptions?.cycle;
     }
     setSelectedCycle(cycle);
+
+    // filter data based on new year and cycle configurations
     const filteredGroups = groups.filter(
       group =>
-        group.year === parseInt(year, 10) && (cycle !== ALL_CYCLES ? group.cycle === cycle : true),
+        (year !== ALL_OPTION ? group.year === parseInt(year, 10) : true) &&
+        (cycle !== ALL_OPTION ? group.cycle === cycle : true),
     );
     setStudentGroups(filteredGroups);
 
@@ -169,11 +171,21 @@ const MasterTeacherView = ({ cookies }) => {
     } else {
       currYear = recentYear;
     }
-    const formattedYear = formatSchoolYear(currYear);
-    setSelectedSchoolYear(formattedYear);
-    filterOpts = { year: formattedYear };
 
-    setSchoolYears(Array.from(years).sort().reverse());
+    // if there is only one year option, display that year
+    // else, default is all years
+    if (years.size === 1) {
+      const formattedYear = formatSchoolYear(currYear);
+      setSelectedSchoolYear(formattedYear);
+      filterOpts = { year: formattedYear };
+    } else {
+      setSelectedSchoolYear(ALL_OPTION);
+      filterOpts = { year: ALL_OPTION };
+      const yearOptions = Array.from(years).sort().reverse();
+      yearOptions.push(ALL_OPTION);
+      setSchoolYears(yearOptions);
+    }
+
     setYearToggle(years.size > 1);
 
     setSiteGroups(groups);
@@ -192,6 +204,11 @@ const MasterTeacherView = ({ cookies }) => {
     const teacherId = await cookies.get(cookieKeys.USER_ID);
     setMasterTeacherId(Number(teacherId));
 
+    // get the site name if any
+    const querySiteName = searchParams.get('siteName');
+    // remove the search params from the URL
+    setSearchParams({});
+
     async function fetchTeacherData() {
       const allStudentData = await TLPBackend.get(`/student-groups/master-teacher/${teacherId}`);
       // all unfiltered data for the MT to user for filtering later
@@ -205,13 +222,33 @@ const MasterTeacherView = ({ cookies }) => {
       if (data.length === 0) {
         return;
       }
-      // initially selected site is first site that gets returned
+
       // there has to be at least one site since only teachers that can login are those that are active in at least one student group/site
-      const initialSite = {
-        siteId: data[0].siteId,
-        siteName: data[0].siteName,
-        address: `${data[0].addressStreet}, ${data[0].addressCity} ${data[0].addressZip}`,
-      };
+      // if there is a search query given the site name, use that site as the initial site
+      let initialSite;
+      if (querySiteName !== null) {
+        const site = data.find(s => s.siteName === querySiteName);
+        initialSite = {
+          siteId: site.siteId,
+          siteName: querySiteName,
+          address: `${site.addressStreet}, ${site.addressCity} ${site.addressZip}`,
+        };
+      } else if (data.length === 1) {
+        // there is only one site
+        const onlySite = data[0];
+        initialSite = {
+          siteId: onlySite.siteId,
+          siteName: onlySite.siteName,
+          address: `${onlySite.addressStreet}, ${onlySite.addressCity} ${onlySite.addressZip}`,
+        };
+      } else {
+        // else make view all sites as default
+        initialSite = {
+          siteId: null,
+          siteName: VIEW_ALL,
+          address: null,
+        };
+      }
 
       // sites object will be key: siteNames, values are siteId and address
       const teacherSites = {};
@@ -237,13 +274,11 @@ const MasterTeacherView = ({ cookies }) => {
       teacherSites[VIEW_ALL] = null;
 
       setAllSites(teacherSites);
-      // console.log('allsites');
-      // console.log(allSites);
       setSelectedSiteName(initialSite.siteName);
       setSelectedSiteId(initialSite.siteId);
       setSelectedSiteAddress(initialSite.address);
       // display options if more than one site (one option is View All)
-      setSiteToggle(Object.keys(teacherSites).length > 1);
+      setSiteToggle(Object.keys(teacherSites).length > 2);
       await filterSiteData(initialSite.siteName, initialSite.siteId, data, teacherSites);
     }
     await fetchTeacherData();
