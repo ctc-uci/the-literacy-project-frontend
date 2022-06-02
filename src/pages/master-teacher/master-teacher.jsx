@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { instanceOf } from 'prop-types';
 import { Button } from 'react-bootstrap';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styles from './master-teacher.module.css';
 import { withCookies, cookieKeys, Cookies } from '../../common/auth/cookie_utils';
 import {
@@ -26,9 +26,6 @@ const MasterTeacherView = ({ cookies }) => {
   const ALL_OPTION = 'All';
   const cycles = ['1', '2', '3', '4', ALL_OPTION];
 
-  // to return to dashboard with given config for initial site name
-  const [searchParams, setSearchParams] = useSearchParams();
-
   const [allData, setAllData] = useState([]); // all student group data
   const [allSites, setAllSites] = useState({}); // list of sites with associated site id and address
   const [selectedSiteName, setSelectedSiteName] = useState();
@@ -49,6 +46,9 @@ const MasterTeacherView = ({ cookies }) => {
   const [createStudentGroupIsOpen, setCreateStudentGroupIsOpen] = useState(false);
   const [createStudentIsOpen, setCreateStudentIsOpen] = useState(false);
   const [masterTeacherId, setMasterTeacherId] = useState();
+
+  // used to get the linked site name from student or student group
+  const location = useLocation();
 
   const filterSchoolYearCycle = async (
     filterOptions,
@@ -205,9 +205,9 @@ const MasterTeacherView = ({ cookies }) => {
     setMasterTeacherId(Number(teacherId));
 
     // get the site name if any
-    const querySiteName = searchParams.get('siteName');
-    // remove the search params from the URL
-    setSearchParams({});
+    const querySiteName = location.state?.siteName || null;
+    // replace state -- reload should reset the page state to default
+    window.history.replaceState({}, document.title);
 
     async function fetchTeacherData() {
       const allStudentData = await TLPBackend.get(`/student-groups/master-teacher/${teacherId}`);
