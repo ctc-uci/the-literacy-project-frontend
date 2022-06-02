@@ -23,12 +23,12 @@ import AreaManagementFilter from '../../components/AreaManagementFilter/AreaMana
 
 const AreaManagement = () => {
   const [modalIsOpen, setModalOpen] = useState(false);
-  const [filters, setFilters] = useState({ inactive: area => area.active });
+  const [filters, setFilters] = useState({});
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [areaResponseData, setAreaResponseData] = useState([]);
   const [schoolYear, setSchoolYear] = useState('All');
   const [sortBy, setSortBy] = useState('A-Z');
-  const [testScores, setTestScores] = useState({});
+  const [students, setStudents] = useState([]);
   const [error, setError] = useState(null);
   const sorts = ['A-Z', 'Z-A'];
 
@@ -56,35 +56,40 @@ const AreaManagement = () => {
     }
   }
 
-  function displayAreas() {
+  function getFilteredAreas() {
     const filterFunctions = getFilters();
 
     return areaResponseData
       .filter(area => {
         return filterFunctions.every(filter => filter(area));
       })
-      .sort(compareAreas)
-      .map(area => {
-        return (
-          <AreaDropdown
-            areaId={area.areaId}
-            areaActive={area.active}
-            areaName={area.areaName}
-            areaState={area.areaState}
-            areaStats={{
-              student_count: area.numStudents || 0,
-              master_teacher_count: area.numMts || 0,
-              site_count: area.numSites || 0,
-            }}
-            areaSites={area.siteInfo || []}
-            key={`area-dropdown-${area.areaId}`}
-          />
-        );
-      });
+      .sort(compareAreas);
   }
 
-  function getAllAreaStats() {
-    return areaResponseData.reduce(
+  function displayAreas() {
+    const filteredAreas = getFilteredAreas();
+
+    return filteredAreas.map(area => {
+      return (
+        <AreaDropdown
+          areaId={area.areaId}
+          areaActive={area.active}
+          areaName={area.areaName}
+          areaState={area.areaState}
+          areaStats={{
+            student_count: area.numStudents || 0,
+            master_teacher_count: area.numMts || 0,
+            site_count: area.numSites || 0,
+          }}
+          areaSites={area.siteInfo || []}
+          key={`area-dropdown-${area.areaId}`}
+        />
+      );
+    });
+  }
+
+  function getAreaStats(areas) {
+    return areas.reduce(
       (acc, area) => {
         acc.student_count += area.numStudents || 0;
         acc.master_teacher_count += area.numMts || 0;
@@ -139,6 +144,60 @@ const AreaManagement = () => {
       .sort();
   }
 
+  function displayAreaStats() {
+    const filteredAreas = getFilteredAreas();
+    const areaStats = getAreaStats(filteredAreas);
+    const filterApplied = filteredAreas.length !== areaResponseData.length;
+    const testScores = calculateScores(
+      filterApplied
+        ? students.filter(student => filteredAreas.some(area => area.areaId === student.areaId)) // Only return students in the filteredAreas
+        : students, // No filters were applied, show all students
+    );
+
+    return (
+      <>
+        <Card className={styles['area-data-stats']}>
+          <p className={styles['area-data-title']}>
+            {filterApplied ? 'Filtered' : 'All'} Areas Data Overview
+          </p>
+          <div className={styles['area-data-info']}>
+            <p>
+              <img
+                className={styles['area-dropdown__open__area_stats__section-icon']}
+                src={SchoolIcon}
+                alt="School Icon"
+              />
+              {areaStats.site_count} Sites
+            </p>
+            <p>
+              <img
+                className={styles['area-dropdown__open__area_stats__section-icon']}
+                src={TeacherIcon}
+                alt="Teacher Icon"
+              />
+              {areaStats.master_teacher_count} Teachers
+            </p>
+            <p>
+              <BsPeople className={styles['area-mt-icon']} />
+              {areaStats.student_count} Students
+            </p>
+          </div>
+        </Card>
+
+        <p>{filterApplied ? 'Filtered Areas' : 'All Areas'}</p>
+        <p>{schoolYear === 'All' ? 'All Years' : formatSchoolYear(schoolYear)}</p>
+        <Card className={styles['sites-graph']}>
+          <Graph
+            title="Average Growth in Reading"
+            xLabels={['Attitudinal', 'Academic']}
+            preData={testScores.pre}
+            postData={testScores.post}
+          />
+        </Card>
+      </>
+    );
+  }
+
   const updateSchoolYear = newSchoolYear => {
     setSchoolYear(newSchoolYear);
 
@@ -176,9 +235,9 @@ const AreaManagement = () => {
         },
       });
       if (studentScoresRes.status === 200) {
-        setTestScores(calculateScores(studentScoresRes.data));
+        setStudents(studentScoresRes.data);
       } else {
-        setTestScores('');
+        setStudents([]);
         setError(error);
       }
     }
@@ -286,7 +345,7 @@ const AreaManagement = () => {
               areaId="all"
               areaActive
               areaName="All Areas"
-              areaStats={getAllAreaStats()}
+              areaStats={getAreaStats(areaResponseData)}
               areaSites={getAllAreaSites()}
               key="area-dropdown-all"
               editable={false}
@@ -295,46 +354,11 @@ const AreaManagement = () => {
             <div style={{ paddingBottom: '20px' }}>{displayAreas()}</div>
           </div>
           <div className={styles['sites-data']}>
-            <Card className={styles['area-data-stats']}>
-              <p className={styles['area-data-title']}>All Areas Data Overview</p>
-              <div className={styles['area-data-info']}>
-                <p>
-                  <img
-                    className={styles['area-dropdown__open__area_stats__section-icon']}
-                    src={SchoolIcon}
-                    alt="School Icon"
-                  />
-                  {getAllAreaStats().site_count} Sites
-                </p>
-                <p>
-                  <img
-                    className={styles['area-dropdown__open__area_stats__section-icon']}
-                    src={TeacherIcon}
-                    alt="Teacher Icon"
-                  />
-                  {getAllAreaStats().master_teacher_count} Teachers
-                </p>
-                <p>
-                  <BsPeople className={styles['area-mt-icon']} />
-                  {getAllAreaStats().student_count} Students
-                </p>
-              </div>
-              <CSVButton type="allAreas" />
-            </Card>
-            <p>All Areas</p>
-            <p>Year: 2021-22 Cycle: 1</p>
             <p>
-              <strong>Average Growth in Reading</strong>
+              <strong>All Area Data</strong>
             </p>
-            {/* placeholder for graph */}
-            <Card className={styles['sites-graph']}>
-              <Graph
-                // title={`Average Growth in Reading`}
-                xLabels={['Attitudinal', 'Academic']}
-                preData={testScores.pre}
-                postData={testScores.post}
-              />
-            </Card>
+            <CSVButton type="allAreas" />
+            {displayAreaStats()}
           </div>
         </div>
       </div>

@@ -82,25 +82,26 @@ export const calculateScores = data => {
     if (student.pretestR !== null) {
       hasData = true;
       attitudinal.pre +=
-        student.pretestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible;
+        (student.pretestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible) * 100;
       attitudinal.preCount += 1;
 
       // only get student's post score if they have pre-scores
       if (student.posttestR !== null) {
         academic.post +=
-          student.posttestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible;
+          (student.posttestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible) * 100;
         academic.postCount += 1;
       }
     }
 
     if (student.pretestA !== null) {
       hasData = true;
-      academic.pre += student.pretestA.reduce((prev, curr) => prev + curr, 0) / academicPossible;
+      academic.pre +=
+        (student.pretestA.reduce((prev, curr) => prev + curr, 0) / academicPossible) * 100;
       academic.preCount += 1;
 
       if (student.posttestA !== null) {
         academic.post +=
-          student.posttestA.reduce((prev, curr) => prev + curr, 0) / academicPossible;
+          (student.posttestA.reduce((prev, curr) => prev + curr, 0) / academicPossible) * 100;
         academic.postCount += 1;
       }
     }

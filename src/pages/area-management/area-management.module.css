@@ -59,6 +59,7 @@
 .search-school {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 .search-school-search-bar {
   margin: 0 !important;
@@ -80,6 +81,7 @@
 .area-button-options-right {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
 .sites-data {
