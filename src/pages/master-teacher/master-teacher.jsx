@@ -225,29 +225,13 @@ const MasterTeacherView = ({ cookies }) => {
 
       // there has to be at least one site since only teachers that can login are those that are active in at least one student group/site
       // if there is a search query given the site name, use that site as the initial site
-      let initialSite;
+      let initialSiteName = VIEW_ALL;
       if (querySiteName !== null) {
-        const site = data.find(s => s.siteName === querySiteName);
-        initialSite = {
-          siteId: site.siteId,
-          siteName: querySiteName,
-          address: `${site.addressStreet}, ${site.addressCity} ${site.addressZip}`,
-        };
+        // site name from student/student group back button
+        initialSiteName = querySiteName;
       } else if (data.length === 1) {
-        // there is only one site
-        const onlySite = data[0];
-        initialSite = {
-          siteId: onlySite.siteId,
-          siteName: onlySite.siteName,
-          address: `${onlySite.addressStreet}, ${onlySite.addressCity} ${onlySite.addressZip}`,
-        };
-      } else {
-        // else make view all sites as default
-        initialSite = {
-          siteId: null,
-          siteName: VIEW_ALL,
-          address: null,
-        };
+        // only one site so display given site instead of "All Sites"
+        initialSiteName = data[0].siteName;
       }
 
       // sites object will be key: siteNames, values are siteId and address
@@ -272,6 +256,12 @@ const MasterTeacherView = ({ cookies }) => {
       });
 
       teacherSites[VIEW_ALL] = null;
+
+      const initialSite = {
+        siteId: teacherSites[initialSiteName]?.siteId || null,
+        siteName: initialSiteName,
+        address: teacherSites[initialSiteName]?.address || null,
+      };
 
       setAllSites(teacherSites);
       setSelectedSiteName(initialSite.siteName);
