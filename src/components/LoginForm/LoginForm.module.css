@@ -1,5 +1,5 @@
 .button,
-.title,
+/* .title, */
 .log-label {
   color: white;
   font-family: 'Calibri';
@@ -40,17 +40,18 @@
 
 /* BODY */
 .form-wrapper {
-  background-color: #003459;
+  background-color: #FFFFFF;
   border-radius: 20px;
+  border: 3px solid red;
 }
 
 .title {
-  font-weight: 300;
+  font-weight: 100;
   font-size: 56px;
   line-height: 67px;
   text-align: center;
   letter-spacing: -0.02em;
-  color: #fffafa;
+  color: #000000;
   padding: 45px 0px 15px 0px;
 }
 
@@ -65,18 +66,22 @@
 
 /* LABELS AND INPUTS */
 .email-input,
-.password-input,
-.remember-me-box {
+.password-input {
   width: 60%;
+  margin: 1em 0 0 0;
 }
 
 /* label, */
 .log-label {
   font-weight: normal;
-  font-size: 16px;
+  font-size: 1.5em;
   line-height: 24px;
   width: 100%;
+  color: #000000;
+  padding: 0 0 0.25em 0;
+  /* border: 1px solid red; */
 }
+
 #email,
 #password {
   background: #ffffff;
@@ -86,22 +91,28 @@
   height: 32px;
   width: 100%;
   font-family: 'Calibri';
+  font-size: 1.25em;
+  padding: 1em 1em 1em 0.5em;
 }
-.loginForm #eyeIcon {
+#eyeIcon {
   position: absolute;
   cursor: pointer;
   color: #212529 !important;
 
-  margin: 8px 0px 0px -25px;
+  margin: 12px 25px 0px -30px;
+  /* border: 3px solid red; */
 }
 
 /* CHECKBOX */
 .remember-me-box {
-  padding-bottom: 26px;
+  width: 60%;
+  padding: 0.25em 0 0 0;
+  margin: 0 0 3em 0;
 }
 
 .remember-me-text {
   position: relative;
+  color: #000000;
 }
 
 #remember-box {
@@ -112,7 +123,7 @@
 #submit-button {
   padding: 5px 16px;
   margin-bottom: 7px;
-  width: 40%;
+  width: 60%;
   border-radius: 4.8px;
   border: none;
 
@@ -128,10 +139,11 @@
 }
 
 /* FORGOT PASSWORD AND NO ACCOUNT LINKS */
-#forgot-password {
+.forgot-password {
   font-weight: normal;
-  font-size: 16px;
+  font-size: 1.1em;
   line-height: 24px;
+  text-decoration: none;
 }
 .links {
   display: flex;
@@ -152,3 +164,4 @@
     align-items: center;
   }
 }
+

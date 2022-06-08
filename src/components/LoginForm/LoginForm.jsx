@@ -4,7 +4,7 @@ import { instanceOf } from 'prop-types';
 import styles from './LoginForm.module.css';
 import { Cookies, withCookies } from '../../common/auth/cookie_utils';
 import { logInWithEmailAndPassword, useNavigate } from '../../common/auth/auth_utils';
-import Logo from '../../assets/tlp.png';
+// import Logo from '../../assets/tlp.png';
 
 const LoginForm = ({ cookies }) => {
   const navigate = useNavigate();
@@ -39,68 +39,88 @@ const LoginForm = ({ cookies }) => {
   };
 
   return (
-    <div className={styles['login-form-wrapper']}>
-      <div className={styles['logo-wrapper']}>
-        <img className={styles.logo} src={Logo} alt="TLP Logo" />
-      </div>
-      {/* body of LoginForm */}
-      <div className={styles['form-wrapper']}>
-        <h1 className={styles.title}> Log In </h1>
-        <form className={styles.loginForm}>
-          <div className={styles['email-input']}>
-            <label className={styles['log-label']} htmlFor="email">
-              Email
-              <br />
-              <input
-                type="text"
-                id={styles.email}
-                onChange={({ target }) => setEmail(target.value)}
-                placeholder="Email Address"
-                required
-              />
-            </label>
-          </div>
-          <div className={styles['password-input']}>
-            <label className={styles['log-label']} htmlFor="password">
-              Password
-              <br />
-              <input
-                type={passwordShown ? 'text' : 'password'}
-                onChange={({ target }) => setPassword(target.value)}
-                id={styles.password}
-                placeholder="Password"
-                required
-              />
-              <FaEye id={styles.eyeIcon} color="black" onClick={togglePasswordVisibility} />
-            </label>
-          </div>
-          <div className={styles['remember-me-box']}>
-            <label htmlFor="rememberBox" style={{ color: 'white' }}>
-              <input
-                type="checkbox"
-                id={styles['remember-box']}
-                checked={rememberMe}
-                onChange={toggleRememberMe}
-              />
-              <span className={styles['remember-me-text']}>Remember Me?</span>
-            </label>
-          </div>
-          {errorMessage && <p>{errorMessage}</p>}
+    // <div className={styles['login-form-wrapper']}>
+    // <div className={styles['logo-wrapper']}>
+    //   <img className={styles.logo} src={Logo} alt="TLP Logo" />
+    // </div>
+    // {/* body of LoginForm */}
+    <div className={styles['form-wrapper']}>
+      <div className={styles.title}>Welcome!</div>
+      <form className={styles.loginForm}>
+        <div className={styles['email-input']}>
+          <label className={styles['log-label']} htmlFor="email">
+            Email
+            {/* <br /> */}
+            {/* <input
+              type="text"
+              id={styles.email}
+              onChange={({ target }) => setEmail(target.value)}
+              placeholder="Email Address"
+              required
+            /> */}
+          </label>
           <input
-            id={styles['submit-button']}
-            type="submit"
-            value="Login"
-            style={{ backgroundColor: '#BBCBE2', color: '#212529' }}
-            onClick={handleSubmit}
+            type="text"
+            id={styles.email}
+            onChange={({ target }) => setEmail(target.value)}
+            placeholder="Email Address"
+            required
           />
-        </form>
-        <div className={styles.links}>
-          <a id="forgotPassword" href="login/recover-password">
-            Forgot password?
-          </a>
         </div>
+        <div className={styles['password-input']}>
+          <label className={styles['log-label']} htmlFor="password">
+            Password
+            {/* <br />
+            <input
+              type={passwordShown ? 'text' : 'password'}
+              onChange={({ target }) => setPassword(target.value)}
+              id={styles.password}
+              placeholder="Password"
+              required
+            />
+          <FaEye id={styles.eyeIcon} color="black" onClick={togglePasswordVisibility} /> */}
+          </label>
+          <input
+            type={passwordShown ? 'text' : 'password'}
+            onChange={({ target }) => setPassword(target.value)}
+            id={styles.password}
+            placeholder="Password"
+            required
+          />
+          <FaEye
+            id={styles.eyeIcon}
+            className={styles.eyeIcon}
+            color="black"
+            onClick={togglePasswordVisibility}
+          />
+        </div>
+        <div className={styles['remember-me-box']}>
+          <label htmlFor="rememberBox" style={{ color: 'white' }}>
+            <input
+              type="checkbox"
+              id={styles['remember-box']}
+              checked={rememberMe}
+              onChange={toggleRememberMe}
+            />
+            <span className={styles['remember-me-text']}>Remember Me?</span>
+          </label>
+        </div>
+        {errorMessage && <p>{errorMessage}</p>}
+        <input
+          id={styles['submit-button']}
+          type="submit"
+          value="Login"
+          style={{ backgroundColor: '#3288C4', color: '#FFFFFF' }}
+          onClick={handleSubmit}
+        />
+      </form>
+      <div className={styles.links}>
+        <a id="forgotPassword" href="login/recover-password" className={styles['forgot-password']}>
+          Forgot password?
+        </a>
       </div>
     </div>
+    // </div>
   );
 };
 
