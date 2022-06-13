@@ -2,6 +2,30 @@
   padding: 20px;
 }
 
+.pie-chart-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pie-chart-display {
+  height: 500px;
+  width: 500px;
+  color: white !important;
+}
+
+@media (max-width: 1000px) {
+  .pie-chart-display {
+    height: 90% !important;
+    width: 90% !important;
+  }
+}
+
+.pie-chart-filter-link {
+  color: #3288C4;
+  cursor: pointer;
+}
+
 .export-button {
   background-color: var(--color-dark-blue-muted);
   color: var(--text-color-white);

@@ -1,6 +1,9 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect } from 'react';
 import { Button, Dropdown, DropdownButton, InputGroup, FormControl } from 'react-bootstrap';
 import { FaFilter } from 'react-icons/fa';
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import PieChart from '../../components/PieChart/PieChart';
 import '../../custom.scss';
 import '../../common/vars.css';
 import { SECTIONS } from '../../common/config';
@@ -16,8 +19,39 @@ const AdminStudentsView = () => {
   const [searchText, setSearchText] = useState('');
   const [filterModalIsOpen, setFilterModalIsOpen] = useState(false);
   const [filters, setFilters] = useState({});
+  const [pieChartFilter, setPieChartFilter] = useState('Grade');
+  const [pieChartData, setPieChartData] = useState({
+    Grade: [0, 0, 0, 0, 0, 0],
+    Ethnicity: [0, 0, 0, 0, 0, 0],
+    Gender: [0, 0, 0],
+  });
 
   const sorts = ['A - Z', 'Z - A'];
+
+  const pieChartLabels = {
+    Grade: ['1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade', '6th Grade'],
+    Ethnicity: [
+      'White',
+      'Black',
+      'Asian',
+      'Latinx',
+      'American Indian or Alaska Native',
+      'Non-specified',
+    ],
+    Gender: ['Male', 'Female', 'Other'],
+  };
+
+  const pieChartBackgroundColor = {
+    main_colors: [
+      'rgb(98, 190, 119)',
+      'rgb(245, 101, 101)',
+      'rgb(33, 90, 130)',
+      'rgb(255, 179, 30)',
+      'rgb(23, 162, 184)',
+      'rgb(232, 62, 140)',
+    ],
+    other: 'rgb(108, 117, 125)',
+  };
 
   const theadData = [
     {
@@ -228,6 +262,22 @@ const AdminStudentsView = () => {
       .sort();
   }
 
+  const filterPieDataChangeLeft = () => {
+    if (pieChartFilter === 'Grade') {
+      setPieChartFilter('Ethnicity');
+    } else if (pieChartFilter === 'Gender') {
+      setPieChartFilter('Grade');
+    }
+  };
+
+  const filterPieDataChangeRight = () => {
+    if (pieChartFilter === 'Grade') {
+      setPieChartFilter('Gender');
+    } else if (pieChartFilter === 'Ethnicity') {
+      setPieChartFilter('Grade');
+    }
+  };
+
   // Get all areas that have students
   function getAreas() {
     // items[6] is area name
@@ -282,6 +332,46 @@ const AdminStudentsView = () => {
 
   return (
     <div className={styles['student-container']}>
+      <div className={styles['pie-chart-container']}>
+        <div className={styles['pie-chart-filter-group']}>
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+          <div className={styles['pie-chart-filter-link']} onClick={filterPieDataChangeLeft}>
+            {pieChartFilter !== 'Ethnicity' ? <BsChevronLeft /> : <></>}
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {pieChartFilter !== 'Ethnicity'
+              ? pieChartFilter === 'Grade'
+                ? 'Ethnicity'
+                : 'Grade'
+              : ''}
+          </div>
+        </div>
+        <div className={styles['pie-chart-display']}>
+          <PieChart
+            labels={pieChartLabels[pieChartFilter]}
+            title={pieChartFilter}
+            dataPoints={pieChartData[pieChartFilter]}
+            backgroundColor={pieChartBackgroundColor.main_colors
+              .slice(
+                0,
+                pieChartFilter === 'Grade'
+                  ? pieChartLabels[pieChartFilter].length
+                  : pieChartLabels[pieChartFilter].length - 1,
+              )
+              .concat(pieChartFilter === 'Grade' ? [] : pieChartBackgroundColor.other)}
+            legendPosition="bottom"
+          />
+        </div>
+        <div className={styles['pie-chart-filter-group']}>
+          {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+          <div className={styles['pie-chart-filter-link']} onClick={filterPieDataChangeRight}>
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {pieChartFilter !== 'Gender' ? (pieChartFilter === 'Grade' ? 'Gender' : 'Grade') : ''}
+            {pieChartFilter !== 'Gender' ? <BsChevronRight /> : <></>}
+          </div>
+        </div>
+      </div>
       <div className={styles['ctrl-group']}>
         <div className={styles['inner-ctrl']}>
           <div className={styles.search}>
@@ -319,6 +409,7 @@ const AdminStudentsView = () => {
               grades={getGrades()}
               filters={filters}
               setFilters={setFilters}
+              setPieChartData={setPieChartData}
             />
           </div>
           <div className={styles['inner-ctrl']}>
