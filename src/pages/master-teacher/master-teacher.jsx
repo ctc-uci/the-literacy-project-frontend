@@ -50,6 +50,18 @@ const MasterTeacherView = ({ cookies }) => {
   // used to get the linked site name from student or student group
   const location = useLocation();
 
+  const clearDisplay = () => {
+    // used for sites with no groups/students
+    setYearToggle(false);
+    setSiteGroups([]);
+    setSiteStudents([]);
+    setStudentGroups([]);
+    setCategoricalPre([]);
+    setCategoricalPost([]);
+    setSitePre([]);
+    setSitePost([]);
+  };
+
   const filterSchoolYearCycle = async (
     filterOptions,
     groups = siteGroups,
@@ -151,6 +163,7 @@ const MasterTeacherView = ({ cookies }) => {
 
     // if there are any groups in given site, get all relevant year and cycle info
     if (groups.length === 0) {
+      clearDisplay();
       return;
     }
     let recentYear = groups[0].year;
@@ -209,23 +222,32 @@ const MasterTeacherView = ({ cookies }) => {
     // replace state -- reload should reset the page state to default
     window.history.replaceState({}, document.title);
 
-    async function fetchTeacherData() {
+    const fetchTeacherData = async () => {
       const allStudentData = await TLPBackend.get(`/student-groups/master-teacher/${teacherId}`);
       // all unfiltered data for the MT to user for filtering later
       const { data } = allStudentData;
       setAllData(data);
-      console.log('data');
-      console.log(data);
-      // const tData = await TLPBackend.get(`/teachers/${teacherId}`);
-      // console.log(tData.data.sites);
-      // data = tData.data.sites;
-      if (data.length === 0) {
-        return;
-      }
+      // sites object will be key: siteNames, values are siteId and address
+      const teacherSites = {};
+      let tData = await TLPBackend.get(`/teachers/${teacherId}`);
+      tData = await Promise.all(
+        tData.data.sites.map(async ({ siteId }) => {
+          const siteData = await TLPBackend.get(`/sites/${siteId}`);
+          return siteData.data;
+        }),
+      );
+      tData.forEach(site => {
+        const { siteId } = site;
+        const address = `${site.addressStreet}, ${site.addressCity} ${site.addressZip}`;
+        teacherSites[site.siteName] = { siteId, address };
+      });
 
       // there has to be at least one site since only teachers that can login are those that are active in at least one student group/site
       // if there is a search query given the site name, use that site as the initial site
       let initialSiteName = VIEW_ALL;
+      if (data.length === 0) {
+        return;
+      }
       if (querySiteName !== null) {
         // site name from student/student group back button
         initialSiteName = querySiteName;
@@ -235,7 +257,6 @@ const MasterTeacherView = ({ cookies }) => {
       }
 
       // sites object will be key: siteNames, values are siteId and address
-      const teacherSites = {};
       data.forEach(group => {
         const address = `${group.addressStreet}, ${group.addressCity} ${group.addressZip}`;
         teacherSites[group.siteName] = {
@@ -270,7 +291,7 @@ const MasterTeacherView = ({ cookies }) => {
       // display options if more than one site (one option is View All)
       setSiteToggle(Object.keys(teacherSites).length > 2);
       await filterSiteData(initialSite.siteName, initialSite.siteId, data, teacherSites);
-    }
+    };
     await fetchTeacherData();
   }, []);
 
