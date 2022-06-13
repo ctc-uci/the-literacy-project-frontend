@@ -42,6 +42,18 @@ export const parseTime = dateString => {
   return `${hour}:${minute} ${suffix}`;
 };
 
+export const passwordRulesTooltipText =
+  '\u2022 Must be at least 8 characters long' +
+  '<br />' +
+  '\u2022 Include at least one uppercase and lowercase letter' +
+  '<br />' +
+  '\u2022 Include at least 1 number' +
+  '<br />' +
+  '\u2022 Include one of these set of special characters [@$!%*?&]';
+
+export const passwordRegExp =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,255}$/;
+
 // calculate the attitudinal and academic pre and post average scores
 // returns null if there is not at least pre-scores for other categories
 // otherwise return object with pre and post scores
@@ -70,25 +82,26 @@ export const calculateScores = data => {
     if (student.pretestR !== null) {
       hasData = true;
       attitudinal.pre +=
-        student.pretestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible;
+        (student.pretestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible) * 100;
       attitudinal.preCount += 1;
 
       // only get student's post score if they have pre-scores
       if (student.posttestR !== null) {
         academic.post +=
-          student.posttestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible;
+          (student.posttestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible) * 100;
         academic.postCount += 1;
       }
     }
 
     if (student.pretestA !== null) {
       hasData = true;
-      academic.pre += student.pretestA.reduce((prev, curr) => prev + curr, 0) / academicPossible;
+      academic.pre +=
+        (student.pretestA.reduce((prev, curr) => prev + curr, 0) / academicPossible) * 100;
       academic.preCount += 1;
 
       if (student.posttestA !== null) {
         academic.post +=
-          student.posttestA.reduce((prev, curr) => prev + curr, 0) / academicPossible;
+          (student.posttestA.reduce((prev, curr) => prev + curr, 0) / academicPossible) * 100;
         academic.postCount += 1;
       }
     }

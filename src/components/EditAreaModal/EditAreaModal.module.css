@@ -1,3 +1,13 @@
 .buttons {
   color: var(--text-color-white);
 }
+
+.error {
+  border-color: red;
+}
+
+.error-msg {
+  color: red;
+  padding-top: 2px;
+  font-size: 14px;
+}
