@@ -79,8 +79,10 @@ const StudentGroupView = () => {
       setTestScores({});
       setError(error);
     }
+    /*
     console.log('request');
     console.log(groupUpdated);
+    */
   }, [siteId, groupUpdated]);
 
   const studentProfileBoxes = studentGroupList.map(student => {

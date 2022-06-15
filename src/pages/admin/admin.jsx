@@ -5,6 +5,7 @@ import { FaPlus } from 'react-icons/fa';
 import CreateAdminModal from '../../components/CreateAdminModal/CreateAdminModal';
 import styles from './admin.module.css';
 import Table from '../../components/Table/Table';
+import CSVButton from '../../components/CSVButton/CSVButton';
 import { TLPBackend } from '../../common/utils';
 import { SECTIONS } from '../../common/config';
 
@@ -102,9 +103,7 @@ const AdminView = ({ setAlertState }) => {
       <div className={styles['table-view']}>
         <div className={styles['table-header']}>
           <h3>Admin</h3>
-          <Button className={styles['export-button']} variant="primary">
-            Export to CSV
-          </Button>
+          <CSVButton type="admin" />
         </div>
         <div className={styles['table-buttons']}>
           <Button className={styles['create-button']} variant="warning" onClick={createAdmin}>

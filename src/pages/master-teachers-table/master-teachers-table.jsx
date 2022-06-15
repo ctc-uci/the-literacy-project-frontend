@@ -6,6 +6,7 @@ import Table from '../../components/Table/Table';
 import CreateMasterTeacherModal from '../../components/CreateMasterTeacherModal/CreateMasterTeacherModal';
 import { TLPBackend } from '../../common/utils';
 import { SECTIONS } from '../../common/config';
+import CSVButton from '../../components/CSVButton/CSVButton';
 import styles from './master-teachers-table.module.css';
 
 const MasterTeacherTableView = ({ setAlertState }) => {
@@ -113,9 +114,7 @@ const MasterTeacherTableView = ({ setAlertState }) => {
       <div className={styles['table-view']}>
         <div className={styles['table-header']}>
           <h3>Master Teacher</h3>
-          <Button className={styles['export-button']} variant="primary">
-            Export to CSV
-          </Button>
+          <CSVButton type="mt" />
         </div>
         <div className={styles['table-buttons']}>
           <Button className={styles['create-button']} variant="warning" onClick={createTeacher}>

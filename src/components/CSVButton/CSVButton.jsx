@@ -6,9 +6,23 @@ import { TLPBackend, calculateSingleStudentScores } from '../../common/utils';
 import styles from './CSVButton.module.css';
 
 const CSVButton = ({ type, areaId, siteId }) => {
-  const [studentResponseData, setStudentResponseData] = useState([]);
-  const [siteInfo, setSiteInfo] = useState([]);
+  const [data, setData] = useState([]);
   const [fileName, setFileName] = useState('');
+  const current = new Date();
+  const date = `${current.getMonth() + 1}/${current.getDate()}/${current.getFullYear()}`;
+
+  // const getAvg = arr => {
+  //   if (arr === null) {
+  //     return null;
+  //   }
+  //   let sum = 0;
+  //   for (let i = 0; i < arr.length; i += 1) {
+  //     sum += arr[i];
+  //   }
+  //   const avg = sum / arr.length;
+  //   // round to 2 decimal places
+  //   return Math.round((avg + Number.EPSILON) * 100) / 100;
+  // };
 
   // Creates CSV file headers
   function createHeaders() {
@@ -34,24 +48,32 @@ const CSVButton = ({ type, areaId, siteId }) => {
         'Notes',
       ];
     }
-
-    return [
-      'Area Name',
-      'Site Name',
-      'First Name',
-      'Last Name',
-      'Grade',
-      'School Year',
-      'Cycle',
-      'Home Teacher',
-      'Gender',
-      'Ethnicity',
-      'Student Group Name',
-      'Pre-Test Academic',
-      'Pre-Test Attitudinal',
-      'Post-Test Academic',
-      'Post-Test Attitudinal',
-    ];
+    if (type === 'admin') {
+      return ['First Name', 'Last Name', 'Email', 'Phone Number'];
+    }
+    if (type === 'mt') {
+      return ['First Name', 'Last Name', 'Email', 'Phone Number', 'Sites', 'Notes'];
+    }
+    if (['allAreas', 'student', 'area'].indexOf(type) !== -1) {
+      return [
+        'Area Name',
+        'Site Name',
+        'First Name',
+        'Last Name',
+        'Grade',
+        'School Year',
+        'Cycle',
+        'Home Teacher',
+        'Gender',
+        'Ethnicity',
+        'Student Group Name',
+        'Pre-Test Academic (AVG)',
+        'Pre-Test Attitudinal (AVG)',
+        'Post-Test Academic (AVG)',
+        'Post-Test Attitudinal (AVG)',
+      ];
+    }
+    return [];
   }
 
   function mapResponse(resData) {
@@ -77,92 +99,111 @@ const CSVButton = ({ type, areaId, siteId }) => {
         resData.notes,
       ];
     }
-
-    const mapStudents = resData.map(student => {
-      const scores = calculateSingleStudentScores(student);
-      return [
-        student.areaName,
-        student.siteName,
-        student.firstName,
-        student.lastName,
-        student.grade,
-        student.year,
-        student.cycle,
-        student.homeTeacher,
-        student.gender,
-        student.ethnicity,
-        student.studentGroupName,
-        // eslint-disable-next-line no-restricted-globals
-        isNaN(scores.preAssessment) ? '' : `${scores.preAssessment.toFixed(2)}%`,
-        // eslint-disable-next-line no-restricted-globals
-        isNaN(scores.preAttitude) ? '' : `${scores.preAttitude.toFixed(2)}%`,
-        // eslint-disable-next-line no-restricted-globals
-        isNaN(scores.postAssessment) ? '' : `${scores.postAssessment.toFixed(2)}%`,
-        // eslint-disable-next-line no-restricted-globals
-        isNaN(scores.postAttitude) ? '' : `${scores.postAttitude.toFixed(2)}%`,
-      ];
-    });
-    return mapStudents;
+    if (type === 'admin') {
+      return resData.map(admin => [
+        admin.firstName,
+        admin.lastName,
+        admin.email,
+        admin.phoneNumber,
+      ]);
+    }
+    if (type === 'mt') {
+      const retList = [];
+      resData.map(mt => {
+        const l = [mt.firstName, mt.lastName, mt.email, mt.phoneNumber];
+        const sites = [];
+        if (mt.sites != null) {
+          mt.sites.map(site => {
+            sites.push(site.siteName);
+            return site.siteName;
+          });
+        }
+        l.push(sites);
+        retList.push(l);
+        return l;
+      });
+      return retList;
+    }
+    if (['allAreas', 'student', 'area'].indexOf(type) !== -1) {
+      return resData.map(student => {
+        const scores = calculateSingleStudentScores(student);
+        return [
+          student.areaName,
+          student.siteName,
+          student.firstName,
+          student.lastName,
+          student.grade,
+          student.year,
+          student.cycle,
+          student.homeTeacher,
+          student.gender,
+          student.ethnicity,
+          student.studentGroupName,
+          // eslint-disable-next-line no-restricted-globals
+          isNaN(scores.preAssessment) ? '' : `${scores.preAssessment.toFixed(2)}%`,
+          // eslint-disable-next-line no-restricted-globals
+          isNaN(scores.preAttitude) ? '' : `${scores.preAttitude.toFixed(2)}%`,
+          // eslint-disable-next-line no-restricted-globals
+          isNaN(scores.postAssessment) ? '' : `${scores.postAssessment.toFixed(2)}%`,
+          // eslint-disable-next-line no-restricted-globals
+          isNaN(scores.postAttitude) ? '' : `${scores.postAttitude.toFixed(2)}%`,
+        ];
+      });
+    }
+    return [];
   }
 
   const CSVReport = {
-    data: type === 'site' ? siteInfo : studentResponseData,
+    data,
     headers: createHeaders(),
     filename: fileName,
   };
 
-  const addAssociatedSiteToArea = async resData => {
-    const site = [];
-    const students = [];
-
-    async function fetchStudents() {
-      students.push(...resData);
-    }
-
-    async function fetchSites() {
-      site.push(mapResponse(resData));
-    }
-
+  const addData = async resData => {
     if (type === 'site') {
-      await fetchSites();
+      const r = [];
+      r.push(mapResponse(resData));
+      setData(r);
     } else {
-      await fetchStudents();
+      setData(mapResponse(resData));
     }
-
-    setTimeout(() => {
-      if (type === 'site') {
-        setSiteInfo(site);
-      } else {
-        setStudentResponseData(mapResponse(students));
-      }
-    }, 200);
   };
 
   useEffect(() => {
-    async function fetchStudents() {
-      try {
-        if (type === 'allAreas') {
-          const areasResponse = await TLPBackend.get('/students');
-          setFileName('All_Areas_Report.csv');
-          addAssociatedSiteToArea(areasResponse.data);
-        }
-        if (type === 'area' && areaId) {
-          const sitesResponse = await TLPBackend.get(`/students/area/${areaId}`);
-          const areaName = await TLPBackend.get(`/areas/${areaId}`);
-          setFileName(`${areaName.data.areaName}_Report.csv`);
-          addAssociatedSiteToArea(sitesResponse.data);
-        }
-        if (type === 'site' && siteId) {
-          const siteResponse = await TLPBackend.get(`/sites/${siteId}`);
-          setFileName(`${siteResponse.data.siteName}_Data.csv`);
-          addAssociatedSiteToArea(siteResponse.data);
-        }
-      } catch (err) {
-        // console.log(err);
+    async function fetchData() {
+      if (type === 'allAreas') {
+        const res = await TLPBackend.get('/students');
+        setFileName(`All_Areas_Report_${date}.csv`);
+        addData(res.data);
+      }
+      if (type === 'admin') {
+        const res = await TLPBackend.get('/admins');
+        setFileName(`Admin_Data_${date}.csv`);
+        addData(res.data);
+      }
+      if (type === 'mt') {
+        const res = await TLPBackend.get('/teachers');
+        setFileName(`MasterTeacher_Data_${date}.csv`);
+        addData(res.data);
+      }
+      if (type === 'student') {
+        const res = await TLPBackend.get('/students');
+        setFileName(`Student_Data_${date}.csv`);
+        addData(res.data);
+      }
+      if (type === 'area' && areaId) {
+        const res = await TLPBackend.get(`/students/area/${areaId}`);
+        const areaName = await TLPBackend.get(`/areas/${areaId}`);
+        setFileName(`${areaName.data.areaName}_Report_${date}.csv`);
+        addData(res.data);
+      }
+      if (type === 'site' && siteId) {
+        const res = await TLPBackend.get(`/sites/${siteId}`);
+        setFileName(`${res.data.siteName}_Data_${date}.csv`);
+        addData(res.data);
       }
     }
-
-    fetchStudents();
+    fetchData();
   }, []);
 
   return (

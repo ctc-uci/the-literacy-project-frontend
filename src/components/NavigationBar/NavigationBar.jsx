@@ -22,11 +22,13 @@ const NavigationBar = ({ cookies }) => {
     }
   };
 
+  /*
   const searchForStudent = event => {
     if (event.key === 'Enter') {
       console.log('Need to implement search feature.');
     }
   };
+  */
 
   return (
     <Navbar className={styles.nav} expand="lg">
@@ -90,7 +92,6 @@ const NavigationBar = ({ cookies }) => {
                     placeholder="Search"
                     aria-label="Search"
                     aria-describedby="search-school-search-icon"
-                    onKeyPress={searchForStudent}
                   />
                   <InputGroup.Text id={styles['student-search-icon']}>
                     <BsSearch />
