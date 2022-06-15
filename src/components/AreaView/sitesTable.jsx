@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Col, Dropdown, DropdownButton, InputGroup, Form, FormControl } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { BsJournalText, BsPlus, BsFilter } from 'react-icons/bs';
+import { BsJournalText, BsPlus } from 'react-icons/bs';
 import { TLPBackend } from '../../common/utils';
 import styles from './sitesTable.module.css';
 import Table from '../Table/Table';
@@ -77,31 +77,20 @@ const SitesTable = ({ areaId, year, cycle }) => {
     });
   };
 
-  // Remove duplicate year/cycle combinations for a site
-  const reduceYearsAndCycles = data => {
-    const seen = {};
-    const output = [];
-    if (data !== null) {
-      data.forEach(yearAndCycle => {
-        if (yearAndCycle.year && yearAndCycle.cycle) {
-          const item = [yearAndCycle.year, yearAndCycle.cycle];
-          if (seen[item] !== true) {
-            seen[item] = true;
-            output.push([yearAndCycle.year, yearAndCycle.cycle]);
-          }
-        }
-      });
-    }
-    return output;
-  };
-
   const [tableData, setTableData] = useState([]);
   const buildTable = async () => {
-    const { data: fetchedSites } = await TLPBackend.get(`/sites/area/${areaId}`);
+    const { data: fetchedSites } =
+      year === 'All' && cycle === 'All'
+        ? await TLPBackend.get(`/sites/area/${areaId}`)
+        : await TLPBackend.get(
+            `/sites/area/${areaId}/${year === 'All' ? 'all' : year}/${
+              cycle === 'All' ? 'all' : cycle.charAt(cycle.length - 1)
+            }`,
+          );
     // For each site, get teachers
     const res = await Promise.all(
       fetchedSites.map(async site => {
-        reduceYearsAndCycles(site.yearsAndCycles);
+        // reduceYearsAndCycles(site.yearsAndCycles);
         const { data: siteTeachers } = await TLPBackend.get(`/teachers/site/${site.siteId}`);
         return {
           id: site.siteId,
@@ -138,7 +127,7 @@ const SitesTable = ({ areaId, year, cycle }) => {
 
   useEffect(async () => {
     buildTable();
-  }, []);
+  }, [year, cycle]);
 
   // Compares two site names alphabetically
   const compareSiteNames = (field1, field2) => {
@@ -167,28 +156,9 @@ const SitesTable = ({ areaId, year, cycle }) => {
     });
   };
 
-  const applyFilters = data => {
-    const updatedData = data;
-    const schoolYear = year;
-    const schoolCycle = cycle;
-    schoolYear.includes(schoolCycle); // random code so eslint stops complaining
-    return updatedData;
-    // console.log(updatedData);
-    // if (year !== 'All') {
-    //   updatedData = data.filter(site => {
-    //     const yearsAndCycles = site.items[5]; // items 5 is year/cycle
-    //     console.log(yearsAndCycles);
-    //     const yrs = yearsAndCycles.map(arr => arr[0]);
-    //     return yrs.includes(year);
-    //   });
-    //   console.log(updatedData);
-    // }
-    // return updatedData; // slice to get rid of year/cycle at the end
-  };
-
   // Applies search criteria, then filters, then sorts
   const displayData = data => {
-    return applyFilters(search(data)).sort(compareSiteNames);
+    return search(data).sort(compareSiteNames);
   };
 
   return (
@@ -214,10 +184,6 @@ const SitesTable = ({ areaId, year, cycle }) => {
               </InputGroup>
             </div>
             <div className={styles.sort}>
-              <button type="button" className={`btn btn-primary ${styles.filter_by_btn}`}>
-                Filter By
-                <BsFilter className={styles.filter_by_icon} />
-              </button>
               <DropdownButton
                 className={styles['dropdown-button']}
                 id="dropdown-basic-button"

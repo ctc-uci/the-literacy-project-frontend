@@ -106,14 +106,6 @@ const AreaView = () => {
 
   const updateSchoolYear = newSchoolYear => {
     setSchoolYear(newSchoolYear);
-
-    // const schoolYearFilter =
-    //   newSchoolYear === 'All' ? null : area => area.years && area.years.includes(newSchoolYear);
-
-    // setFilters({
-    //   ...filters,
-    //   year: schoolYearFilter,
-    // });
   };
 
   const updateCycle = newCycle => {
@@ -236,7 +228,6 @@ const AreaView = () => {
             </Card>
             <div className={styles.graph_headings}>
               <p>{areaName}</p>
-              <p>Year: 2021-22 Cycle: 1</p>
               <p>
                 <strong>Average Growth in Reading</strong>
               </p>
