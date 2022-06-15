@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { CSVLink } from 'react-csv';
-import { TLPBackend } from '../../common/utils';
+import { TLPBackend, calculateSingleStudentScores } from '../../common/utils';
 import styles from './CSVButton.module.css';
 
 const CSVButton = ({ type, areaId, siteId }) => {
@@ -11,18 +11,18 @@ const CSVButton = ({ type, areaId, siteId }) => {
   const current = new Date();
   const date = `${current.getMonth() + 1}/${current.getDate()}/${current.getFullYear()}`;
 
-  const getAvg = arr => {
-    if (arr === null) {
-      return null;
-    }
-    let sum = 0;
-    for (let i = 0; i < arr.length; i += 1) {
-      sum += arr[i];
-    }
-    const avg = sum / arr.length;
-    // round to 2 decimal places
-    return Math.round((avg + Number.EPSILON) * 100) / 100;
-  };
+  // const getAvg = arr => {
+  //   if (arr === null) {
+  //     return null;
+  //   }
+  //   let sum = 0;
+  //   for (let i = 0; i < arr.length; i += 1) {
+  //     sum += arr[i];
+  //   }
+  //   const avg = sum / arr.length;
+  //   // round to 2 decimal places
+  //   return Math.round((avg + Number.EPSILON) * 100) / 100;
+  // };
 
   // Creates CSV file headers
   function createHeaders() {
@@ -61,6 +61,8 @@ const CSVButton = ({ type, areaId, siteId }) => {
         'First Name',
         'Last Name',
         'Grade',
+        'School Year',
+        'Cycle',
         'Home Teacher',
         'Gender',
         'Ethnicity',
@@ -123,21 +125,30 @@ const CSVButton = ({ type, areaId, siteId }) => {
       return retList;
     }
     if (['allAreas', 'student', 'area'].indexOf(type) !== -1) {
-      return resData.map(student => [
-        student.areaName,
-        student.siteName,
-        student.firstName,
-        student.lastName,
-        student.grade,
-        student.homeTeacher,
-        student.gender,
-        student.ethnicity,
-        student.studentGroupName,
-        getAvg(student.pretestA),
-        getAvg(student.pretestR),
-        getAvg(student.posttestA),
-        getAvg(student.posttestR),
-      ]);
+      return resData.map(student => {
+        const scores = calculateSingleStudentScores(student);
+        return [
+          student.areaName,
+          student.siteName,
+          student.firstName,
+          student.lastName,
+          student.grade,
+          student.year,
+          student.cycle,
+          student.homeTeacher,
+          student.gender,
+          student.ethnicity,
+          student.studentGroupName,
+          // eslint-disable-next-line no-restricted-globals
+          isNaN(scores.preAssessment) ? '' : `${scores.preAssessment.toFixed(2)}%`,
+          // eslint-disable-next-line no-restricted-globals
+          isNaN(scores.preAttitude) ? '' : `${scores.preAttitude.toFixed(2)}%`,
+          // eslint-disable-next-line no-restricted-globals
+          isNaN(scores.postAssessment) ? '' : `${scores.postAssessment.toFixed(2)}%`,
+          // eslint-disable-next-line no-restricted-globals
+          isNaN(scores.postAttitude) ? '' : `${scores.postAttitude.toFixed(2)}%`,
+        ];
+      });
     }
     return [];
   }

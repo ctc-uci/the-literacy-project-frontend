@@ -99,7 +99,7 @@ const StudentGroupView = () => {
       <div id={styles['header-container']}>
         <div className="d-flex">
           <div>
-            <Link to="/">
+            <Link to="/" state={{ siteName }}>
               <Button variant="link">
                 <h3>
                   <BsBackspace id={styles['backspace-icon']} />
