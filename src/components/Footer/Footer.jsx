@@ -9,7 +9,7 @@ const Footer = () => {
   };
 
   return (
-    <div classNam={styles.footer}>
+    <div className={styles.footer}>
       <Row className={styles.top}>
         <div className={styles['button-wrapper']}>
           <button type="button" className={styles.button} onClick={goTopOfPage}>
@@ -64,7 +64,7 @@ const Footer = () => {
       </div>
       <Row className={styles.bottom}>
         <div className={styles.copyright}>
-          Copyright © 2017, The Literacy Project. All Rights Reserved.
+          Copyright © 2022, The Literacy Project. All Rights Reserved.
         </div>
       </Row>
     </div>

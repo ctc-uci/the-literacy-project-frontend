@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { instanceOf } from 'prop-types';
 import { Button } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 import styles from './master-teacher.module.css';
 import { withCookies, cookieKeys, Cookies } from '../../common/auth/cookie_utils';
 import {
@@ -10,6 +11,7 @@ import {
   calculateSiteScores,
   formatSchoolYear,
 } from '../../common/utils';
+
 import Plus from '../../assets/icons/plus.svg';
 import StudentGroup from '../../components/StudentGroup/StudentGroup';
 import StudentProfileBox from '../../components/StudentProfileBox/StudentProfileBox';
@@ -20,13 +22,17 @@ import CreateStudentGroupModal from '../../components/CreateStudentGroupModal/Cr
 import CreateStudentModal from '../../components/CreateStudentModal/CreateStudentModal';
 
 const MasterTeacherView = ({ cookies }) => {
+  const VIEW_ALL = 'All Sites';
+  const ALL_OPTION = 'All';
+  const cycles = ['1', '2', '3', '4', ALL_OPTION];
+
   const [allData, setAllData] = useState([]); // all student group data
   const [allSites, setAllSites] = useState({}); // list of sites with associated site id and address
   const [selectedSiteName, setSelectedSiteName] = useState();
   const [selectedSiteId, setSelectedSiteId] = useState();
   const [selectedSiteAddress, setSelectedSiteAddress] = useState();
-  const [selectedSchoolYear, setSelectedSchoolYear] = useState();
-  const [selectedCycle, setSelectedCycle] = useState();
+  const [selectedSchoolYear, setSelectedSchoolYear] = useState(ALL_OPTION);
+  const [selectedCycle, setSelectedCycle] = useState(ALL_OPTION);
   const [siteGroups, setSiteGroups] = useState([]); // filtered student groups for site id
   const [studentGroups, setStudentGroups] = useState([]); // filtered student groups additionally on year and cycle
   const [siteStudents, setSiteStudents] = useState([]); // filtered students additionally on year and cycle
@@ -37,11 +43,24 @@ const MasterTeacherView = ({ cookies }) => {
   const [sitePost, setSitePost] = useState([]); // site vs. other TLP
   const [siteToggle, setSiteToggle] = useState(true); // true if want to there are enough options to toggle between
   const [yearToggle, setYearToggle] = useState(true);
-  const VIEW_ALL = 'All Sites';
-  const cycles = ['1', '2', '3', '4'];
   const [createStudentGroupIsOpen, setCreateStudentGroupIsOpen] = useState(false);
   const [createStudentIsOpen, setCreateStudentIsOpen] = useState(false);
   const [masterTeacherId, setMasterTeacherId] = useState();
+
+  // used to get the linked site name from student or student group
+  const location = useLocation();
+
+  const clearDisplay = () => {
+    // used for sites with no groups/students
+    setYearToggle(false);
+    setSiteGroups([]);
+    setSiteStudents([]);
+    setStudentGroups([]);
+    setCategoricalPre([]);
+    setCategoricalPost([]);
+    setSitePre([]);
+    setSitePost([]);
+  };
 
   const filterSchoolYearCycle = async (
     filterOptions,
@@ -53,23 +72,21 @@ const MasterTeacherView = ({ cookies }) => {
     let cycle = selectedCycle;
 
     // allow for optionally passing in year and cycle to change filter
-    // if a year is specified, set the initial cycle to the most recent cycle in that year if available
+    // if a year is specified, set the initial cycle to ALL_O
     // if just cycle is specified, update the cycle
     if (filterOptions.year) {
       year = filterOptions.year.substring(0, 4);
-      const yearGroups = groups.filter(group => group.year === parseInt(year, 10));
-      cycle = '1';
-      yearGroups.forEach(group => {
-        if (group.cycle > cycle) {
-          cycle = group.cycle;
-        }
-      });
+      cycle = ALL_OPTION;
     } else {
       cycle = filterOptions?.cycle;
     }
     setSelectedCycle(cycle);
+
+    // filter data based on new year and cycle configurations
     const filteredGroups = groups.filter(
-      group => group.year === parseInt(year, 10) && group.cycle === cycle,
+      group =>
+        (year !== ALL_OPTION ? group.year === parseInt(year, 10) : true) &&
+        (cycle !== ALL_OPTION ? group.cycle === cycle : true),
     );
     setStudentGroups(filteredGroups);
 
@@ -146,6 +163,7 @@ const MasterTeacherView = ({ cookies }) => {
 
     // if there are any groups in given site, get all relevant year and cycle info
     if (groups.length === 0) {
+      clearDisplay();
       return;
     }
     let recentYear = groups[0].year;
@@ -159,17 +177,28 @@ const MasterTeacherView = ({ cookies }) => {
     });
 
     let currYear = null;
+    // if the year is past June, add the new school year to the options
     if (currDay.getMonth() > 6) {
       currYear = currDay.getFullYear();
       years.add(formatSchoolYear(currYear));
     } else {
       currYear = recentYear;
     }
-    const formattedYear = formatSchoolYear(currYear);
-    setSelectedSchoolYear(formattedYear);
-    filterOpts = { year: formattedYear };
 
-    setSchoolYears(Array.from(years).sort().reverse());
+    // if there is only one year option, display that year
+    // else, default is all years
+    if (years.size === 1) {
+      const formattedYear = formatSchoolYear(currYear);
+      setSelectedSchoolYear(formattedYear);
+      filterOpts = { year: formattedYear };
+    } else {
+      setSelectedSchoolYear(ALL_OPTION);
+      filterOpts = { year: ALL_OPTION };
+      const yearOptions = Array.from(years).sort().reverse();
+      yearOptions.push(ALL_OPTION);
+      setSchoolYears(yearOptions);
+    }
+
     setYearToggle(years.size > 1);
 
     setSiteGroups(groups);
@@ -188,25 +217,54 @@ const MasterTeacherView = ({ cookies }) => {
     const teacherId = await cookies.get(cookieKeys.USER_ID);
     setMasterTeacherId(Number(teacherId));
 
-    async function fetchTeacherData() {
+    // get the site name if any
+    const querySiteName = location.state?.siteName || null;
+    // replace state -- reload should reset the page state to default
+    window.history.replaceState({}, document.title);
+
+    const fetchTeacherData = async () => {
       const allStudentData = await TLPBackend.get(`/student-groups/master-teacher/${teacherId}`);
       // all unfiltered data for the MT to user for filtering later
       const { data } = allStudentData;
       setAllData(data);
-      if (data.length === 0) {
+      // sites object will be key: siteNames, values are siteId and address
+      const teacherSites = {};
+      let tData = await TLPBackend.get(`/teachers/${teacherId}`);
+      try {
+        tData = await Promise.all(
+          tData.data.sites?.map(async ({ siteId }) => {
+            const siteData = await TLPBackend.get(`/sites/${siteId}`);
+            return siteData.data;
+          }),
+        );
+        tData.forEach(site => {
+          const { siteId } = site;
+          const address = `${site.addressStreet}, ${site.addressCity} ${site.addressZip}`;
+          teacherSites[site.siteName] = { siteId, address };
+        });
+      } catch (err) {
         return;
       }
 
-      // initially selected site is first site that gets returned
       // there has to be at least one site since only teachers that can login are those that are active in at least one student group/site
-      const initialSite = {
-        siteId: data[0].siteId,
-        siteName: data[0].siteName,
-        address: `${data[0].addressStreet}, ${data[0].addressCity} ${data[0].addressZip}`,
-      };
+      // if there is a search query given the site name, use that site as the initial site
+      let initialSiteName = VIEW_ALL;
+      if (data.length === 0) {
+        if (tData.length > 0) {
+          initialSiteName = tData[0].siteName;
+        } else {
+          return;
+        }
+      }
+      if (querySiteName !== null) {
+        // site name from student/student group back button
+        initialSiteName = querySiteName;
+      } else if (data.length === 1) {
+        // only one site so display given site instead of "All Sites"
+        initialSiteName = data[0].siteName;
+      }
 
       // sites object will be key: siteNames, values are siteId and address
-      const teacherSites = {};
       data.forEach(group => {
         const address = `${group.addressStreet}, ${group.addressCity} ${group.addressZip}`;
         teacherSites[group.siteName] = {
@@ -228,13 +286,20 @@ const MasterTeacherView = ({ cookies }) => {
 
       teacherSites[VIEW_ALL] = null;
 
+      const initialSite = {
+        siteId: teacherSites[initialSiteName]?.siteId || null,
+        siteName: initialSiteName,
+        address: teacherSites[initialSiteName]?.address || null,
+      };
+
       setAllSites(teacherSites);
       setSelectedSiteName(initialSite.siteName);
       setSelectedSiteId(initialSite.siteId);
       setSelectedSiteAddress(initialSite.address);
+      // display options if more than one site (one option is View All)
       setSiteToggle(Object.keys(teacherSites).length > 2);
       await filterSiteData(initialSite.siteName, initialSite.siteId, data, teacherSites);
-    }
+    };
     await fetchTeacherData();
   }, []);
   // }, [studentGroupCreated]);
@@ -287,131 +352,249 @@ const MasterTeacherView = ({ cookies }) => {
           </div>
         )}
 
-        <div className={styles.section}>
-          <h3>Data</h3>
-          {categoricalPre.length === 0 ? (
-            <div className={styles['empty-view']}>
-              <h2>No data is available for this selected time.</h2>
-            </div>
-          ) : (
-            <div className={styles['graph-container']}>
-              <div className={styles.graph}>
-                <Graph
-                  title={`Average Scores for ${selectedSiteName} Site`}
-                  xLabels={['Attitudinal', 'Academic']}
-                  preData={categoricalPre}
-                  postData={categoricalPost}
-                />
-              </div>
-              <div className={styles.graph}>
-                <Graph
-                  title={`${selectedSiteName} Site Average Scores vs. Other TLP Sites`}
-                  xLabels={[`${selectedSiteName}`, 'Other TLP']}
-                  preData={sitePre}
-                  postData={sitePost}
-                />
+        {studentGroups.length === 0 ? (
+          // There are no student groups across any of the assigned sites
+          <>
+            <div className={styles.section}>
+              <h3>Data</h3>
+              <div className={styles['empty-view']}>
+                <h2>No data is available for this selected time.</h2>
               </div>
             </div>
-          )}
-        </div>
-
-        <div className={styles.section}>
-          <div className={styles.header}>
-            <h3>Student Groups</h3>
-            <Button
-              variant="warning"
-              className={styles['create-button']}
-              onClick={() => setCreateStudentGroupIsOpen(true)}
-            >
-              Create Student Group
-              <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
-            </Button>
-          </div>
-          {studentGroups.length === 0 ? (
-            <div className={styles['empty-view']}>
-              <h2>No student group is available for this selected time.</h2>
-            </div>
-          ) : (
-            <div className={styles.content}>
-              {studentGroups
-                .sort((a, b) => (a.groupId > b.groupId ? 1 : -1))
-                .map(group => (
-                  <StudentGroup
-                    key={group.groupId}
-                    groupId={group.groupId}
-                    groupName={group.name}
-                    studentList={
-                      group.students
-                        ? group.students.map(s => {
-                            return s.firstName;
-                          })
-                        : []
-                    }
-                    meetingDay={group.meetingDay}
-                    meetingTime={group.meetingTime}
-                    viewAddress={selectedSiteName === VIEW_ALL}
-                    siteName={group.siteName}
-                    address={group.siteAddress}
-                  />
-                ))}
-            </div>
-          )}
-        </div>
-        {typeof masterTeacherId === 'number' ? (
-          <CreateStudentGroupModal
-            siteId={selectedSiteId}
-            teacherId={masterTeacherId}
-            isOpen={createStudentGroupIsOpen}
-            setIsOpen={setCreateStudentGroupIsOpen}
-          />
-        ) : null}
-        <div className={`${styles.section} ${styles['students-container']}`}>
-          <div className={styles.header}>
-            <h3>Students</h3>
-            <Button
-              variant="warning"
-              className={styles['create-button']}
-              onClick={() => setCreateStudentIsOpen(true)}
-            >
-              Create New Student
-              <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
-            </Button>
-            {siteStudents.length !== 0 && (
-              <Button className={styles['view-all-button']}>
-                <p className={styles['view-all-text']}>View All</p>
-              </Button>
-            )}
-          </div>
-          {typeof masterTeacherId === 'number' && typeof selectedSiteId === 'number' ? (
-            <CreateStudentModal
-              siteId={selectedSiteId}
-              teacherId={masterTeacherId}
-              isOpen={createStudentIsOpen}
-              setIsOpen={setCreateStudentIsOpen}
-            />
-          ) : null}
-          {siteStudents.length === 0 ? (
-            <div className={styles['empty-view']}>
-              <h2>No students have been created for this selected time.</h2>
-            </div>
-          ) : (
-            <div className={styles.content}>
-              {selectedSiteName !== VIEW_ALL ? (
-                siteStudents
-                  .slice(0, 6)
-                  .map(s => (
-                    <StudentProfileBox
-                      key={s.studentId}
-                      studentId={s.studentId}
-                      studentName={`${s.firstName} ${s.lastName}`}
-                    />
-                  ))
+            <div className={styles.section}>
+              <div className={styles.header}>
+                <h3>Student Groups</h3>
+                {Object.keys(allSites).length > 0 && (
+                  <Button
+                    variant="warning"
+                    className={styles['create-button']}
+                    onClick={() => setCreateStudentGroupIsOpen(true)}
+                  >
+                    Create Student Group
+                    <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
+                  </Button>
+                )}
+              </div>
+              {studentGroups.length === 0 ? (
+                <div className={styles['empty-view']}>
+                  <h2>No student group is available for this selected time.</h2>
+                </div>
               ) : (
-                <StudentTable data={siteStudents.slice(0, 6)} />
+                <div className={styles.content}>
+                  {studentGroups
+                    .sort((a, b) => (a.groupId > b.groupId ? 1 : -1))
+                    .map(group => (
+                      <StudentGroup
+                        key={group.groupId}
+                        groupId={group.groupId}
+                        groupName={group.name}
+                        studentList={
+                          group.students
+                            ? group.students.map(s => {
+                                return s.firstName;
+                              })
+                            : []
+                        }
+                        meetingDay={group.meetingDay}
+                        meetingTime={group.meetingTime}
+                        viewAddress={selectedSiteName === VIEW_ALL}
+                        siteName={group.siteName}
+                        address={group.siteAddress}
+                      />
+                    ))}
+                </div>
               )}
             </div>
-          )}
-        </div>
+            {typeof masterTeacherId === 'number' ? (
+              <CreateStudentGroupModal
+                siteId={selectedSiteId}
+                teacherId={masterTeacherId}
+                isOpen={createStudentGroupIsOpen}
+                setIsOpen={setCreateStudentGroupIsOpen}
+              />
+            ) : null}
+            <div className={`${styles.section} ${styles['students-container']}`}>
+              <div className={styles.header}>
+                <h3>Students</h3>
+                {Object.keys(allSites).length > 0 && (
+                  <Button
+                    variant="warning"
+                    className={styles['create-button']}
+                    onClick={() => setCreateStudentIsOpen(true)}
+                  >
+                    Create New Student
+                    <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
+                  </Button>
+                )}
+                {siteStudents.length !== 0 && (
+                  <Button className={styles['view-all-button']}>
+                    <p className={styles['view-all-text']}>View All</p>
+                  </Button>
+                )}
+              </div>
+              {typeof masterTeacherId === 'number' &&
+              (typeof selectedSiteId === 'number' || selectedSiteId === undefined) ? (
+                <CreateStudentModal
+                  siteId={selectedSiteId}
+                  teacherId={masterTeacherId}
+                  isOpen={createStudentIsOpen}
+                  setIsOpen={setCreateStudentIsOpen}
+                />
+              ) : null}
+              {siteStudents.length === 0 ? (
+                <div className={styles['empty-view']}>
+                  <h2>No students have been created for this selected time.</h2>
+                </div>
+              ) : (
+                <div className={styles.content}>
+                  {selectedSiteName !== VIEW_ALL ? (
+                    siteStudents
+                      .slice(0, 6)
+                      .map(s => (
+                        <StudentProfileBox
+                          key={s.studentId}
+                          studentId={s.studentId}
+                          studentName={`${s.firstName} ${s.lastName}`}
+                        />
+                      ))
+                  ) : (
+                    <StudentTable data={siteStudents.slice(0, 6)} />
+                  )}
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          // There is at least one student group over all assigned sites
+          <>
+            <div className={styles.section}>
+              <h3>Data</h3>
+              {categoricalPre.length === 0 ? (
+                <div className={styles['empty-view']}>
+                  <h2>No data is available for this selected time.</h2>
+                </div>
+              ) : (
+                <div className={styles['graph-container']}>
+                  <div className={styles.graph}>
+                    <Graph
+                      title={`Average Scores for ${selectedSiteName} Site`}
+                      xLabels={['Attitudinal', 'Academic']}
+                      preData={categoricalPre}
+                      postData={categoricalPost}
+                    />
+                  </div>
+                  <div className={styles.graph}>
+                    <Graph
+                      title={`${selectedSiteName} Site Average Scores vs. Other TLP Sites`}
+                      xLabels={[`${selectedSiteName}`, 'Other TLP']}
+                      preData={sitePre}
+                      postData={sitePost}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className={styles.section}>
+              <div className={styles.header}>
+                <h3>Student Groups</h3>
+                <Button
+                  variant="warning"
+                  className={styles['create-button']}
+                  onClick={() => setCreateStudentGroupIsOpen(true)}
+                >
+                  Create Student Group
+                  <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
+                </Button>
+              </div>
+              {studentGroups.length === 0 ? (
+                <div className={styles['empty-view']}>
+                  <h2>No student group is available for this selected time.</h2>
+                </div>
+              ) : (
+                <div className={styles.content}>
+                  {studentGroups
+                    .sort((a, b) => (a.groupId > b.groupId ? 1 : -1))
+                    .map(group => (
+                      <StudentGroup
+                        key={group.groupId}
+                        groupId={group.groupId}
+                        groupName={group.name}
+                        studentList={
+                          group.students
+                            ? group.students.map(s => {
+                                return s.firstName;
+                              })
+                            : []
+                        }
+                        meetingDay={group.meetingDay}
+                        meetingTime={group.meetingTime}
+                        viewAddress={selectedSiteName === VIEW_ALL}
+                        siteName={group.siteName}
+                        address={group.siteAddress}
+                      />
+                    ))}
+                </div>
+              )}
+            </div>
+            {typeof masterTeacherId === 'number' ? (
+              <CreateStudentGroupModal
+                siteId={selectedSiteId}
+                teacherId={masterTeacherId}
+                isOpen={createStudentGroupIsOpen}
+                setIsOpen={setCreateStudentGroupIsOpen}
+              />
+            ) : null}
+            <div className={`${styles.section} ${styles['students-container']}`}>
+              <div className={styles.header}>
+                <h3>Students</h3>
+                <Button
+                  variant="warning"
+                  className={styles['create-button']}
+                  onClick={() => setCreateStudentIsOpen(true)}
+                >
+                  Create New Student
+                  <img className={styles.plus__icon} src={Plus} alt="Plus Icon" />
+                </Button>
+                {siteStudents.length !== 0 && (
+                  <Button className={styles['view-all-button']}>
+                    <p className={styles['view-all-text']}>View All</p>
+                  </Button>
+                )}
+              </div>
+              {typeof masterTeacherId === 'number' &&
+              (typeof selectedSiteId === 'number' || selectedSiteId === undefined) ? (
+                <CreateStudentModal
+                  siteId={selectedSiteId}
+                  teacherId={masterTeacherId}
+                  isOpen={createStudentIsOpen}
+                  setIsOpen={setCreateStudentIsOpen}
+                />
+              ) : null}
+              {siteStudents.length === 0 ? (
+                <div className={styles['empty-view']}>
+                  <h2>No students have been created for this selected time.</h2>
+                </div>
+              ) : (
+                <div className={styles.content}>
+                  {selectedSiteName !== VIEW_ALL ? (
+                    siteStudents
+                      .slice(0, 6)
+                      .map(s => (
+                        <StudentProfileBox
+                          key={s.studentId}
+                          studentId={s.studentId}
+                          studentName={`${s.firstName} ${s.lastName}`}
+                        />
+                      ))
+                  ) : (
+                    <StudentTable data={siteStudents.slice(0, 6)} />
+                  )}
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
       {/* <Footer /> */}
     </div>

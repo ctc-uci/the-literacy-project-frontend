@@ -183,8 +183,11 @@ const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
   };
 
   useEffect(async () => {
+    if (!isOpen) {
+      return;
+    }
     await getPossibleStudents();
-  }, []);
+  }, [isOpen]);
 
   const StudentBadges = () => (
     <>
@@ -370,8 +373,12 @@ const CreateStudentGroupModal = ({ siteId, teacherId, isOpen, setIsOpen }) => {
   );
 };
 
+CreateStudentGroupModal.defaultProps = {
+  siteId: null,
+};
+
 CreateStudentGroupModal.propTypes = {
-  siteId: PropTypes.number.isRequired,
+  siteId: PropTypes.number,
   teacherId: PropTypes.number.isRequired,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
