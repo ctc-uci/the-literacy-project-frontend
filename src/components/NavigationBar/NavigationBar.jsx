@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { instanceOf } from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Navbar, Nav, Container, InputGroup, FormControl } from 'react-bootstrap';
-import { BsSearch } from 'react-icons/bs';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import Image from './tlp.png';
 import styles from './NavigationBar.module.css';
 import { logout, useNavigate } from '../../common/auth/auth_utils';
@@ -86,7 +85,7 @@ const NavigationBar = ({ cookies }) => {
                 </Nav.Link>
               </Nav>
               <Nav className={styles['mr-auto']}>
-                <InputGroup>
+                {/* <InputGroup>
                   <FormControl
                     className={styles['student-search-bar']}
                     placeholder="Search"
@@ -96,7 +95,7 @@ const NavigationBar = ({ cookies }) => {
                   <InputGroup.Text id={styles['student-search-icon']}>
                     <BsSearch />
                   </InputGroup.Text>
-                </InputGroup>
+                </InputGroup> */}
                 <Nav.Link style={{ color: 'white' }} onClick={handleLogOut}>
                   Logout
                 </Nav.Link>
