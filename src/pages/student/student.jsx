@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import Select from 'react-select';
 import Graph from '../../components/Graph/Graph';
 import styles from './student.module.css';
-import { TLPBackend, capitalize } from '../../common/utils';
+import { TLPBackend, capitalize, calculateSingleStudentScores } from '../../common/utils';
 import WarningModal from '../../components/WarningModal/WarningModal';
 
 const StudentView = () => {
@@ -39,14 +39,14 @@ const StudentView = () => {
     pretestR: [],
     posttestR: [],
   });
-  const [siteData, setSiteData] = useState({
-    pre: 0,
-    post: 0,
-  });
-  const [otherSiteData, setOtherSiteData] = useState({
-    pre: 0,
-    post: 0,
-  });
+  // const [siteData, setSiteData] = useState({
+  //   pre: 0,
+  //   post: 0,
+  // });
+  // const [otherSiteData, setOtherSiteData] = useState({
+  //   pre: 0,
+  //   post: 0,
+  // });
 
   const setStudentEditData = () => {
     const tempStudentData = {};
@@ -102,38 +102,38 @@ const StudentView = () => {
     window.location.replace('/');
   };
 
-  const calculateTotalPrePostData = resStudentsData => {
-    // Calculates the total student Pre / Post Data from post the Attitudinal and Academic lists of scores
-    const tempSiteData = {
-      pre: 0,
-      post: 0,
-    };
+  // const calculateTotalPrePostData = resStudentsData => {
+  //   // Calculates the total student Pre / Post Data from post the Attitudinal and Academic lists of scores
+  //   const tempSiteData = {
+  //     pre: 0,
+  //     post: 0,
+  //   };
 
-    ['pretestA', 'posttestA', 'pretestR', 'posttestR'].forEach(siteDataKey => {
-      const totalData =
-        resStudentsData.data
-          .map(studentData => {
-            if (studentData[siteDataKey]) {
-              return (
-                studentData[siteDataKey].reduce((total, amount) => total + amount, 0) /
-                studentData[siteDataKey].length
-              );
-            }
-            return 0;
-          })
-          .reduce((total, amount) => total + amount, 0) / resStudentsData.data.length;
-      if (siteDataKey.includes('pre')) {
-        tempSiteData.pre += totalData;
-      } else {
-        tempSiteData.post += totalData;
-      }
-    });
+  //   ['pretestA', 'posttestA', 'pretestR', 'posttestR'].forEach(siteDataKey => {
+  //     const totalData =
+  //       resStudentsData.data
+  //         .map(studentData => {
+  //           if (studentData[siteDataKey]) {
+  //             return (
+  //               studentData[siteDataKey].reduce((total, amount) => total + amount, 0) /
+  //               studentData[siteDataKey].length
+  //             );
+  //           }
+  //           return 0;
+  //         })
+  //         .reduce((total, amount) => total + amount, 0) / resStudentsData.data.length;
+  //     if (siteDataKey.includes('pre')) {
+  //       tempSiteData.pre += totalData;
+  //     } else {
+  //       tempSiteData.post += totalData;
+  //     }
+  //   });
 
-    tempSiteData.pre = Math.round((tempSiteData.pre / 2) * 100) / 100;
-    tempSiteData.post = Math.round((tempSiteData.post / 2) * 100) / 100;
+  //   tempSiteData.pre = Math.round((tempSiteData.pre / 2) * 100) / 100;
+  //   tempSiteData.post = Math.round((tempSiteData.post / 2) * 100) / 100;
 
-    return tempSiteData;
-  };
+  //   return tempSiteData;
+  // };
 
   // logic relating to calculating pre/post
   // const specific = arr.filter(site => site.name === specific_site) //this returns the specific site from the sites
@@ -179,20 +179,20 @@ const StudentView = () => {
         .catch(() => {
           // console.log('ERROR: Cannot load editing options.');
         });
-      TLPBackend.get(`/students/site/${res.data.siteId}`)
-        .then(resStudentsData => {
-          setSiteData(calculateTotalPrePostData(resStudentsData));
-        })
-        .catch(() => {
-          // console.log('ERROR: Cannot load all students from site.');
-        });
-      TLPBackend.get(`/students/other-sites/${res.data.siteId}`)
-        .then(resStudentsData => {
-          setOtherSiteData(calculateTotalPrePostData(resStudentsData));
-        })
-        .catch(() => {
-          // console.log('ERROR: Cannot load all students from other sites.');
-        });
+      // TLPBackend.get(`/students/site/${res.data.siteId}`)
+      //   .then(resStudentsData => {
+      //     setSiteData(calculateTotalPrePostData(resStudentsData));
+      //   })
+      //   .catch(() => {
+      //     // console.log('ERROR: Cannot load all students from site.');
+      //   });
+      // TLPBackend.get(`/students/other-sites/${res.data.siteId}`)
+      //   .then(resStudentsData => {
+      //     setOtherSiteData(calculateTotalPrePostData(resStudentsData));
+      //   })
+      //   .catch(() => {
+      //     // console.log('ERROR: Cannot load all students from other sites.');
+      //   });
     }
   }, [studentId]);
 
@@ -408,47 +408,26 @@ const StudentView = () => {
                 title={`Average Scores for ${student.firstName} ${student.lastName}`}
                 xLabels={['Attitudinal', 'Academic']}
                 preData={[
-                  student.pretestA
-                    ? Math.round(
-                        (student.pretestA.reduce((total, amount) => total + amount, 0) /
-                          student.pretestA.length) *
-                          100,
-                      ) / 100
-                    : 0,
-                  student.pretestR
-                    ? Math.round(
-                        student.pretestR.reduce((total, amount) => total + amount, 0) /
-                          student.pretestR.length,
-                      )
-                    : 0,
+                  calculateSingleStudentScores(student).preAttitude,
+                  calculateSingleStudentScores(student).preAssessment,
                 ]}
                 postData={[
-                  student.posttestA
-                    ? Math.round(
-                        (student.posttestA.reduce((total, amount) => total + amount, 0) /
-                          student.posttestA.length) *
-                          100,
-                      ) / 100
-                    : 0,
-                  student.posttestR
-                    ? Math.round(
-                        (student.posttestR.reduce((total, amount) => total + amount, 0) /
-                          student.posttestR.length) *
-                          100,
-                      ) / 100
-                    : 0,
+                  calculateSingleStudentScores(student).postAttitude,
+                  calculateSingleStudentScores(student).postAssessment,
                 ]}
               />
             </div>
-            <div className={styles['data-information-section__data-graph']}>
-              <p>Year: 2021 - 2022</p>
+            {/* <div className={styles['data-information-section__data-graph']}>
+              <p>
+                Year: {student.year} - {student.year + 1}
+              </p>
               <Graph
-                title="Irvine Site Average Scores vs Other TLP Sites"
+                title={`${student.siteName} Average Scores vs Other TLP Sites`}
                 xLabels={[student.siteName, 'Other TLP']}
                 preData={[siteData.pre, otherSiteData.pre]}
                 postData={[siteData.post, otherSiteData.post]}
               />
-            </div>
+            </div> */}
           </div>
         </section>
         <section className={styles['links-section']}>
