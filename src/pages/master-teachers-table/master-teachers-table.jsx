@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dropdown, DropdownButton, InputGroup, FormControl } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { FaPlus, FaFilter } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import Table from '../../components/Table/Table';
 import CreateMasterTeacherModal from '../../components/CreateMasterTeacherModal/CreateMasterTeacherModal';
 import { TLPBackend } from '../../common/utils';
@@ -13,6 +13,7 @@ const MasterTeacherTableView = ({ setAlertState }) => {
   const [createModalIsOpen, setCreateModalOpen] = useState(false);
   const [tbodyData, setBodyData] = useState([]);
   const [sortBy, setSortBy] = useState('A-Z');
+  const [searchText, setSearchText] = useState('');
 
   const createTeacher = () => {
     setCreateModalOpen(true);
@@ -20,6 +21,18 @@ const MasterTeacherTableView = ({ setAlertState }) => {
 
   const updateSortBy = option => {
     setSortBy(option);
+  };
+
+  const inputHandler = e => {
+    setSearchText(e.target.value.toLowerCase());
+  };
+
+  // searches through data for matching site name to query
+  const search = data => {
+    return data.filter(row => {
+      const name = row.items[0].toLowerCase(); // items[1] is site name
+      return name.includes(searchText);
+    });
   };
 
   // Sorting function for name using the sort by value in the body data
@@ -120,16 +133,13 @@ const MasterTeacherTableView = ({ setAlertState }) => {
           <Button className={styles['create-button']} variant="warning" onClick={createTeacher}>
             Create New Teacher Account <FaPlus cursor="pointer" />
           </Button>
-          <InputGroup>
+          <InputGroup input={searchText} onChange={inputHandler}>
             <FormControl
               placeholder="Search Teachers"
               aria-label="Search Teachers"
               aria-describedby="search-icon"
             />
           </InputGroup>
-          <Button className={styles['filter-button']} variant="primary">
-            Filter By <FaFilter cursor="pointer" />
-          </Button>
           <DropdownButton
             className={styles['dropdown-button']}
             id="dropdown-basic-button"
@@ -142,7 +152,7 @@ const MasterTeacherTableView = ({ setAlertState }) => {
         <Table
           sectionTitle={SECTIONS.TEACHER}
           theadData={theadData}
-          tbodyData={tbodyData.sort(compareNames)}
+          tbodyData={search(tbodyData).sort(compareNames)}
           statusCol={3}
           tbodyColIsBadge={[2]}
           setAlertState={setAlertState}

@@ -13,9 +13,22 @@ const AdminView = ({ setAlertState }) => {
   const [modalIsOpen, setModalOpen] = useState(false);
   const [tbodyData, setBodyData] = useState([]);
   const [sortBy, setSortBy] = useState('A-Z');
+  const [searchText, setSearchText] = useState('');
 
   const createAdmin = () => {
     setModalOpen(true);
+  };
+
+  const inputHandler = e => {
+    setSearchText(e.target.value.toLowerCase());
+  };
+
+  // searches through data for matching site name to query
+  const search = data => {
+    return data.filter(row => {
+      const name = row.items[0].toLowerCase(); // items[1] is site name
+      return name.includes(searchText);
+    });
   };
 
   const updateSortBy = option => {
@@ -109,7 +122,7 @@ const AdminView = ({ setAlertState }) => {
           <Button className={styles['create-button']} variant="warning" onClick={createAdmin}>
             Create New Admin Account <FaPlus cursor="pointer" />
           </Button>
-          <InputGroup>
+          <InputGroup input={searchText} onChange={inputHandler}>
             <FormControl
               placeholder="Search Admin"
               aria-label="Search Admin"
@@ -128,7 +141,7 @@ const AdminView = ({ setAlertState }) => {
         <Table
           sectionTitle={SECTIONS.ADMIN}
           theadData={theadData}
-          tbodyData={tbodyData.sort(compareNames)}
+          tbodyData={search(tbodyData).sort(compareNames)}
           statusCol={2}
           tbodyColIsBadge={[]}
           setAlertState={setAlertState}
