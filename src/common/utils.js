@@ -87,9 +87,9 @@ export const calculateScores = data => {
 
       // only get student's post score if they have pre-scores
       if (student.posttestR !== null) {
-        academic.post +=
+        attitudinal.post +=
           (student.posttestR.reduce((prev, curr) => prev + curr, 0) / attitudinalPossible) * 100;
-        academic.postCount += 1;
+        attitudinal.postCount += 1;
       }
     }
 
