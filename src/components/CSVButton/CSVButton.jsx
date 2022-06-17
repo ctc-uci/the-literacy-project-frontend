@@ -5,7 +5,7 @@ import { CSVLink } from 'react-csv';
 import { TLPBackend, calculateSingleStudentScores } from '../../common/utils';
 import styles from './CSVButton.module.css';
 
-const CSVButton = ({ type, areaId, siteId }) => {
+const CSVButton = ({ type, areaId, siteId, groupId }) => {
   const [data, setData] = useState([]);
   const [fileName, setFileName] = useState('');
   const current = new Date();
@@ -41,7 +41,7 @@ const CSVButton = ({ type, areaId, siteId }) => {
     if (type === 'mt') {
       return ['First Name', 'Last Name', 'Email', 'Phone Number', 'Sites', 'Notes'];
     }
-    if (['allAreas', 'student', 'area'].indexOf(type) !== -1) {
+    if (['allAreas', 'student', 'area', 'studentGroup'].indexOf(type) !== -1) {
       return [
         'Area Name',
         'Site Name',
@@ -111,6 +111,36 @@ const CSVButton = ({ type, areaId, siteId }) => {
       });
       return retList;
     }
+    if (type === 'studentGroup') {
+      const { students } = resData;
+      const out = [];
+      students.forEach(student => {
+        const scores = calculateSingleStudentScores(student);
+        out.push([
+          resData.areaName,
+          resData.siteName,
+          student.firstName,
+          student.lastName,
+          student.grade,
+          `${resData.year}-${resData.year + 1}`,
+          resData.cycle,
+          student.homeTeacher,
+          student.gender,
+          student.ethnicity,
+          resData.name,
+          // eslint-disable-next-line no-restricted-globals
+          isNaN(scores.preAssessment) ? '' : `${scores.preAssessment.toFixed(2)}%`,
+          // eslint-disable-next-line no-restricted-globals
+          isNaN(scores.preAttitude) ? '' : `${scores.preAttitude.toFixed(2)}%`,
+          // eslint-disable-next-line no-restricted-globals
+          isNaN(scores.postAssessment) ? '' : `${scores.postAssessment.toFixed(2)}%`,
+          // eslint-disable-next-line no-restricted-globals
+          isNaN(scores.postAttitude) ? '' : `${scores.postAttitude.toFixed(2)}%`,
+        ]);
+      });
+
+      return out;
+    }
     if (['allAreas', 'student', 'area'].indexOf(type) !== -1) {
       return resData.map(student => {
         const scores = calculateSingleStudentScores(student);
@@ -120,7 +150,7 @@ const CSVButton = ({ type, areaId, siteId }) => {
           student.firstName,
           student.lastName,
           student.grade,
-          student.year,
+          `${student.year}-${student.year + 1}`,
           student.cycle,
           student.homeTeacher,
           student.gender,
@@ -178,6 +208,12 @@ const CSVButton = ({ type, areaId, siteId }) => {
         setFileName(`Student_Data_${date}.csv`);
         addData(res.data);
       }
+      if (type === 'studentGroup' && groupId) {
+        const res = await TLPBackend.get(`/student-groups/${groupId}`);
+        const groupName = res.data.name;
+        setFileName(`${groupName}_Report_${date}.csv`);
+        addData(res.data);
+      }
       if (type === 'area' && areaId) {
         const res = await TLPBackend.get(`/students/area/${areaId}`);
         const areaName = await TLPBackend.get(`/areas/${areaId}`);
@@ -211,6 +247,8 @@ CSVButton.propTypes = {
   areaId: PropTypes.number,
   // eslint-disable-next-line react/require-default-props
   siteId: PropTypes.number,
+  // eslint-disable-next-line react/require-default-props
+  groupId: PropTypes.number,
 };
 
 export default CSVButton;

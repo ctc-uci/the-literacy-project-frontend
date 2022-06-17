@@ -9,6 +9,7 @@ import Graph from '../../components/Graph/Graph';
 import styles from './student-group-view.module.css';
 import EditStudentGroupModal from '../../components/EditStudentGroupModal/EditStudentGroupModal';
 import DropdownMenu from '../../common/DropdownMenu/DropdownMenu';
+import CSVButton from '../../components/CSVButton/CSVButton';
 
 const StudentGroupView = () => {
   const studentGroupId = useParams().groupId;
@@ -185,7 +186,9 @@ const StudentGroupView = () => {
               postData={testScores.post}
             />
           </div>
-          <Button className={styles['export-csv-btn']}> Export to CSV </Button>
+          {studentGroupList.length > 0 ? (
+            <CSVButton type="studentGroup" groupId={Number.parseInt(studentGroupId, 10)} />
+          ) : null}
         </div>
       </div>
     </div>
