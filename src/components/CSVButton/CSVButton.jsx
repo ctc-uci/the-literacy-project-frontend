@@ -11,19 +11,6 @@ const CSVButton = ({ type, areaId, siteId }) => {
   const current = new Date();
   const date = `${current.getMonth() + 1}/${current.getDate()}/${current.getFullYear()}`;
 
-  // const getAvg = arr => {
-  //   if (arr === null) {
-  //     return null;
-  //   }
-  //   let sum = 0;
-  //   for (let i = 0; i < arr.length; i += 1) {
-  //     sum += arr[i];
-  //   }
-  //   const avg = sum / arr.length;
-  //   // round to 2 decimal places
-  //   return Math.round((avg + Number.EPSILON) * 100) / 100;
-  // };
-
   // Creates CSV file headers
   function createHeaders() {
     if (type === 'site') {
